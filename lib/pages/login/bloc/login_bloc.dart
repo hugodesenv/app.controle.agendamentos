@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
   LoginBloc(super.initialState) {
-    on<DoLogin>(_doLogin);
+    on<LoginSubmitted>(_doLogin);
   }
 
   void _doLogin(event, emit) async {

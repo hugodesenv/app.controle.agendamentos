@@ -1,5 +1,7 @@
+import 'package:agendamentos/pages/login/bloc/login_bloc.dart';
 import 'package:agendamentos/routes.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 class Home extends StatelessWidget {
@@ -44,9 +46,7 @@ class Home extends StatelessWidget {
                 leading: IconButton(
                   icon: const Icon(Icons.exit_to_app_outlined),
                   color: Theme.of(context).primaryColor,
-                  onPressed: () {
-                    Navigator.pushReplacementNamed(context, ROUTE_LOGIN);
-                  },
+                  onPressed: () => Navigator.pushReplacementNamed(context, ROUTE_LOGIN),
                 ),
               ),
               const Divider(),

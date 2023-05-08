@@ -38,6 +38,7 @@ dependencies:
   syncfusion_flutter_calendar: ^21.2.3
   bloc: ^8.1.1
   flutter_bloc: ^8.1.2
+  firebase_core: ^2.11.0
 
 dev_dependencies:
   flutter_test:

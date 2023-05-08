@@ -10,12 +10,15 @@ class Login extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    TextEditingController _usuario = TextEditingController();
+    TextEditingController _senha = TextEditingController();
+
     return Scaffold(
       body: BlocListener(
         bloc: BlocProvider.of<LoginBloc>(context),
         listener: (BuildContext context, state) {
           if (state is LoginSuccess) {
-            Navigator.pushNamed(context, ROUTE_HOME);
+            Navigator.pushReplacementNamed(context, ROUTE_HOME);
           } else if (state is LoginFail) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(content: Text(state.message)),
@@ -46,16 +49,18 @@ class Login extends StatelessWidget {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
-                          const TextField(
-                            decoration: InputDecoration(labelText: 'Usuário'),
+                          TextField(
+                            decoration: const InputDecoration(labelText: 'Usuário'),
                             autofocus: true,
+                            controller: _usuario,
                           ),
-                          const TextField(
-                            decoration: InputDecoration(
+                          TextField(
+                            decoration: const InputDecoration(
                               labelText: 'Senha',
                               suffixIcon: Icon(Icons.visibility_outlined),
                             ),
                             obscureText: true,
+                            controller: _senha,
                           ),
                           TextButton(
                             onPressed: () {},
@@ -73,8 +78,7 @@ class Login extends StatelessWidget {
                               )
                             : const Text('Acessar'),
                         onPressed: () async {
-                          //Navigator.pushReplacementNamed(context, ROUTE_HOME)
-                          BlocProvider.of<LoginBloc>(context).add(DoLogin());
+                          BlocProvider.of<LoginBloc>(context).add(LoginSubmitted());
                         },
                       ),
                     ],
