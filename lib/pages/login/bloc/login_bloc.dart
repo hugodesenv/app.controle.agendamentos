@@ -10,7 +10,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   void _doLogin(event, emit) async {
     emit(LoginLoading());
     await Future.delayed(
-      const Duration(seconds: 1),
+      const Duration(seconds: 5),
       () => emit(LoginSuccess()),
     );
   }

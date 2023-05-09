@@ -4,7 +4,6 @@ import 'package:agendamentos/pages/home/bloc/home_state.dart';
 import 'package:agendamentos/pages/login/bloc/login_bloc.dart';
 import 'package:agendamentos/pages/login/bloc/login_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import 'pages/home/home.dart';
 import 'pages/login/login.dart';
 

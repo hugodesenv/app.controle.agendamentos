@@ -10,7 +10,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Color mainColor = Colors.indigoAccent;
+    Color mainColor = Colors.indigo;
     return MaterialApp(
       home: BlocProvider<LoginBloc>(
         create: (context) => LoginBloc(LoginInitial()),
@@ -20,6 +20,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primaryColor: mainColor,
+        focusColor: Colors.indigoAccent,
         appBarTheme: const AppBarTheme(
           color: Colors.white,
           elevation: 1,
@@ -31,8 +32,8 @@ class MyApp extends StatelessWidget {
           ),
           iconTheme: IconThemeData(color: Colors.black54),
         ),
-        progressIndicatorTheme:
-            ProgressIndicatorThemeData(color: Colors.indigo, circularTrackColor: mainColor),
+        progressIndicatorTheme: const ProgressIndicatorThemeData(
+            color: Colors.indigo, circularTrackColor: Colors.indigoAccent),
         textButtonTheme: TextButtonThemeData(
           style: TextButton.styleFrom(
             textStyle: const TextStyle(

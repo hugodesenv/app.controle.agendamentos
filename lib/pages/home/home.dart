@@ -1,7 +1,5 @@
-import 'package:agendamentos/pages/login/bloc/login_bloc.dart';
 import 'package:agendamentos/routes.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 class Home extends StatelessWidget {
@@ -9,13 +7,45 @@ class Home extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Widget cardInfo(String pTitle) {
+      return SizedBox(
+        width: 150.0,
+        child: Center(
+          child: Card(
+            child: ListTile(
+              title: Text(
+                pTitle,
+                style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+                textAlign: TextAlign.center,
+              ),
+              subtitle: const Text('R\$150,00', textAlign: TextAlign.center),
+            ),
+          ),
+        ),
+      );
+    }
+
     return Scaffold(
       appBar: AppBar(title: const Text("Home")),
       body: Padding(
-        padding: const EdgeInsets.all(12),
+        padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            Padding(
+              padding: const EdgeInsets.only(bottom: 5),
+              child: SizedBox(
+                height: 100,
+                child: ListView(
+                  scrollDirection: Axis.horizontal,
+                  children: [
+                    cardInfo('Qtde.'),
+                    cardInfo('Total'),
+                    cardInfo('Comissão'),
+                  ],
+                ),
+              ),
+            ),
             Expanded(
               child: SfCalendar(
                 todayHighlightColor: Theme.of(context).primaryColor,
