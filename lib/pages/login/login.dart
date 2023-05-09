@@ -13,12 +13,6 @@ class Login extends StatelessWidget {
   TextEditingController userController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
-  Future<void> _doLogin(context) async {
-    BlocProvider.of<LoginBloc>(context).add(
-      LoginSubmitted(username: userController.text, password: passwordController.text),
-    );
-  }
-
   Future<void> _doForgetPassword() async {
     print("** nada por aqui **");
   }
@@ -33,6 +27,7 @@ class Login extends StatelessWidget {
             Navigator.pushReplacementNamed(context, ROUTE_HOME);
             return;
           }
+
           if (state is LoginFailure) {
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.message)));
             return;
@@ -80,7 +75,12 @@ class Login extends StatelessWidget {
                       ],
                     ),
                     ElevatedButton(
-                      onPressed: () async => await _doLogin(context),
+                      onPressed: () {
+                        BlocProvider.of<LoginBloc>(context).add(
+                          LoginSubmitted(
+                              username: userController.text, password: passwordController.text),
+                        );
+                      },
                       style: ElevatedButton.styleFrom(
                         padding: const EdgeInsets.all(15),
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),

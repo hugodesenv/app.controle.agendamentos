@@ -81,9 +81,24 @@ class Home extends StatelessWidget {
               ),
               const Divider(),
               ListTile(
-                leading: const Icon(Icons.person_add_alt),
-                onTap: () => Navigator.pushNamed(context, ROUTE_CLIENT),
+                leading: const Icon(Icons.person_outline),
+                onTap: () => Navigator.pushNamed(context, ROUTE_CLIENT_SEARCH),
                 title: const Text('Clientes'),
+              ),
+              ListTile(
+                leading: const Icon(Icons.emoji_objects_outlined),
+                onTap: () => print("** desenvolver"),
+                title: const Text('Itens'),
+              ),
+              ListTile(
+                leading: const Icon(Icons.auto_graph_sharp),
+                onTap: () => print("** desenvolver"),
+                title: const Text('Relatórios'),
+              ),
+              ListTile(
+                leading: const Icon(Icons.settings),
+                onTap: () => print("** desenvolver"),
+                title: const Text('Perfil'),
               ),
             ],
           ),
