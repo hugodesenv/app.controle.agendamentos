@@ -58,6 +58,7 @@ class _MyLoginTextFieldState extends State<MyLoginTextField> {
             borderRadius: BorderRadius.circular(20)),
       ),
       cursorColor: mainColor,
+      style: TextStyle(color: mainColor),
     );
   }
 }

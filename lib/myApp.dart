@@ -14,9 +14,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       home: BlocProvider<LoginBloc>(
         create: (context) => LoginBloc(LoginInitial()),
-        child: const Login(),
+        child: Login(),
       ),
-      title: 'Agendamentos',
+      title: 'Skedol',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primaryColor: mainColor,

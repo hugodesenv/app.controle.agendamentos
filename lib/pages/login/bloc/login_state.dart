@@ -4,14 +4,14 @@ class LoginInitial extends LoginState {}
 
 class LoginSuccess extends LoginState {}
 
-class LoginFail extends LoginState {
-  String? _message;
+class LoginFailure extends LoginState {
+  String _message = '';
 
-  LoginFail({required message}) {
-    _message = message ?? "";
+  LoginFailure({required message}) {
+    _message = message;
   }
 
-  String get message => _message!;
+  String get message => _message;
 }
 
 class LoginLoading extends LoginState {}

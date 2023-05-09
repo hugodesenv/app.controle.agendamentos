@@ -8,23 +8,34 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../widgets/text_field/my_login_text_field.dart';
 
 class Login extends StatelessWidget {
-  const Login({Key? key}) : super(key: key);
+  Login({Key? key}) : super(key: key);
+
+  TextEditingController userController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+
+  Future<void> _doLogin(context) async {
+    BlocProvider.of<LoginBloc>(context).add(
+      LoginSubmitted(username: userController.text, password: passwordController.text),
+    );
+  }
+
+  Future<void> _doForgetPassword() async {
+    print("** nada por aqui **");
+  }
 
   @override
   Widget build(BuildContext context) {
-    TextEditingController _usuarioController = TextEditingController();
-    TextEditingController _senhaController = TextEditingController();
-
     return Scaffold(
       body: BlocListener(
         bloc: BlocProvider.of<LoginBloc>(context),
         listener: (BuildContext context, state) {
           if (state is LoginSuccess) {
             Navigator.pushReplacementNamed(context, ROUTE_HOME);
-          } else if (state is LoginFail) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(state.message)),
-            );
+            return;
+          }
+          if (state is LoginFailure) {
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.message)));
+            return;
           }
         },
         child: BlocBuilder(
@@ -33,7 +44,7 @@ class Login extends StatelessWidget {
             bool loading = state is LoginLoading;
             return SafeArea(
               child: Container(
-                padding: const EdgeInsets.only(left: 30, right: 30),
+                padding: const EdgeInsets.only(left: 40, right: 40),
                 color: Colors.white,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -52,34 +63,27 @@ class Login extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
                         MyLoginTextField(
-                          labelText: 'Usuário',
-                          controller: _usuarioController,
-                          autoFocus: true,
-                        ),
+                            labelText: 'Usuário', controller: userController, autoFocus: true),
                         Padding(
                           padding: const EdgeInsets.only(top: 20),
                           child: MyLoginTextField(
                             labelText: 'Senha',
-                            controller: _senhaController,
+                            controller: passwordController,
                             isPassword: true,
                           ),
                         ),
                         TextButton(
-                          onPressed: () {},
+                          onPressed: () async => await _doForgetPassword,
                           style: const ButtonStyle(alignment: Alignment.centerRight),
                           child: const Text('Esqueceu a senha?'),
                         ),
                       ],
                     ),
                     ElevatedButton(
-                      onPressed: () async {
-                        BlocProvider.of<LoginBloc>(context).add(LoginSubmitted());
-                      },
+                      onPressed: () async => await _doLogin(context),
                       style: ElevatedButton.styleFrom(
                         padding: const EdgeInsets.all(15),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20),
-                        ),
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
                       ),
                       child: loading
                           ? const SizedBox(
@@ -95,10 +99,7 @@ class Login extends StatelessWidget {
                         "2023 - Hugo Silva",
                         textAlign: TextAlign.center,
                         style: TextStyle(
-                          color: Colors.black12,
-                          fontWeight: FontWeight.w400,
-                          fontSize: 12,
-                        ),
+                            color: Colors.black12, fontWeight: FontWeight.w400, fontSize: 12),
                       ),
                     ),
                   ],

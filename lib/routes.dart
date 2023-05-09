@@ -15,6 +15,6 @@ appRoutes() => {
       ROUTE_HOME: (context) =>
           BlocProvider(create: (context) => HomeBloc(HomeInitial()), child: const Home()),
       ROUTE_LOGIN: (context) =>
-          BlocProvider(create: (context) => LoginBloc(LoginInitial()), child: const Login()),
+          BlocProvider(create: (context) => LoginBloc(LoginInitial()), child: Login()),
       ROUTE_CLIENT: (context) => const Client(),
     };

@@ -4,14 +4,27 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
   LoginBloc(super.initialState) {
-    on<LoginSubmitted>(_doLogin);
+    on<LoginSubmitted>(_loginSubmitted);
   }
 
-  void _doLogin(event, emit) async {
+  _loginSubmitted(LoginSubmitted event, emit) async {
     emit(LoginLoading());
-    await Future.delayed(
-      const Duration(seconds: 5),
-      () => emit(LoginSuccess()),
-    );
+
+    if (event.username.isEmpty) {
+      emit(LoginFailure(message: 'Campo usuário é obrigatório!'));
+      return;
+    }
+
+    if (event.password.isEmpty) {
+      emit(LoginFailure(message: 'Campo senha é obrigatório!'));
+      return;
+    }
+
+    if (event.username != 'hugo') {
+      emit(LoginFailure(message: 'Usuário ou senha incorretos!'));
+      return;
+    }
+
+    await Future.delayed(const Duration(seconds: 2), () => emit(LoginSuccess()));
   }
 }
