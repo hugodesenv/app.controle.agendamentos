@@ -82,7 +82,7 @@ class Home extends StatelessWidget {
               const Divider(),
               ListTile(
                 leading: const Icon(Icons.person_outline),
-                onTap: () => Navigator.pushNamed(context, ROUTE_CLIENT_SEARCH),
+                onTap: () => Navigator.pushNamed(context, ROUTE_CUSTOMER_QUERY),
                 title: const Text('Clientes'),
               ),
               ListTile(

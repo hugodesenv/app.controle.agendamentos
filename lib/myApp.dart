@@ -4,6 +4,7 @@ import 'package:agendamentos/pages/login/login.dart';
 import 'package:agendamentos/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -13,7 +14,7 @@ class MyApp extends StatelessWidget {
     Color mainColor = Colors.indigo;
     return MaterialApp(
       home: BlocProvider<LoginBloc>(
-        create: (context) => LoginBloc(LoginInitial()),
+        create: (context) => LoginBloc(LoginStateInitial()),
         child: Login(),
       ),
       title: 'Skedol',
@@ -21,19 +22,20 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primaryColor: mainColor,
         focusColor: Colors.indigoAccent,
-        appBarTheme: const AppBarTheme(
+        appBarTheme: AppBarTheme(
           color: Colors.white,
           elevation: 1,
-          shadowColor: Colors.black12,
-          titleTextStyle: TextStyle(
+          shadowColor: Colors.black26,
+          titleTextStyle: GoogleFonts.sora(
             color: Colors.black54,
             fontSize: 16,
-            fontWeight: FontWeight.w600,
+            fontWeight: FontWeight.w500,
           ),
-          iconTheme: IconThemeData(color: Colors.black54),
+          iconTheme: const IconThemeData(color: Colors.black54),
         ),
-        progressIndicatorTheme: const ProgressIndicatorThemeData(
-            color: Colors.indigo, circularTrackColor: Colors.indigoAccent),
+        textTheme: GoogleFonts.soraTextTheme(),
+        progressIndicatorTheme:
+            ProgressIndicatorThemeData(color: Colors.orange, circularTrackColor: mainColor),
         textButtonTheme: TextButtonThemeData(
           style: TextButton.styleFrom(
             textStyle: const TextStyle(

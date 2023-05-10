@@ -1,17 +1,17 @@
 abstract class LoginState {}
 
-class LoginInitial extends LoginState {}
+class LoginStateInitial extends LoginState {}
 
-class LoginSuccess extends LoginState {}
+class LoginStateSuccess extends LoginState {}
 
-class LoginFailure extends LoginState {
+class LoginStateFailure extends LoginState {
   String _message = '';
 
-  LoginFailure({required message}) {
+  LoginStateFailure({required message}) {
     _message = message;
   }
 
   String get message => _message;
 }
 
-class LoginLoading extends LoginState {}
+class LoginStateLoading extends LoginState {}

@@ -23,12 +23,12 @@ class Login extends StatelessWidget {
       body: BlocListener(
         bloc: BlocProvider.of<LoginBloc>(context),
         listener: (BuildContext context, state) {
-          if (state is LoginSuccess) {
+          if (state is LoginStateSuccess) {
             Navigator.pushReplacementNamed(context, ROUTE_HOME);
             return;
           }
 
-          if (state is LoginFailure) {
+          if (state is LoginStateFailure) {
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.message)));
             return;
           }
@@ -36,7 +36,7 @@ class Login extends StatelessWidget {
         child: BlocBuilder(
           bloc: BlocProvider.of<LoginBloc>(context),
           builder: (BuildContext context, state) {
-            bool loading = state is LoginLoading;
+            bool loading = state is LoginStateLoading;
             return SafeArea(
               child: Container(
                 padding: const EdgeInsets.only(left: 40, right: 40),
@@ -89,7 +89,7 @@ class Login extends StatelessWidget {
                           ? const SizedBox(
                               height: 15,
                               width: 15,
-                              child: CircularProgressIndicator(color: Colors.orange),
+                              child: CircularProgressIndicator(),
                             )
                           : const Text('Entrar'),
                     ),

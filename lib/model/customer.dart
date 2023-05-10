@@ -1,8 +1,8 @@
-class Client {
+class Customer {
   String _name = '';
   String? _cellphone;
 
-  Client({required String name, String? cellphone})
+  Customer({required String name, String? cellphone})
       : _name = name,
         _cellphone = cellphone;
 

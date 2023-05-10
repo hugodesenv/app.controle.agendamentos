@@ -8,23 +8,23 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   }
 
   _loginSubmitted(LoginSubmitted event, emit) async {
-    emit(LoginLoading());
+    emit(LoginStateLoading());
 
     if (event.username.isEmpty) {
-      emit(LoginFailure(message: 'Campo usuário é obrigatório!'));
+      emit(LoginStateFailure(message: 'Campo usuário é obrigatório!'));
       return;
     }
 
     if (event.password.isEmpty) {
-      emit(LoginFailure(message: 'Campo senha é obrigatório!'));
+      emit(LoginStateFailure(message: 'Campo senha é obrigatório!'));
       return;
     }
 
     if (event.username != 'hugo') {
-      emit(LoginFailure(message: 'Usuário ou senha incorretos!'));
+      emit(LoginStateFailure(message: 'Usuário ou senha incorretos!'));
       return;
     }
 
-    await Future.delayed(const Duration(seconds: 2), () => emit(LoginSuccess()));
+    await Future.delayed(const Duration(seconds: 2), () => emit(LoginStateSuccess()));
   }
 }
