@@ -1,6 +1,7 @@
 import 'package:agendamentos/pages/login/bloc/login_bloc.dart';
 import 'package:agendamentos/pages/login/bloc/login_event.dart';
 import 'package:agendamentos/pages/login/bloc/login_state.dart';
+import 'package:agendamentos/repository/enums/en_login_loading.dart';
 import 'package:agendamentos/repository/enums/en_login_modal.dart';
 import 'package:agendamentos/routes.dart';
 import 'package:agendamentos/widgets/button/my_loading_button.dart';
@@ -15,6 +16,7 @@ class Login extends StatelessWidget {
 
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  TextEditingController emailResetController = TextEditingController();
 
   Widget splashScreen(context) {
     return SizedBox(
@@ -46,47 +48,6 @@ class Login extends StatelessWidget {
     );
   }
 
-  Future<void> showModalForgetPassword(pcontext) async {
-    await showModalBottomSheet(
-      context: pcontext,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.only(
-          topRight: Radius.circular(15),
-          topLeft: Radius.circular(15),
-        ),
-      ),
-      isScrollControlled: true,
-      builder: (context) {
-        return SingleChildScrollView(
-          child: Container(
-            padding: EdgeInsets.only(
-              bottom: MediaQuery.of(context).viewInsets.bottom + 30,
-              left: 30,
-              right: 30,
-              top: 30,
-            ),
-            child: Column(
-              children: [
-                const Text(
-                  'Digite o seu e-mail e clique no botão p/ enviar a redefinição de senha:',
-                  textAlign: TextAlign.center,
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 30, bottom: 30),
-                  child: MyLoginTextField(labelText: 'E-mail'),
-                ),
-                SizedBox(
-                  width: MediaQuery.of(context).size.width,
-                  child: MyLoadingButton(onPressed: () {}, title: 'Enviar'),
-                ),
-              ],
-            ),
-          ),
-        );
-      },
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -106,7 +67,74 @@ class Login extends StatelessWidget {
           if (state is LoginStateShowModal) {
             switch (state.enModal) {
               case EnModalLogin.tForgetPassword:
-                await showModalForgetPassword(context);
+                await showModalBottomSheet(
+                  context: context,
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.only(topRight: Radius.circular(15), topLeft: Radius.circular(15)),
+                  ),
+                  isScrollControlled: true,
+                  builder: (contextModal) {
+                    return BlocBuilder(
+                      bloc: BlocProvider.of<LoginBloc>(context),
+                      builder: (_, state) {
+                        String resultMessage = '';
+                        Color colorMessage = Colors.black;
+
+                        if (state is LoginStateSuccessResetEmail) {
+                          resultMessage = state.message;
+                          colorMessage = Colors.green;
+                        } else if (state is LoginStateFailureResetEmail) {
+                          resultMessage = state.message;
+                          colorMessage = Colors.red;
+                        }
+
+                        return SingleChildScrollView(
+                          child: Container(
+                            padding: EdgeInsets.only(
+                                bottom: MediaQuery.of(contextModal).viewInsets.bottom + 30, left: 30, right: 30, top: 30),
+                            child: Column(
+                              children: [
+                                resultMessage.isNotEmpty
+                                    ? Column(
+                                        children: [
+                                          Center(
+                                            child: Text(
+                                              resultMessage,
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(fontWeight: FontWeight.w700, color: colorMessage),
+                                            ),
+                                          ),
+                                          const Padding(padding: EdgeInsets.all(10), child: Divider()),
+                                        ],
+                                      )
+                                    : Container(),
+                                Text(
+                                  'Digite o seu e-mail e clique no botão p/ enviar a redefinição de senha:',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(color: Theme.of(context).primaryColor),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 30, bottom: 30),
+                                  child: MyLoginTextField(labelText: 'E-mail', controller: emailResetController, autoFocus: true),
+                                ),
+                                SizedBox(
+                                  width: MediaQuery.of(context).size.width,
+                                  child: MyLoadingButton(
+                                    title: 'Enviar',
+                                    onPressed: () => BlocProvider.of<LoginBloc>(context)
+                                        .add(LoginEventResetPassword(email: emailResetController.text)),
+                                    loading:
+                                        (state is LoginStateLoading) && (state.typeLoading == EnLoginLoading.tpForgetPassword),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                    );
+                  },
+                );
                 break;
             }
           }
@@ -118,7 +146,6 @@ class Login extends StatelessWidget {
               return splashScreen(context);
             }
 
-            bool loading = state is LoginStateLoading;
             return SafeArea(
               child: Container(
                 padding: const EdgeInsets.only(left: 40, right: 40),
@@ -139,8 +166,7 @@ class Login extends StatelessWidget {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-                        MyLoginTextField(
-                            labelText: 'E-mail', controller: emailController, autoFocus: true),
+                        MyLoginTextField(labelText: 'E-mail', controller: emailController, autoFocus: true),
                         Padding(
                           padding: const EdgeInsets.only(top: 20),
                           child: MyLoginTextField(
@@ -151,8 +177,7 @@ class Login extends StatelessWidget {
                         ),
                         TextButton(
                           onPressed: () {
-                            BlocProvider.of<LoginBloc>(context)
-                                .add(LoginEventShowModal(enModal: EnModalLogin.tForgetPassword));
+                            BlocProvider.of<LoginBloc>(context).add(LoginEventShowModal(enModal: EnModalLogin.tForgetPassword));
                           },
                           style: const ButtonStyle(alignment: Alignment.centerRight),
                           child: const Text('Esqueceu a senha?'),
@@ -162,20 +187,18 @@ class Login extends StatelessWidget {
                     MyLoadingButton(
                       onPressed: () {
                         BlocProvider.of<LoginBloc>(context).add(
-                          LoginEventSubmitted(
-                              email: emailController.text, password: passwordController.text),
+                          LoginEventSubmitted(email: emailController.text, password: passwordController.text),
                         );
                       },
                       title: 'Entrar',
-                      loading: loading,
+                      loading: (state is LoginStateLoading) && (state.typeLoading == EnLoginLoading.tpLogin),
                     ),
                     const SizedBox(
                       width: double.infinity,
                       child: Text(
                         "2023 - Hugo Silva",
                         textAlign: TextAlign.center,
-                        style: TextStyle(
-                            color: Colors.black12, fontWeight: FontWeight.w400, fontSize: 12),
+                        style: TextStyle(color: Colors.black12, fontWeight: FontWeight.w400, fontSize: 12),
                       ),
                     ),
                   ],

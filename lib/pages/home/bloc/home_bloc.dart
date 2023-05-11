@@ -9,7 +9,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   }
 
   Future<void> _signOut(HomeEventSignOut event, emit) async {
-    UserRepository repository = UserRepository();
+    UserRepository repository = UserRepository.instance;
     await repository.signOut();
     emit(HomeStateSignOut());
   }

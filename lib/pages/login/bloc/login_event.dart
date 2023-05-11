@@ -25,3 +25,13 @@ class LoginEventShowModal extends LoginEvent {
 
   EnModalLogin get enModal => _enModal;
 }
+
+class LoginEventResetPassword extends LoginEvent {
+  String _email;
+
+  LoginEventResetPassword({required String email}) : _email = email.trim();
+
+  String get email => _email;
+
+  bool get isEmailValid => _email.isNotEmpty;
+}

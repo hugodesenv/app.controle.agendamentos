@@ -1,0 +1,4 @@
+enum EnLoginLoading {
+  tpLogin,
+  tpForgetPassword,
+}
