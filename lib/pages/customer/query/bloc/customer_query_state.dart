@@ -13,3 +13,7 @@ class CustomerQueryStateLoaded extends CustomerQueryState {
 
   List<Customer> get customers => _customers;
 }
+
+class CustomerQueryStateOpenNew extends CustomerQueryState {}
+
+class CustomerQueryStateOpenImport extends CustomerQueryState {}

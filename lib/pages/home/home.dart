@@ -11,6 +11,27 @@ class Home extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Future exitApp() async {
+      await showDialog(
+        context: context,
+        builder: (_) {
+          return AlertDialog(
+            title: const Text('Deseja desconectar?'),
+            actions: [
+              TextButton(
+                onPressed: () => BlocProvider.of<HomeBloc>(context).add(HomeEventSignOut()),
+                child: const Text('Sim'),
+              ),
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Text('Não'),
+              ),
+            ],
+          );
+        },
+      );
+    }
+
     Widget cardInfo(String pTitle) {
       return SizedBox(
         width: 150.0,
@@ -31,7 +52,7 @@ class Home extends StatelessWidget {
 
     return BlocListener(
       bloc: BlocProvider.of<HomeBloc>(context),
-      listener: (context, state) {
+      listener: (context, state) async {
         if (state is HomeStateSignOut) {
           Navigator.pushReplacementNamed(context, ROUTE_LOGIN);
         }
@@ -90,7 +111,7 @@ class Home extends StatelessWidget {
                       leading: IconButton(
                         icon: const Icon(Icons.exit_to_app_outlined),
                         color: Theme.of(context).primaryColor,
-                        onPressed: () => BlocProvider.of<HomeBloc>(context).add(HomeEventSignOut()),
+                        onPressed: () async => await exitApp(),
                       ),
                     ),
                     const Divider(),

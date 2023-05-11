@@ -6,12 +6,13 @@ import 'package:bloc/bloc.dart';
 class CustomerQueryBloc extends Bloc<CustomerQueryEvent, CustomerQueryState> {
   CustomerQueryBloc(super.initialState) {
     on<CustomerQueryEventFetchAll>(fetchAll);
+    on<CustomerQueryEventNew>((_, emit) => emit(CustomerQueryStateOpenNew()));
+    on<CustomerQueryEventImport>((_, emit) => emit(CustomerQueryStateOpenImport()));
   }
 
   void fetchAll(event, emit) async {
     emit(CustomerQueryStateLoading());
 
-    print("*** customer_query_bloc: alterar a regra aqui dentro");
     List<Customer> customers = [
       Customer(name: "André", cellphone: '19 9 8961-5184'),
       Customer(name: "Carlos"),
@@ -24,6 +25,11 @@ class CustomerQueryBloc extends Bloc<CustomerQueryEvent, CustomerQueryState> {
       Customer(name: "Luan"),
       Customer(name: "Zette"),
     ];
+
+    //@@ apenas para teste
+    await Future.delayed(Duration(seconds: 3));
+    customers.clear();
+    ////
 
     emit(CustomerQueryStateLoaded(customers: customers));
   }

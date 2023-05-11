@@ -8,7 +8,6 @@ import 'package:agendamentos/widgets/button/my_loading_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-
 import '../../widgets/text_field/my_login_text_field.dart';
 
 class Login extends StatelessWidget {
@@ -28,21 +27,16 @@ class Login extends StatelessWidget {
           Text(
             'Skedol',
             textAlign: TextAlign.center,
-            style: GoogleFonts.sora(
-              fontSize: 30,
-              fontWeight: FontWeight.bold,
-              color: Theme.of(context).primaryColor,
-            ),
+            style: GoogleFonts.sora(fontSize: 30, fontWeight: FontWeight.bold, color: Theme.of(context).primaryColor),
           ),
           const Padding(
             padding: EdgeInsets.only(bottom: 80, top: 5),
             child: Text(
-              "Seus compromissos num só lugar! :)",
+              "Seus compromissos num só lugar! ;)",
               textAlign: TextAlign.center,
               style: TextStyle(color: Colors.indigo),
             ),
           ),
-          const CircularProgressIndicator(),
         ],
       ),
     );
@@ -145,11 +139,11 @@ class Login extends StatelessWidget {
             if (state is LoginStateSplash) {
               return splashScreen(context);
             }
-
-            return SafeArea(
+            double keyBoardHeight = MediaQuery.of(context).viewInsets.bottom;
+            return SingleChildScrollView(
               child: Container(
+                height: MediaQuery.of(context).size.height,
                 padding: const EdgeInsets.only(left: 40, right: 40),
-                color: Colors.white,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -166,7 +160,7 @@ class Login extends StatelessWidget {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-                        MyLoginTextField(labelText: 'E-mail', controller: emailController, autoFocus: true),
+                        MyLoginTextField(labelText: 'E-mail', controller: emailController),
                         Padding(
                           padding: const EdgeInsets.only(top: 20),
                           child: MyLoginTextField(
@@ -192,14 +186,6 @@ class Login extends StatelessWidget {
                       },
                       title: 'Entrar',
                       loading: (state is LoginStateLoading) && (state.typeLoading == EnLoginLoading.tpLogin),
-                    ),
-                    const SizedBox(
-                      width: double.infinity,
-                      child: Text(
-                        "2023 - Hugo Silva",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(color: Colors.black12, fontWeight: FontWeight.w400, fontSize: 12),
-                      ),
                     ),
                   ],
                 ),
