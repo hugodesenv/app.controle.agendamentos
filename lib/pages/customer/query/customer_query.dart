@@ -42,7 +42,7 @@ class CustomerQuery extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Cliente'),
+        title: const Text('Clientes'),
         actions: [
           IconButton(
             onPressed: () => {},

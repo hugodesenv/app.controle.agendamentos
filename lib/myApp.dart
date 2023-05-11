@@ -1,4 +1,5 @@
 import 'package:agendamentos/pages/login/bloc/login_bloc.dart';
+import 'package:agendamentos/pages/login/bloc/login_event.dart';
 import 'package:agendamentos/pages/login/bloc/login_state.dart';
 import 'package:agendamentos/pages/login/login.dart';
 import 'package:agendamentos/routes.dart';
@@ -14,7 +15,7 @@ class MyApp extends StatelessWidget {
     Color mainColor = Colors.indigo;
     return MaterialApp(
       home: BlocProvider<LoginBloc>(
-        create: (context) => LoginBloc(LoginStateInitial()),
+        create: (_) => LoginBloc(LoginStateInitial())..add(LoginEventVerifyAuthentication()),
         child: Login(),
       ),
       title: 'Skedol',
