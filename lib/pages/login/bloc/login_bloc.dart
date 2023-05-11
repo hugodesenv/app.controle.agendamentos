@@ -65,7 +65,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       );
     } catch (e) {
       emit(LoginStateFailureResetEmail(
-          message: 'Não foi possível encaminhar o e-mail de redefinição. Confira se o e-mail de destino está correto ou,'
+          message: 'Não foi possível encaminhar o e-mail de redefinição. Confira se o seu e-mail está correto ou,'
               ' tente novamente mais tarde!'));
     }
   }
