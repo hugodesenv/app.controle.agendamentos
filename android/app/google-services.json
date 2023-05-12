@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "378351724482",
+    "firebase_url": "https://agenda-52a9d-default-rtdb.firebaseio.com",
+    "project_id": "agenda-52a9d",
+    "storage_bucket": "agenda-52a9d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:378351724482:android:9f1536282ea33b8cd6185b",
+        "android_client_info": {
+          "package_name": "com.hg.app.agendamentos"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "378351724482-2rv5f71fp5128svadfghkrddap8h7gm2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBsjbBORzUB7dRwEWXrBwUuWly8qxDZN_I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "378351724482-2rv5f71fp5128svadfghkrddap8h7gm2.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "378351724482-tetalegsvsc5kgfr1qqmpkf5vh37960k.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.hg.app.agendamentos"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

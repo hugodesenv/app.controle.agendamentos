@@ -2,20 +2,23 @@ import 'package:flutter/material.dart';
 
 class MyLoadingButton extends StatelessWidget {
   VoidCallback _onPressed = () {};
-  String _title = '';
+  Widget? _title;
   double? _thickness;
   bool? _loading;
   double _sizeProgress = 0;
+  Color? _colorBackground;
 
   MyLoadingButton({
     Key? key,
     required VoidCallback onPressed,
-    required String title,
+    required Widget title,
     double? thickness,
     bool? loading,
     double? sizeProgress,
+    Color? colorBackground,
   }) : super(key: key) {
     _onPressed = onPressed;
+    _colorBackground = colorBackground;
     _title = title;
     _thickness = thickness;
     _loading = loading;
@@ -29,6 +32,7 @@ class MyLoadingButton extends StatelessWidget {
       style: ElevatedButton.styleFrom(
         padding: const EdgeInsets.all(15),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(_thickness ?? 20.0)),
+        backgroundColor: _colorBackground ?? Theme.of(context).primaryColor,
       ),
       child: _loading == true
           ? SizedBox(
@@ -36,7 +40,7 @@ class MyLoadingButton extends StatelessWidget {
               width: _sizeProgress,
               child: const CircularProgressIndicator(),
             )
-          : Text(_title),
+          : _title,
     );
   }
 }

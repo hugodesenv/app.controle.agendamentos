@@ -1,7 +1,7 @@
-import 'package:agendamentos/pages/login/bloc/login_bloc.dart';
-import 'package:agendamentos/pages/login/bloc/login_event.dart';
-import 'package:agendamentos/pages/login/bloc/login_state.dart';
-import 'package:agendamentos/pages/login/login.dart';
+import 'package:agendamentos/pages/sign_in/bloc/sign_in_bloc.dart';
+import 'package:agendamentos/pages/sign_in/bloc/sign_in_event.dart';
+import 'package:agendamentos/pages/sign_in/bloc/sign_in_state.dart';
+import 'package:agendamentos/pages/sign_in/sign_in.dart';
 import 'package:agendamentos/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -14,9 +14,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     Color mainColor = Colors.indigo;
     return MaterialApp(
-      home: BlocProvider<LoginBloc>(
-        create: (_) => LoginBloc(LoginStateInitial())..add(LoginEventVerifyAuthentication()),
-        child: Login(),
+      home: BlocProvider<SignInBloc>(
+        create: (_) => SignInBloc(SignInStateInitial())..add(SignInEventAuthenticated()),
+        child: const SignIn(),
       ),
       title: 'Skedol',
       debugShowCheckedModeBanner: false,
