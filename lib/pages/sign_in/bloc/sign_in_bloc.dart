@@ -2,12 +2,13 @@ import 'package:agendamentos/pages/sign_in/bloc/sign_in_event.dart';
 import 'package:agendamentos/pages/sign_in/bloc/sign_in_state.dart';
 import 'package:bloc/bloc.dart';
 
-import '../../../repository/api/user_repository.dart';
+import '../../../repository/user_repository.dart';
 
 class SignInBloc extends Bloc<SignInEvent, SignInState> {
   SignInBloc(super.initialState) {
     on<SignInEventSubmitted>(_signIn);
     on<SignInEventAuthenticated>(_autoDirectHome);
+    on<SignInEventSubmittedForgetPassword>(_resetPassword);
   }
 
   Future<void> _signIn(SignInEventSubmitted event, emit) async {
@@ -39,22 +40,25 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
     authenticated ? emit(SignInStateGoToHome()) : emit(SignInStateInitial());
   }
 
-  Future<void> _resetPassword(event, emit) async {
-    //emit(LoginStateLoading(EnLoginLoading.tpForgetPassword));
+  Future<void> _resetPassword(SignInEventSubmittedForgetPassword event, emit) async {
+    emit(SignInStateWaitingEmailReset());
 
-    String email = event.email;
     UserRepository repository = UserRepository.instance;
     try {
-      await repository.resetEmailPassword(email);
-      //emit(
-      //  LoginStateSuccessResetEmail(
-      //      message: 'E-mail enviado com sucesso para ${email}! '
-      //          'Confira sua caixa de mensagens e prossiga com a alteração de senha'),
-      //);
+      await repository.resetEmailPassword(event.email);
+      emit(
+        SignInStateResetPassword(
+            emailSent: true,
+            message: 'E-mail de redefinição de senha '
+                'encaminhado para ${event.email}'),
+      );
     } catch (e) {
-      //emit(LoginStateFailureResetEmail(
-      //    message: 'Não foi possível encaminhar o e-mail de redefinição. Confira se o seu e-mail está correto ou,'
-      //        ' tente novamente mais tarde!'));
+      emit(
+        SignInStateResetPassword(
+            emailSent: false,
+            message: 'Falha ao transmitir e-mail de redefinição de senha. Confira se o '
+                'seu e-mail está correto ou tente novamente mais tarde!'),
+      );
     }
   }
 }

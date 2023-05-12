@@ -6,17 +6,21 @@ class MyLoginTextField extends StatefulWidget {
   bool _hideText = true;
   bool? _isPassword;
   bool _autoFocus = false;
+  TextInputType? _keyboardType;
 
-  MyLoginTextField(
-      {super.key,
-      TextEditingController? controller,
-      required labelText,
-      bool? isPassword,
-      bool? autoFocus}) {
+  MyLoginTextField({
+    super.key,
+    TextEditingController? controller,
+    required labelText,
+    bool? isPassword,
+    bool? autoFocus,
+    TextInputType? keyboardType,
+  }) {
     _labelText = labelText;
     _controller = controller;
     _isPassword = isPassword ?? false;
     _autoFocus = autoFocus ?? false;
+    _keyboardType = keyboardType;
   }
 
   @override
@@ -45,17 +49,16 @@ class _MyLoginTextFieldState extends State<MyLoginTextField> {
       autofocus: widget._autoFocus,
       controller: widget._controller,
       obscureText: widget._hideText && widget._isPassword == true,
+      keyboardType: widget._keyboardType,
       decoration: InputDecoration(
         labelStyle: TextStyle(color: mainColor, fontWeight: FontWeight.w500, fontSize: 15),
         labelText: widget._labelText,
         suffixIcon: widget._isPassword == true ? _suffixIcon(mainColor) : null,
         suffixIconColor: mainColor,
-        enabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: mainColor, width: 1.5),
-            borderRadius: BorderRadius.circular(20)),
+        enabledBorder:
+            OutlineInputBorder(borderSide: BorderSide(color: mainColor, width: 1.5), borderRadius: BorderRadius.circular(20)),
         focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Theme.of(context).focusColor, width: 3),
-            borderRadius: BorderRadius.circular(20)),
+            borderSide: BorderSide(color: Theme.of(context).focusColor, width: 3), borderRadius: BorderRadius.circular(20)),
       ),
       cursorColor: mainColor,
       style: TextStyle(color: mainColor),

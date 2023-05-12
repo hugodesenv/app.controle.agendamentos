@@ -12,14 +12,43 @@ import 'package:google_fonts/google_fonts.dart';
 class SignIn extends StatelessWidget {
   const SignIn({Key? key}) : super(key: key);
 
+  Widget _textTitle(String title, BuildContext context) {
+    return Text(
+      title,
+      textAlign: TextAlign.center,
+      style: TextStyle(
+        fontSize: 16,
+        color: Theme.of(context).primaryColor,
+        fontWeight: FontWeight.w700,
+      ),
+    );
+  }
+
+  Future<void> _simpleDialog(BuildContext context, String message, {bool? isError}) async {
+    await AwesomeDialog(
+      autoHide: const Duration(seconds: 3),
+      context: context,
+      dialogType: DialogType.noHeader,
+      padding: const EdgeInsets.all(15),
+      title: message,
+      titleTextStyle: TextStyle(
+        color: isError == false ? Colors.green : Colors.red,
+        fontWeight: FontWeight.bold,
+        fontSize: 16,
+      ),
+    ).show();
+  }
+
   @override
   Widget build(BuildContext context) {
     TextEditingController emailController = TextEditingController();
     TextEditingController passwordController = TextEditingController();
+    TextEditingController emailResetController = TextEditingController();
 
     Future showSignIn() async {
       await showModalBottomSheet(
         context: context,
+        shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(16.0))),
         isScrollControlled: true,
         builder: (_) {
           return BlocListener(
@@ -27,52 +56,33 @@ class SignIn extends StatelessWidget {
             listener: (_, state) async {
               if (state is SignInStateSuccess) {
                 Navigator.pushReplacementNamed(context, ROUTE_HOME);
-              }
-
-              if (state is SignInStateFailure) {
-                await AwesomeDialog(
-                  autoHide: const Duration(seconds: 3),
-                  context: context,
-                  dialogType: DialogType.noHeader,
-                  padding: const EdgeInsets.all(15),
-                  title: state.message,
-                  titleTextStyle: const TextStyle(
-                    color: Colors.red,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                  ),
-                ).show();
+              } else if (state is SignInStateFailure) {
+                await _simpleDialog(context, state.message);
+              } else if (state is SignInStateResetPassword) {
+                await _simpleDialog(context, state.message, isError: state.emailSent == false);
               }
             },
             child: BlocBuilder(
               bloc: BlocProvider.of<SignInBloc>(context),
               builder: (_, state) {
                 bool isLoading = state is SignInStateLoading;
-                double viewBottom = MediaQuery.of(context).viewInsets.bottom;
 
                 return Container(
-                  padding: EdgeInsets.only(left: 30, right: 30, top: 30, bottom: viewBottom),
+                  padding: EdgeInsets.only(left: 30, right: 30, top: 30, bottom: MediaQuery.of(context).viewInsets.bottom),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Padding(
                         padding: const EdgeInsets.only(bottom: 20),
-                        child: Text(
-                          'Área de acesso',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w700,
-                            color: Theme.of(context).primaryColor,
-                          ),
-                        ),
+                        child: _textTitle('Área de acesso', context),
                       ),
                       Padding(
                         padding: const EdgeInsets.only(bottom: 20),
                         child: MyLoginTextField(
                           labelText: 'E-mail',
                           controller: emailController,
+                          keyboardType: TextInputType.emailAddress,
                         ),
                       ),
                       Padding(
@@ -80,6 +90,7 @@ class SignIn extends StatelessWidget {
                         child: MyLoginTextField(
                           labelText: 'Senha',
                           controller: passwordController,
+                          isPassword: true,
                         ),
                       ),
                       MyLoadingButton(
@@ -93,7 +104,68 @@ class SignIn extends StatelessWidget {
                       TextButton(
                         onPressed: () {},
                         style: const ButtonStyle(alignment: Alignment.topCenter),
-                        child: const Text('Esqueceu sua senha?', style: TextStyle(color: Colors.black26)),
+                        child: TextButton(
+                          onPressed: () async {
+                            await showModalBottomSheet(
+                              context: context,
+                              isScrollControlled: true,
+                              shape:
+                                  const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(16.0))),
+                              builder: (_) {
+                                return BlocBuilder(
+                                  bloc: BlocProvider.of<SignInBloc>(context),
+                                  builder: (_, state) {
+                                    bool isLoadingReset = state is SignInStateWaitingEmailReset;
+                                    if (isLoadingReset) {
+                                      print("** loading reset");
+                                    } else {
+                                      print("** not loading reset");
+                                    }
+                                    return Padding(
+                                      padding: EdgeInsets.only(
+                                          bottom: MediaQuery.of(context).viewInsets.bottom + 20, left: 20, top: 20, right: 20),
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                                        children: [
+                                          Padding(
+                                            padding: const EdgeInsets.only(bottom: 20),
+                                            child: _textTitle('Redefinir senha', context),
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.only(bottom: 20),
+                                            child: Text(
+                                              'Digite o seu e-mail e clique no botão p/ enviar a redefinição de senha:',
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(color: Theme.of(context).primaryColor),
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.only(bottom: 20),
+                                            child: MyLoginTextField(
+                                              labelText: 'E-mail',
+                                              controller: emailResetController,
+                                              autoFocus: true,
+                                              keyboardType: TextInputType.emailAddress,
+                                            ),
+                                          ),
+                                          MyLoadingButton(
+                                            onPressed: () => BlocProvider.of<SignInBloc>(context).add(
+                                              SignInEventSubmittedForgetPassword(emailResetController.text),
+                                            ),
+                                            title: const Text('Enviar'),
+                                            loading: isLoadingReset,
+                                          ),
+                                        ],
+                                      ),
+                                    );
+                                  },
+                                );
+                              },
+                            );
+                          },
+                          child: const Text('Esqueceu sua senha?', style: TextStyle(color: Colors.black26)),
+                        ),
                       ),
                     ],
                   ),

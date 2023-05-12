@@ -15,3 +15,11 @@ class SignInEventSubmitted extends SignInEvent {
 }
 
 class SignInEventAuthenticated extends SignInEvent {}
+
+class SignInEventSubmittedForgetPassword extends SignInEvent {
+  String? _email;
+
+  SignInEventSubmittedForgetPassword(this._email);
+
+  String get email => _email ?? '';
+}
