@@ -189,7 +189,14 @@ class SignIn extends StatelessWidget {
           bloc: BlocProvider.of<SignInBloc>(context),
           builder: (_, state) {
             return Container(
-              color: Colors.indigo,
+              //color: Colors.indigo,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [Colors.indigo[900]!, Colors.indigoAccent],
+                  begin: Alignment.topRight,
+                  end: Alignment.bottomLeft,
+                ),
+              ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -218,7 +225,7 @@ class SignIn extends StatelessWidget {
                     padding: const EdgeInsets.only(left: 40, right: 40),
                     child: MyLoadingButton(
                       onPressed: () async => await showSignIn(),
-                      colorBackground: Colors.black45,
+                      colorBackground: Colors.transparent,
                       title: const Text(
                         'Acessar o app',
                         style: TextStyle(fontWeight: FontWeight.w700, color: Colors.white),

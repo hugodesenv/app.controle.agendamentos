@@ -2,8 +2,9 @@ import 'package:agendamentos/pages/customer/query/bloc/customer_query_bloc.dart'
 import 'package:agendamentos/pages/customer/query/bloc/customer_query_event.dart';
 import 'package:agendamentos/pages/customer/query/bloc/customer_query_state.dart';
 import 'package:agendamentos/pages/customer/query/customer_query.dart';
-import 'package:agendamentos/pages/customer/register/import/bloc/customer_register_import_bloc.dart';
-import 'package:agendamentos/pages/customer/register/import/bloc/customer_register_import_state.dart';
+import 'package:agendamentos/pages/customer/register/import/bloc/customer_import_bloc.dart';
+import 'package:agendamentos/pages/customer/register/import/bloc/customer_import_event.dart';
+import 'package:agendamentos/pages/customer/register/import/bloc/customer_import_state.dart';
 import 'package:agendamentos/pages/customer/register/import/customer_register_import.dart';
 import 'package:agendamentos/pages/customer/register/new/bloc/customer_register_bloc.dart';
 import 'package:agendamentos/pages/customer/register/new/bloc/customer_register_state.dart';
@@ -42,7 +43,7 @@ appRoutes() => {
             child: const CustomerRegisterNew(),
           ),
       ROUTE_CUSTOMER_IMPORT: (_) => BlocProvider(
-            create: (context) => CustomerRegisterImportBloc(CustomerRegisterImportInitial()),
+            create: (context) => CustomerImportBloc(CustomerImportStateInitial())..add(CustomerImportEventFetchAll()),
             child: const CustomerRegisterImport(),
           ),
     };
