@@ -11,3 +11,5 @@ class CustomerImportStateContacts extends CustomerImportState {
 
   List<Contact> get contacts => _contacts;
 }
+
+class CustomerImportStateLoading extends CustomerImportState {}
