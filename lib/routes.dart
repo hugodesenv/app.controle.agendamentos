@@ -1,4 +1,8 @@
-import 'package:agendamentos/pages/customer/new/customer_register_new.dart';
+import 'package:agendamentos/model/customer.dart';
+import 'package:agendamentos/pages/customer/info/bloc/customer_info_bloc.dart';
+import 'package:agendamentos/pages/customer/info/bloc/customer_info_state.dart';
+import 'package:agendamentos/pages/customer/info/customer_info.dart';
+import 'package:agendamentos/pages/customer/new/customer_new.dart';
 import 'package:agendamentos/pages/customer/query/bloc/customer_query_bloc.dart';
 import 'package:agendamentos/pages/customer/query/bloc/customer_query_event.dart';
 import 'package:agendamentos/pages/customer/query/bloc/customer_query_state.dart';

@@ -26,11 +26,6 @@ class CustomerQueryBloc extends Bloc<CustomerQueryEvent, CustomerQueryState> {
       Customer(name: "Zette"),
     ];
 
-    //@@ apenas para teste
-    await Future.delayed(Duration(seconds: 3));
-    customers.clear();
-    ////
-
     emit(CustomerQueryStateLoaded(customers: customers));
   }
 }

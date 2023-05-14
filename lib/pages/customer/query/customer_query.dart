@@ -1,9 +1,8 @@
 import 'package:agendamentos/model/customer.dart';
+import 'package:agendamentos/pages/customer/info/customer_info.dart';
 import 'package:agendamentos/pages/customer/query/bloc/customer_query_bloc.dart';
 import 'package:agendamentos/pages/customer/query/bloc/customer_query_event.dart';
 import 'package:agendamentos/pages/customer/query/bloc/customer_query_state.dart';
-import 'package:agendamentos/pages/home/bloc/home_bloc.dart';
-import 'package:agendamentos/pages/home/bloc/home_event.dart';
 import 'package:agendamentos/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -60,7 +59,10 @@ class CustomerQuery extends StatelessWidget {
                           title: Text(customer.name, style: const TextStyle(fontWeight: FontWeight.w500)),
                           subtitle: Text(customer.cellphone),
                           trailing: const Icon(Icons.arrow_forward_ios_rounded, size: 10),
-                          onTap: () {},
+                          onTap: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (_) => CustomerInfo(customer: customer)),
+                          ),
                         );
 
                         if (index == 0 || customers[index - 1].name.substring(0, 1).toUpperCase() != initialLetter) {
