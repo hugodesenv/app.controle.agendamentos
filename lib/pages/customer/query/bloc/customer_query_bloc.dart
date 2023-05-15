@@ -14,7 +14,7 @@ class CustomerQueryBloc extends Bloc<CustomerQueryEvent, CustomerQueryState> {
     emit(CustomerQueryStateLoading());
 
     List<Customer> customers = [
-      Customer(name: "André", cellphone: '19 9 8961-5184'),
+      Customer(name: "André Costa Medeiros", cellphone: '19 9 8961-5184'),
       Customer(name: "Carlos"),
       Customer(name: "Cléo"),
       Customer(name: "Cecília"),

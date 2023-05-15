@@ -23,14 +23,15 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primaryColor: mainColor,
         focusColor: Colors.indigoAccent,
+        scaffoldBackgroundColor: Colors.white,
         appBarTheme: AppBarTheme(
           color: Colors.white,
           elevation: 1,
           shadowColor: Colors.black26,
           titleTextStyle: GoogleFonts.sora(
             color: Colors.black54,
+            fontWeight: FontWeight.w600,
             fontSize: 16,
-            fontWeight: FontWeight.w500,
           ),
           iconTheme: const IconThemeData(color: Colors.black54),
         ),
@@ -44,6 +45,7 @@ class MyApp extends StatelessWidget {
             foregroundColor: mainColor,
           ),
         ),
+        highlightColor: Colors.white,
         dialogTheme: DialogTheme(
           elevation: 8,
           titleTextStyle: const TextStyle(fontSize: 16, color: Colors.indigo, fontWeight: FontWeight.w600),

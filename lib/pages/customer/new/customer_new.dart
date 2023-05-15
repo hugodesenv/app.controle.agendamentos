@@ -7,8 +7,9 @@ class CustomerNew extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text("Novo")),
-      body: Padding(
-        padding: EdgeInsets.all(16),
+      body: Container(
+        padding: const EdgeInsets.all(16),
+        color: Theme.of(context).highlightColor,
         child: Text("Novo cliente"),
       ),
     );
