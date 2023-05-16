@@ -38,14 +38,15 @@ class Home extends StatelessWidget {
       return SizedBox(
         width: 150.0,
         child: Center(
-          child: Card(
-            child: ListTile(
-              title: Text(
-                pTitle,
-                style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
-                textAlign: TextAlign.center,
-              ),
-              subtitle: const Text('R\$150,00', textAlign: TextAlign.center),
+          child: ListTile(
+            title: Text(
+              pTitle,
+              style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: Colors.black87),
+              textAlign: TextAlign.center,
+            ),
+            subtitle: const Padding(
+              padding: EdgeInsets.only(top: 6),
+              child: Text('R\$1450,00', textAlign: TextAlign.center, style: TextStyle(fontSize: 12)),
             ),
           ),
         ),
@@ -70,15 +71,16 @@ class Home extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   Padding(
-                    padding: const EdgeInsets.only(bottom: 5),
+                    padding: const EdgeInsets.only(bottom: 4),
                     child: SizedBox(
-                      height: 100,
+                      height: 80,
                       child: ListView(
                         scrollDirection: Axis.horizontal,
                         children: [
-                          cardInfo('Qtde.'),
-                          cardInfo('Total'),
-                          cardInfo('Comissão'),
+                          cardInfo('Atendidos'),
+                          cardInfo('Desmarcados'),
+                          cardInfo('R\$ Recebido'),
+                          cardInfo('R\$ Previsto'),
                         ],
                       ),
                     ),
