@@ -1,3 +1,3 @@
 abstract class CustomerNewState {}
 
-class CustomerRegisterStateInitial extends CustomerNewState {}
+class CustomerNewStateInitial extends CustomerNewState {}

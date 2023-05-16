@@ -1,18 +1,14 @@
-import 'package:agendamentos/model/customer.dart';
-import 'package:agendamentos/pages/customer/info/bloc/customer_info_bloc.dart';
-import 'package:agendamentos/pages/customer/info/bloc/customer_info_state.dart';
-import 'package:agendamentos/pages/customer/info/customer_info.dart';
-import 'package:agendamentos/pages/customer/new/customer_new.dart';
-import 'package:agendamentos/pages/customer/query/bloc/customer_query_bloc.dart';
-import 'package:agendamentos/pages/customer/query/bloc/customer_query_event.dart';
-import 'package:agendamentos/pages/customer/query/bloc/customer_query_state.dart';
-import 'package:agendamentos/pages/customer/query/customer_query.dart';
 import 'package:agendamentos/pages/customer/import/bloc/customer_import_bloc.dart';
 import 'package:agendamentos/pages/customer/import/bloc/customer_import_event.dart';
 import 'package:agendamentos/pages/customer/import/bloc/customer_import_state.dart';
 import 'package:agendamentos/pages/customer/import/customer_import.dart';
 import 'package:agendamentos/pages/customer/new/bloc/customer_new_bloc.dart';
 import 'package:agendamentos/pages/customer/new/bloc/customer_new_state.dart';
+import 'package:agendamentos/pages/customer/new/customer_new.dart';
+import 'package:agendamentos/pages/customer/query/bloc/customer_query_bloc.dart';
+import 'package:agendamentos/pages/customer/query/bloc/customer_query_event.dart';
+import 'package:agendamentos/pages/customer/query/bloc/customer_query_state.dart';
+import 'package:agendamentos/pages/customer/query/customer_query.dart';
 import 'package:agendamentos/pages/home/bloc/home_bloc.dart';
 import 'package:agendamentos/pages/home/bloc/home_state.dart';
 import 'package:agendamentos/pages/sign_in/bloc/sign_in_bloc.dart';
@@ -20,6 +16,7 @@ import 'package:agendamentos/pages/sign_in/bloc/sign_in_event.dart';
 import 'package:agendamentos/pages/sign_in/bloc/sign_in_state.dart';
 import 'package:agendamentos/pages/sign_in/sign_in.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'pages/home/home.dart';
 
 const ROUTE_HOME = '/home';
@@ -42,8 +39,8 @@ appRoutes() => {
             child: const CustomerQuery(),
           ),
       ROUTE_CUSTOMER_NEW: (_) => BlocProvider(
-            create: (_) => CustomerRegisterBloc(CustomerRegisterStateInitial()),
-            child: const CustomerNew(),
+            create: (_) => CustomerNewBloc(CustomerNewStateInitial()),
+            child: CustomerNew(),
           ),
       ROUTE_CUSTOMER_IMPORT: (_) => BlocProvider(
             create: (context) => CustomerImportBloc(CustomerImportStateInitial())..add(CustomerImportEventFetchAll()),

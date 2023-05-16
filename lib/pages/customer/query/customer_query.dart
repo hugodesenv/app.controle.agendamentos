@@ -65,8 +65,8 @@ class CustomerQuery extends StatelessWidget {
                             context,
                             MaterialPageRoute(builder: (_) {
                               return BlocProvider(
-                                create: (context) => CustomerInfoBloc(CustomerInfoStateInitial()),
-                                child: CustomerInfo(customer: customer),
+                                create: (context) => CustomerInfoBloc(CustomerInfoStateInitial(), customer),
+                                child: const CustomerInfo(),
                               );
                             }),
                           ),

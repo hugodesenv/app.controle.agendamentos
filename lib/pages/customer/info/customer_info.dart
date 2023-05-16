@@ -1,18 +1,18 @@
-import 'package:agendamentos/model/customer.dart';
 import 'package:agendamentos/pages/customer/info/bloc/customer_info_bloc.dart';
 import 'package:agendamentos/pages/customer/info/bloc/customer_info_event.dart';
 import 'package:agendamentos/pages/customer/info/bloc/customer_info_state.dart';
+import 'package:agendamentos/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../assets/constants.dart';
 
 class CustomerInfo extends StatelessWidget {
-  const CustomerInfo({Key? key, required this.customer}) : super(key: key);
-  final Customer customer;
+  const CustomerInfo({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var mainColor = Theme.of(context).primaryColor;
+    var bloc = BlocProvider.of<CustomerInfoBloc>(context);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Info.'),
@@ -26,18 +26,18 @@ class CustomerInfo extends StatelessWidget {
         ],
       ),
       body: BlocListener(
-        bloc: BlocProvider.of<CustomerInfoBloc>(context),
+        bloc: bloc,
         listener: (_, state) {
           if (state is CustomerInfoStateWhatsAppFailure) {
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.message)));
           }
         },
         child: BlocBuilder(
-          bloc: BlocProvider.of<CustomerInfoBloc>(context),
+          bloc: bloc,
           builder: (context, state) {
-            bool isWhatsLoading = false;
+            bool isWhatsAppLoading = false;
             if (state is CustomerInfoStateLoadingWhatsApp) {
-              isWhatsLoading = state.isLoading;
+              isWhatsAppLoading = state.isLoading;
             }
 
             return Column(
@@ -49,7 +49,7 @@ class CustomerInfo extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       Text(
-                        customer.name,
+                        bloc.customer!.name,
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontSize: 20,
@@ -65,14 +65,14 @@ class CustomerInfo extends StatelessWidget {
                             const Icon(Icons.phone),
                             Container(
                               padding: const EdgeInsets.only(left: 15),
-                              child: Text(customer.cellphone),
+                              child: Text(bloc.customer!.cellphone),
                             ),
                           ],
                         ),
                       ),
                       Padding(
                         padding: const EdgeInsets.only(left: 10, right: 10),
-                        child: isWhatsLoading
+                        child: isWhatsAppLoading
                             ? const Text(
                                 "Carregando...",
                                 textAlign: TextAlign.center,
@@ -81,7 +81,7 @@ class CustomerInfo extends StatelessWidget {
                             : ElevatedButton(
                                 onPressed: () {
                                   BlocProvider.of<CustomerInfoBloc>(context)
-                                      .add(CustomerInfoEventOpenWhatsApp(customer.cellphone));
+                                      .add(CustomerInfoEventOpenWhatsApp(bloc.customer!.cellphone));
                                 },
                                 style: ElevatedButton.styleFrom(backgroundColor: const Color(COLOR_WHATSAPP)),
                                 child: const Row(
@@ -125,7 +125,7 @@ class CustomerInfo extends StatelessWidget {
                 Container(
                   padding: const EdgeInsets.all(10),
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () => {},
                     child: const Padding(
                       padding: EdgeInsets.all(10),
                       child: Row(
