@@ -1,10 +1,21 @@
 class Customer {
-  String _name = '';
-  String? _cellphone;
+  String _name;
+  String _cellphone;
 
-  Customer({required String name, String? cellphone})
-      : _name = name,
-        _cellphone = cellphone;
+  Customer({String? name, String? cellphone})
+      : _name = name!,
+        _cellphone = cellphone!;
+
+  factory Customer.empty() {
+    return Customer(name: '', cellphone: '');
+  }
+
+  Customer copyWith({String? name, String? cellphone}) {
+    return Customer(
+      name: name ?? this.name,
+      cellphone: cellphone ?? this.cellphone,
+    );
+  }
 
   String get cellphone => _cellphone ?? '';
 
