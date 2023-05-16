@@ -1,4 +1,6 @@
 import 'package:agendamentos/model/customer.dart';
+import 'package:agendamentos/pages/customer/info/bloc/customer_info_bloc.dart';
+import 'package:agendamentos/pages/customer/info/bloc/customer_info_state.dart';
 import 'package:agendamentos/pages/customer/info/customer_info.dart';
 import 'package:agendamentos/pages/customer/query/bloc/customer_query_bloc.dart';
 import 'package:agendamentos/pages/customer/query/bloc/customer_query_event.dart';
@@ -51,45 +53,50 @@ class CustomerQuery extends StatelessWidget {
               child: customers.isEmpty
                   ? const Center(child: Text("Nenhum registro encontrado"))
                   : ListView.separated(
-                    padding: const EdgeInsets.all(10),
-                    itemBuilder: (context, index) {
-                      Customer customer = customers[index];
-                      String initialLetter = customer.name.substring(0, 1).toUpperCase();
-                      Widget customerListTile = ListTile(
-                        title: Text(customer.name, style: const TextStyle(fontWeight: FontWeight.w500)),
-                        subtitle: Text(customer.cellphone),
-                        trailing: const Icon(Icons.arrow_forward_ios_rounded, size: 10),
-                        onTap: () => Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (_) => CustomerInfo(customer: customer)),
-                        ),
-                      );
+                      padding: const EdgeInsets.all(10),
+                      itemBuilder: (context, index) {
+                        Customer customer = customers[index];
+                        String initialLetter = customer.name.substring(0, 1).toUpperCase();
+                        Widget customerListTile = ListTile(
+                          title: Text(customer.name, style: const TextStyle(fontWeight: FontWeight.w500)),
+                          subtitle: Text(customer.cellphone),
+                          trailing: const Icon(Icons.arrow_forward_ios_rounded, size: 10),
+                          onTap: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (_) {
+                              return BlocProvider(
+                                create: (context) => CustomerInfoBloc(CustomerInfoStateInitial()),
+                                child: CustomerInfo(customer: customer),
+                              );
+                            }),
+                          ),
+                        );
 
-                      if (index == 0 || customers[index - 1].name.substring(0, 1).toUpperCase() != initialLetter) {
-                        return Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Container(
-                              width: double.infinity,
-                              color: const Color(0xFFF7F7F7),
-                              padding: const EdgeInsets.only(top: 8, bottom: 8, right: 8, left: 16),
-                              child: Text(
-                                initialLetter,
-                                style: const TextStyle(
-                                  color: Colors.black45,
-                                  fontSize: 10,
+                        if (index == 0 || customers[index - 1].name.substring(0, 1).toUpperCase() != initialLetter) {
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Container(
+                                width: double.infinity,
+                                color: const Color(0xFFF7F7F7),
+                                padding: const EdgeInsets.only(top: 8, bottom: 8, right: 8, left: 16),
+                                child: Text(
+                                  initialLetter,
+                                  style: const TextStyle(
+                                    color: Colors.black45,
+                                    fontSize: 10,
+                                  ),
                                 ),
                               ),
-                            ),
-                            customerListTile
-                          ],
-                        );
-                      }
-                      return customerListTile;
-                    },
-                    separatorBuilder: (context, index) => const Divider(),
-                    itemCount: customers.length,
-                  ),
+                              customerListTile
+                            ],
+                          );
+                        }
+                        return customerListTile;
+                      },
+                      separatorBuilder: (context, index) => const Divider(),
+                      itemCount: customers.length,
+                    ),
             );
           },
         ),

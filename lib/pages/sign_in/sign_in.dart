@@ -66,7 +66,6 @@ class SignIn extends StatelessWidget {
               bloc: BlocProvider.of<SignInBloc>(context),
               builder: (_, state) {
                 bool isLoading = state is SignInStateLoading;
-
                 return Container(
                   padding: EdgeInsets.only(left: 30, right: 30, top: 30, bottom: MediaQuery.of(context).viewInsets.bottom),
                   child: Column(
@@ -116,11 +115,6 @@ class SignIn extends StatelessWidget {
                                   bloc: BlocProvider.of<SignInBloc>(context),
                                   builder: (_, state) {
                                     bool isLoadingReset = state is SignInStateWaitingEmailReset;
-                                    if (isLoadingReset) {
-                                      print("** loading reset");
-                                    } else {
-                                      print("** not loading reset");
-                                    }
                                     return Padding(
                                       padding: EdgeInsets.only(
                                           bottom: MediaQuery.of(context).viewInsets.bottom + 20, left: 20, top: 20, right: 20),

@@ -11,3 +11,11 @@ class CustomerInfoEventDefaultState extends CustomerInfoEvent {
 
   Customer get customer => _customer!;
 }
+
+class CustomerInfoEventOpenWhatsApp extends CustomerInfoEvent {
+  final String? _number;
+
+  CustomerInfoEventOpenWhatsApp(this._number);
+
+  String get number => _number ?? '';
+}
