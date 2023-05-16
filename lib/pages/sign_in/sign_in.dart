@@ -41,6 +41,7 @@ class SignIn extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var bloc = BlocProvider.of<SignInBloc>(context);
     TextEditingController emailController = TextEditingController();
     TextEditingController passwordController = TextEditingController();
     TextEditingController emailResetController = TextEditingController();
@@ -52,7 +53,7 @@ class SignIn extends StatelessWidget {
         isScrollControlled: true,
         builder: (_) {
           return BlocListener(
-            bloc: BlocProvider.of<SignInBloc>(context),
+            bloc: bloc,
             listener: (_, state) async {
               if (state is SignInStateSuccess) {
                 Navigator.pushReplacementNamed(context, ROUTE_HOME);
@@ -63,7 +64,7 @@ class SignIn extends StatelessWidget {
               }
             },
             child: BlocBuilder(
-              bloc: BlocProvider.of<SignInBloc>(context),
+              bloc: bloc,
               builder: (_, state) {
                 bool isLoading = state is SignInStateLoading;
                 return Container(
@@ -95,8 +96,7 @@ class SignIn extends StatelessWidget {
                       MyLoadingButton(
                         loading: isLoading,
                         onPressed: () {
-                          BlocProvider.of<SignInBloc>(context)
-                              .add(SignInEventSubmitted(email: emailController.text, password: passwordController.text));
+                          bloc.add(SignInEventSubmitted(email: emailController.text, password: passwordController.text));
                         },
                         title: const Text('Entrar', style: TextStyle(fontWeight: FontWeight.w700)),
                       ),
@@ -112,7 +112,7 @@ class SignIn extends StatelessWidget {
                                   const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(16.0))),
                               builder: (_) {
                                 return BlocBuilder(
-                                  bloc: BlocProvider.of<SignInBloc>(context),
+                                  bloc: bloc,
                                   builder: (_, state) {
                                     bool isLoadingReset = state is SignInStateWaitingEmailReset;
                                     return Padding(
@@ -144,7 +144,7 @@ class SignIn extends StatelessWidget {
                                             ),
                                           ),
                                           MyLoadingButton(
-                                            onPressed: () => BlocProvider.of<SignInBloc>(context).add(
+                                            onPressed: () => bloc.add(
                                               SignInEventSubmittedForgetPassword(emailResetController.text),
                                             ),
                                             title: const Text('Enviar'),
@@ -173,14 +173,14 @@ class SignIn extends StatelessWidget {
 
     return Scaffold(
       body: BlocListener(
-        bloc: BlocProvider.of<SignInBloc>(context),
+        bloc: bloc,
         listener: (_, state) {
           if (state is SignInStateGoToHome) {
             Navigator.pushReplacementNamed(context, ROUTE_HOME);
           }
         },
         child: BlocBuilder(
-          bloc: BlocProvider.of<SignInBloc>(context),
+          bloc: bloc,
           builder: (_, state) {
             return Container(
               //color: Colors.indigo,

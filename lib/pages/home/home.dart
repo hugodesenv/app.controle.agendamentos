@@ -11,6 +11,8 @@ class Home extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var bloc = BlocProvider.of<HomeBloc>(context);
+
     Future exitApp() async {
       await showDialog(
         context: context,
@@ -19,7 +21,7 @@ class Home extends StatelessWidget {
             title: const Text('Deseja desconectar?'),
             actions: [
               TextButton(
-                onPressed: () => BlocProvider.of<HomeBloc>(context).add(HomeEventSignOut()),
+                onPressed: () => bloc.add(HomeEventSignOut()),
                 child: const Text('Sim'),
               ),
               TextButton(
@@ -51,14 +53,14 @@ class Home extends StatelessWidget {
     }
 
     return BlocListener(
-      bloc: BlocProvider.of<HomeBloc>(context),
+      bloc: bloc,
       listener: (context, state) async {
         if (state is HomeStateSignOut) {
           Navigator.pushReplacementNamed(context, ROUTE_LOGIN);
         }
       },
       child: BlocBuilder(
-        bloc: BlocProvider.of<HomeBloc>(context),
+        bloc: bloc,
         builder: (context, state) {
           return Scaffold(
             appBar: AppBar(title: const Text("Home")),

@@ -8,6 +8,7 @@ class CustomerNew extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var bloc = BlocProvider.of<CustomerNewBloc>(context);
     return Scaffold(
       appBar: AppBar(
         title: const Text("Novo cliente"),
@@ -19,7 +20,7 @@ class CustomerNew extends StatelessWidget {
         ],
       ),
       body: BlocBuilder(
-        bloc: BlocProvider.of<CustomerNewBloc>(context),
+        bloc: bloc,
         builder: (_, state) {
           return Container(
             padding: const EdgeInsets.all(16),

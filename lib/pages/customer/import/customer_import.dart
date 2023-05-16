@@ -1,6 +1,5 @@
 import 'package:agendamentos/pages/customer/import/bloc/customer_import_bloc.dart';
 import 'package:agendamentos/pages/customer/import/bloc/customer_import_state.dart';
-import 'package:agendamentos/widgets/text_field/my_login_text_field.dart';
 import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -11,10 +10,11 @@ class CustomerRegisterImport extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var bloc = BlocProvider.of<CustomerImportBloc>(context);
     return Scaffold(
       appBar: AppBar(title: const Text('Importar dos contatos')),
       body: BlocBuilder(
-        bloc: BlocProvider.of<CustomerImportBloc>(context),
+        bloc: bloc,
         builder: (_, state) {
           bool isLoading = state is CustomerImportStateLoading;
           List<Contact> contacts = state is CustomerImportStateContacts ? state.contacts : [];

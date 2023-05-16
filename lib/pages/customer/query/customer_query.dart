@@ -15,6 +15,7 @@ class CustomerQuery extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var bloc = BlocProvider.of<CustomerQueryBloc>(context);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Clientes'),
@@ -23,18 +24,18 @@ class CustomerQuery extends StatelessWidget {
             itemBuilder: (_) => [
               PopupMenuItem(
                 child: const Text('Novo'),
-                onTap: () => BlocProvider.of<CustomerQueryBloc>(context)..add(CustomerQueryEventNew()),
+                onTap: () => bloc..add(CustomerQueryEventNew()),
               ),
               PopupMenuItem(
                 child: const Text('Importar'),
-                onTap: () => BlocProvider.of<CustomerQueryBloc>(context)..add(CustomerQueryEventImport()),
+                onTap: () => bloc..add(CustomerQueryEventImport()),
               ),
             ],
           ),
         ],
       ),
       body: BlocListener(
-        bloc: BlocProvider.of<CustomerQueryBloc>(context),
+        bloc: bloc,
         listener: (context, state) {
           if (state is CustomerQueryStateOpenNew) {
             Navigator.pushNamed(context, ROUTE_CUSTOMER_NEW);
@@ -43,7 +44,7 @@ class CustomerQuery extends StatelessWidget {
           }
         },
         child: BlocBuilder(
-          bloc: BlocProvider.of<CustomerQueryBloc>(context),
+          bloc: bloc,
           builder: (context, state) {
             List<Customer> customers = (state is CustomerQueryStateLoaded) ? state.customers : [];
             bool isLoading = state is CustomerQueryStateLoading;
