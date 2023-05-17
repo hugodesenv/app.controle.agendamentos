@@ -1,6 +1,7 @@
 import 'package:agendamentos/model/customer.dart';
 import 'package:agendamentos/pages/customer/new/bloc/customer_new_event.dart';
 import 'package:agendamentos/pages/customer/new/bloc/customer_new_state.dart';
+import 'package:agendamentos/repository/customer_repository.dart';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -15,10 +16,12 @@ class CustomerNewBloc extends Bloc<CustomerNewEvent, CustomerNewState> {
 
   get formKeyMain => _formKeyMain;
 
-  _submitted(CustomerNewEventSubmitted event, emit) {
+  Future _submitted(CustomerNewEventSubmitted event, emit) async {
     bool isValid = _formKeyMain.currentState!.validate();
+
     if (isValid) {
-      print("** tudo certo, continuar (customer_new_bloc --> _submitted)");
+      var repository = CustomerRepository.instance;
+      await repository.save(_customer);
     }
   }
 

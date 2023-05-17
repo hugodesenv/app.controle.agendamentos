@@ -1,6 +1,7 @@
 import 'package:agendamentos/model/customer.dart';
 import 'package:agendamentos/pages/customer/query/bloc/customer_query_event.dart';
 import 'package:agendamentos/pages/customer/query/bloc/customer_query_state.dart';
+import 'package:agendamentos/repository/customer_repository.dart';
 import 'package:bloc/bloc.dart';
 
 class CustomerQueryBloc extends Bloc<CustomerQueryEvent, CustomerQueryState> {
@@ -13,19 +14,8 @@ class CustomerQueryBloc extends Bloc<CustomerQueryEvent, CustomerQueryState> {
   void fetchAll(event, emit) async {
     emit(CustomerQueryStateLoading());
 
-    List<Customer> customers = [
-      Customer(name: "André Costa Medeiros", cellphone: '19 9 8961-5184'),
-      Customer(name: "Carlos"),
-      Customer(name: "Cléo"),
-      Customer(name: "Cecília"),
-      Customer(name: "Hugo"),
-      Customer(name: "Maria"),
-      Customer(name: "Marry Jane"),
-      Customer(name: "Otávio"),
-      Customer(name: "Luan"),
-      Customer(name: "Zette"),
-    ];
-
+    var repository = CustomerRepository.instance;
+    List<Customer> customers = await repository.fetchData();
     emit(CustomerQueryStateLoaded(customers: customers));
   }
 }
