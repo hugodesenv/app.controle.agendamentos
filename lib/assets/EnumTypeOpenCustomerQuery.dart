@@ -1,0 +1,1 @@
+enum TypeOpen { tpNew, tpImport }

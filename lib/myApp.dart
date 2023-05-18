@@ -35,8 +35,10 @@ class MyApp extends StatelessWidget {
           ),
           iconTheme: const IconThemeData(color: Colors.black54),
         ),
+        snackBarTheme: const SnackBarThemeData(backgroundColor: Colors.indigo),
         textTheme: GoogleFonts.soraTextTheme(),
-        progressIndicatorTheme: ProgressIndicatorThemeData(color: Colors.orange, circularTrackColor: mainColor),
+        progressIndicatorTheme:
+            ProgressIndicatorThemeData(color: Colors.orange, circularTrackColor: mainColor),
         textButtonTheme: TextButtonThemeData(
           style: TextButton.styleFrom(
             textStyle: const TextStyle(
@@ -48,14 +50,16 @@ class MyApp extends StatelessWidget {
         highlightColor: Colors.white,
         dialogTheme: DialogTheme(
           elevation: 8,
-          titleTextStyle: const TextStyle(fontSize: 16, color: Colors.indigo, fontWeight: FontWeight.w600),
+          titleTextStyle:
+              const TextStyle(fontSize: 16, color: Colors.indigo, fontWeight: FontWeight.w600),
           contentTextStyle: TextStyle(fontSize: 14, color: mainColor),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
           shadowColor: mainColor,
         ),
-        elevatedButtonTheme: ElevatedButtonThemeData(style: ElevatedButton.styleFrom(backgroundColor: mainColor)),
+        elevatedButtonTheme:
+            ElevatedButtonThemeData(style: ElevatedButton.styleFrom(backgroundColor: mainColor)),
       ),
-      routes: appRoutes(),
+      onGenerateRoute: (settings) => appRoutes(settings),
     );
   }
 }

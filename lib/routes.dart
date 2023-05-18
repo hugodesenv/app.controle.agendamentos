@@ -1,3 +1,4 @@
+import 'package:agendamentos/model/customer.dart';
 import 'package:agendamentos/pages/customer/import/bloc/customer_import_bloc.dart';
 import 'package:agendamentos/pages/customer/import/bloc/customer_import_event.dart';
 import 'package:agendamentos/pages/customer/import/bloc/customer_import_state.dart';
@@ -15,6 +16,7 @@ import 'package:agendamentos/pages/sign_in/bloc/sign_in_bloc.dart';
 import 'package:agendamentos/pages/sign_in/bloc/sign_in_event.dart';
 import 'package:agendamentos/pages/sign_in/bloc/sign_in_state.dart';
 import 'package:agendamentos/pages/sign_in/sign_in.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'pages/home/home.dart';
@@ -25,25 +27,41 @@ const ROUTE_CUSTOMER_QUERY = '/customer_query';
 const ROUTE_CUSTOMER_NEW = '/customer_new';
 const ROUTE_CUSTOMER_IMPORT = '/customer_import';
 
-appRoutes() => {
-      ROUTE_HOME: (_) => BlocProvider(
-            create: (_) => HomeBloc(HomeInitial()),
-            child: const Home(),
-          ),
-      ROUTE_LOGIN: (_) => BlocProvider(
-            create: (_) => SignInBloc(SignInStateInitial())..add(SignInEventAuthenticated()),
-            child: const SignIn(),
-          ),
-      ROUTE_CUSTOMER_QUERY: (_) => BlocProvider(
-            create: (_) => CustomerQueryBloc(CustomerQueryStateInitial())..add(CustomerQueryEventFetchAll()),
-            child: const CustomerQuery(),
-          ),
-      ROUTE_CUSTOMER_NEW: (_) => BlocProvider(
-            create: (_) => CustomerNewBloc(CustomerNewStateInitial()),
-            child: CustomerNew(),
-          ),
-      ROUTE_CUSTOMER_IMPORT: (_) => BlocProvider(
-            create: (context) => CustomerImportBloc(CustomerImportStateInitial())..add(CustomerImportEventFetchAll()),
-            child: const CustomerRegisterImport(),
-          ),
-    };
+appRoutes(RouteSettings settings) {
+  if (settings.name == ROUTE_HOME) {
+    return BlocProvider(
+      create: (_) => HomeBloc(HomeInitial()),
+      child: const Home(),
+    );
+  }
+
+  if (settings.name == ROUTE_LOGIN) {
+    BlocProvider(
+      create: (_) => SignInBloc(SignInStateInitial())..add(SignInEventAuthenticated()),
+      child: const SignIn(),
+    );
+  }
+
+  if (settings.name == ROUTE_CUSTOMER_QUERY) {
+    BlocProvider(
+      create: (_) =>
+          CustomerQueryBloc(CustomerQueryStateLoading(true))..add(CustomerQueryEventFetchAll()),
+      child: const CustomerQuery(),
+    );
+  }
+
+  if (settings.name == ROUTE_CUSTOMER_NEW) {
+    var callback = settings.arguments as Function(Customer customer);
+    return BlocProvider(
+      create: (_) => CustomerNewBloc(CustomerNewStateInitial()),
+      child: CustomerNew(onSaved: callback),
+    );
+  }
+
+  if (settings.name == ROUTE_CUSTOMER_IMPORT) {
+    return BlocProvider(
+      create: (context) =>
+          CustomerImportBloc(CustomerImportStateInitial())..add(CustomerImportEventFetchAll()),
+    );
+  }
+}

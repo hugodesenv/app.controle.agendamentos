@@ -16,12 +16,15 @@ class CustomerNewBloc extends Bloc<CustomerNewEvent, CustomerNewState> {
 
   get formKeyMain => _formKeyMain;
 
+  get customer => _customer;
+
   Future _submitted(CustomerNewEventSubmitted event, emit) async {
     bool isValid = _formKeyMain.currentState!.validate();
 
     if (isValid) {
       var repository = CustomerRepository.instance;
       await repository.save(_customer);
+      emit(CustomerNewStateSuccess());
     }
   }
 

@@ -1,19 +1,21 @@
-import '../../../../model/customer.dart';
+import '../../../../assets/EnumTypeOpenCustomerQuery.dart';
 
 abstract class CustomerQueryState {}
 
-class CustomerQueryStateInitial extends CustomerQueryState {}
+class CustomerQueryStateLoading extends CustomerQueryState {
+  bool _busy;
 
-class CustomerQueryStateLoading extends CustomerQueryState {}
+  CustomerQueryStateLoading(this._busy);
 
-class CustomerQueryStateLoaded extends CustomerQueryState {
-  List<Customer> _customers;
-
-  CustomerQueryStateLoaded({required customers}) : _customers = customers;
-
-  List<Customer> get customers => _customers;
+  bool get busy => _busy;
 }
 
-class CustomerQueryStateOpenNew extends CustomerQueryState {}
+class CustomerQueryStateRefresh extends CustomerQueryState {}
 
-class CustomerQueryStateOpenImport extends CustomerQueryState {}
+class CustomerQueryStateOpen extends CustomerQueryState {
+  final TypeOpen _typeOpen;
+
+  CustomerQueryStateOpen(this._typeOpen);
+
+  TypeOpen get typeOpen => _typeOpen;
+}

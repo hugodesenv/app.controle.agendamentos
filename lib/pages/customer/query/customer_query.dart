@@ -1,3 +1,4 @@
+import 'package:agendamentos/assets/EnumTypeOpenCustomerQuery.dart';
 import 'package:agendamentos/model/customer.dart';
 import 'package:agendamentos/pages/customer/info/bloc/customer_info_bloc.dart';
 import 'package:agendamentos/pages/customer/info/bloc/customer_info_state.dart';
@@ -24,11 +25,11 @@ class CustomerQuery extends StatelessWidget {
             itemBuilder: (_) => [
               PopupMenuItem(
                 child: const Text('Novo'),
-                onTap: () => bloc..add(CustomerQueryEventNew()),
+                onTap: () => bloc.add(CustomerQueryEventOpen(TypeOpen.tpNew)),
               ),
               PopupMenuItem(
                 child: const Text('Importar'),
-                onTap: () => bloc..add(CustomerQueryEventImport()),
+                onTap: () => bloc.add(CustomerQueryEventOpen(TypeOpen.tpImport)),
               ),
             ],
           ),
@@ -36,51 +37,72 @@ class CustomerQuery extends StatelessWidget {
       ),
       body: BlocListener(
         bloc: bloc,
-        listener: (context, state) {
-          if (state is CustomerQueryStateOpenNew) {
-            Navigator.pushNamed(context, ROUTE_CUSTOMER_NEW);
-          } else if (state is CustomerQueryStateOpenImport) {
-            Navigator.pushNamed(context, ROUTE_CUSTOMER_IMPORT);
+        listener: (context, state) async {
+          if (state is CustomerQueryStateOpen) {
+            switch (state.typeOpen) {
+              case TypeOpen.tpImport:
+                await Navigator.pushNamed(context, ROUTE_CUSTOMER_IMPORT);
+                break;
+              case TypeOpen.tpNew:
+                await Navigator.pushNamed(
+                  context,
+                  ROUTE_CUSTOMER_NEW,
+                  arguments: (Customer customer) {
+                    print("** novo adicionado");
+                    print(customer.name);
+                  },
+                );
+                break;
+            }
           }
         },
         child: BlocBuilder(
           bloc: bloc,
           builder: (context, state) {
-            List<Customer> customers = (state is CustomerQueryStateLoaded) ? state.customers : [];
-            bool isLoading = state is CustomerQueryStateLoading;
+            bool isLoading = state is CustomerQueryStateLoading && state.busy;
             return Skeleton(
               isLoading: isLoading,
               skeleton: SkeletonListView(padding: const EdgeInsets.fromLTRB(16, 5, 16, 16)),
-              child: customers.isEmpty
-                  ? const Center(child: Text("Nenhum registro encontrado"))
+              child: bloc.customers.isEmpty
+                  ? const Center(child: Text('Nenhum registro encontrado'))
                   : ListView.separated(
                       padding: const EdgeInsets.all(10),
                       itemBuilder: (context, index) {
-                        Customer customer = customers[index];
+                        Customer customer = bloc.customers[index];
                         String initialLetter = customer.name.substring(0, 1).toUpperCase();
                         Widget customerListTile = ListTile(
-                          title: Text(customer.name, style: const TextStyle(fontWeight: FontWeight.w500)),
+                          title: Text(customer.name,
+                              style: const TextStyle(fontWeight: FontWeight.w500)),
                           subtitle: Text(customer.cellphone),
                           trailing: const Icon(Icons.arrow_forward_ios_rounded, size: 10),
-                          onTap: () => Navigator.push(
+                          onTap: () async => await Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (_) {
-                              return BlocProvider(
-                                create: (context) => CustomerInfoBloc(CustomerInfoStateInitial(), customer),
-                                child: const CustomerInfo(),
-                              );
-                            }),
+                            MaterialPageRoute(
+                              builder: (_) {
+                                return BlocProvider(
+                                  create: (context) =>
+                                      CustomerInfoBloc(CustomerInfoStateInitial(), customer),
+                                  child: CustomerInfo(
+                                    onDelete: () {
+                                      bloc.add(CustomerQueryEventRemoveFromList(customer));
+                                    },
+                                  ),
+                                );
+                              },
+                            ),
                           ),
                         );
-
-                        if (index == 0 || customers[index - 1].name.substring(0, 1).toUpperCase() != initialLetter) {
+                        if (index == 0 ||
+                            bloc.customers[index - 1].name.substring(0, 1).toUpperCase() !=
+                                initialLetter) {
                           return Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Container(
                                 width: double.infinity,
                                 color: const Color(0xFFF7F7F7),
-                                padding: const EdgeInsets.only(top: 8, bottom: 8, right: 8, left: 16),
+                                padding:
+                                    const EdgeInsets.only(top: 8, bottom: 8, right: 8, left: 16),
                                 child: Text(
                                   initialLetter,
                                   style: const TextStyle(
@@ -96,7 +118,7 @@ class CustomerQuery extends StatelessWidget {
                         return customerListTile;
                       },
                       separatorBuilder: (context, index) => const Divider(),
-                      itemCount: customers.length,
+                      itemCount: bloc.customers.length,
                     ),
             );
           },

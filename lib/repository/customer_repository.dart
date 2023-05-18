@@ -17,10 +17,20 @@ class CustomerRepository {
     var collections = await _fireCloud.get();
 
     for (var doc in collections.docs) {
-      Customer customer = Customer.fromJson(doc.data());
+      Customer customer = Customer.fromJson(doc.data(), doc.id);
       customers.add(customer);
     }
 
     return customers;
+  }
+
+  Future<bool> delete(String id) async {
+    bool res = await _fireCloud
+        .doc(id)
+        .delete()
+        .then((value) => true)
+        .onError((error, stackTrace) => false);
+
+    return res;
   }
 }

@@ -5,7 +5,7 @@ abstract class CustomerInfoEvent {}
 class CustomerInfoEventInitial extends CustomerInfoEvent {}
 
 class CustomerInfoEventDefaultState extends CustomerInfoEvent {
-  Customer? _customer;
+  final Customer? _customer;
 
   CustomerInfoEventDefaultState({required Customer customer}) : _customer = customer;
 
@@ -19,3 +19,5 @@ class CustomerInfoEventOpenWhatsApp extends CustomerInfoEvent {
 
   String get number => _number ?? '';
 }
+
+class CustomerInfoEventDelete extends CustomerInfoEvent {}

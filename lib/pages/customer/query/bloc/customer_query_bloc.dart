@@ -5,17 +5,26 @@ import 'package:agendamentos/repository/customer_repository.dart';
 import 'package:bloc/bloc.dart';
 
 class CustomerQueryBloc extends Bloc<CustomerQueryEvent, CustomerQueryState> {
+  List<Customer> customers = [];
+
   CustomerQueryBloc(super.initialState) {
     on<CustomerQueryEventFetchAll>(fetchAll);
-    on<CustomerQueryEventNew>((_, emit) => emit(CustomerQueryStateOpenNew()));
-    on<CustomerQueryEventImport>((_, emit) => emit(CustomerQueryStateOpenImport()));
+    on<CustomerQueryEventRemoveFromList>(removeFromList);
+    on<CustomerQueryEventOpen>((event, emit) => emit(CustomerQueryStateOpen(event.typeOpen)));
   }
 
   void fetchAll(event, emit) async {
-    emit(CustomerQueryStateLoading());
+    emit(CustomerQueryStateLoading(true));
 
     var repository = CustomerRepository.instance;
-    List<Customer> customers = await repository.fetchData();
-    emit(CustomerQueryStateLoaded(customers: customers));
+    customers = await repository.fetchData();
+
+    emit(CustomerQueryStateRefresh());
+  }
+
+  void removeFromList(event, emit) {
+    emit(CustomerQueryStateLoading(true));
+    customers.remove(event.customer);
+    emit(CustomerQueryStateLoading(false));
   }
 }

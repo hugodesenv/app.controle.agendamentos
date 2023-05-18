@@ -1,13 +1,15 @@
 import 'package:agendamentos/pages/customer/info/bloc/customer_info_bloc.dart';
 import 'package:agendamentos/pages/customer/info/bloc/customer_info_event.dart';
 import 'package:agendamentos/pages/customer/info/bloc/customer_info_state.dart';
-import 'package:agendamentos/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 import '../../../assets/constants.dart';
 
 class CustomerInfo extends StatelessWidget {
-  const CustomerInfo({Key? key}) : super(key: key);
+  final void Function() onDelete;
+
+  const CustomerInfo({Key? key, required this.onDelete}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +22,10 @@ class CustomerInfo extends StatelessWidget {
           PopupMenuButton(
             itemBuilder: (_) => [
               const PopupMenuItem(child: Text('Alterar')),
-              const PopupMenuItem(child: Text('Excluir', style: TextStyle(color: Colors.red))),
+              PopupMenuItem(
+                child: const Text('Excluir', style: TextStyle(color: Colors.red)),
+                onTap: () => bloc.add(CustomerInfoEventDelete()),
+              ),
             ],
           ),
         ],
@@ -28,18 +33,22 @@ class CustomerInfo extends StatelessWidget {
       body: BlocListener(
         bloc: bloc,
         listener: (_, state) {
-          if (state is CustomerInfoStateWhatsAppFailure) {
+          if (state is CustomerInfoStateFailure) {
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.error)));
+            return;
+          }
+
+          if (state is CustomerInfoStateSuccess) {
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.message)));
+            state.typeSuccess == TypeSuccess.tpDelete ? onDelete() : null;
+            Navigator.pop(context);
+            return;
           }
         },
         child: BlocBuilder(
           bloc: bloc,
           builder: (context, state) {
-            bool isWhatsAppLoading = false;
-            if (state is CustomerInfoStateLoadingWhatsApp) {
-              isWhatsAppLoading = state.isLoading;
-            }
-
+            bool isWhatsAppLoading = state is CustomerInfoStateLoading && state.isBusy;
             return Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
@@ -76,14 +85,16 @@ class CustomerInfo extends StatelessWidget {
                             ? const Text(
                                 "Carregando...",
                                 textAlign: TextAlign.center,
-                                style: TextStyle(color: Color(COLOR_WHATSAPP), fontWeight: FontWeight.w700),
+                                style: TextStyle(
+                                    color: Color(COLOR_WHATSAPP), fontWeight: FontWeight.w700),
                               )
                             : ElevatedButton(
                                 onPressed: () {
                                   BlocProvider.of<CustomerInfoBloc>(context)
                                       .add(CustomerInfoEventOpenWhatsApp(bloc.customer!.cellphone));
                                 },
-                                style: ElevatedButton.styleFrom(backgroundColor: const Color(COLOR_WHATSAPP)),
+                                style: ElevatedButton.styleFrom(
+                                    backgroundColor: const Color(COLOR_WHATSAPP)),
                                 child: const Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [

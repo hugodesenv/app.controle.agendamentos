@@ -1,24 +1,28 @@
 class Customer {
+  String _id;
   String _name;
   String _cellphone;
 
-  Customer({String? name, String? cellphone})
-      : _name = name ?? '',
+  Customer({String? id, String? name, String? cellphone})
+      : _id = id ?? '',
+        _name = name ?? '',
         _cellphone = cellphone ?? '';
 
   factory Customer.empty() {
     return Customer(name: '', cellphone: '');
   }
 
-  factory Customer.fromJson(Map<dynamic, dynamic> json) {
+  factory Customer.fromJson(Map<dynamic, dynamic> json, String id) {
     return Customer(
+      id: id,
       name: json['name'],
       cellphone: json['cellphone'],
     );
   }
 
-  Customer copyWith({String? name, String? cellphone}) {
+  Customer copyWith({String? id, String? name, String? cellphone}) {
     return Customer(
+      id: id ?? this.id,
       name: name ?? this.name,
       cellphone: cellphone ?? this.cellphone,
     );
@@ -30,6 +34,8 @@ class Customer {
       "cellphone": cellphone,
     };
   }
+
+  String get id => _id ?? '';
 
   String get cellphone => _cellphone ?? '';
 

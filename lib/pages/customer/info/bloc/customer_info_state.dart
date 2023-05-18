@@ -1,19 +1,32 @@
+enum TypeSuccess { tpDelete }
+
 abstract class CustomerInfoState {}
 
 class CustomerInfoStateInitial extends CustomerInfoState {}
 
-class CustomerInfoStateLoadingWhatsApp extends CustomerInfoState {
-  final bool _isLoading;
+class CustomerInfoStateLoading extends CustomerInfoState {
+  final bool _isBusy;
 
-  CustomerInfoStateLoadingWhatsApp(this._isLoading);
+  CustomerInfoStateLoading(this._isBusy);
 
-  bool get isLoading => _isLoading;
+  bool get isBusy => _isBusy;
 }
 
-class CustomerInfoStateWhatsAppFailure extends CustomerInfoState {
+class CustomerInfoStateSuccess extends CustomerInfoState {
   final String _message;
+  final TypeSuccess _typeSuccess;
 
-  CustomerInfoStateWhatsAppFailure(this._message);
+  CustomerInfoStateSuccess(this._message, this._typeSuccess);
 
   String get message => _message;
+
+  TypeSuccess get typeSuccess => _typeSuccess;
+}
+
+class CustomerInfoStateFailure extends CustomerInfoState {
+  final String _error;
+
+  CustomerInfoStateFailure(this._error);
+
+  String get error => _error;
 }
