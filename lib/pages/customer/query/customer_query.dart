@@ -82,59 +82,66 @@ class CustomerQuery extends StatelessWidget {
                   customers.isEmpty
                       ? const Center(child: Text('Nenhum registro encontrado'))
                       : Flexible(
-                          child: ListView.separated(
-                            itemBuilder: (context, index) {
-                              Customer customer = customers[index];
-                              String initialLetter = customer.name.substring(0, 1).toUpperCase();
-                              Widget customerListTile = ListTile(
-                                title: Text(customer.name,
-                                    style: const TextStyle(fontWeight: FontWeight.w500)),
-                                subtitle: Text(customer.cellphone),
-                                trailing: const Icon(Icons.arrow_forward_ios_rounded, size: 10),
-                                onTap: () async => await Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (_) {
-                                      return BlocProvider(
-                                        create: (_) =>
-                                            CustomerInfoBloc(CustomerInfoStateInitial(), customer),
-                                        child: CustomerInfo(
-                                          onDelete: () {
-                                            bloc.add(CustomerQueryEventRemoveFromList(customer));
-                                          },
-                                        ),
-                                      );
-                                    },
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 16),
+                            child: ListView.separated(
+                              itemBuilder: (context, index) {
+                                Customer customer = customers[index];
+                                String initialLetter = customer.name.substring(0, 1).toUpperCase();
+                                Widget customerListTile = ListTile(
+                                  title: Text(
+                                    customer.name,
+                                    style: const TextStyle(fontWeight: FontWeight.w500),
                                   ),
-                                ),
-                              );
-                              if (index == 0 ||
-                                  customers[index - 1].name.substring(0, 1).toUpperCase() !=
-                                      initialLetter) {
-                                return Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Container(
-                                      width: double.infinity,
-                                      decoration: const BoxDecoration(
-                                        //borderRadius: BorderRadius.all(Radius.circular(12)),
-                                        color: Color(0xFFF7F7F7),
-                                      ),
-                                      padding: const EdgeInsets.only(
-                                          top: 8, bottom: 8, right: 8, left: 16),
-                                      child: Text(
-                                        initialLetter,
-                                        style: const TextStyle(color: Colors.black26, fontSize: 10),
-                                      ),
+                                  subtitle: Text(customer.cellphone),
+                                  trailing: const Icon(Icons.arrow_forward_ios_rounded, size: 10),
+                                  onTap: () async => await Navigator.push(
+                                    context,
+                                    //@@passar isso aqui pro route...
+                                    MaterialPageRoute(
+                                      builder: (_) {
+                                        return BlocProvider(
+                                          create: (_) => CustomerInfoBloc(
+                                              CustomerInfoStateInitial(), customer),
+                                          child: CustomerInfo(
+                                            onDelete: () {
+                                              bloc.add(CustomerQueryEventRemoveFromList(customer));
+                                            },
+                                          ),
+                                        );
+                                      },
                                     ),
-                                    customerListTile
-                                  ],
+                                  ),
                                 );
-                              }
-                              return customerListTile;
-                            },
-                            separatorBuilder: (context, index) => const Divider(),
-                            itemCount: customers.length,
+                                if (index == 0 ||
+                                    customers[index - 1].name.substring(0, 1).toUpperCase() !=
+                                        initialLetter) {
+                                  return Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Container(
+                                        width: double.infinity,
+                                        decoration: const BoxDecoration(
+                                          borderRadius: BorderRadius.all(Radius.circular(12)),
+                                          color: Color(0xFFF7F7F7),
+                                        ),
+                                        padding: const EdgeInsets.only(
+                                            top: 8, bottom: 8, right: 8, left: 16),
+                                        child: Text(
+                                          initialLetter,
+                                          style:
+                                              const TextStyle(color: Colors.black26, fontSize: 10),
+                                        ),
+                                      ),
+                                      customerListTile
+                                    ],
+                                  );
+                                }
+                                return customerListTile;
+                              },
+                              separatorBuilder: (context, index) => const Divider(),
+                              itemCount: customers.length,
+                            ),
                           ),
                         ),
                 ],
