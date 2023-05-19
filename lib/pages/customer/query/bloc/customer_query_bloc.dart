@@ -5,26 +5,51 @@ import 'package:agendamentos/repository/customer_repository.dart';
 import 'package:bloc/bloc.dart';
 
 class CustomerQueryBloc extends Bloc<CustomerQueryEvent, CustomerQueryState> {
-  List<Customer> customers = [];
+  List<Customer> _customers = [];
 
   CustomerQueryBloc(super.initialState) {
     on<CustomerQueryEventFetchAll>(fetchAll);
     on<CustomerQueryEventRemoveFromList>(removeFromList);
     on<CustomerQueryEventOpen>((event, emit) => emit(CustomerQueryStateOpen(event.typeOpen)));
+    on<CustomerQueryEventAddToList>(addToList);
+    on<CustomerQueryEventOnChangedFilter>(changedFilter);
   }
 
   void fetchAll(event, emit) async {
     emit(CustomerQueryStateLoading(true));
 
     var repository = CustomerRepository.instance;
-    customers = await repository.fetchData();
+    _customers = await repository.fetchData();
 
-    emit(CustomerQueryStateRefresh());
+    emit(CustomerQueryStateRefreshList(_customers));
   }
 
   void removeFromList(event, emit) {
     emit(CustomerQueryStateLoading(true));
-    customers.remove(event.customer);
-    emit(CustomerQueryStateLoading(false));
+    _customers.remove(event.customer);
+    emit(CustomerQueryStateRefreshList(_customers));
+  }
+
+  void addToList(CustomerQueryEventAddToList event, emit) {
+    emit(CustomerQueryStateLoading(true));
+    _customers.add(event.customer);
+    emit(CustomerQueryStateRefreshList(_customers));
+  }
+
+  void changedFilter(CustomerQueryEventOnChangedFilter event, emit) {
+    String textFilter = event.value;
+    List<Customer> tempCustomers = [];
+    tempCustomers.addAll(_customers);
+
+    if (textFilter.isNotEmpty) {
+      tempCustomers.retainWhere(
+        (element) {
+          String textElement = element.name.toLowerCase();
+          return textElement.startsWith(textFilter);
+        },
+      );
+    }
+
+    emit(CustomerQueryStateRefreshList(tempCustomers));
   }
 }

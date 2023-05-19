@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skeletons/skeletons.dart';
 
-class CustomerRegisterImport extends StatelessWidget {
-  const CustomerRegisterImport({Key? key}) : super(key: key);
+class CustomerImport extends StatelessWidget {
+  const CustomerImport({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +20,8 @@ class CustomerRegisterImport extends StatelessWidget {
           List<Contact> contacts = state is CustomerImportStateContacts ? state.contacts : [];
           return Skeleton(
             isLoading: isLoading,
-            skeleton: SkeletonListView(padding: const EdgeInsets.only(left: 10, top: 5, right: 10, bottom: 10)),
+            skeleton: SkeletonListView(
+                padding: const EdgeInsets.only(left: 10, top: 5, right: 10, bottom: 10)),
             child: contacts.isEmpty
                 ? const Center(child: Text('Nenhum registro encontrado'))
                 : Card(
@@ -31,7 +32,8 @@ class CustomerRegisterImport extends StatelessWidget {
                           padding: const EdgeInsets.only(bottom: 20, top: 20, left: 5, right: 5),
                           child: Text(
                             'Contatos do dispositivo',
-                            style: TextStyle(fontWeight: FontWeight.w700, color: Theme.of(context).primaryColor),
+                            style: TextStyle(
+                                fontWeight: FontWeight.w700, color: Theme.of(context).primaryColor),
                             textAlign: TextAlign.center,
                           ),
                         ),
@@ -64,7 +66,9 @@ class CustomerRegisterImport extends StatelessWidget {
             );
           }
           return Center(
-            child: isLoading ? const CircularProgressIndicator() : const Text('Nenhum registro encontrado'),
+            child: isLoading
+                ? const CircularProgressIndicator()
+                : const Text('Nenhum registro encontrado'),
           );
         },
       ),

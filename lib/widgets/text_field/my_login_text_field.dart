@@ -32,7 +32,7 @@ class _MyLoginTextFieldState extends State<MyLoginTextField> {
     IconData icon = widget._hideText ? Icons.visibility_off_outlined : Icons.visibility_outlined;
 
     return GestureDetector(
-      child: Icon(icon, color: widget._hideText ? pMainColor : Colors.orange),
+      child: Icon(icon, color: widget._hideText ? pMainColor : Colors.pinkAccent),
       onTap: () async {
         setState(() {
           widget._hideText = !widget._hideText;

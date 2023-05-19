@@ -24,6 +24,21 @@ class MyApp extends StatelessWidget {
         primaryColor: mainColor,
         focusColor: Colors.indigoAccent,
         scaffoldBackgroundColor: Colors.white,
+        inputDecorationTheme: InputDecorationTheme(
+          filled: true,
+          fillColor: const Color(0xFFF8F8F8),
+          border: UnderlineInputBorder(
+            borderSide: BorderSide.none,
+            borderRadius: BorderRadius.circular(12),
+          ),
+          focusedBorder: UnderlineInputBorder(
+            borderSide: BorderSide(width: 4, color: mainColor),
+            borderRadius: BorderRadius.circular(12),
+          ),
+          labelStyle: TextStyle(color: mainColor),
+          suffixIconColor: mainColor,
+        ),
+        textSelectionTheme: TextSelectionThemeData(cursorColor: mainColor),
         appBarTheme: AppBarTheme(
           color: Colors.white,
           elevation: 1,
@@ -36,28 +51,37 @@ class MyApp extends StatelessWidget {
           iconTheme: const IconThemeData(color: Colors.black54),
         ),
         snackBarTheme: const SnackBarThemeData(backgroundColor: Colors.indigo),
-        textTheme: GoogleFonts.soraTextTheme(),
-        progressIndicatorTheme:
-            ProgressIndicatorThemeData(color: Colors.orange, circularTrackColor: mainColor),
+        textTheme: TextTheme(
+          bodyMedium: TextStyle(color: mainColor)
+        ),
+        fontFamily: GoogleFonts.sora().fontFamily,
+        progressIndicatorTheme: ProgressIndicatorThemeData(
+          color: Colors.pinkAccent,
+          circularTrackColor: mainColor,
+        ),
         textButtonTheme: TextButtonThemeData(
           style: TextButton.styleFrom(
-            textStyle: const TextStyle(
-              fontWeight: FontWeight.w500,
-            ),
+            textStyle: const TextStyle(fontWeight: FontWeight.w500),
             foregroundColor: mainColor,
           ),
         ),
         highlightColor: Colors.white,
         dialogTheme: DialogTheme(
           elevation: 8,
-          titleTextStyle:
-              const TextStyle(fontSize: 16, color: Colors.indigo, fontWeight: FontWeight.w600),
+          titleTextStyle: const TextStyle(
+            fontSize: 16,
+            color: Colors.indigo,
+            fontWeight: FontWeight.w600,
+          ),
           contentTextStyle: TextStyle(fontSize: 14, color: mainColor),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
           shadowColor: mainColor,
         ),
-        elevatedButtonTheme:
-            ElevatedButtonThemeData(style: ElevatedButton.styleFrom(backgroundColor: mainColor)),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: mainColor,
+          ),
+        ),
       ),
       onGenerateRoute: (settings) => appRoutes(settings),
     );

@@ -17,6 +17,7 @@ import 'package:agendamentos/pages/sign_in/bloc/sign_in_event.dart';
 import 'package:agendamentos/pages/sign_in/bloc/sign_in_state.dart';
 import 'package:agendamentos/pages/sign_in/sign_in.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'pages/home/home.dart';
@@ -29,39 +30,60 @@ const ROUTE_CUSTOMER_IMPORT = '/customer_import';
 
 appRoutes(RouteSettings settings) {
   if (settings.name == ROUTE_HOME) {
-    return BlocProvider(
-      create: (_) => HomeBloc(HomeInitial()),
-      child: const Home(),
+    return MaterialPageRoute(
+      builder: (context) {
+        return BlocProvider(
+          create: (_) => HomeBloc(HomeInitial()),
+          child: const Home(),
+        );
+      },
     );
   }
 
   if (settings.name == ROUTE_LOGIN) {
-    BlocProvider(
-      create: (_) => SignInBloc(SignInStateInitial())..add(SignInEventAuthenticated()),
-      child: const SignIn(),
+    return MaterialPageRoute(
+      builder: (context) {
+        return BlocProvider(
+          create: (_) => SignInBloc(SignInStateInitial())..add(SignInEventAuthenticated()),
+          child: const SignIn(),
+        );
+      },
     );
   }
 
   if (settings.name == ROUTE_CUSTOMER_QUERY) {
-    BlocProvider(
-      create: (_) =>
-          CustomerQueryBloc(CustomerQueryStateLoading(true))..add(CustomerQueryEventFetchAll()),
-      child: const CustomerQuery(),
+    return MaterialPageRoute(
+      builder: (context) {
+        return BlocProvider(
+          create: (_) =>
+              CustomerQueryBloc(CustomerQueryStateLoading(true))..add(CustomerQueryEventFetchAll()),
+          child: const CustomerQuery(),
+        );
+      },
     );
   }
 
   if (settings.name == ROUTE_CUSTOMER_NEW) {
     var callback = settings.arguments as Function(Customer customer);
-    return BlocProvider(
-      create: (_) => CustomerNewBloc(CustomerNewStateInitial()),
-      child: CustomerNew(onSaved: callback),
+    return MaterialPageRoute(
+      builder: (context) {
+        return BlocProvider(
+          create: (_) => CustomerNewBloc(CustomerNewStateInitial()),
+          child: CustomerNew(onSaved: callback),
+        );
+      },
     );
   }
 
   if (settings.name == ROUTE_CUSTOMER_IMPORT) {
-    return BlocProvider(
-      create: (context) =>
-          CustomerImportBloc(CustomerImportStateInitial())..add(CustomerImportEventFetchAll()),
+    return MaterialPageRoute(
+      builder: (context) {
+        return BlocProvider(
+          create: (context) =>
+              CustomerImportBloc(CustomerImportStateInitial())..add(CustomerImportEventFetchAll()),
+          child: const CustomerImport(),
+        );
+      },
     );
   }
 }

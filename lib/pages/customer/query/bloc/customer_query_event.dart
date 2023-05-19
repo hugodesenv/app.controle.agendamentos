@@ -12,6 +12,14 @@ class CustomerQueryEventRemoveFromList extends CustomerQueryEvent {
   Customer get customer => _customer;
 }
 
+class CustomerQueryEventAddToList extends CustomerQueryEvent {
+  final Customer _customer;
+
+  CustomerQueryEventAddToList(this._customer);
+
+  Customer get customer => _customer;
+}
+
 class CustomerQueryEventFetchAll extends CustomerQueryEvent {}
 
 class CustomerQueryEventOpen extends CustomerQueryEvent {
@@ -20,4 +28,12 @@ class CustomerQueryEventOpen extends CustomerQueryEvent {
   CustomerQueryEventOpen(this._typeOpen);
 
   TypeOpen get typeOpen => _typeOpen;
+}
+
+class CustomerQueryEventOnChangedFilter extends CustomerQueryEvent {
+  final String _value;
+
+  CustomerQueryEventOnChangedFilter(this._value);
+
+  String get value => _value.toLowerCase();
 }
