@@ -8,8 +8,10 @@ class CustomerRepository {
 
   static final instance = CustomerRepository._();
 
-  Future save(Customer customer) async {
-    await _fireCloud.doc().set(customer.toMap()).then((value) {}).onError((error, stackTrace) {});
+  Future<String> save(Customer customer) async {
+    DocumentReference doc = _fireCloud.doc(customer.id);
+    await doc.set(customer.toMap());
+    return doc.id;
   }
 
   Future<List<Customer>> fetchData() async {
@@ -17,6 +19,7 @@ class CustomerRepository {
     var collections = await _fireCloud.get();
 
     for (var doc in collections.docs) {
+      print("** fetch data: ${doc.id}");
       Customer customer = Customer.fromJson(doc.data(), doc.id);
       customers.add(customer);
     }

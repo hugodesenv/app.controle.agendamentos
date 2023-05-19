@@ -21,6 +21,10 @@ class CustomerQuery extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Clientes'),
         actions: [
+          IconButton(
+            onPressed: () => bloc.add(CustomerQueryEventFetchAll()),
+            icon: const Icon(Icons.refresh),
+          ),
           PopupMenuButton(
             itemBuilder: (_) => [
               PopupMenuItem(
@@ -74,7 +78,7 @@ class CustomerQuery extends StatelessWidget {
                     child: TextField(
                       decoration: const InputDecoration(
                         suffixIcon: Icon(Icons.search),
-                        labelText: 'Buscar...',
+                        labelText: 'Filtrar...',
                       ),
                       onChanged: (value) => bloc.add(CustomerQueryEventOnChangedFilter(value)),
                     ),

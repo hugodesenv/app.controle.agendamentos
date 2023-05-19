@@ -27,7 +27,7 @@ class CustomerInfoBloc extends Bloc<CustomerInfoEvent, CustomerInfoState> {
 
   Future _delete(event, emit) async {
     var repository = CustomerRepository.instance;
-    bool res = await repository.delete(customer!.id);
+    bool res = await repository.delete(customer!.id ?? '');
     res
         ? emit(CustomerInfoStateSuccess('Cliente excluído com sucesso!', TypeSuccess.tpDelete))
         : emit(CustomerInfoStateFailure('Houve uma falha na exclusão do cliente...'));

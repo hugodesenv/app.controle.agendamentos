@@ -23,7 +23,7 @@ class CustomerNewBloc extends Bloc<CustomerNewEvent, CustomerNewState> {
 
     if (isValid) {
       var repository = CustomerRepository.instance;
-      await repository.save(_customer);
+      _customer.id = await repository.save(_customer);
       emit(CustomerNewStateSuccess());
     }
   }

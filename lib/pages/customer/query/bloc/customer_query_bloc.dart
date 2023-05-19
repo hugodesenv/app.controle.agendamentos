@@ -19,7 +19,9 @@ class CustomerQueryBloc extends Bloc<CustomerQueryEvent, CustomerQueryState> {
     emit(CustomerQueryStateLoading(true));
 
     var repository = CustomerRepository.instance;
-    _customers = await repository.fetchData();
+
+    _customers.clear();
+    _customers.addAll(await repository.fetchData());
 
     emit(CustomerQueryStateRefreshList(_customers));
   }
