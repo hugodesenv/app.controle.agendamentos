@@ -25,7 +25,6 @@ class SignIn extends StatelessWidget {
   }
 
   Future<void> _simpleDialog(BuildContext context, String message, {bool? isError}) async {
-    print("** aqui no simpleDialog na sign_in");
     await Dialogs.materialDialog(
       context: context,
       title: message,
@@ -182,6 +181,7 @@ class SignIn extends StatelessWidget {
     }
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: BlocListener(
         bloc: bloc,
         listener: (_, state) {

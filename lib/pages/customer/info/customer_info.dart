@@ -1,6 +1,7 @@
 import 'package:agendamentos/pages/customer/info/bloc/customer_info_bloc.dart';
 import 'package:agendamentos/pages/customer/info/bloc/customer_info_event.dart';
 import 'package:agendamentos/pages/customer/info/bloc/customer_info_state.dart';
+import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:material_dialogs/dialogs.dart';
@@ -103,10 +104,10 @@ class CustomerInfo extends StatelessWidget {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            const Icon(Icons.phone),
+                            Icon(Icons.phone, color: Theme.of(context).primaryColor),
                             Container(
                               padding: const EdgeInsets.only(left: 15),
-                              child: Text(bloc.customer!.cellphone),
+                              child: Text(UtilBrasilFields.obterTelefone(bloc.customer!.cellphone)),
                             ),
                           ],
                         ),
