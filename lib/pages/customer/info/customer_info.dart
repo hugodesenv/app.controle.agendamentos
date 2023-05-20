@@ -3,6 +3,9 @@ import 'package:agendamentos/pages/customer/info/bloc/customer_info_event.dart';
 import 'package:agendamentos/pages/customer/info/bloc/customer_info_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:material_dialogs/dialogs.dart';
+import 'package:material_dialogs/widgets/buttons/icon_button.dart';
+import 'package:material_dialogs/widgets/buttons/icon_outline_button.dart';
 
 import '../../../assets/constants.dart';
 
@@ -24,7 +27,36 @@ class CustomerInfo extends StatelessWidget {
               const PopupMenuItem(child: Text('Alterar')),
               PopupMenuItem(
                 child: const Text('Excluir', style: TextStyle(color: Colors.red)),
-                onTap: () => bloc.add(CustomerInfoEventDelete()),
+                onTap: () async {
+                  Future.delayed(
+                    const Duration(seconds: 0),
+                    () => Dialogs.materialDialog(
+                      context: context,
+                      title: 'Confirmação',
+                      msg: 'Deseja excluir o cliente?',
+                      actions: [
+                        IconsButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                            bloc.add(CustomerInfoEventDelete());
+                          },
+                          text: 'Sim',
+                          iconData: Icons.delete,
+                          color: Colors.red,
+                          textStyle: TextStyle(color: Colors.white),
+                          iconColor: Colors.white,
+                        ),
+                        IconsOutlineButton(
+                          onPressed: () => Navigator.pop(context),
+                          text: 'Não',
+                          iconData: Icons.cancel_outlined,
+                          textStyle: TextStyle(color: Colors.grey),
+                          iconColor: Colors.grey,
+                        ),
+                      ],
+                    ),
+                  );
+                },
               ),
             ],
           ),

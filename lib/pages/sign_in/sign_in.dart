@@ -4,10 +4,10 @@ import 'package:agendamentos/pages/sign_in/bloc/sign_in_state.dart';
 import 'package:agendamentos/routes.dart';
 import 'package:agendamentos/widgets/button/my_loading_button.dart';
 import 'package:agendamentos/widgets/text_field/my_login_text_field.dart';
-import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:material_dialogs/dialogs.dart';
 
 class SignIn extends StatelessWidget {
   const SignIn({Key? key}) : super(key: key);
@@ -25,18 +25,16 @@ class SignIn extends StatelessWidget {
   }
 
   Future<void> _simpleDialog(BuildContext context, String message, {bool? isError}) async {
-    await AwesomeDialog(
-      autoHide: const Duration(seconds: 3),
+    print("** aqui no simpleDialog na sign_in");
+    await Dialogs.materialDialog(
       context: context,
-      dialogType: DialogType.noHeader,
-      padding: const EdgeInsets.all(15),
       title: message,
-      titleTextStyle: TextStyle(
+      titleStyle: TextStyle(
         color: isError == false ? Colors.green : Colors.red,
         fontWeight: FontWeight.bold,
         fontSize: 16,
       ),
-    ).show();
+    );
   }
 
   @override
@@ -49,7 +47,8 @@ class SignIn extends StatelessWidget {
     Future showSignIn() async {
       await showModalBottomSheet(
         context: context,
-        shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(16.0))),
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(top: Radius.circular(16.0))),
         isScrollControlled: true,
         builder: (_) {
           return BlocListener(
@@ -68,7 +67,11 @@ class SignIn extends StatelessWidget {
               builder: (_, state) {
                 bool isLoading = state is SignInStateLoading;
                 return Container(
-                  padding: EdgeInsets.only(left: 30, right: 30, top: 30, bottom: MediaQuery.of(context).viewInsets.bottom),
+                  padding: EdgeInsets.only(
+                      left: 30,
+                      right: 30,
+                      top: 30,
+                      bottom: MediaQuery.of(context).viewInsets.bottom),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     mainAxisSize: MainAxisSize.min,
@@ -96,7 +99,8 @@ class SignIn extends StatelessWidget {
                       MyLoadingButton(
                         loading: isLoading,
                         onPressed: () {
-                          bloc.add(SignInEventSubmitted(email: emailController.text, password: passwordController.text));
+                          bloc.add(SignInEventSubmitted(
+                              email: emailController.text, password: passwordController.text));
                         },
                         title: const Text('Entrar', style: TextStyle(fontWeight: FontWeight.w700)),
                       ),
@@ -108,8 +112,8 @@ class SignIn extends StatelessWidget {
                             await showModalBottomSheet(
                               context: context,
                               isScrollControlled: true,
-                              shape:
-                                  const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(16.0))),
+                              shape: const RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.vertical(top: Radius.circular(16.0))),
                               builder: (_) {
                                 return BlocBuilder(
                                   bloc: bloc,
@@ -117,7 +121,10 @@ class SignIn extends StatelessWidget {
                                     bool isLoadingReset = state is SignInStateWaitingEmailReset;
                                     return Padding(
                                       padding: EdgeInsets.only(
-                                          bottom: MediaQuery.of(context).viewInsets.bottom + 20, left: 20, top: 20, right: 20),
+                                          bottom: MediaQuery.of(context).viewInsets.bottom + 20,
+                                          left: 20,
+                                          top: 20,
+                                          right: 20),
                                       child: Column(
                                         mainAxisSize: MainAxisSize.min,
                                         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -131,7 +138,8 @@ class SignIn extends StatelessWidget {
                                             child: Text(
                                               'Digite o seu e-mail e clique no botão p/ enviar a redefinição de senha:',
                                               textAlign: TextAlign.center,
-                                              style: TextStyle(color: Theme.of(context).primaryColor),
+                                              style:
+                                                  TextStyle(color: Theme.of(context).primaryColor),
                                             ),
                                           ),
                                           Padding(
@@ -145,7 +153,8 @@ class SignIn extends StatelessWidget {
                                           ),
                                           MyLoadingButton(
                                             onPressed: () => bloc.add(
-                                              SignInEventSubmittedForgetPassword(emailResetController.text),
+                                              SignInEventSubmittedForgetPassword(
+                                                  emailResetController.text),
                                             ),
                                             title: const Text('Enviar'),
                                             loading: isLoadingReset,
@@ -158,7 +167,8 @@ class SignIn extends StatelessWidget {
                               },
                             );
                           },
-                          child: const Text('Esqueceu sua senha?', style: TextStyle(color: Colors.black26)),
+                          child: const Text('Esqueceu sua senha?',
+                              style: TextStyle(color: Colors.black26)),
                         ),
                       ),
                     ],

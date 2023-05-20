@@ -7,6 +7,7 @@ import 'package:agendamentos/pages/customer/query/bloc/customer_query_bloc.dart'
 import 'package:agendamentos/pages/customer/query/bloc/customer_query_event.dart';
 import 'package:agendamentos/pages/customer/query/bloc/customer_query_state.dart';
 import 'package:agendamentos/routes.dart';
+import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skeletons/skeletons.dart';
@@ -97,7 +98,9 @@ class CustomerQuery extends StatelessWidget {
                                     customer.name,
                                     style: const TextStyle(fontWeight: FontWeight.w500),
                                   ),
-                                  subtitle: Text(customer.cellphone),
+                                  subtitle: Text(
+                                    UtilBrasilFields.obterTelefone(customer.cellphone),
+                                  ),
                                   trailing: const Icon(Icons.arrow_forward_ios_rounded, size: 10),
                                   onTap: () async => await Navigator.push(
                                     context,

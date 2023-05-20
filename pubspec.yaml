@@ -44,12 +44,12 @@ dependencies:
   firebase_auth: ^4.2.2
   email_validator: ^2.1.17
   skeletons: ^0.0.3
-  awesome_dialog: ^3.0.2
   contacts_service: ^0.6.3
   permission_handler: ^10.2.0
   url_launcher: ^6.1.11
   cloud_firestore: ^4.7.1
   brasil_fields: ^1.13.1
+  material_dialogs: ^1.1.4
 
 dev_dependencies:
   flutter_test:

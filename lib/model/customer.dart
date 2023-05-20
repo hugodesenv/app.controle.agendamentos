@@ -42,7 +42,7 @@ class Customer extends GenericModel {
     _name = value;
   }
 
-  String get cellphone => _cellphone;
+  String get cellphone => _cellphone.padLeft(10, '0');
 
   set cellphone(String value) {
     _cellphone = value;
