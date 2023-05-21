@@ -1,10 +1,14 @@
 import 'package:agendamentos/pages/home/bloc/home_bloc.dart';
-import 'package:agendamentos/pages/home/bloc/home_event.dart';
 import 'package:agendamentos/pages/home/bloc/home_state.dart';
 import 'package:agendamentos/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:material_dialogs/dialogs.dart';
+import 'package:material_dialogs/widgets/buttons/icon_button.dart';
+import 'package:material_dialogs/widgets/buttons/icon_outline_button.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
+
+import 'bloc/home_event.dart';
 
 class Home extends StatelessWidget {
   const Home({Key? key}) : super(key: key);
@@ -14,23 +18,27 @@ class Home extends StatelessWidget {
     var bloc = BlocProvider.of<HomeBloc>(context);
 
     Future exitApp() async {
-      await showDialog(
+      Dialogs.materialDialog(
         context: context,
-        builder: (_) {
-          return AlertDialog(
-            title: const Text('Deseja desconectar?'),
-            actions: [
-              TextButton(
-                onPressed: () => bloc.add(HomeEventSignOut()),
-                child: const Text('Sim'),
-              ),
-              TextButton(
-                onPressed: () => Navigator.pop(context),
-                child: const Text('Não'),
-              ),
-            ],
-          );
-        },
+        title: 'Deseja sair do app?',
+        msg: 'Espero vê-lo novamente! :)',
+        actions: [
+          IconsButton(
+            onPressed: () => bloc.add(HomeEventSignOut()),
+            text: 'Sim',
+            iconData: Icons.exit_to_app_outlined,
+            color: Theme.of(context).primaryColor,
+            textStyle: const TextStyle(color: Colors.white),
+            iconColor: Colors.white,
+          ),
+          IconsOutlineButton(
+            onPressed: () => Navigator.pop(context),
+            text: 'Não',
+            iconData: Icons.cancel_outlined,
+            textStyle: const TextStyle(color: Colors.grey),
+            iconColor: Colors.grey,
+          ),
+        ],
       );
     }
 
@@ -41,12 +49,14 @@ class Home extends StatelessWidget {
           child: ListTile(
             title: Text(
               pTitle,
-              style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: Colors.black87),
+              style:
+                  const TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: Colors.black87),
               textAlign: TextAlign.center,
             ),
             subtitle: const Padding(
               padding: EdgeInsets.only(top: 6),
-              child: Text('R\$1450,00', textAlign: TextAlign.center, style: TextStyle(fontSize: 12)),
+              child:
+                  Text('R\$1450,00', textAlign: TextAlign.center, style: TextStyle(fontSize: 12)),
             ),
           ),
         ),

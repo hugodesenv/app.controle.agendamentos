@@ -12,11 +12,12 @@ class CustomerNewBloc extends Bloc<CustomerNewEvent, CustomerNewState> {
   CustomerNewBloc(super.initialState) {
     on<CustomerNewEventSubmitted>(_submitted);
     on<CustomerNewEventOnChanged>(_onChanged);
+    on<CustomerNewEventEditMode>(_editMode);
   }
 
   get formKeyMain => _formKeyMain;
 
-  get customer => _customer;
+  Customer get customer => _customer;
 
   Future _submitted(CustomerNewEventSubmitted event, emit) async {
     bool isValid = _formKeyMain.currentState!.validate();
@@ -33,5 +34,10 @@ class CustomerNewBloc extends Bloc<CustomerNewEvent, CustomerNewState> {
       name: event.name,
       cellphone: event.cellphone,
     );
+  }
+
+  _editMode(event, emit) {
+    _customer = event.customer;
+    emit(CustomerNewStateLoaded());
   }
 }

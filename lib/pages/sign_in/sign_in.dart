@@ -196,7 +196,7 @@ class SignIn extends StatelessWidget {
               //color: Colors.indigo,
               decoration: BoxDecoration(
                 gradient: LinearGradient(
-                  colors: [Colors.indigo[900]!, Colors.indigoAccent],
+                  colors: [Colors.indigoAccent[200]!, Colors.indigo[700]!],
                   begin: Alignment.topRight,
                   end: Alignment.bottomLeft,
                 ),

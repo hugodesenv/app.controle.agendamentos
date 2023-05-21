@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:agendamentos/pages/sign_in/bloc/sign_in_bloc.dart';
 import 'package:agendamentos/pages/sign_in/bloc/sign_in_event.dart';
 import 'package:agendamentos/pages/sign_in/bloc/sign_in_state.dart';
@@ -35,10 +37,8 @@ class MyApp extends StatelessWidget {
             borderSide: BorderSide(width: 4, color: mainColor),
             borderRadius: BorderRadius.circular(12),
           ),
-          labelStyle: TextStyle(color: mainColor),
           suffixIconColor: mainColor,
         ),
-        textSelectionTheme: TextSelectionThemeData(cursorColor: mainColor),
         appBarTheme: AppBarTheme(
           color: Colors.white,
           elevation: 1,
@@ -50,10 +50,8 @@ class MyApp extends StatelessWidget {
           ),
           iconTheme: const IconThemeData(color: Colors.black54),
         ),
+        hintColor: mainColor,
         snackBarTheme: const SnackBarThemeData(backgroundColor: Colors.indigo),
-        textTheme: TextTheme(
-          bodyMedium: TextStyle(color: mainColor)
-        ),
         fontFamily: GoogleFonts.sora().fontFamily,
         progressIndicatorTheme: ProgressIndicatorThemeData(
           color: Colors.pinkAccent,
@@ -62,7 +60,6 @@ class MyApp extends StatelessWidget {
         textButtonTheme: TextButtonThemeData(
           style: TextButton.styleFrom(
             textStyle: const TextStyle(fontWeight: FontWeight.w500),
-            foregroundColor: mainColor,
           ),
         ),
         highlightColor: Colors.white,

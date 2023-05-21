@@ -1,6 +1,11 @@
 import 'package:agendamentos/pages/customer/info/bloc/customer_info_bloc.dart';
 import 'package:agendamentos/pages/customer/info/bloc/customer_info_event.dart';
 import 'package:agendamentos/pages/customer/info/bloc/customer_info_state.dart';
+import 'package:agendamentos/pages/customer/new/bloc/customer_new_bloc.dart';
+import 'package:agendamentos/pages/customer/new/bloc/customer_new_event.dart';
+import 'package:agendamentos/pages/customer/new/bloc/customer_new_state.dart';
+import 'package:agendamentos/pages/customer/new/customer_new.dart';
+import 'package:agendamentos/routes.dart';
 import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -9,6 +14,7 @@ import 'package:material_dialogs/widgets/buttons/icon_button.dart';
 import 'package:material_dialogs/widgets/buttons/icon_outline_button.dart';
 
 import '../../../assets/constants.dart';
+import '../../../model/customer.dart';
 
 class CustomerInfo extends StatelessWidget {
   final void Function() onDelete;
@@ -17,15 +23,38 @@ class CustomerInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var mainColor = Theme.of(context).primaryColor;
     var bloc = BlocProvider.of<CustomerInfoBloc>(context);
+
+    Future _onTapEdit() async {
+      Future.delayed(
+        const Duration(seconds: 0),
+        () async {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => BlocProvider(
+                create: (context) => CustomerNewBloc(CustomerNewStateInitial())
+                  ..add(CustomerNewEventEditMode(bloc.customer!)),
+                child: CustomerNew(
+                  onSaved: (customer) {},
+                ),
+              ),
+            ),
+          );
+        },
+      );
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Info.'),
         actions: [
           PopupMenuButton(
             itemBuilder: (_) => [
-              const PopupMenuItem(child: Text('Alterar')),
+              PopupMenuItem(
+                child: const Text('Alterar'),
+                onTap: () async => await _onTapEdit(),
+              ),
               PopupMenuItem(
                 child: const Text('Excluir', style: TextStyle(color: Colors.red)),
                 onTap: () async {
@@ -93,18 +122,14 @@ class CustomerInfo extends StatelessWidget {
                       Text(
                         bloc.customer!.name,
                         textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.w700,
-                          color: mainColor,
-                        ),
+                        style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
                       ),
                       Padding(
                         padding: const EdgeInsets.all(20),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Icon(Icons.phone, color: Theme.of(context).primaryColor),
+                            Icon(Icons.phone),
                             Container(
                               padding: const EdgeInsets.only(left: 15),
                               child: Text(UtilBrasilFields.obterTelefone(bloc.customer!.cellphone)),
@@ -154,7 +179,7 @@ class CustomerInfo extends StatelessWidget {
                     ),
                   ),
                 ),
-                Expanded(
+                Flexible(
                   child: ListView.separated(
                     itemCount: 30,
                     itemBuilder: (context, index) {
