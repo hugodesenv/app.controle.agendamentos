@@ -5,27 +5,29 @@ import 'package:agendamentos/pages/customer/new/bloc/customer_new_bloc.dart';
 import 'package:agendamentos/pages/customer/new/bloc/customer_new_event.dart';
 import 'package:agendamentos/pages/customer/new/bloc/customer_new_state.dart';
 import 'package:agendamentos/pages/customer/new/customer_new.dart';
-import 'package:agendamentos/routes.dart';
+import 'package:agendamentos/pages/customer/query/bloc/customer_query_bloc.dart';
+import 'package:agendamentos/pages/customer/query/bloc/customer_query_event.dart';
 import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:material_dialogs/dialogs.dart';
 import 'package:material_dialogs/widgets/buttons/icon_button.dart';
 import 'package:material_dialogs/widgets/buttons/icon_outline_button.dart';
-
 import '../../../assets/constants.dart';
-import '../../../model/customer.dart';
 
 class CustomerInfo extends StatelessWidget {
-  final void Function() onDelete;
+  final void Function() onDelete; remover esse on delete aqui...
+  final CustomerQueryBloc _queryBloc;
 
-  const CustomerInfo({Key? key, required this.onDelete}) : super(key: key);
+  const CustomerInfo({Key? key, required this.onDelete, required queryBloc})
+      : _queryBloc = queryBloc,
+        super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var bloc = BlocProvider.of<CustomerInfoBloc>(context);
 
-    Future _onTapEdit() async {
+    Future onTapEdit() async {
       Future.delayed(
         const Duration(seconds: 0),
         () async {
@@ -49,11 +51,15 @@ class CustomerInfo extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Info.'),
         actions: [
+          IconButton(
+            onPressed: () => _queryBloc.add(CustomerQueryEventTeste()),
+            icon: const Icon(Icons.add_box_outlined, color: Colors.indigo),
+          ),
           PopupMenuButton(
             itemBuilder: (_) => [
               PopupMenuItem(
                 child: const Text('Alterar'),
-                onTap: () async => await _onTapEdit(),
+                onTap: () async => await onTapEdit(),
               ),
               PopupMenuItem(
                 child: const Text('Excluir', style: TextStyle(color: Colors.red)),

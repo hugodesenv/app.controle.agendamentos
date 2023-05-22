@@ -37,3 +37,6 @@ class CustomerQueryEventOnChangedFilter extends CustomerQueryEvent {
 
   String get value => _value.toLowerCase();
 }
+
+//remover dps...
+class CustomerQueryEventTeste extends CustomerQueryEvent {}

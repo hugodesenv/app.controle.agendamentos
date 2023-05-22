@@ -13,6 +13,7 @@ class CustomerQueryBloc extends Bloc<CustomerQueryEvent, CustomerQueryState> {
     on<CustomerQueryEventOpen>((event, emit) => emit(CustomerQueryStateOpen(event.typeOpen)));
     on<CustomerQueryEventAddToList>(addToList);
     on<CustomerQueryEventOnChangedFilter>(changedFilter);
+    on<CustomerQueryEventTeste>((event, emit) => emit(CustomerQueryStateTeste()));
   }
 
   void fetchAll(event, emit) async {

@@ -26,3 +26,6 @@ class CustomerQueryStateRefreshList extends CustomerQueryState {
 
   List<Customer> get customers => _customers;
 }
+
+//remover dps...
+class CustomerQueryStateTeste extends CustomerQueryState {}

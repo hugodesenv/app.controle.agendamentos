@@ -68,6 +68,8 @@ class CustomerQuery extends StatelessWidget {
             if (state is CustomerQueryStateRefreshList) {
               customers.addAll(state.customers);
               customers.sort((a, b) => a.name.toLowerCase().compareTo(b.name.toLowerCase()));
+            } else if (state is CustomerQueryStateTeste) {
+              print("** debug Hugo remover esse teste depois... Deu certo! :)");
             }
             return Skeleton(
               isLoading: isLoading,
@@ -114,6 +116,7 @@ class CustomerQuery extends StatelessWidget {
                                             onDelete: () {
                                               bloc.add(CustomerQueryEventRemoveFromList(customer));
                                             },
+                                            queryBloc: bloc,
                                           ),
                                         );
                                       },
