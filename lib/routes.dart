@@ -1,3 +1,4 @@
+import 'package:agendamentos/main.dart';
 import 'package:agendamentos/model/customer.dart';
 import 'package:agendamentos/pages/customer/import/bloc/customer_import_bloc.dart';
 import 'package:agendamentos/pages/customer/import/bloc/customer_import_event.dart';
@@ -55,8 +56,8 @@ appRoutes(RouteSettings settings) {
     return MaterialPageRoute(
       builder: (context) {
         return BlocProvider(
-          create: (_) =>
-              CustomerQueryBloc(CustomerQueryStateLoading(true))..add(CustomerQueryEventFetchAll()),
+          create: (_) => getIt<CustomerQueryBloc>(),
+          //CustomerQueryBloc(CustomerQueryStateLoading(true))..add(CustomerQueryEventFetchAll()),
           child: const CustomerQuery(),
         );
       },

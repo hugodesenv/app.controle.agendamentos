@@ -110,14 +110,14 @@ class CustomerQuery extends StatelessWidget {
                                     MaterialPageRoute(
                                       builder: (_) {
                                         return BlocProvider(
-                                          create: (_) => CustomerInfoBloc(
+                                          create: (context) => CustomerInfoBloc(
                                               CustomerInfoStateInitial(), customer),
                                           child: CustomerInfo(
                                             onDelete: () {
                                               bloc.add(CustomerQueryEventRemoveFromList(customer));
                                             },
-                                            queryBloc: bloc,
                                           ),
+
                                         );
                                       },
                                     ),

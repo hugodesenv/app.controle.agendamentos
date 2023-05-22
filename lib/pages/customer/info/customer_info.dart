@@ -1,3 +1,4 @@
+import 'package:agendamentos/main.dart';
 import 'package:agendamentos/pages/customer/info/bloc/customer_info_bloc.dart';
 import 'package:agendamentos/pages/customer/info/bloc/customer_info_event.dart';
 import 'package:agendamentos/pages/customer/info/bloc/customer_info_state.dart';
@@ -16,16 +17,14 @@ import 'package:material_dialogs/widgets/buttons/icon_outline_button.dart';
 import '../../../assets/constants.dart';
 
 class CustomerInfo extends StatelessWidget {
-  final void Function() onDelete; remover esse on delete aqui...
-  final CustomerQueryBloc _queryBloc;
+  final void Function() onDelete;
 
-  const CustomerInfo({Key? key, required this.onDelete, required queryBloc})
-      : _queryBloc = queryBloc,
-        super(key: key);
+  const CustomerInfo({Key? key, required this.onDelete}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var bloc = BlocProvider.of<CustomerInfoBloc>(context);
+    final queryBloc = getIt<CustomerQueryBloc>();
 
     Future onTapEdit() async {
       Future.delayed(
@@ -52,7 +51,7 @@ class CustomerInfo extends StatelessWidget {
         title: const Text('Info.'),
         actions: [
           IconButton(
-            onPressed: () => _queryBloc.add(CustomerQueryEventTeste()),
+            onPressed: () => queryBloc.add(CustomerQueryEventTeste()),
             icon: const Icon(Icons.add_box_outlined, color: Colors.indigo),
           ),
           PopupMenuButton(
