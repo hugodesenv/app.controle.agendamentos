@@ -1,4 +1,3 @@
-import 'package:agendamentos/main.dart';
 import 'package:agendamentos/pages/customer/info/bloc/customer_info_bloc.dart';
 import 'package:agendamentos/pages/customer/info/bloc/customer_info_event.dart';
 import 'package:agendamentos/pages/customer/info/bloc/customer_info_state.dart';
@@ -14,6 +13,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:material_dialogs/dialogs.dart';
 import 'package:material_dialogs/widgets/buttons/icon_button.dart';
 import 'package:material_dialogs/widgets/buttons/icon_outline_button.dart';
+
 import '../../../assets/constants.dart';
 
 class CustomerInfo extends StatelessWidget {
@@ -22,16 +22,20 @@ class CustomerInfo extends StatelessWidget {
   const CustomerInfo({Key? key, required this.onDelete}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    var bloc = BlocProvider.of<CustomerInfoBloc>(context);
-    final queryBloc = getIt<CustomerQueryBloc>();
+  Widget build(BuildContext buildContext) {
+    print("*** antezão aqui no customer info rancar isso dps... @@");
+    var blocQuery = BlocProvider.of<CustomerQueryBloc>(buildContext);
+    print("*** depoiszão ...@@");
+
+    var bloc = BlocProvider.of<CustomerInfoBloc>(buildContext);
+    print("** achamos o bloc dps");
 
     Future onTapEdit() async {
       Future.delayed(
         const Duration(seconds: 0),
         () async {
           Navigator.push(
-            context,
+            buildContext,
             MaterialPageRoute(
               builder: (context) => BlocProvider(
                 create: (context) => CustomerNewBloc(CustomerNewStateInitial())
@@ -51,7 +55,7 @@ class CustomerInfo extends StatelessWidget {
         title: const Text('Info.'),
         actions: [
           IconButton(
-            onPressed: () => queryBloc.add(CustomerQueryEventTeste()),
+            onPressed: () => blocQuery.add(CustomerQueryEventTeste()),
             icon: const Icon(Icons.add_box_outlined, color: Colors.indigo),
           ),
           PopupMenuButton(
@@ -66,13 +70,13 @@ class CustomerInfo extends StatelessWidget {
                   Future.delayed(
                     const Duration(seconds: 0),
                     () => Dialogs.materialDialog(
-                      context: context,
+                      context: buildContext,
                       title: 'Confirmação',
                       msg: 'Deseja excluir o cliente?',
                       actions: [
                         IconsButton(
                           onPressed: () {
-                            Navigator.pop(context);
+                            Navigator.pop(buildContext);
                             bloc.add(CustomerInfoEventDelete());
                           },
                           text: 'Sim',
@@ -82,7 +86,7 @@ class CustomerInfo extends StatelessWidget {
                           iconColor: Colors.white,
                         ),
                         IconsOutlineButton(
-                          onPressed: () => Navigator.pop(context),
+                          onPressed: () => Navigator.pop(buildContext),
                           text: 'Não',
                           iconData: Icons.cancel_outlined,
                           textStyle: TextStyle(color: Colors.grey),
@@ -101,14 +105,14 @@ class CustomerInfo extends StatelessWidget {
         bloc: bloc,
         listener: (_, state) {
           if (state is CustomerInfoStateFailure) {
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.error)));
+            ScaffoldMessenger.of(buildContext).showSnackBar(SnackBar(content: Text(state.error)));
             return;
           }
 
           if (state is CustomerInfoStateSuccess) {
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.message)));
+            ScaffoldMessenger.of(buildContext).showSnackBar(SnackBar(content: Text(state.message)));
             state.typeSuccess == TypeSuccess.tpDelete ? onDelete() : null;
-            Navigator.pop(context);
+            Navigator.pop(buildContext);
             return;
           }
         },

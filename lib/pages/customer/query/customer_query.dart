@@ -16,8 +16,8 @@ class CustomerQuery extends StatelessWidget {
   const CustomerQuery({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    var bloc = BlocProvider.of<CustomerQueryBloc>(context);
+  Widget build(BuildContext buildContext) {
+    var bloc = BlocProvider.of<CustomerQueryBloc>(buildContext);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Clientes'),
@@ -96,20 +96,40 @@ class CustomerQuery extends StatelessWidget {
                                 Customer customer = customers[index];
                                 String initialLetter = customer.name.substring(0, 1).toUpperCase();
                                 Widget customerListTile = ListTile(
-                                  title: Text(
-                                    customer.name,
-                                    style: const TextStyle(fontWeight: FontWeight.w500),
-                                  ),
-                                  subtitle: Text(
-                                    UtilBrasilFields.obterTelefone(customer.cellphone),
-                                  ),
-                                  trailing: const Icon(Icons.arrow_forward_ios_rounded, size: 10),
-                                  onTap: () async => await Navigator.push(
+                                    title: Text(
+                                      customer.name,
+                                      style: const TextStyle(fontWeight: FontWeight.w500),
+                                    ),
+                                    subtitle: Text(
+                                      UtilBrasilFields.obterTelefone(customer.cellphone),
+                                    ),
+                                    trailing: const Icon(Icons.arrow_forward_ios_rounded, size: 10),
+                                    onTap: () async {
+                                      await Navigator.push(
+                                        buildContext,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                BlocProvider<CustomerQueryBloc>.value(
+                                                  value: BlocProvider.of<CustomerQueryBloc>(
+                                                      buildContext),
+                                                  child: BlocProvider(
+                                                      create: (context) => CustomerInfoBloc(
+                                                          CustomerInfoStateInitial(), customer),
+                                                      child: CustomerInfo(
+                                                        onDelete: () {
+                                                          bloc.add(CustomerQueryEventRemoveFromList(
+                                                              customer));
+                                                        },
+                                                      )),
+                                                )),
+                                      );
+                                    }
+                                    /*await Navigator.push(
                                     context,
-                                    //@@passar isso aqui pro route...
                                     MaterialPageRoute(
                                       builder: (_) {
-                                        return BlocProvider(
+
+                                        /*return BlocProvider(
                                           create: (context) => CustomerInfoBloc(
                                               CustomerInfoStateInitial(), customer),
                                           child: CustomerInfo(
@@ -117,12 +137,11 @@ class CustomerQuery extends StatelessWidget {
                                               bloc.add(CustomerQueryEventRemoveFromList(customer));
                                             },
                                           ),
-
-                                        );
+                                        );*/
                                       },
                                     ),
-                                  ),
-                                );
+                                  ),*/
+                                    );
                                 if (index == 0 ||
                                     customers[index - 1].name.substring(0, 1).toUpperCase() !=
                                         initialLetter) {
