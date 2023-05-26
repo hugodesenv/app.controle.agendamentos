@@ -10,11 +10,9 @@ class CustomerNewBloc extends Bloc<CustomerNewEvent, CustomerNewState> {
   Customer _customer = Customer.empty();
 
   CustomerNewBloc(super.initialState, {required arguments}) {
-    print("* oi");
     on<CustomerNewEventSubmitted>(_submitted);
     on<CustomerNewEventOnChanged>(_onChanged);
     on<CustomerNewEventEditMode>(_editMode);
-
   }
 
   get formKeyMain => _formKeyMain;
