@@ -6,9 +6,7 @@ import 'package:agendamentos/pages/customer/new/bloc/customer_new_bloc.dart';
 import 'package:agendamentos/pages/customer/new/bloc/customer_new_event.dart';
 import 'package:agendamentos/pages/customer/new/bloc/customer_new_state.dart';
 import 'package:agendamentos/pages/customer/new/customer_new.dart';
-import 'package:agendamentos/pages/customer/query/bloc/customer_query_bloc.dart';
 import 'package:agendamentos/pages/customer/query/bloc/customer_query_event.dart';
-import 'package:agendamentos/pages/customer/query/bloc/customer_query_state.dart';
 import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -177,32 +175,35 @@ class CustomerInfo extends StatelessWidget {
       PopupMenuItem(
         child: const Text('Excluir', style: TextStyle(color: Colors.red)),
         onTap: () async {
-          Future.delayed(
+          await Future.delayed(
             const Duration(seconds: 0),
-            () => Dialogs.materialDialog(
-              context: buildContext,
-              title: 'Confirmação',
-              msg: 'Deseja excluir o cliente?',
-              actions: [
-                IconsButton(
-                  onPressed: () {
-                    BlocProvider.of<CustomerInfoBloc>(buildContext).add(CustomerInfoEventDelete());
-                  },
-                  text: 'Sim',
-                  iconData: Icons.delete,
-                  color: Colors.red,
-                  textStyle: const TextStyle(color: Colors.white),
-                  iconColor: Colors.white,
-                ),
-                IconsOutlineButton(
-                  onPressed: () => Navigator.pop(buildContext),
-                  text: 'Não',
-                  iconData: Icons.cancel_outlined,
-                  textStyle: const TextStyle(color: Colors.grey),
-                  iconColor: Colors.grey,
-                ),
-              ],
-            ),
+            () async {
+              await Dialogs.materialDialog(
+                context: buildContext,
+                title: 'Confirmação',
+                msg: 'Deseja excluir o cliente?',
+                actions: [
+                  IconsButton(
+                    onPressed: () {
+                      Navigator.pop(buildContext);
+                      BlocProvider.of<CustomerInfoBloc>(buildContext).add(CustomerInfoEventDelete());
+                    },
+                    text: 'Sim',
+                    iconData: Icons.delete,
+                    color: Colors.red,
+                    textStyle: const TextStyle(color: Colors.white),
+                    iconColor: Colors.white,
+                  ),
+                  IconsOutlineButton(
+                    onPressed: () => Navigator.pop(buildContext),
+                    text: 'Não',
+                    iconData: Icons.cancel_outlined,
+                    textStyle: const TextStyle(color: Colors.grey),
+                    iconColor: Colors.grey,
+                  ),
+                ],
+              );
+            },
           );
         },
       ),

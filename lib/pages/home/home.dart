@@ -47,6 +47,7 @@ class Home extends StatelessWidget {
         width: 150.0,
         child: Center(
           child: ListTile(
+            onTap: () => Navigator.pushNamed(context, routeCustomerNew),
             title: Text(
               pTitle,
               style:

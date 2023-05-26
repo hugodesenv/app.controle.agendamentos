@@ -4,7 +4,6 @@ import 'package:agendamentos/pages/customer/import/bloc/customer_import_event.da
 import 'package:agendamentos/pages/customer/import/bloc/customer_import_state.dart';
 import 'package:agendamentos/pages/customer/import/customer_import.dart';
 import 'package:agendamentos/pages/customer/info/bloc/customer_info_bloc.dart';
-import 'package:agendamentos/pages/customer/info/bloc/customer_info_event.dart';
 import 'package:agendamentos/pages/customer/info/bloc/customer_info_state.dart';
 import 'package:agendamentos/pages/customer/info/customer_info.dart';
 import 'package:agendamentos/pages/customer/new/bloc/customer_new_bloc.dart';

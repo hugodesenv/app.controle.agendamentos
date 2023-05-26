@@ -17,11 +17,13 @@ class CustomerImport extends StatelessWidget {
         bloc: bloc,
         builder: (_, state) {
           bool isLoading = state is CustomerImportStateLoading;
-          List<Contact> contacts = state is CustomerImportStateContacts ? state.contacts : [];
+          List<Contact> contacts =
+              state is CustomerImportStateContacts ? state.contacts : [];
           return Skeleton(
             isLoading: isLoading,
             skeleton: SkeletonListView(
-                padding: const EdgeInsets.only(left: 10, top: 5, right: 10, bottom: 10)),
+                padding: const EdgeInsets.only(
+                    left: 10, top: 5, right: 10, bottom: 10)),
             child: contacts.isEmpty
                 ? const Center(child: Text('Nenhum registro encontrado'))
                 : Card(
@@ -29,11 +31,13 @@ class CustomerImport extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
                         Padding(
-                          padding: const EdgeInsets.only(bottom: 20, top: 20, left: 5, right: 5),
+                          padding: const EdgeInsets.only(
+                              bottom: 20, top: 20, left: 5, right: 5),
                           child: Text(
                             'Contatos do dispositivo',
                             style: TextStyle(
-                                fontWeight: FontWeight.w700, color: Theme.of(context).primaryColor),
+                                fontWeight: FontWeight.w700,
+                                color: Theme.of(context).primaryColor),
                             textAlign: TextAlign.center,
                           ),
                         ),
@@ -47,28 +51,14 @@ class CustomerImport extends StatelessWidget {
                               );
                             },
                             itemCount: contacts.length,
-                            separatorBuilder: (BuildContext context, int index) => const Divider(),
+                            separatorBuilder:
+                                (BuildContext context, int index) =>
+                                    const Divider(),
                           ),
                         ),
                       ],
                     ),
                   ),
-          );
-
-          if (state is CustomerImportStateContacts) {
-            return ListView.builder(
-              itemBuilder: (_, index) {
-                Contact contact = state.contacts[index];
-                return ListTile(
-                  title: Text(contact.displayName!),
-                );
-              },
-            );
-          }
-          return Center(
-            child: isLoading
-                ? const CircularProgressIndicator()
-                : const Text('Nenhum registro encontrado'),
           );
         },
       ),

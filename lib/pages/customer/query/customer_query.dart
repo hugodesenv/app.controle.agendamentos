@@ -17,8 +17,8 @@ class CustomerQuery extends StatelessWidget {
         super(key: key);
 
   @override
-  Widget build(BuildContext buildContext) {
-    var bloc = BlocProvider.of<CustomerQueryBloc>(buildContext);
+  Widget build(BuildContext context) {
+    var bloc = BlocProvider.of<CustomerQueryBloc>(context);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Clientes'),
@@ -31,17 +31,11 @@ class CustomerQuery extends StatelessWidget {
             itemBuilder: (_) => [
               PopupMenuItem(
                 child: const Text('Novo'),
-                onTap: () async => await Navigator.pushNamed(
-                  buildContext,
-                  routeCustomerNew,
-                ),
+                onTap: () async => await _onTapNew(context),
               ),
               PopupMenuItem(
                 child: const Text('Importar'),
-                onTap: () async => await Navigator.pushNamed(
-                  buildContext,
-                  routeCustomerImport,
-                ),
+                onTap: () async => await _onTapImport(context),
               ),
             ],
           ),
@@ -126,12 +120,26 @@ class CustomerQuery extends StatelessWidget {
     );
   }
 
-  Future _onTapCustomer(BuildContext buildContext, Customer customer) async {
+  Future _onTapCustomer(BuildContext context, Customer customer) async {
     var args = ArgsCustomerInfo(
       customer: customer,
-      customerQueryBloc: BlocProvider.of<CustomerQueryBloc>(buildContext),
+      customerQueryBloc: BlocProvider.of<CustomerQueryBloc>(context),
     );
 
-    await Navigator.pushNamed(buildContext, routeCustomerInfo, arguments: args);
+    await Navigator.pushNamed(context, routeCustomerInfo, arguments: args);
+  }
+
+  Future _onTapNew(BuildContext context) async {
+    await Future.delayed(
+      Duration.zero,
+      () async => await Navigator.pushNamed(context, routeCustomerNew),
+    );
+  }
+
+  Future _onTapImport(BuildContext context) async {
+    await Future.delayed(
+      Duration.zero,
+      () async => await Navigator.pushNamed(context, routeCustomerImport),
+    );
   }
 }

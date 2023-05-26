@@ -1,5 +1,3 @@
-import '../../../../model/arguments/argsCustomerInfo.dart';
-
 abstract class CustomerInfoEvent {}
 
 class CustomerInfoEventInitial extends CustomerInfoEvent {}

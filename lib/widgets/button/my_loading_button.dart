@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+// ignore: must_be_immutable
 class MyLoadingButton extends StatelessWidget {
   VoidCallback _onPressed = () {};
   Widget? _title;

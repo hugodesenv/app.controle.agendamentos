@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:agendamentos/pages/sign_in/bloc/sign_in_bloc.dart';
 import 'package:agendamentos/pages/sign_in/bloc/sign_in_event.dart';
 import 'package:agendamentos/pages/sign_in/bloc/sign_in_state.dart';
@@ -17,7 +15,8 @@ class MyApp extends StatelessWidget {
     Color mainColor = Colors.indigo;
     return MaterialApp(
       home: BlocProvider<SignInBloc>(
-        create: (_) => SignInBloc(SignInStateInitial())..add(SignInEventAuthenticated()),
+        create: (_) =>
+            SignInBloc(SignInStateInitial())..add(SignInEventAuthenticated()),
         child: const SignIn(),
       ),
       title: 'Skedol',
@@ -71,7 +70,8 @@ class MyApp extends StatelessWidget {
             fontWeight: FontWeight.w600,
           ),
           contentTextStyle: TextStyle(fontSize: 14, color: mainColor),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
           shadowColor: mainColor,
         ),
         elevatedButtonTheme: ElevatedButtonThemeData(
