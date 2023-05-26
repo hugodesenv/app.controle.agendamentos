@@ -50,8 +50,6 @@ dependencies:
   cloud_firestore: ^4.7.1
   brasil_fields: ^1.13.1
   material_dialogs: ^1.1.4
-  # manter instâncias em memória, a princípio para usar o bloc em várias telas
-  get_it: ^7.6.0
 
 dev_dependencies:
   flutter_test:

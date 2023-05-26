@@ -1,8 +1,23 @@
+import '../../../../model/customer.dart';
+
 enum TypeSuccess { tpDelete }
 
 abstract class CustomerInfoState {}
 
 class CustomerInfoStateInitial extends CustomerInfoState {}
+
+//
+class CustomerInfoStateDeleted extends CustomerInfoState {
+  final Customer _customer;
+  final String _message;
+
+  CustomerInfoStateDeleted(this._customer, this._message);
+
+  Customer get customer => _customer;
+
+  String get message => _message;
+}
+//
 
 class CustomerInfoStateLoading extends CustomerInfoState {
   final bool _isBusy;

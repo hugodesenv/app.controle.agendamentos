@@ -67,7 +67,7 @@ class Home extends StatelessWidget {
       bloc: bloc,
       listener: (context, state) async {
         if (state is HomeStateSignOut) {
-          Navigator.pushReplacementNamed(context, ROUTE_LOGIN);
+          Navigator.pushReplacementNamed(context, routeLogin);
         }
       },
       child: BlocBuilder(
@@ -131,7 +131,7 @@ class Home extends StatelessWidget {
                     const Divider(),
                     ListTile(
                       leading: const Icon(Icons.person_outline),
-                      onTap: () => Navigator.pushNamed(context, ROUTE_CUSTOMER_QUERY),
+                      onTap: () => Navigator.pushNamed(context, routeCustomerQuery),
                       title: const Text('Clientes'),
                     ),
                     ListTile(

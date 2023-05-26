@@ -9,10 +9,12 @@ class CustomerNewBloc extends Bloc<CustomerNewEvent, CustomerNewState> {
   final _formKeyMain = GlobalKey<FormState>();
   Customer _customer = Customer.empty();
 
-  CustomerNewBloc(super.initialState) {
+  CustomerNewBloc(super.initialState, {required arguments}) {
+    print("* oi");
     on<CustomerNewEventSubmitted>(_submitted);
     on<CustomerNewEventOnChanged>(_onChanged);
     on<CustomerNewEventEditMode>(_editMode);
+
   }
 
   get formKeyMain => _formKeyMain;
@@ -25,7 +27,7 @@ class CustomerNewBloc extends Bloc<CustomerNewEvent, CustomerNewState> {
     if (isValid) {
       var repository = CustomerRepository.instance;
       _customer.id = await repository.save(_customer);
-      emit(CustomerNewStateSuccess());
+      emit(CustomerNewStateSuccess(_customer));
     }
   }
 

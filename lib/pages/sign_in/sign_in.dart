@@ -54,7 +54,7 @@ class SignIn extends StatelessWidget {
             bloc: bloc,
             listener: (_, state) async {
               if (state is SignInStateSuccess) {
-                Navigator.pushReplacementNamed(context, ROUTE_HOME);
+                Navigator.pushReplacementNamed(context, routeHome);
               } else if (state is SignInStateFailure) {
                 await _simpleDialog(context, state.message);
               } else if (state is SignInStateResetPassword) {
@@ -186,7 +186,7 @@ class SignIn extends StatelessWidget {
         bloc: bloc,
         listener: (_, state) {
           if (state is SignInStateGoToHome) {
-            Navigator.pushReplacementNamed(context, ROUTE_HOME);
+            Navigator.pushReplacementNamed(context, routeHome);
           }
         },
         child: BlocBuilder(

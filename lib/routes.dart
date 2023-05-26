@@ -1,10 +1,12 @@
-import 'package:agendamentos/main.dart';
-
-import 'package:agendamentos/model/customer.dart';
+import 'package:agendamentos/model/arguments/argsCustomerInfo.dart';
 import 'package:agendamentos/pages/customer/import/bloc/customer_import_bloc.dart';
 import 'package:agendamentos/pages/customer/import/bloc/customer_import_event.dart';
 import 'package:agendamentos/pages/customer/import/bloc/customer_import_state.dart';
 import 'package:agendamentos/pages/customer/import/customer_import.dart';
+import 'package:agendamentos/pages/customer/info/bloc/customer_info_bloc.dart';
+import 'package:agendamentos/pages/customer/info/bloc/customer_info_event.dart';
+import 'package:agendamentos/pages/customer/info/bloc/customer_info_state.dart';
+import 'package:agendamentos/pages/customer/info/customer_info.dart';
 import 'package:agendamentos/pages/customer/new/bloc/customer_new_bloc.dart';
 import 'package:agendamentos/pages/customer/new/bloc/customer_new_state.dart';
 import 'package:agendamentos/pages/customer/new/customer_new.dart';
@@ -18,20 +20,20 @@ import 'package:agendamentos/pages/sign_in/bloc/sign_in_bloc.dart';
 import 'package:agendamentos/pages/sign_in/bloc/sign_in_event.dart';
 import 'package:agendamentos/pages/sign_in/bloc/sign_in_state.dart';
 import 'package:agendamentos/pages/sign_in/sign_in.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'pages/home/home.dart';
 
-const ROUTE_HOME = '/home';
-const ROUTE_LOGIN = '/login';
-const ROUTE_CUSTOMER_QUERY = '/customer_query';
-const ROUTE_CUSTOMER_NEW = '/customer_new';
-const ROUTE_CUSTOMER_IMPORT = '/customer_import';
+const routeHome = '/home';
+const routeLogin = '/login';
+const routeCustomerQuery = '/customer_query';
+const routeCustomerNew = '/customer_new';
+const routeCustomerImport = '/customer_import';
+const routeCustomerInfo = '/customer_info';
 
 appRoutes(RouteSettings settings) {
-  if (settings.name == ROUTE_HOME) {
+  if (settings.name == routeHome) {
     return MaterialPageRoute(
       builder: (context) {
         return BlocProvider(
@@ -42,7 +44,7 @@ appRoutes(RouteSettings settings) {
     );
   }
 
-  if (settings.name == ROUTE_LOGIN) {
+  if (settings.name == routeLogin) {
     return MaterialPageRoute(
       builder: (context) {
         return BlocProvider(
@@ -53,39 +55,49 @@ appRoutes(RouteSettings settings) {
     );
   }
 
-  if (settings.name == ROUTE_CUSTOMER_QUERY) {
+  if (settings.name == routeCustomerQuery) {
     return MaterialPageRoute(
       builder: (context) {
         return BlocProvider(
-          create: (_) =>
-              CustomerQueryBloc(CustomerQueryStateLoading(true))..add(CustomerQueryEventFetchAll()),
-          child: const CustomerQuery(),
+          create: (_) => CustomerQueryBloc(CustomerQueryStateLoading(true))..add(CustomerQueryEventFetchAll()),
+          child: CustomerQuery(),
         );
       },
     );
   }
 
-  if (settings.name == ROUTE_CUSTOMER_NEW) {
-    var callback = settings.arguments as Function(Customer customer);
+  if (settings.name == routeCustomerNew) {
     return MaterialPageRoute(
-      builder: (context) {
+      builder: (_) {
         return BlocProvider(
-          create: (_) => CustomerNewBloc(CustomerNewStateInitial()),
-          child: CustomerNew(onSaved: callback),
+          create: (_) => CustomerNewBloc(CustomerNewStateInitial(), arguments: null),
+          child: const CustomerNew(),
         );
       },
     );
   }
 
-  if (settings.name == ROUTE_CUSTOMER_IMPORT) {
+  if (settings.name == routeCustomerImport) {
     return MaterialPageRoute(
       builder: (context) {
         return BlocProvider(
-          create: (context) =>
-              CustomerImportBloc(CustomerImportStateInitial())..add(CustomerImportEventFetchAll()),
+          create: (context) => CustomerImportBloc(CustomerImportStateInitial())..add(CustomerImportEventFetchAll()),
           child: const CustomerImport(),
         );
       },
+    );
+  }
+
+  if (settings.name == routeCustomerInfo) {
+    var args = settings.arguments as ArgsCustomerInfo;
+    return MaterialPageRoute(
+      builder: (context) => BlocProvider(
+        create: (_) => CustomerInfoBloc(
+          CustomerInfoStateInitial(),
+          arguments: args,
+        ),
+        child: const CustomerInfo(),
+      ),
     );
   }
 }

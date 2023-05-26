@@ -1,5 +1,3 @@
-import 'package:agendamentos/assets/EnumTypeOpenCustomerQuery.dart';
-
 import '../../../../model/customer.dart';
 
 abstract class CustomerQueryEvent {}
@@ -22,14 +20,6 @@ class CustomerQueryEventAddToList extends CustomerQueryEvent {
 
 class CustomerQueryEventFetchAll extends CustomerQueryEvent {}
 
-class CustomerQueryEventOpen extends CustomerQueryEvent {
-  final TypeOpen _typeOpen;
-
-  CustomerQueryEventOpen(this._typeOpen);
-
-  TypeOpen get typeOpen => _typeOpen;
-}
-
 class CustomerQueryEventOnChangedFilter extends CustomerQueryEvent {
   final String _value;
 
@@ -37,6 +27,3 @@ class CustomerQueryEventOnChangedFilter extends CustomerQueryEvent {
 
   String get value => _value.toLowerCase();
 }
-
-//remover dps...
-class CustomerQueryEventTeste extends CustomerQueryEvent {}

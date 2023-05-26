@@ -1,4 +1,4 @@
-import 'package:agendamentos/model/generic_model.dart';
+import 'package:agendamentos/model/genericModel.dart';
 
 class Customer extends GenericModel {
   String _name;
