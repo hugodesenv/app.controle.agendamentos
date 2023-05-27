@@ -11,10 +11,10 @@ class CustomerNewEventOnChanged extends CustomerNewEvent {
   CustomerNewEventOnChanged({this.name, this.cellphone});
 }
 
-class CustomerNewEventEditMode extends CustomerNewEvent {
+class CustomerNewEventInitial extends CustomerNewEvent {
   final Customer _customer;
 
-  CustomerNewEventEditMode(this._customer);
+  CustomerNewEventInitial({required customer}) : _customer = customer ?? Customer.empty();
 
   Customer get customer => _customer;
 }

@@ -12,26 +12,26 @@ class CustomerNewBloc extends Bloc<CustomerNewEvent, CustomerNewState> {
   CustomerNewBloc(super.initialState) {
     on<CustomerNewEventSubmitted>(_submitted);
     on<CustomerNewEventOnChanged>(_onChanged);
-    on<CustomerNewEventEditMode>(_editMode);
+    on<CustomerNewEventInitial>(_initial);
   }
 
   get formKeyMain => _formKeyMain;
 
-  Customer get getCustomer => _customer;
-
-  set customer(Customer value) {
-    _customer = value;
+  ///when the screen open, in insert or edit mode
+  _initial(event, emit) {
+    _customer = event.customer;
+    emit(CustomerNewStateLoaded(customer: _customer));
   }
 
-  /// when the person saves the customer
+  /// when the person saves the customer!
   Future _submitted(CustomerNewEventSubmitted event, emit) async {
     bool isValid = _formKeyMain.currentState!.validate();
 
     if (isValid) {
       try {
         var repository = CustomerRepository.instance;
-        getCustomer.id = await repository.save(getCustomer);
-        emit(CustomerNewStateSuccess(getCustomer, 'Cliente cadastrado com sucesso!'));
+        _customer.id = await repository.save(_customer);
+        emit(CustomerNewStateSuccess(_customer, 'Cliente cadastrado com sucesso!'));
       } catch (e) {
         emit(CustomerNewStateFailure('Não foi possível cadastrar o cliente, tente novamente!'));
       }
@@ -40,15 +40,9 @@ class CustomerNewBloc extends Bloc<CustomerNewEvent, CustomerNewState> {
 
   ///when the field is changed
   _onChanged(CustomerNewEventOnChanged event, emit) {
-    customer = getCustomer.copyWith(
+    _customer = _customer.copyWith(
       name: event.name,
       cellphone: event.cellphone,
     );
-  }
-
-  ///when the screen is edit state
-  _editMode(event, emit) {
-    customer = event.customer;
-    emit(CustomerNewStateLoaded());
   }
 }

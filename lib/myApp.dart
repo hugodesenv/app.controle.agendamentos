@@ -15,8 +15,7 @@ class MyApp extends StatelessWidget {
     Color mainColor = Colors.indigo;
     return MaterialApp(
       home: BlocProvider<SignInBloc>(
-        create: (_) =>
-            SignInBloc(SignInStateInitial())..add(SignInEventAuthenticated()),
+        create: (_) => SignInBloc(SignInStateInitial())..add(SignInEventAuthenticated()),
         child: const SignIn(),
       ),
       title: 'Skedol',
@@ -42,16 +41,24 @@ class MyApp extends StatelessWidget {
           color: Colors.white,
           elevation: 1,
           shadowColor: Colors.black26,
-          titleTextStyle: GoogleFonts.sora(
-            color: Colors.black54,
+          titleTextStyle: GoogleFonts.nunitoSans(
+            color: Colors.grey[700],
             fontWeight: FontWeight.w600,
-            fontSize: 16,
+            fontSize: 15,
           ),
           iconTheme: const IconThemeData(color: Colors.black54),
         ),
         hintColor: mainColor,
-        snackBarTheme: const SnackBarThemeData(backgroundColor: Colors.indigo),
-        fontFamily: GoogleFonts.sora().fontFamily,
+        snackBarTheme: const SnackBarThemeData(
+          backgroundColor: Colors.indigo,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(12),
+              topRight: Radius.circular(12),
+            ),
+          ),
+        ),
+        fontFamily: GoogleFonts.nunitoSans().fontFamily,
         progressIndicatorTheme: ProgressIndicatorThemeData(
           color: Colors.pinkAccent,
           circularTrackColor: mainColor,
@@ -70,8 +77,7 @@ class MyApp extends StatelessWidget {
             fontWeight: FontWeight.w600,
           ),
           contentTextStyle: TextStyle(fontSize: 14, color: mainColor),
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
           shadowColor: mainColor,
         ),
         elevatedButtonTheme: ElevatedButtonThemeData(

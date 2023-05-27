@@ -18,20 +18,26 @@ import '../../../assets/constants.dart';
 class CustomerInfo extends StatelessWidget {
   final ArgsCustomerInfo argument;
 
-  const CustomerInfo({Key? key, required this.argument}) : super(key: key);
+  TextEditingController _nameController;
+  TextEditingController _cellphoneController;
+
+  CustomerInfo({Key? key, required this.argument})
+      : _nameController = TextEditingController(text: argument.customer.name),
+        _cellphoneController = TextEditingController(text: argument.customer.cellphone),
+        super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var bloc = BlocProvider.of<CustomerInfoBloc>(context);
-    bloc.customer = argument.customer;
     var blocQuery = argument.customerQueryBloc;
+    var customer = Customer.empty();
 
     return Scaffold(
       appBar: AppBar(
         title: const Text('Info.'),
         actions: [
           PopupMenuButton(
-            itemBuilder: (_) => _menuWidgets(context),
+            itemBuilder: (_) => _menuWidgets(context, customer),
           ),
         ],
       ),
@@ -53,6 +59,13 @@ class CustomerInfo extends StatelessWidget {
           bloc: bloc,
           builder: (_, state) {
             bool isWhatsAppLoading = state is CustomerInfoStateLoading && state.isBusy;
+
+            if (state is CustomerInfoStateRefresh) {
+              customer = state.customer;
+              _nameController.text = customer.name;
+              _cellphoneController.text = customer.cellphone;
+            }
+
             return Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
@@ -62,7 +75,7 @@ class CustomerInfo extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       Text(
-                        bloc.customer.name,
+                        _nameController.text,
                         textAlign: TextAlign.center,
                         style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
                       ),
@@ -74,7 +87,7 @@ class CustomerInfo extends StatelessWidget {
                             const Icon(Icons.phone),
                             Container(
                               padding: const EdgeInsets.only(left: 15),
-                              child: Text(UtilBrasilFields.obterTelefone(bloc.customer.cellphone)),
+                              child: Text(UtilBrasilFields.obterTelefone(_cellphoneController.text)),
                             ),
                           ],
                         ),
@@ -88,7 +101,7 @@ class CustomerInfo extends StatelessWidget {
                                 style: TextStyle(color: Color(COLOR_WHATSAPP), fontWeight: FontWeight.w700),
                               )
                             : ElevatedButton(
-                                onPressed: () => _onTapWhatsApp(context, bloc.customer.cellphone),
+                                onPressed: () => _onTapWhatsApp(context, customer.cellphone),
                                 style: ElevatedButton.styleFrom(backgroundColor: const Color(COLOR_WHATSAPP)),
                                 child: const Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
@@ -152,29 +165,15 @@ class CustomerInfo extends StatelessWidget {
     );
   }
 
-  Future onTapEdit(BuildContext buildContext, Customer customer) async {
-    Future.delayed(
-      const Duration(seconds: 0),
-      () async {
-        var args = ArgsCustomerNew(
-          customer: customer,
-          queryBloc: BlocProvider.of(buildContext),
-        );
-
-        await Navigator.pushNamed(
-          buildContext,
-          routeCustomerNew,
-          arguments: args,
-        );
-      },
-    );
-  }
-
-  List<PopupMenuEntry<dynamic>> _menuWidgets(buildContext) {
+  List<PopupMenuEntry<dynamic>> _menuWidgets(buildContext, customer) {
     return [
       PopupMenuItem(
         child: const Text('Alterar'),
-        onTap: () {},
+        onTap: () async => await _onTapEdit(
+          buildContext,
+          BlocProvider.of<CustomerInfoBloc>(buildContext),
+          customer,
+        ),
       ),
       PopupMenuItem(
         child: const Text('Excluir', style: TextStyle(color: Colors.red)),
@@ -214,9 +213,19 @@ class CustomerInfo extends StatelessWidget {
     ];
   }
 
-  _onTapWhatsApp(BuildContext buildContext, String cellphone) {
+  _onTapWhatsApp(buildContext, cellphone) {
     BlocProvider.of<CustomerInfoBloc>(buildContext).add(
       CustomerInfoEventOpenWhatsApp(cellphone),
+    );
+  }
+
+  Future _onTapEdit(context, bloc, customer) async {
+    await Future.delayed(
+      Duration.zero,
+      () async {
+        var args = ArgsCustomerNew.info(infoBloc: bloc, customer: customer);
+        await Navigator.pushNamed(context, routeCustomerNew, arguments: args);
+      },
     );
   }
 }

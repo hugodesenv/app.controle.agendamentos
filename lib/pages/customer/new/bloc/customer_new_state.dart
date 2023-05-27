@@ -23,4 +23,10 @@ class CustomerNewStateFailure extends CustomerNewState {
   String get error => _error;
 }
 
-class CustomerNewStateLoaded extends CustomerNewState {}
+class CustomerNewStateLoaded extends CustomerNewState {
+  final Customer _customer;
+
+  CustomerNewStateLoaded({required customer}) : _customer = customer;
+
+  Customer get customer => _customer;
+}

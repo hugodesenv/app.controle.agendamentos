@@ -6,7 +6,14 @@ abstract class CustomerInfoState {}
 
 class CustomerInfoStateInitial extends CustomerInfoState {}
 
-//
+class CustomerInfoStateRefresh extends CustomerInfoState {
+  final Customer _customer;
+
+  CustomerInfoStateRefresh({required customer}) : _customer = customer;
+
+  Customer get customer => _customer;
+}
+
 class CustomerInfoStateDeleted extends CustomerInfoState {
   final Customer _customer;
   final String _message;
@@ -17,7 +24,6 @@ class CustomerInfoStateDeleted extends CustomerInfoState {
 
   String get message => _message;
 }
-//
 
 class CustomerInfoStateLoading extends CustomerInfoState {
   final bool _isBusy;

@@ -9,14 +9,14 @@ class CustomerInfoBloc extends Bloc<CustomerInfoEvent, CustomerInfoState> {
   late Customer _customer;
 
   CustomerInfoBloc(super.initialState) {
+    on<CustomerInfoEventRefresh>(_refresh);
     on<CustomerInfoEventOpenWhatsApp>(_openWhatsApp);
     on<CustomerInfoEventDelete>(_delete);
   }
 
-  Customer get customer => _customer;
-
-  set customer(Customer value) {
-    _customer = value;
+  Future _refresh(CustomerInfoEventRefresh event, emit) async {
+    _customer = event.customer;
+    emit(CustomerInfoStateRefresh(customer: _customer));
   }
 
   Future _openWhatsApp(CustomerInfoEventOpenWhatsApp event, emit) async {
@@ -31,9 +31,9 @@ class CustomerInfoBloc extends Bloc<CustomerInfoEvent, CustomerInfoState> {
   Future _delete(event, emit) async {
     var repository = CustomerRepository.instance;
 
-    bool res = await repository.delete(customer.id ?? '');
+    bool res = await repository.delete(_customer.id ?? '');
     res
-        ? emit(CustomerInfoStateDeleted(customer, 'Cliente excluído com sucesso!'))
+        ? emit(CustomerInfoStateDeleted(_customer, 'Cliente excluído com sucesso!'))
         : emit(CustomerInfoStateFailure('Houve uma falha na exclusão do cliente...'));
   }
 }

@@ -1,4 +1,5 @@
 import 'package:agendamentos/model/customer.dart';
+import 'package:agendamentos/pages/customer/info/bloc/customer_info_event.dart';
 import 'package:agendamentos/pages/customer/new/bloc/customer_new_event.dart';
 import 'package:agendamentos/pages/customer/new/bloc/customer_new_state.dart';
 import 'package:flutter/material.dart';
@@ -18,11 +19,10 @@ class CustomerNew extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var bloc = BlocProvider.of<CustomerNewBloc>(context);
+
     TextEditingController nameController = TextEditingController();
     TextEditingController cellphoneController = TextEditingController();
-
-    var bloc = BlocProvider.of<CustomerNewBloc>(context);
-    bloc.customer = arguments.customer;
 
     return Scaffold(
       appBar: AppBar(
@@ -38,7 +38,10 @@ class CustomerNew extends StatelessWidget {
         bloc: bloc,
         listener: (_, state) {
           if (state is CustomerNewStateSuccess) {
-            arguments.queryBloc.add(CustomerQueryEventAddToList(state.customer));
+            arguments.fromScreen == TpFromScreen.tQuery
+                ? arguments.queryBloc.add(CustomerQueryEventAddToList(state.customer))
+                : arguments.infoBloc.add(CustomerInfoEventRefresh(customer: state.customer));
+
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.message)));
             Navigator.pop(context);
             return;
@@ -51,13 +54,12 @@ class CustomerNew extends StatelessWidget {
         child: BlocBuilder(
           bloc: bloc,
           builder: (_, state) {
-            Customer customer = bloc.getCustomer;
-            switch (state.runtimeType) {
-              case CustomerNewStateLoaded:
-                nameController.text = customer.name;
-                cellphoneController.text = customer.cellphone;
-                break;
+            if (state is CustomerNewStateLoaded) {
+              print("** loaded new");
+              nameController.text = state.customer.name;
+              cellphoneController.text = state.customer.cellphone;
             }
+
             return Container(
               padding: const EdgeInsets.all(16),
               color: Theme.of(context).highlightColor,

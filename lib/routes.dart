@@ -5,9 +5,11 @@ import 'package:agendamentos/pages/customer/import/bloc/customer_import_event.da
 import 'package:agendamentos/pages/customer/import/bloc/customer_import_state.dart';
 import 'package:agendamentos/pages/customer/import/customer_import.dart';
 import 'package:agendamentos/pages/customer/info/bloc/customer_info_bloc.dart';
+import 'package:agendamentos/pages/customer/info/bloc/customer_info_event.dart';
 import 'package:agendamentos/pages/customer/info/bloc/customer_info_state.dart';
 import 'package:agendamentos/pages/customer/info/customer_info.dart';
 import 'package:agendamentos/pages/customer/new/bloc/customer_new_bloc.dart';
+import 'package:agendamentos/pages/customer/new/bloc/customer_new_event.dart';
 import 'package:agendamentos/pages/customer/new/bloc/customer_new_state.dart';
 import 'package:agendamentos/pages/customer/new/customer_new.dart';
 import 'package:agendamentos/pages/customer/query/bloc/customer_query_bloc.dart';
@@ -71,7 +73,10 @@ appRoutes(RouteSettings settings) {
     return MaterialPageRoute(
       builder: (_) {
         return BlocProvider(
-          create: (_) => CustomerNewBloc(CustomerNewStateInitial()),
+          create: (_) => CustomerNewBloc(CustomerNewStateInitial())
+            ..add(
+              CustomerNewEventInitial(customer: arguments.customer),
+            ),
           child: CustomerNew(arguments: arguments),
         );
       },
@@ -93,7 +98,10 @@ appRoutes(RouteSettings settings) {
     var args = settings.arguments as ArgsCustomerInfo;
     return MaterialPageRoute(
       builder: (context) => BlocProvider(
-        create: (_) => CustomerInfoBloc(CustomerInfoStateInitial()),
+        create: (_) => CustomerInfoBloc(CustomerInfoStateInitial())
+          ..add(
+            CustomerInfoEventRefresh(customer: args.customer),
+          ),
         child: CustomerInfo(argument: args),
       ),
     );
