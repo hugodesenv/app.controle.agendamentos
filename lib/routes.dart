@@ -1,4 +1,5 @@
-import 'package:agendamentos/model/arguments/argsCustomerInfo.dart';
+import 'package:agendamentos/model/arguments/args_customer_info.dart';
+import 'package:agendamentos/model/arguments/args_customer_new.dart';
 import 'package:agendamentos/pages/customer/import/bloc/customer_import_bloc.dart';
 import 'package:agendamentos/pages/customer/import/bloc/customer_import_event.dart';
 import 'package:agendamentos/pages/customer/import/bloc/customer_import_state.dart';
@@ -47,7 +48,8 @@ appRoutes(RouteSettings settings) {
     return MaterialPageRoute(
       builder: (context) {
         return BlocProvider(
-          create: (_) => SignInBloc(SignInStateInitial())..add(SignInEventAuthenticated()),
+          create: (_) =>
+              SignInBloc(SignInStateInitial())..add(SignInEventAuthenticated()),
           child: const SignIn(),
         );
       },
@@ -58,7 +60,8 @@ appRoutes(RouteSettings settings) {
     return MaterialPageRoute(
       builder: (context) {
         return BlocProvider(
-          create: (_) => CustomerQueryBloc(CustomerQueryStateLoading(true))..add(CustomerQueryEventFetchAll()),
+          create: (_) => CustomerQueryBloc(CustomerQueryStateLoading(true))
+            ..add(CustomerQueryEventFetchAll()),
           child: CustomerQuery(),
         );
       },
@@ -66,10 +69,12 @@ appRoutes(RouteSettings settings) {
   }
 
   if (settings.name == routeCustomerNew) {
+    var arguments = settings.arguments as ArgsCustomerNew;
     return MaterialPageRoute(
       builder: (_) {
         return BlocProvider(
-          create: (_) => CustomerNewBloc(CustomerNewStateInitial(), arguments: null),
+          create: (_) =>
+              CustomerNewBloc(CustomerNewStateInitial(), arguments: arguments),
           child: const CustomerNew(),
         );
       },
@@ -80,7 +85,8 @@ appRoutes(RouteSettings settings) {
     return MaterialPageRoute(
       builder: (context) {
         return BlocProvider(
-          create: (context) => CustomerImportBloc(CustomerImportStateInitial())..add(CustomerImportEventFetchAll()),
+          create: (context) => CustomerImportBloc(CustomerImportStateInitial())
+            ..add(CustomerImportEventFetchAll()),
           child: const CustomerImport(),
         );
       },

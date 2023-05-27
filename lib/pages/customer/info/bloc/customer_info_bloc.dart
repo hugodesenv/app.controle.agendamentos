@@ -4,7 +4,7 @@ import 'package:agendamentos/pages/customer/query/bloc/customer_query_bloc.dart'
 import 'package:agendamentos/repository/customer_repository.dart';
 import 'package:agendamentos/repository/launcher_repository.dart';
 import 'package:bloc/bloc.dart';
-import '../../../../model/arguments/argsCustomerInfo.dart';
+import '../../../../model/arguments/args_customer_info.dart';
 import '../../../../model/customer.dart';
 
 class CustomerInfoBloc extends Bloc<CustomerInfoEvent, CustomerInfoState> {
