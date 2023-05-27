@@ -48,8 +48,7 @@ appRoutes(RouteSettings settings) {
     return MaterialPageRoute(
       builder: (context) {
         return BlocProvider(
-          create: (_) =>
-              SignInBloc(SignInStateInitial())..add(SignInEventAuthenticated()),
+          create: (_) => SignInBloc(SignInStateInitial())..add(SignInEventAuthenticated()),
           child: const SignIn(),
         );
       },
@@ -60,8 +59,7 @@ appRoutes(RouteSettings settings) {
     return MaterialPageRoute(
       builder: (context) {
         return BlocProvider(
-          create: (_) => CustomerQueryBloc(CustomerQueryStateLoading(true))
-            ..add(CustomerQueryEventFetchAll()),
+          create: (_) => CustomerQueryBloc(CustomerQueryStateLoading(true))..add(CustomerQueryEventFetchAll()),
           child: CustomerQuery(),
         );
       },
@@ -73,9 +71,8 @@ appRoutes(RouteSettings settings) {
     return MaterialPageRoute(
       builder: (_) {
         return BlocProvider(
-          create: (_) =>
-              CustomerNewBloc(CustomerNewStateInitial(), arguments: arguments),
-          child: const CustomerNew(),
+          create: (_) => CustomerNewBloc(CustomerNewStateInitial()),
+          child: CustomerNew(arguments: arguments),
         );
       },
     );
@@ -85,8 +82,7 @@ appRoutes(RouteSettings settings) {
     return MaterialPageRoute(
       builder: (context) {
         return BlocProvider(
-          create: (context) => CustomerImportBloc(CustomerImportStateInitial())
-            ..add(CustomerImportEventFetchAll()),
+          create: (context) => CustomerImportBloc(CustomerImportStateInitial())..add(CustomerImportEventFetchAll()),
           child: const CustomerImport(),
         );
       },
@@ -97,11 +93,8 @@ appRoutes(RouteSettings settings) {
     var args = settings.arguments as ArgsCustomerInfo;
     return MaterialPageRoute(
       builder: (context) => BlocProvider(
-        create: (_) => CustomerInfoBloc(
-          CustomerInfoStateInitial(),
-          arguments: args,
-        ),
-        child: const CustomerInfo(),
+        create: (_) => CustomerInfoBloc(CustomerInfoStateInitial()),
+        child: CustomerInfo(argument: args),
       ),
     );
   }

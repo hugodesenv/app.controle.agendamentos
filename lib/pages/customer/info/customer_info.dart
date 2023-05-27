@@ -1,12 +1,9 @@
+import 'package:agendamentos/model/arguments/args_customer_info.dart';
 import 'package:agendamentos/model/arguments/args_customer_new.dart';
 import 'package:agendamentos/model/customer.dart';
 import 'package:agendamentos/pages/customer/info/bloc/customer_info_bloc.dart';
 import 'package:agendamentos/pages/customer/info/bloc/customer_info_event.dart';
 import 'package:agendamentos/pages/customer/info/bloc/customer_info_state.dart';
-import 'package:agendamentos/pages/customer/new/bloc/customer_new_bloc.dart';
-import 'package:agendamentos/pages/customer/new/bloc/customer_new_event.dart';
-import 'package:agendamentos/pages/customer/new/bloc/customer_new_state.dart';
-import 'package:agendamentos/pages/customer/new/customer_new.dart';
 import 'package:agendamentos/pages/customer/query/bloc/customer_query_event.dart';
 import 'package:agendamentos/routes.dart';
 import 'package:brasil_fields/brasil_fields.dart';
@@ -15,15 +12,19 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:material_dialogs/dialogs.dart';
 import 'package:material_dialogs/widgets/buttons/icon_button.dart';
 import 'package:material_dialogs/widgets/buttons/icon_outline_button.dart';
+
 import '../../../assets/constants.dart';
 
 class CustomerInfo extends StatelessWidget {
-  const CustomerInfo({Key? key}) : super(key: key);
+  final ArgsCustomerInfo argument;
+
+  const CustomerInfo({Key? key, required this.argument}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var bloc = BlocProvider.of<CustomerInfoBloc>(context);
-    var blocQuery = bloc.customerQueryBloc;
+    bloc.customer = argument.customer;
+    var blocQuery = argument.customerQueryBloc;
 
     return Scaffold(
       appBar: AppBar(
@@ -38,14 +39,12 @@ class CustomerInfo extends StatelessWidget {
         bloc: bloc,
         listener: (_, state) {
           if (state is CustomerInfoStateFailure) {
-            ScaffoldMessenger.of(context)
-                .showSnackBar(SnackBar(content: Text(state.error)));
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.error)));
             return;
           }
           if (state is CustomerInfoStateDeleted) {
             blocQuery.add(CustomerQueryEventRemoveFromList(state.customer));
-            ScaffoldMessenger.of(context)
-                .showSnackBar(SnackBar(content: Text(state.message)));
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.message)));
             Navigator.pop(context);
             return;
           }
@@ -53,22 +52,19 @@ class CustomerInfo extends StatelessWidget {
         child: BlocBuilder(
           bloc: bloc,
           builder: (_, state) {
-            bool isWhatsAppLoading =
-                state is CustomerInfoStateLoading && state.isBusy;
+            bool isWhatsAppLoading = state is CustomerInfoStateLoading && state.isBusy;
             return Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Container(
-                  padding: const EdgeInsets.only(
-                      top: 30, bottom: 10, left: 20, right: 20),
+                  padding: const EdgeInsets.only(top: 30, bottom: 10, left: 20, right: 20),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       Text(
                         bloc.customer.name,
                         textAlign: TextAlign.center,
-                        style: const TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.w700),
+                        style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
                       ),
                       Padding(
                         padding: const EdgeInsets.all(20),
@@ -78,8 +74,7 @@ class CustomerInfo extends StatelessWidget {
                             const Icon(Icons.phone),
                             Container(
                               padding: const EdgeInsets.only(left: 15),
-                              child: Text(UtilBrasilFields.obterTelefone(
-                                  bloc.customer.cellphone)),
+                              child: Text(UtilBrasilFields.obterTelefone(bloc.customer.cellphone)),
                             ),
                           ],
                         ),
@@ -90,16 +85,11 @@ class CustomerInfo extends StatelessWidget {
                             ? const Text(
                                 "Carregando...",
                                 textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    color: Color(COLOR_WHATSAPP),
-                                    fontWeight: FontWeight.w700),
+                                style: TextStyle(color: Color(COLOR_WHATSAPP), fontWeight: FontWeight.w700),
                               )
                             : ElevatedButton(
-                                onPressed: () => _onTapWhatsApp(
-                                    context, bloc.customer.cellphone),
-                                style: ElevatedButton.styleFrom(
-                                    backgroundColor:
-                                        const Color(COLOR_WHATSAPP)),
+                                onPressed: () => _onTapWhatsApp(context, bloc.customer.cellphone),
+                                style: ElevatedButton.styleFrom(backgroundColor: const Color(COLOR_WHATSAPP)),
                                 child: const Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
@@ -170,7 +160,7 @@ class CustomerInfo extends StatelessWidget {
           customer: customer,
           queryBloc: BlocProvider.of(buildContext),
         );
-        
+
         await Navigator.pushNamed(
           buildContext,
           routeCustomerNew,
@@ -200,8 +190,7 @@ class CustomerInfo extends StatelessWidget {
                   IconsButton(
                     onPressed: () {
                       Navigator.pop(buildContext);
-                      BlocProvider.of<CustomerInfoBloc>(buildContext)
-                          .add(CustomerInfoEventDelete());
+                      BlocProvider.of<CustomerInfoBloc>(buildContext).add(CustomerInfoEventDelete());
                     },
                     text: 'Sim',
                     iconData: Icons.delete,

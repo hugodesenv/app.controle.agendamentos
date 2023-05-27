@@ -3,12 +3,14 @@ import 'package:agendamentos/pages/customer/new/bloc/customer_new_event.dart';
 import 'package:agendamentos/pages/customer/new/bloc/customer_new_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
+import '../../../model/arguments/args_customer_new.dart';
 import '../query/bloc/customer_query_event.dart';
 import 'bloc/customer_new_bloc.dart';
 
 class CustomerNew extends StatelessWidget {
-  const CustomerNew({Key? key}) : super(key: key);
+  final ArgsCustomerNew arguments;
+
+  const CustomerNew({Key? key, required this.arguments}) : super(key: key);
 
   SizedBox spaceHeight() {
     return const SizedBox(height: 14);
@@ -18,8 +20,10 @@ class CustomerNew extends StatelessWidget {
   Widget build(BuildContext context) {
     TextEditingController nameController = TextEditingController();
     TextEditingController cellphoneController = TextEditingController();
-    
+
     var bloc = BlocProvider.of<CustomerNewBloc>(context);
+    bloc.customer = arguments.customer;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Novo cliente'),
@@ -34,8 +38,14 @@ class CustomerNew extends StatelessWidget {
         bloc: bloc,
         listener: (_, state) {
           if (state is CustomerNewStateSuccess) {
-            bloc.getCustomerQueryBloc
-                .add(CustomerQueryEventAddToList(state.customer));
+            arguments.queryBloc.add(CustomerQueryEventAddToList(state.customer));
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.message)));
+            Navigator.pop(context);
+            return;
+          }
+          if (state is CustomerNewStateFailure) {
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.error)));
+            return;
           }
         },
         child: BlocBuilder(
@@ -61,8 +71,7 @@ class CustomerNew extends StatelessWidget {
                       TextFormField(
                         decoration: const InputDecoration(labelText: 'Nome'),
                         controller: nameController,
-                        onChanged: (value) =>
-                            bloc.add(CustomerNewEventOnChanged(name: value)),
+                        onChanged: (value) => bloc.add(CustomerNewEventOnChanged(name: value)),
                         validator: (value) {
                           if (value!.isEmpty) {
                             return "Nao pode ficar vazio";
@@ -74,8 +83,7 @@ class CustomerNew extends StatelessWidget {
                       TextFormField(
                         decoration: const InputDecoration(labelText: 'Celular'),
                         controller: cellphoneController,
-                        onChanged: (value) => bloc
-                            .add(CustomerNewEventOnChanged(cellphone: value)),
+                        onChanged: (value) => bloc.add(CustomerNewEventOnChanged(cellphone: value)),
                         validator: (value) {
                           if (value!.isEmpty) {
                             return "Nao pode ficar vazio";

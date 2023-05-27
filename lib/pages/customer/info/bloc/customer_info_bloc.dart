@@ -1,24 +1,23 @@
 import 'package:agendamentos/pages/customer/info/bloc/customer_info_event.dart';
 import 'package:agendamentos/pages/customer/info/bloc/customer_info_state.dart';
-import 'package:agendamentos/pages/customer/query/bloc/customer_query_bloc.dart';
 import 'package:agendamentos/repository/customer_repository.dart';
 import 'package:agendamentos/repository/launcher_repository.dart';
 import 'package:bloc/bloc.dart';
-import '../../../../model/arguments/args_customer_info.dart';
 import '../../../../model/customer.dart';
 
 class CustomerInfoBloc extends Bloc<CustomerInfoEvent, CustomerInfoState> {
-  late ArgsCustomerInfo _arguments;
+  late Customer _customer;
 
-  CustomerInfoBloc(super.initialState, {required arguments}) {
-    _arguments = arguments;
+  CustomerInfoBloc(super.initialState) {
     on<CustomerInfoEventOpenWhatsApp>(_openWhatsApp);
     on<CustomerInfoEventDelete>(_delete);
   }
 
-  Customer get customer => _arguments.customer;
+  Customer get customer => _customer;
 
-  CustomerQueryBloc get customerQueryBloc => _arguments.customerQueryBloc;
+  set customer(Customer value) {
+    _customer = value;
+  }
 
   Future _openWhatsApp(CustomerInfoEventOpenWhatsApp event, emit) async {
     emit(CustomerInfoStateLoading(true));
