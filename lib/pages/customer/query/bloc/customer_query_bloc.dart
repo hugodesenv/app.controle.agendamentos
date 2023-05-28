@@ -8,13 +8,11 @@ class CustomerQueryBloc extends Bloc<CustomerQueryEvent, CustomerQueryState> {
   final List<Customer> _customers = [];
 
   CustomerQueryBloc(super.initialState) {
-    on<CustomerQueryEventFetchAll>(fetchAll);
-    on<CustomerQueryEventRemoveFromList>(removeFromList);
-    on<CustomerQueryEventAddToList>(addToList);
-    on<CustomerQueryEventOnChangedFilter>(changedFilter);
+    on<CustomerQueryEventFetchAll>(_fetchAll);
+    on<CustomerQueryEventOnChangedFilter>(_changedFilter);
   }
 
-  void fetchAll(event, emit) async {
+  void _fetchAll(event, emit) async {
     emit(CustomerQueryStateLoading(true));
 
     var repository = CustomerRepository.instance;
@@ -25,19 +23,7 @@ class CustomerQueryBloc extends Bloc<CustomerQueryEvent, CustomerQueryState> {
     emit(CustomerQueryStateRefreshList(_customers));
   }
 
-  void removeFromList(event, emit) {
-    emit(CustomerQueryStateLoading(true));
-    _customers.remove(event.customer);
-    emit(CustomerQueryStateRefreshList(_customers));
-  }
-
-  void addToList(CustomerQueryEventAddToList event, emit) {
-    emit(CustomerQueryStateLoading(true));
-    _customers.add(event.customer);
-    emit(CustomerQueryStateRefreshList(_customers));
-  }
-
-  void changedFilter(CustomerQueryEventOnChangedFilter event, emit) {
+  void _changedFilter(CustomerQueryEventOnChangedFilter event, emit) {
     String textFilter = event.value;
     List<Customer> tempCustomers = [];
     tempCustomers.addAll(_customers);

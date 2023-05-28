@@ -18,7 +18,7 @@ class CustomerNewBloc extends Bloc<CustomerNewEvent, CustomerNewState> {
   get formKeyMain => _formKeyMain;
 
   ///when the screen open, in insert or edit mode
-  _initial(event, emit) {
+  _initial(CustomerNewEventInitial event, emit) {
     _customer = event.customer;
     emit(CustomerNewStateLoaded(customer: _customer));
   }
@@ -31,9 +31,9 @@ class CustomerNewBloc extends Bloc<CustomerNewEvent, CustomerNewState> {
       try {
         var repository = CustomerRepository.instance;
         _customer.id = await repository.save(_customer);
-        emit(CustomerNewStateSuccess(_customer, 'Cliente cadastrado com sucesso!'));
+        emit(CustomerNewStateSuccess(_customer, 'Processo realizado com sucesso!'));
       } catch (e) {
-        emit(CustomerNewStateFailure('Não foi possível cadastrar o cliente, tente novamente!'));
+        emit(CustomerNewStateFailure('Houve uma falha ao gravar, tente novamente!'));
       }
     }
   }

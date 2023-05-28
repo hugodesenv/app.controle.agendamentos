@@ -19,7 +19,6 @@ class CustomerRepository {
     var collections = await _fireCloud.get();
 
     for (var doc in collections.docs) {
-      print("** fetch data: ${doc.id}");
       Customer customer = Customer.fromJson(doc.data(), doc.id);
       customers.add(customer);
     }

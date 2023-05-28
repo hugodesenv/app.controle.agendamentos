@@ -4,8 +4,8 @@ import 'package:agendamentos/pages/customer/new/bloc/customer_new_event.dart';
 import 'package:agendamentos/pages/customer/new/bloc/customer_new_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 import '../../../model/arguments/args_customer_new.dart';
-import '../query/bloc/customer_query_event.dart';
 import 'bloc/customer_new_bloc.dart';
 
 class CustomerNew extends StatelessWidget {
@@ -24,9 +24,14 @@ class CustomerNew extends StatelessWidget {
     TextEditingController nameController = TextEditingController();
     TextEditingController cellphoneController = TextEditingController();
 
+    handleValues(Customer customer) {
+      nameController.text = customer.name;
+      cellphoneController.text = customer.cellphone;
+    }
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Novo cliente'),
+        title: const Text('Meu cliente'),
         actions: [
           IconButton(
             onPressed: () => bloc.add(CustomerNewEventSubmitted()),
@@ -38,9 +43,7 @@ class CustomerNew extends StatelessWidget {
         bloc: bloc,
         listener: (_, state) {
           if (state is CustomerNewStateSuccess) {
-            arguments.fromScreen == TpFromScreen.tQuery
-                ? arguments.queryBloc.add(CustomerQueryEventAddToList(state.customer))
-                : arguments.infoBloc.add(CustomerInfoEventRefresh(customer: state.customer));
+            arguments.infoBloc.add(CustomerInfoEventRefresh(customer: state.customer));
 
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.message)));
             Navigator.pop(context);
@@ -54,11 +57,7 @@ class CustomerNew extends StatelessWidget {
         child: BlocBuilder(
           bloc: bloc,
           builder: (_, state) {
-            if (state is CustomerNewStateLoaded) {
-              print("** loaded new");
-              nameController.text = state.customer.name;
-              cellphoneController.text = state.customer.cellphone;
-            }
+            state is CustomerNewStateLoaded ? handleValues(state.customer) : null;
 
             return Container(
               padding: const EdgeInsets.all(16),

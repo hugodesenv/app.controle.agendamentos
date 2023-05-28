@@ -2,6 +2,14 @@ import 'package:agendamentos/model/customer.dart';
 
 abstract class CustomerInfoEvent {}
 
+class CustomerInfoEventInitial extends CustomerInfoEvent {
+  final Customer _customer;
+
+  CustomerInfoEventInitial(this._customer);
+
+  Customer get customer => _customer;
+}
+
 class CustomerInfoEventRefresh extends CustomerInfoEvent {
   final Customer _customer;
 

@@ -9,14 +9,20 @@ class CustomerInfoBloc extends Bloc<CustomerInfoEvent, CustomerInfoState> {
   late Customer _customer;
 
   CustomerInfoBloc(super.initialState) {
+    on<CustomerInfoEventInitial>(_initial);
     on<CustomerInfoEventRefresh>(_refresh);
     on<CustomerInfoEventOpenWhatsApp>(_openWhatsApp);
     on<CustomerInfoEventDelete>(_delete);
   }
 
-  Future _refresh(CustomerInfoEventRefresh event, emit) async {
+  void _initial(CustomerInfoEventInitial event, emit) {
     _customer = event.customer;
     emit(CustomerInfoStateRefresh(customer: _customer));
+  }
+
+  Future _refresh(CustomerInfoEventRefresh event, emit) async {
+    _customer = event.customer;
+    emit(CustomerInfoStateRefresh(customer: event.customer));
   }
 
   Future _openWhatsApp(CustomerInfoEventOpenWhatsApp event, emit) async {

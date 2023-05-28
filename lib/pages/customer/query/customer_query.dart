@@ -21,6 +21,36 @@ class CustomerQuery extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var bloc = BlocProvider.of<CustomerQueryBloc>(context);
+
+    Future onTapCustomer(int index) async {
+      var args = ArgsCustomerInfo(customer: customers[index]);
+      await Navigator.pushNamed(
+        context,
+        routeCustomerInfo,
+        arguments: args,
+      );
+      bloc.add(CustomerQueryEventFetchAll());
+    }
+
+    Future onTapNew() async {
+      await Future.delayed(Duration.zero, () async {
+        var args = ArgsCustomerNew.query(queryBloc: bloc);
+
+        await Navigator.pushNamed(
+          context,
+          routeCustomerNew,
+          arguments: args,
+        );
+      });
+    }
+
+    Future onTapImport() async {
+      await Future.delayed(
+        Duration.zero,
+        () async => await Navigator.pushNamed(context, routeCustomerImport),
+      );
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Clientes'),
@@ -33,11 +63,11 @@ class CustomerQuery extends StatelessWidget {
             itemBuilder: (_) => [
               PopupMenuItem(
                 child: const Text('Novo'),
-                onTap: () async => await _onTapNew(context),
+                onTap: () async => await onTapNew(),
               ),
               PopupMenuItem(
                 child: const Text('Importar'),
-                onTap: () async => await _onTapImport(context),
+                onTap: () async => await onTapImport(),
               ),
             ],
           ),
@@ -91,10 +121,7 @@ class CustomerQuery extends StatelessWidget {
                                   style: const TextStyle(fontSize: 13),
                                 ),
                                 trailing: const Icon(Icons.arrow_forward_ios_rounded, size: 10),
-                                onTap: () async {
-                                  await _onTapCustomer(context, customer);
-                                  bloc.add(CustomerQueryEventFetchAll());
-                                },
+                                onTap: () async => await onTapCustomer(index),
                               );
                               if (index == 0 || customers[index - 1].name.substring(0, 1).toUpperCase() != initialLetter) {
                                 return Column(
@@ -128,29 +155,6 @@ class CustomerQuery extends StatelessWidget {
           );
         },
       ),
-    );
-  }
-
-  Future _onTapCustomer(BuildContext context, Customer customer) async {
-    var args = ArgsCustomerInfo(
-      customer: customer,
-      customerQueryBloc: BlocProvider.of<CustomerQueryBloc>(context),
-    );
-
-    await Navigator.pushNamed(context, routeCustomerInfo, arguments: args);
-  }
-
-  Future _onTapNew(BuildContext context) async {
-    await Future.delayed(Duration.zero, () async {
-      var args = ArgsCustomerNew.query(queryBloc: BlocProvider.of<CustomerQueryBloc>(context));
-      await Navigator.pushNamed(context, routeCustomerNew, arguments: args);
-    });
-  }
-
-  Future _onTapImport(BuildContext context) async {
-    await Future.delayed(
-      Duration.zero,
-      () async => await Navigator.pushNamed(context, routeCustomerImport),
     );
   }
 }

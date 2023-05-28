@@ -98,10 +98,7 @@ appRoutes(RouteSettings settings) {
     var args = settings.arguments as ArgsCustomerInfo;
     return MaterialPageRoute(
       builder: (context) => BlocProvider(
-        create: (_) => CustomerInfoBloc(CustomerInfoStateInitial())
-          ..add(
-            CustomerInfoEventRefresh(customer: args.customer),
-          ),
+        create: (_) => CustomerInfoBloc(CustomerInfoStateInitial())..add(CustomerInfoEventInitial(args.customer)),
         child: CustomerInfo(argument: args),
       ),
     );
