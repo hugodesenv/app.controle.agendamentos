@@ -50,14 +50,12 @@ class Home extends StatelessWidget {
             onTap: () => Navigator.pushNamed(context, routeCustomerNew),
             title: Text(
               pTitle,
-              style:
-                  const TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: Colors.black87),
+              style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: Colors.black87),
               textAlign: TextAlign.center,
             ),
             subtitle: const Padding(
               padding: EdgeInsets.only(top: 6),
-              child:
-                  Text('R\$1450,00', textAlign: TextAlign.center, style: TextStyle(fontSize: 12)),
+              child: Text('R\$1450,00', textAlign: TextAlign.center, style: TextStyle(fontSize: 12)),
             ),
           ),
         ),
@@ -153,6 +151,10 @@ class Home extends StatelessWidget {
                   ],
                 ),
               ),
+            ),
+            floatingActionButton: FloatingActionButton(
+              onPressed: () {},
+              child: Icon(Icons.schedule, color: Colors.white),
             ),
           );
         },

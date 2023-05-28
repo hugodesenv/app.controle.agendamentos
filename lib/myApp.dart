@@ -24,6 +24,10 @@ class MyApp extends StatelessWidget {
         primaryColor: mainColor,
         focusColor: Colors.indigoAccent,
         scaffoldBackgroundColor: Colors.white,
+        floatingActionButtonTheme: FloatingActionButtonThemeData(
+          backgroundColor: mainColor,
+          splashColor: Colors.pink,
+        ),
         inputDecorationTheme: InputDecorationTheme(
           filled: true,
           fillColor: const Color(0xFFF8F8F8),
