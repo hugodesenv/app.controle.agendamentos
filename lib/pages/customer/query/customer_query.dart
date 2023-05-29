@@ -1,15 +1,16 @@
+import 'package:agendamentos/assets/utilsConstantes.dart';
 import 'package:agendamentos/model/arguments/args_customer_info.dart';
 import 'package:agendamentos/model/customer.dart';
-import 'package:agendamentos/pages/customer/query/bloc/customer_query_bloc.dart';
-import 'package:agendamentos/pages/customer/query/bloc/customer_query_event.dart';
-import 'package:agendamentos/pages/customer/query/bloc/customer_query_state.dart';
-import 'package:agendamentos/routes.dart';
 import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skeletons/skeletons.dart';
 
+import '../../../assets/routesConstants.dart';
 import '../../../model/arguments/args_customer_new.dart';
+import 'bloc/customer_query_bloc.dart';
+import 'bloc/customer_query_event.dart';
+import 'bloc/customer_query_state.dart';
 
 class CustomerQuery extends StatelessWidget {
   final List<Customer> customers;
@@ -20,33 +21,25 @@ class CustomerQuery extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var bloc = BlocProvider.of<CustomerQueryBloc>(context);
+    var blocQuery = BlocProvider.of<CustomerQueryBloc>(context);
 
     Future onTapCustomer(int index) async {
       var args = ArgsCustomerInfo(customer: customers[index]);
-      await Navigator.pushNamed(
-        context,
-        routeCustomerInfo,
-        arguments: args,
-      );
-      bloc.add(CustomerQueryEventFetchAll());
+      await Navigator.pushNamed(context, routeCustomerInfo, arguments: args);
+      blocQuery.add(CustomerQueryEventFetchAll());
     }
 
     Future onTapNew() async {
-      await Future.delayed(Duration.zero, () async {
-        var args = ArgsCustomerNew.query(queryBloc: bloc);
-
-        await Navigator.pushNamed(
-          context,
-          routeCustomerNew,
-          arguments: args,
-        );
+      await Future.delayed(zeroDuration, () async {
+        var args = ArgsCustomerNew.query(queryBloc: blocQuery);
+        await Navigator.pushNamed(context, routeCustomerNew, arguments: args);
+        blocQuery.add(CustomerQueryEventFetchAll());
       });
     }
 
     Future onTapImport() async {
       await Future.delayed(
-        Duration.zero,
+        zeroDuration,
         () async => await Navigator.pushNamed(context, routeCustomerImport),
       );
     }
@@ -56,7 +49,7 @@ class CustomerQuery extends StatelessWidget {
         title: const Text('Clientes'),
         actions: [
           IconButton(
-            onPressed: () => bloc.add(CustomerQueryEventFetchAll()),
+            onPressed: () => blocQuery.add(CustomerQueryEventFetchAll()),
             icon: const Icon(Icons.refresh),
           ),
           PopupMenuButton(
@@ -74,7 +67,7 @@ class CustomerQuery extends StatelessWidget {
         ],
       ),
       body: BlocBuilder(
-        bloc: bloc,
+        bloc: blocQuery,
         builder: (context, state) {
           bool isLoading = state is CustomerQueryStateLoading && state.busy;
           if (state is CustomerQueryStateRefreshList) {
@@ -94,7 +87,7 @@ class CustomerQuery extends StatelessWidget {
                       suffixIcon: Icon(Icons.search),
                       labelText: 'Filtrar...',
                     ),
-                    onChanged: (value) => bloc.add(CustomerQueryEventOnChangedFilter(value)),
+                    onChanged: (value) => blocQuery.add(CustomerQueryEventOnChangedFilter(value)),
                   ),
                 ),
                 customers.isEmpty

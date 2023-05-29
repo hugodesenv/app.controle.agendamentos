@@ -1,0 +1,1 @@
+const whatsappColor = 0xFF25D366;

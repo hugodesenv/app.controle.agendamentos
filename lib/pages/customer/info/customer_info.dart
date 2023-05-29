@@ -1,128 +1,125 @@
 import 'package:agendamentos/model/arguments/args_customer_info.dart';
-import 'package:agendamentos/model/arguments/args_customer_new.dart';
 import 'package:agendamentos/pages/customer/info/bloc/customer_info_bloc.dart';
-import 'package:agendamentos/pages/customer/info/bloc/customer_info_event.dart';
 import 'package:agendamentos/pages/customer/info/bloc/customer_info_state.dart';
-import 'package:agendamentos/pages/customer/query/bloc/customer_query_event.dart';
-import 'package:agendamentos/routes.dart';
-import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:material_dialogs/dialogs.dart';
 import 'package:material_dialogs/widgets/buttons/icon_button.dart';
 import 'package:material_dialogs/widgets/buttons/icon_outline_button.dart';
 
-import '../../../assets/constants.dart';
+import '../../../assets/colorConstantes.dart';
+import '../../../assets/utilsConstantes.dart';
+import '../../../assets/routesConstants.dart';
+import '../../../model/arguments/args_customer_new.dart';
 import '../../../model/customer.dart';
+import 'bloc/customer_info_event.dart';
 
 class CustomerInfo extends StatelessWidget {
   final ArgsCustomerInfo argument;
 
   const CustomerInfo({Key? key, required this.argument}) : super(key: key);
 
+  void onTapWhatsApp(BuildContext context, String cellphone) {
+    BlocProvider.of<CustomerInfoBloc>(context).add(CustomerInfoEventOpenWhatsApp(cellphone));
+  }
+
+  Future onTapEdit({required BuildContext context, required CustomerInfoBloc infoBloc, required Customer customer}) async {
+    await Future.delayed(
+      zeroDuration,
+      () async {
+        var args = ArgsCustomerNew.info(infoBloc: infoBloc, customer: customer);
+        await Navigator.pushNamed(context, routeCustomerNew, arguments: args);
+      },
+    );
+  }
+
+  List<PopupMenuEntry<dynamic>> menuWidgets(
+    BuildContext context,
+    CustomerInfoBloc infoBloc,
+    Customer customer,
+  ) {
+    return [
+      PopupMenuItem(
+        child: const Text('Alterar'),
+        onTap: () async => await onTapEdit(
+          context: context,
+          customer: customer,
+          infoBloc: infoBloc,
+        ),
+      ),
+      PopupMenuItem(
+        child: const Text('Excluir', style: TextStyle(color: Colors.red)),
+        onTap: () async {
+          await Future.delayed(
+            zeroDuration,
+            () async {
+              await Dialogs.materialDialog(
+                context: context,
+                title: 'Confirmação',
+                msg: 'Deseja excluir o cliente?',
+                actions: [
+                  IconsButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                      BlocProvider.of<CustomerInfoBloc>(context).add(CustomerInfoEventDelete());
+                    },
+                    text: 'Sim',
+                    iconData: Icons.delete,
+                    color: Colors.red,
+                    textStyle: const TextStyle(color: Colors.white),
+                    iconColor: Colors.white,
+                  ),
+                  IconsOutlineButton(
+                    onPressed: () => Navigator.pop(context),
+                    text: 'Não',
+                    iconData: Icons.cancel_outlined,
+                    textStyle: const TextStyle(color: Colors.grey),
+                    iconColor: Colors.grey,
+                  ),
+                ],
+              );
+            },
+          );
+        },
+      ),
+    ];
+  }
+
   @override
   Widget build(BuildContext context) {
+    Customer customer = Customer.empty();
     var nameController = TextEditingController();
     var cellphoneController = TextEditingController();
-    Customer customer = Customer.empty();
-
-    var bloc = BlocProvider.of<CustomerInfoBloc>(context);
-
-    handleValues() {
-      nameController.text = customer.name;
-      cellphoneController.text = customer.cellphone;
-    }
-
-    onTapWhatsApp() {
-      BlocProvider.of<CustomerInfoBloc>(context).add(
-        CustomerInfoEventOpenWhatsApp(customer.cellphone),
-      );
-    }
-
-    Future onTapEdit() async {
-      await Future.delayed(
-        Duration.zero,
-        () async {
-          var args = ArgsCustomerNew.info(infoBloc: bloc, customer: customer);
-          await Navigator.pushNamed(context, routeCustomerNew, arguments: args);
-        },
-      );
-    }
-
-    List<PopupMenuEntry<dynamic>> menuWidgets() {
-      return [
-        PopupMenuItem(
-          child: const Text('Alterar'),
-          onTap: () async => await onTapEdit(),
-        ),
-        PopupMenuItem(
-          child: const Text('Excluir', style: TextStyle(color: Colors.red)),
-          onTap: () async {
-            await Future.delayed(
-              const Duration(seconds: 0),
-              () async {
-                await Dialogs.materialDialog(
-                  context: context,
-                  title: 'Confirmação',
-                  msg: 'Deseja excluir o cliente?',
-                  actions: [
-                    IconsButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                        BlocProvider.of<CustomerInfoBloc>(context).add(CustomerInfoEventDelete());
-                      },
-                      text: 'Sim',
-                      iconData: Icons.delete,
-                      color: Colors.red,
-                      textStyle: const TextStyle(color: Colors.white),
-                      iconColor: Colors.white,
-                    ),
-                    IconsOutlineButton(
-                      onPressed: () => Navigator.pop(context),
-                      text: 'Não',
-                      iconData: Icons.cancel_outlined,
-                      textStyle: const TextStyle(color: Colors.grey),
-                      iconColor: Colors.grey,
-                    ),
-                  ],
-                );
-              },
-            );
-          },
-        ),
-      ];
-    }
+    var infoBloc = BlocProvider.of<CustomerInfoBloc>(context);
 
     return Scaffold(
       appBar: AppBar(
         title: const Text('Info.'),
         actions: [
-          PopupMenuButton(
-            itemBuilder: (_) => menuWidgets(),
-          ),
+          PopupMenuButton(itemBuilder: (_) => menuWidgets(context, infoBloc, customer)),
         ],
       ),
       body: BlocListener(
-        bloc: bloc,
+        bloc: infoBloc,
         listener: (_, state) {
           if (state is CustomerInfoStateFailure) {
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.error)));
-            return;
-          }
-          if (state is CustomerInfoStateDeleted) {
+          } else if (state is CustomerInfoStateDeleted) {
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.message)));
             Navigator.pop(context);
-            return;
           }
         },
         child: BlocBuilder(
-          bloc: bloc,
+          bloc: infoBloc,
           builder: (_, state) {
             bool isWhatsAppLoading = state is CustomerInfoStateLoading && state.isBusy;
+
             if (state is CustomerInfoStateRefresh) {
               customer = state.customer;
-              handleValues();
+              nameController.text = customer.name;
+              cellphoneController.text = customer.cellphone;
             }
+
             return Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
@@ -155,11 +152,11 @@ class CustomerInfo extends StatelessWidget {
                             ? const Text(
                                 "Carregando...",
                                 textAlign: TextAlign.center,
-                                style: TextStyle(color: Color(COLOR_WHATSAPP), fontWeight: FontWeight.w700),
+                                style: TextStyle(color: Color(whatsappColor), fontWeight: FontWeight.w700),
                               )
                             : ElevatedButton(
-                                onPressed: () => onTapWhatsApp(),
-                                style: ElevatedButton.styleFrom(backgroundColor: const Color(COLOR_WHATSAPP)),
+                                onPressed: () => onTapWhatsApp(context, customer.cellphone),
+                                style: ElevatedButton.styleFrom(backgroundColor: const Color(whatsappColor)),
                                 child: const Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [

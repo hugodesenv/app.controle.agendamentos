@@ -43,8 +43,9 @@ class CustomerNew extends StatelessWidget {
         bloc: bloc,
         listener: (_, state) {
           if (state is CustomerNewStateSuccess) {
-            arguments.infoBloc.add(CustomerInfoEventRefresh(customer: state.customer));
-
+            // when this screen is invoked by query screen, we don't need to call a
+            // event, else, if this screen was invoked by info screen, in this case, we need to refresh data.
+            arguments.source == TSource.tInfoScreen ? arguments.infoBloc.add(CustomerInfoEventRefresh(customer: state.customer)) : null;
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.message)));
             Navigator.pop(context);
             return;

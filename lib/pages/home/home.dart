@@ -1,13 +1,12 @@
 import 'package:agendamentos/pages/home/bloc/home_bloc.dart';
 import 'package:agendamentos/pages/home/bloc/home_state.dart';
-import 'package:agendamentos/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:material_dialogs/dialogs.dart';
 import 'package:material_dialogs/widgets/buttons/icon_button.dart';
 import 'package:material_dialogs/widgets/buttons/icon_outline_button.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
-
+import '../../assets/routesConstants.dart';
 import 'bloc/home_event.dart';
 
 class Home extends StatelessWidget {
@@ -154,7 +153,7 @@ class Home extends StatelessWidget {
             ),
             floatingActionButton: FloatingActionButton(
               onPressed: () {},
-              child: Icon(Icons.schedule, color: Colors.white),
+              child: const Icon(Icons.schedule, color: Colors.white),
             ),
           );
         },

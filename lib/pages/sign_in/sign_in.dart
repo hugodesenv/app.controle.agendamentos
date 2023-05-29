@@ -1,13 +1,14 @@
 import 'package:agendamentos/pages/sign_in/bloc/sign_in_bloc.dart';
 import 'package:agendamentos/pages/sign_in/bloc/sign_in_event.dart';
 import 'package:agendamentos/pages/sign_in/bloc/sign_in_state.dart';
-import 'package:agendamentos/routes.dart';
 import 'package:agendamentos/widgets/button/my_loading_button.dart';
 import 'package:agendamentos/widgets/text_field/my_login_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:material_dialogs/dialogs.dart';
+
+import '../../assets/routesConstants.dart';
 
 class SignIn extends StatelessWidget {
   const SignIn({Key? key}) : super(key: key);
@@ -179,7 +180,6 @@ class SignIn extends StatelessWidget {
           bloc: bloc,
           builder: (_, state) {
             return Container(
-              //color: Colors.indigo,
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   colors: [Colors.indigoAccent[200]!, Colors.indigo[700]!],
