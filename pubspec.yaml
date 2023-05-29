@@ -48,7 +48,6 @@ dependencies:
   permission_handler: ^10.2.0
   url_launcher: ^6.1.11
   cloud_firestore: ^4.7.1
-  brasil_fields: ^1.13.1
   material_dialogs: ^1.1.4
 
 dev_dependencies:

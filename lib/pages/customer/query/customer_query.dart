@@ -1,7 +1,6 @@
 import 'package:agendamentos/assets/utilsConstantes.dart';
 import 'package:agendamentos/model/arguments/args_customer_info.dart';
 import 'package:agendamentos/model/customer.dart';
-import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skeletons/skeletons.dart';
@@ -38,10 +37,10 @@ class CustomerQuery extends StatelessWidget {
     }
 
     Future onTapImport() async {
-      await Future.delayed(
-        zeroDuration,
-        () async => await Navigator.pushNamed(context, routeCustomerImport),
-      );
+      await Future.delayed(zeroDuration, () async {
+        await Navigator.pushNamed(context, routeCustomerImport);
+        blocQuery.add(CustomerQueryEventFetchAll());
+      });
     }
 
     return Scaffold(
@@ -108,9 +107,7 @@ class CustomerQuery extends StatelessWidget {
                                   ),
                                 ),
                                 subtitle: Text(
-                                  UtilBrasilFields.obterTelefone(
-                                    customer.cellphone,
-                                  ),
+                                  customer.cellphone,
                                   style: const TextStyle(fontSize: 13),
                                 ),
                                 trailing: const Icon(Icons.arrow_forward_ios_rounded, size: 10),
