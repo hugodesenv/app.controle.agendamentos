@@ -6,7 +6,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:material_dialogs/dialogs.dart';
 import 'package:material_dialogs/widgets/buttons/icon_button.dart';
 import 'package:material_dialogs/widgets/buttons/icon_outline_button.dart';
-
 import '../../../assets/colorConstantes.dart';
 import '../../../assets/utilsConstantes.dart';
 import '../../../assets/routesConstants.dart';
