@@ -18,6 +18,7 @@ import 'package:agendamentos/pages/customer/query/bloc/customer_query_state.dart
 import 'package:agendamentos/pages/customer/query/customer_query.dart';
 import 'package:agendamentos/pages/home/bloc/home_bloc.dart';
 import 'package:agendamentos/pages/home/bloc/home_state.dart';
+import 'package:agendamentos/pages/item/query/item_query.dart';
 import 'package:agendamentos/pages/sign_in/bloc/sign_in_bloc.dart';
 import 'package:agendamentos/pages/sign_in/bloc/sign_in_event.dart';
 import 'package:agendamentos/pages/sign_in/bloc/sign_in_state.dart';
@@ -95,6 +96,12 @@ appRoutes(RouteSettings settings) {
         create: (_) => CustomerInfoBloc(CustomerInfoStateInitial())..add(CustomerInfoEventInitial(args.customer)),
         child: CustomerInfo(argument: args),
       ),
+    );
+  }
+
+  if (settings.name == routeItemQuery) {
+    return MaterialPageRoute(
+      builder: (_) => const ItemQuery(),
     );
   }
 }

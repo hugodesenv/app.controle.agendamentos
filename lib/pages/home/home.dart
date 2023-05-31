@@ -133,9 +133,9 @@ class Home extends StatelessWidget {
                       title: const Text('Clientes'),
                     ),
                     ListTile(
-                      leading: const Icon(Icons.emoji_objects_outlined),
-                      onTap: () => print("** desenvolver"),
-                      title: const Text('Itens'),
+                      leading: const Icon(Icons.hardware_outlined),
+                      onTap: () => Navigator.pushNamed(context, routeItemQuery),
+                      title: const Text('Produtos e serviços'),
                     ),
                     ListTile(
                       leading: const Icon(Icons.auto_graph_sharp),

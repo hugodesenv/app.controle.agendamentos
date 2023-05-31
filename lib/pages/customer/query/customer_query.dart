@@ -58,7 +58,7 @@ class CustomerQuery extends StatelessWidget {
                 onTap: () async => await onTapNew(),
               ),
               PopupMenuItem(
-                child: const Text('Importar dos contatos'),
+                child: const Text('Importar'),
                 onTap: () async => await onTapImport(),
               ),
             ],
