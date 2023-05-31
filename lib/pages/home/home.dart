@@ -153,7 +153,7 @@ class Home extends StatelessWidget {
             ),
             floatingActionButton: FloatingActionButton(
               onPressed: () {},
-              child: const Icon(Icons.add_alarm_outlined, color: Colors.white),
+              child: const Icon(Icons.pending_actions, color: Colors.white),
             ),
           );
         },

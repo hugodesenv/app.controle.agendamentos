@@ -47,7 +47,7 @@ class CustomerInfo extends StatelessWidget {
         ),
       ),
       PopupMenuItem(
-        child: const Text('Excluir', style: TextStyle(color: Colors.red)),
+        child: const Text('Excluir', style: TextStyle(fontWeight: FontWeight.w700)),
         onTap: () async {
           await Future.delayed(
             zeroDuration,
@@ -95,6 +95,7 @@ class CustomerInfo extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Info.'),
         actions: [
+          IconButton(onPressed: () {}, icon: const Icon(Icons.pending_actions)),
           PopupMenuButton(itemBuilder: (_) => menuWidgets(context, infoBloc, customer)),
         ],
       ),
@@ -123,57 +124,54 @@ class CustomerInfo extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Container(
-                  padding: const EdgeInsets.only(top: 30, bottom: 10, left: 20, right: 20),
+                  padding: const EdgeInsets.only(top: 20, bottom: 10, left: 20, right: 20),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       Text(
                         nameController.text,
                         textAlign: TextAlign.center,
-                        style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
+                        style: const TextStyle(fontSize: 25, fontWeight: FontWeight.w700),
                       ),
                       Padding(
-                        padding: const EdgeInsets.all(20),
+                        padding: const EdgeInsets.only(left: 20, right: 20, top: 10, bottom: 20),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             const Icon(Icons.phone),
                             Container(
                               padding: const EdgeInsets.only(left: 15),
-                              child: Text(cellphoneController.text),
+                              child: Text(cellphoneController.text, style: const TextStyle(fontSize: 16)),
                             ),
                           ],
                         ),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 10, right: 10),
-                        child: isWhatsAppLoading
-                            ? const Text(
-                                "Carregando...",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(color: Color(whatsappColor), fontWeight: FontWeight.w700),
-                              )
-                            : ElevatedButton(
-                                onPressed: () => onTapWhatsApp(context, customer.cellphone),
-                                style: ElevatedButton.styleFrom(backgroundColor: const Color(whatsappColor)),
-                                child: const Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Icon(Icons.phone_iphone),
-                                    Padding(
-                                      padding: EdgeInsets.only(left: 10),
-                                      child: Text("Chamar no WhatsApp"),
-                                    ),
-                                  ],
-                                ),
+                      isWhatsAppLoading
+                          ? const Text(
+                              "Carregando...",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(color: Color(whatsappColor), fontWeight: FontWeight.w700),
+                            )
+                          : ElevatedButton(
+                              onPressed: () => onTapWhatsApp(context, customer.cellphone),
+                              style: ElevatedButton.styleFrom(backgroundColor: const Color(whatsappColor), padding: const EdgeInsets.all(10)),
+                              child: const Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(Icons.phone_iphone),
+                                  Padding(
+                                    padding: EdgeInsets.only(left: 10),
+                                    child: Text("Chamar no WhatsApp"),
+                                  ),
+                                ],
                               ),
-                      ),
+                            ),
                     ],
                   ),
                 ),
                 const Divider(),
                 const Padding(
-                  padding: EdgeInsets.all(20),
+                  padding: EdgeInsets.all(15),
                   child: Text(
                     "Últimos agendamentos",
                     style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
@@ -181,17 +179,18 @@ class CustomerInfo extends StatelessWidget {
                 ),
                 Flexible(
                   child: ListView.separated(
-                    itemCount: 30,
+                    itemCount: 15,
                     itemBuilder: (context, index) {
                       return const ListTile(
                         title: Text('Concluído'),
                         subtitle: Text('10/01/23 às 10h35'),
+                        trailing: Icon(Icons.arrow_forward_ios_rounded, size: 10),
                       );
                     },
                     separatorBuilder: (_, int index) => const Divider(),
                   ),
                 ),
-                Container(
+                /*Container(
                   padding: const EdgeInsets.all(10),
                   child: ElevatedButton(
                     onPressed: () => {},
@@ -209,7 +208,7 @@ class CustomerInfo extends StatelessWidget {
                       ),
                     ),
                   ),
-                ),
+                ),*/
               ],
             );
           },
