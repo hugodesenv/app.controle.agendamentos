@@ -1,3 +1,4 @@
+import 'package:agendamentos/assets/utilsConstantes.dart';
 import 'package:agendamentos/pages/sign_in/bloc/sign_in_bloc.dart';
 import 'package:agendamentos/pages/sign_in/bloc/sign_in_event.dart';
 import 'package:agendamentos/pages/sign_in/bloc/sign_in_state.dart';
@@ -47,7 +48,7 @@ class SignIn extends StatelessWidget {
     Future showSignIn() async {
       await showModalBottomSheet(
         context: context,
-        shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(16.0))),
+        shape: shapeModalBottomSheet,
         isScrollControlled: true,
         builder: (_) {
           return BlocListener(
@@ -106,7 +107,7 @@ class SignIn extends StatelessWidget {
                             await showModalBottomSheet(
                               context: context,
                               isScrollControlled: true,
-                              shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(16.0))),
+                              shape: shapeModalBottomSheet,
                               builder: (_) {
                                 return BlocBuilder(
                                   bloc: bloc,

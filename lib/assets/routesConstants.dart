@@ -6,4 +6,4 @@ const routeCustomerNew = '/customer_new';
 const routeCustomerImport = '/customer_import';
 const routeCustomerInfo = '/customer_info';
 
-const routeItemQuery = 'item_query';
+const routeItemQuery = '/item_query';

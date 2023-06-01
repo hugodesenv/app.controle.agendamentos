@@ -131,14 +131,20 @@ class CustomerInfo extends StatelessWidget {
                       Text(
                         nameController.text,
                         textAlign: TextAlign.center,
-                        style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
+                        style: const TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w700,
+                        ),
                       ),
                       Padding(
                         padding: const EdgeInsets.only(left: 20, right: 20, top: 10, bottom: 20),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            const Icon(Icons.phone, size: 18,),
+                            const Icon(
+                              Icons.phone,
+                              size: 18,
+                            ),
                             Container(
                               padding: const EdgeInsets.only(left: 10),
                               child: Text(cellphoneController.text, style: const TextStyle(fontSize: 16)),

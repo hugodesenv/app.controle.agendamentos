@@ -1,3 +1,4 @@
+import 'package:agendamentos/assets/colorConstantes.dart';
 import 'package:agendamentos/pages/sign_in/bloc/sign_in_bloc.dart';
 import 'package:agendamentos/pages/sign_in/bloc/sign_in_event.dart';
 import 'package:agendamentos/pages/sign_in/bloc/sign_in_state.dart';
@@ -12,7 +13,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Color mainColor = Colors.indigo;
     return MaterialApp(
       home: BlocProvider<SignInBloc>(
         create: (_) => SignInBloc(SignInStateInitial())..add(SignInEventAuthenticated()),
@@ -21,11 +21,11 @@ class MyApp extends StatelessWidget {
       title: 'Skedol',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primaryColor: mainColor,
+        primaryColor: const Color(primaryColor),
         focusColor: Colors.indigoAccent,
         scaffoldBackgroundColor: Colors.white,
-        floatingActionButtonTheme: FloatingActionButtonThemeData(
-          backgroundColor: mainColor,
+        floatingActionButtonTheme: const FloatingActionButtonThemeData(
+          backgroundColor: Color(primaryColor),
           splashColor: Colors.pink,
         ),
         inputDecorationTheme: InputDecorationTheme(
@@ -36,10 +36,10 @@ class MyApp extends StatelessWidget {
             borderRadius: BorderRadius.circular(12),
           ),
           focusedBorder: UnderlineInputBorder(
-            borderSide: BorderSide(width: 4, color: mainColor),
+            borderSide: const BorderSide(width: 4, color: Color(primaryColor)),
             borderRadius: BorderRadius.circular(12),
           ),
-          suffixIconColor: mainColor,
+          suffixIconColor: const Color(primaryColor),
         ),
         appBarTheme: AppBarTheme(
           color: Colors.white,
@@ -52,7 +52,7 @@ class MyApp extends StatelessWidget {
           ),
           iconTheme: const IconThemeData(color: Colors.black54),
         ),
-        hintColor: mainColor,
+        hintColor: const Color(primaryColor),
         snackBarTheme: const SnackBarThemeData(
           backgroundColor: Colors.indigo,
           shape: RoundedRectangleBorder(
@@ -63,9 +63,9 @@ class MyApp extends StatelessWidget {
           ),
         ),
         fontFamily: GoogleFonts.nunitoSans().fontFamily,
-        progressIndicatorTheme: ProgressIndicatorThemeData(
+        progressIndicatorTheme: const ProgressIndicatorThemeData(
           color: Colors.pinkAccent,
-          circularTrackColor: mainColor,
+          circularTrackColor: Color(primaryColor),
         ),
         textButtonTheme: TextButtonThemeData(
           style: TextButton.styleFrom(
@@ -80,13 +80,13 @@ class MyApp extends StatelessWidget {
             color: Colors.indigo,
             fontWeight: FontWeight.w600,
           ),
-          contentTextStyle: TextStyle(fontSize: 14, color: mainColor),
+          contentTextStyle: const TextStyle(fontSize: 14, color: Color(primaryColor)),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-          shadowColor: mainColor,
+          shadowColor: const Color(primaryColor),
         ),
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
-            backgroundColor: mainColor,
+            backgroundColor: const Color(primaryColor),
           ),
         ),
       ),

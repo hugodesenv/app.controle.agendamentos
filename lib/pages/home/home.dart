@@ -1,3 +1,4 @@
+import 'package:agendamentos/assets/colorConstantes.dart';
 import 'package:agendamentos/pages/home/bloc/home_bloc.dart';
 import 'package:agendamentos/pages/home/bloc/home_state.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +12,21 @@ import 'bloc/home_event.dart';
 
 class Home extends StatelessWidget {
   const Home({Key? key}) : super(key: key);
+
+  Widget _drawerFixed({
+    required Function onTap,
+    required String textTitle,
+    required IconData iconData,
+  }) {
+    return ListTile(
+      leading: Icon(iconData, color: const Color(primaryColor)),
+      onTap: () async => await onTap(),
+      title: Text(
+        textTitle,
+        style: const TextStyle(color: Color(primaryColor), fontWeight: FontWeight.w700),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -113,39 +129,62 @@ class Home extends StatelessWidget {
               ),
             ),
             drawer: Drawer(
+              backgroundColor: Colors.grey[200],
+              shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.horizontal(
+                  right: Radius.circular(20),
+                ),
+              ),
               child: SafeArea(
-                child: ListView(
-                  padding: const EdgeInsets.all(10),
+                child: Column(
+                  //padding: const EdgeInsets.all(10),
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    ListTile(
-                      title: const Text("Hugo Silva de Souza"),
-                      subtitle: const Text("(19) 9 8961-5184"),
-                      leading: IconButton(
-                        icon: const Icon(Icons.exit_to_app_outlined),
-                        color: Theme.of(context).primaryColor,
-                        onPressed: () async => await exitApp(),
+                    Container(
+                      padding: const EdgeInsets.only(bottom: 10, top: 20, left: 20),
+                      child: const Text(
+                        'Olá, Hugo',
+                        style: TextStyle(
+                          color: Color(primaryColor),
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: SingleChildScrollView(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            const Divider(),
+                            ListTile(
+                              leading: const Icon(Icons.person_outline),
+                              onTap: () => Navigator.pushNamed(context, routeCustomerQuery),
+                              title: const Text('Clientes'),
+                            ),
+                            ListTile(
+                              leading: const Icon(Icons.hardware_outlined),
+                              onTap: () => Navigator.pushNamed(context, routeItemQuery),
+                              title: const Text('Produtos e serviços'),
+                            ),
+                            ListTile(
+                              leading: const Icon(Icons.auto_graph_sharp),
+                              onTap: () => print("** desenvolver"),
+                              title: const Text('Relatórios'),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                     const Divider(),
-                    ListTile(
-                      leading: const Icon(Icons.person_outline),
-                      onTap: () => Navigator.pushNamed(context, routeCustomerQuery),
-                      title: const Text('Clientes'),
+                    _drawerFixed(
+                      onTap: () async => print("** desenvolver"),
+                      textTitle: 'Perfil',
+                      iconData: Icons.settings,
                     ),
-                    ListTile(
-                      leading: const Icon(Icons.hardware_outlined),
-                      onTap: () => Navigator.pushNamed(context, routeItemQuery),
-                      title: const Text('Produtos e serviços'),
-                    ),
-                    ListTile(
-                      leading: const Icon(Icons.auto_graph_sharp),
-                      onTap: () => print("** desenvolver"),
-                      title: const Text('Relatórios'),
-                    ),
-                    ListTile(
-                      leading: const Icon(Icons.settings),
-                      onTap: () => print("** desenvolver"),
-                      title: const Text('Perfil'),
+                    _drawerFixed(
+                      onTap: () async => await exitApp(),
+                      textTitle: 'Desconectar',
+                      iconData: Icons.exit_to_app,
                     ),
                   ],
                 ),

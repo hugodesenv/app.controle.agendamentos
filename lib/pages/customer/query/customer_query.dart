@@ -1,6 +1,7 @@
 import 'package:agendamentos/assets/utilsConstantes.dart';
 import 'package:agendamentos/model/arguments/args_customer_info.dart';
 import 'package:agendamentos/model/customer.dart';
+import 'package:agendamentos/widgets/text_field/my_search_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skeletons/skeletons.dart';
@@ -81,11 +82,7 @@ class CustomerQuery extends StatelessWidget {
               children: [
                 Padding(
                   padding: const EdgeInsets.only(left: 16, right: 16, bottom: 20, top: 20),
-                  child: TextField(
-                    decoration: const InputDecoration(
-                      suffixIcon: Icon(Icons.search),
-                      labelText: 'Filtrar...',
-                    ),
+                  child: MySearchTextField(
                     onChanged: (value) => blocQuery.add(CustomerQueryEventOnChangedFilter(value)),
                   ),
                 ),
