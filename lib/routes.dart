@@ -17,6 +17,7 @@ import 'package:agendamentos/pages/customer/query/bloc/customer_query_event.dart
 import 'package:agendamentos/pages/customer/query/bloc/customer_query_state.dart';
 import 'package:agendamentos/pages/customer/query/customer_query.dart';
 import 'package:agendamentos/pages/home/bloc/home_bloc.dart';
+import 'package:agendamentos/pages/home/bloc/home_event.dart';
 import 'package:agendamentos/pages/home/bloc/home_state.dart';
 import 'package:agendamentos/pages/item/query/item_query.dart';
 import 'package:agendamentos/pages/sign_in/bloc/sign_in_bloc.dart';
@@ -34,8 +35,8 @@ appRoutes(RouteSettings settings) {
     return MaterialPageRoute(
       builder: (context) {
         return BlocProvider(
-          create: (_) => HomeBloc(HomeInitial()),
-          child: const Home(),
+          create: (_) => HomeBloc(HomeInitial())..add(HomeEventInitial()),
+          child: Home(),
         );
       },
     );

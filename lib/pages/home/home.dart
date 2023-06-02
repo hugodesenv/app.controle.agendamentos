@@ -7,17 +7,17 @@ import 'package:material_dialogs/dialogs.dart';
 import 'package:material_dialogs/widgets/buttons/icon_button.dart';
 import 'package:material_dialogs/widgets/buttons/icon_outline_button.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
+
 import '../../assets/routesConstants.dart';
 import 'bloc/home_event.dart';
 
 class Home extends StatelessWidget {
-  const Home({Key? key}) : super(key: key);
+  final TextEditingController _userNameController = TextEditingController(text: 'Usuário indefinido');
 
-  Widget _drawerFixed({
-    required Function onTap,
-    required String textTitle,
-    required IconData iconData,
-  }) {
+  Home({Key? key}) : super(key: key);
+
+  /// fixed widget at the end of drawer
+  Widget _drawerFixed({required Function onTap, required String textTitle, required IconData iconData}) {
     return ListTile(
       leading: Icon(iconData, color: const Color(primaryColor)),
       onTap: () async => await onTap(),
@@ -31,7 +31,6 @@ class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var bloc = BlocProvider.of<HomeBloc>(context);
-
     Future exitApp() async {
       Dialogs.materialDialog(
         context: context,
@@ -137,18 +136,22 @@ class Home extends StatelessWidget {
               ),
               child: SafeArea(
                 child: Column(
-                  //padding: const EdgeInsets.all(10),
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    Container(
-                      padding: const EdgeInsets.only(bottom: 10, top: 20, left: 20),
-                      child: const Text(
-                        'Olá, Hugo',
-                        style: TextStyle(
-                          color: Color(primaryColor),
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
+                    BlocBuilder(
+                      bloc: bloc,
+                      builder: (_, state) {
+                        if (state is HomeStateRefreshUser) {
+                          _userNameController.text = 'Olá, ${state.login.name}';
+                        }
+                        return Container(
+                          padding: const EdgeInsets.only(bottom: 10, top: 20, left: 20),
+                          child: Text(
+                            _userNameController.text,
+                            style: const TextStyle(color: Color(primaryColor), fontWeight: FontWeight.w700),
+                          ),
+                        );
+                      },
                     ),
                     Expanded(
                       child: SingleChildScrollView(
@@ -181,10 +184,13 @@ class Home extends StatelessWidget {
                       textTitle: 'Perfil',
                       iconData: Icons.settings,
                     ),
-                    _drawerFixed(
-                      onTap: () async => await exitApp(),
-                      textTitle: 'Desconectar',
-                      iconData: Icons.exit_to_app,
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 5.0),
+                      child: _drawerFixed(
+                        onTap: () async => await exitApp(),
+                        textTitle: 'Desconectar',
+                        iconData: Icons.exit_to_app,
+                      ),
                     ),
                   ],
                 ),

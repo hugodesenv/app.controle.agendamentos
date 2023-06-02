@@ -2,10 +2,23 @@ import 'package:agendamentos/pages/home/bloc/home_event.dart';
 import 'package:agendamentos/pages/home/bloc/home_state.dart';
 import 'package:agendamentos/repository/user_repository.dart';
 import 'package:bloc/bloc.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
+import '../../../model/login.dart';
 
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
   HomeBloc(super.initialState) {
+    on<HomeEventInitial>(_initial);
     on<HomeEventSignOut>(_signOut);
+  }
+
+  Future<void> _initial(_, emit) async {
+    var userRepository = UserRepository.instance;
+
+    var id = userRepository.currentUser?.uid ?? '';
+    var login = await userRepository.fetchUserById(id);
+
+    emit(HomeStateRefreshUser(login: login));
   }
 
   Future<void> _signOut(HomeEventSignOut event, emit) async {

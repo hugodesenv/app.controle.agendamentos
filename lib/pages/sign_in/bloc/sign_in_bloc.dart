@@ -1,13 +1,15 @@
 import 'package:agendamentos/pages/sign_in/bloc/sign_in_event.dart';
 import 'package:agendamentos/pages/sign_in/bloc/sign_in_state.dart';
 import 'package:bloc/bloc.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
+import '../../../model/login.dart';
 import '../../../repository/user_repository.dart';
 
 class SignInBloc extends Bloc<SignInEvent, SignInState> {
   SignInBloc(super.initialState) {
     on<SignInEventSubmitted>(_signIn);
-    on<SignInEventAuthenticated>(_autoDirectHome);
+    on<SignInEventAuthenticated>(_directHome);
     on<SignInEventSubmittedForgetPassword>(_resetPassword);
   }
 
@@ -34,10 +36,9 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
     }
   }
 
-  Future<void> _autoDirectHome(_, emit) async {
-    UserRepository repository = UserRepository.instance;
-    bool authenticated = await repository.isAuthenticated();
-    authenticated ? emit(SignInStateGoToHome()) : emit(SignInStateInitial());
+  Future<void> _directHome(_, emit) async {
+    var user = FirebaseAuth.instance.currentUser;
+    user != null ? emit(SignInStateGoToHome()) : emit(SignInStateInitial());
   }
 
   Future<void> _resetPassword(SignInEventSubmittedForgetPassword event, emit) async {

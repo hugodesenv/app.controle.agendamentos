@@ -1,3 +1,5 @@
+import 'package:agendamentos/model/login.dart';
+
 abstract class SignInState {}
 
 class SignInStateInitial extends SignInState {}
