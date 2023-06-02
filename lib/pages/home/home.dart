@@ -12,9 +12,11 @@ import '../../assets/routesConstants.dart';
 import 'bloc/home_event.dart';
 
 class Home extends StatelessWidget {
-  final TextEditingController _userNameController = TextEditingController(text: 'Usuário indefinido');
+  final TextEditingController _userNameController;
 
-  Home({Key? key}) : super(key: key);
+  Home({Key? key})
+      : _userNameController = TextEditingController(text: 'Usuário indefinido'),
+        super(key: key);
 
   /// fixed widget at the end of drawer
   Widget _drawerFixed({required Function onTap, required String textTitle, required IconData iconData}) {
@@ -171,7 +173,7 @@ class Home extends StatelessWidget {
                             ),
                             ListTile(
                               leading: const Icon(Icons.auto_graph_sharp),
-                              onTap: () => print("** desenvolver"),
+                              onTap: () async => await Navigator.pushNamed(context, routeReport),
                               title: const Text('Relatórios'),
                             ),
                           ],
@@ -180,7 +182,7 @@ class Home extends StatelessWidget {
                     ),
                     const Divider(),
                     _drawerFixed(
-                      onTap: () async => print("** desenvolver"),
+                      onTap: () async => Navigator.pushNamed(context, routeProfile),
                       textTitle: 'Perfil',
                       iconData: Icons.settings,
                     ),

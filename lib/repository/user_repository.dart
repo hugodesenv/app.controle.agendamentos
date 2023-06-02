@@ -1,14 +1,17 @@
-import 'package:agendamentos/model/company.dart';
 import 'package:agendamentos/model/login.dart';
 import 'package:agendamentos/repository/company_repository.dart';
 import 'package:agendamentos/repository/firebase_repository.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class UserRepository extends FirebaseRepository {
   UserRepository._() : super(collection: 'user');
 
+  /// retrieve logged user
+  Login _currentLogin = Login.empty();
+
   static final instance = UserRepository._();
+
+  Login get currentLogin => _currentLogin;
 
   User? get currentUser => FirebaseAuth.instance.currentUser;
 
@@ -24,9 +27,7 @@ class UserRepository extends FirebaseRepository {
     await FirebaseAuth.instance.sendPasswordResetEmail(email: pemail);
   }
 
-  Future<Login> fetchUserById(String id) async {
-    Login loginResult = Login.empty();
-
+  Future<void> startSession(String id) async {
     var dataLogin = await getFireCloud.doc(id).get();
     var mapLogin = dataLogin.data();
 
@@ -39,9 +40,7 @@ class UserRepository extends FirebaseRepository {
       // to model
       mapLogin['id'] = dataLogin.id;
       mapLogin['company'] = mapCompany;
-      loginResult = Login.fromMap(mapLogin);
+      _currentLogin = Login.fromMap(mapLogin);
     }
-
-    return loginResult;
   }
 }

@@ -20,6 +20,8 @@ import 'package:agendamentos/pages/home/bloc/home_bloc.dart';
 import 'package:agendamentos/pages/home/bloc/home_event.dart';
 import 'package:agendamentos/pages/home/bloc/home_state.dart';
 import 'package:agendamentos/pages/item/query/item_query.dart';
+import 'package:agendamentos/pages/profile/profile.dart';
+import 'package:agendamentos/pages/report/report.dart';
 import 'package:agendamentos/pages/sign_in/bloc/sign_in_bloc.dart';
 import 'package:agendamentos/pages/sign_in/bloc/sign_in_event.dart';
 import 'package:agendamentos/pages/sign_in/bloc/sign_in_state.dart';
@@ -33,7 +35,7 @@ import 'pages/home/home.dart';
 appRoutes(RouteSettings settings) {
   if (settings.name == routeHome) {
     return MaterialPageRoute(
-      builder: (context) {
+      builder: (_) {
         return BlocProvider(
           create: (_) => HomeBloc(HomeInitial())..add(HomeEventInitial()),
           child: Home(),
@@ -44,7 +46,7 @@ appRoutes(RouteSettings settings) {
 
   if (settings.name == routeLogin) {
     return MaterialPageRoute(
-      builder: (context) {
+      builder: (_) {
         return BlocProvider(
           create: (_) => SignInBloc(SignInStateInitial())..add(SignInEventAuthenticated()),
           child: const SignIn(),
@@ -55,7 +57,7 @@ appRoutes(RouteSettings settings) {
 
   if (settings.name == routeCustomerQuery) {
     return MaterialPageRoute(
-      builder: (context) {
+      builder: (_) {
         return BlocProvider(
           create: (_) => CustomerQueryBloc(CustomerQueryStateLoading(true))..add(CustomerQueryEventFetchAll()),
           child: CustomerQuery(),
@@ -81,9 +83,9 @@ appRoutes(RouteSettings settings) {
 
   if (settings.name == routeCustomerImport) {
     return MaterialPageRoute(
-      builder: (context) {
+      builder: (_) {
         return BlocProvider(
-          create: (context) => CustomerImportBloc(CustomerImportStateInitial())..add(CustomerImportEventFetchAll()),
+          create: (_) => CustomerImportBloc(CustomerImportStateInitial())..add(CustomerImportEventFetchAll()),
           child: const CustomerImport(),
         );
       },
@@ -93,7 +95,7 @@ appRoutes(RouteSettings settings) {
   if (settings.name == routeCustomerInfo) {
     var args = settings.arguments as ArgsCustomerInfo;
     return MaterialPageRoute(
-      builder: (context) => BlocProvider(
+      builder: (_) => BlocProvider(
         create: (_) => CustomerInfoBloc(CustomerInfoStateInitial())..add(CustomerInfoEventInitial(args.customer)),
         child: CustomerInfo(argument: args),
       ),
@@ -103,6 +105,18 @@ appRoutes(RouteSettings settings) {
   if (settings.name == routeItemQuery) {
     return MaterialPageRoute(
       builder: (_) => const ItemQuery(),
+    );
+  }
+
+  if (settings.name == routeProfile) {
+    return MaterialPageRoute(
+      builder: (_) => const Profile(),
+    );
+  }
+
+  if (settings.name == routeReport) {
+    return MaterialPageRoute(
+      builder: (_) => const Report(),
     );
   }
 }
