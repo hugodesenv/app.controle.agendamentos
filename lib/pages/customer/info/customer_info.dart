@@ -11,6 +11,7 @@ import '../../../assets/utilsConstantes.dart';
 import '../../../assets/routesConstants.dart';
 import '../../../model/arguments/args_customer_new.dart';
 import '../../../model/customer.dart';
+import '../../schedule/schedule.dart';
 import 'bloc/customer_info_event.dart';
 
 class CustomerInfo extends StatelessWidget {
@@ -90,6 +91,16 @@ class CustomerInfo extends StatelessWidget {
     ];
   }
 
+  Future _onTapSchedule(BuildContext context) async {
+    await showModalBottomSheet(
+      context: context,
+      shape: shapeModalBottomSheet,
+      builder: (_) {
+        return Schedule();
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     Customer customer = Customer.empty();
@@ -101,7 +112,10 @@ class CustomerInfo extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Info.'),
         actions: [
-          IconButton(onPressed: () {}, icon: const Icon(Icons.pending_actions)),
+          IconButton(
+            onPressed: () async => await _onTapSchedule(context),
+            icon: const Icon(Icons.pending_actions),
+          ),
           PopupMenuButton(itemBuilder: (_) => menuWidgets(context, infoBloc, customer)),
         ],
       ),

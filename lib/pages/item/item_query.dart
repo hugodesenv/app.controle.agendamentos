@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../bloc/item_state.dart';
+import 'bloc/item_state.dart';
 
 class ItemQuery extends StatelessWidget {
   final TextEditingController _barcodeController = TextEditingController();

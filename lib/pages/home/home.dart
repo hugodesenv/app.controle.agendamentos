@@ -1,6 +1,8 @@
 import 'package:agendamentos/assets/colorConstantes.dart';
+import 'package:agendamentos/assets/utilsConstantes.dart';
 import 'package:agendamentos/pages/home/bloc/home_bloc.dart';
 import 'package:agendamentos/pages/home/bloc/home_state.dart';
+import 'package:agendamentos/pages/schedule/schedule.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:material_dialogs/dialogs.dart';
@@ -200,8 +202,19 @@ class Home extends StatelessWidget {
               ),
             ),
             floatingActionButton: FloatingActionButton(
-              onPressed: () {},
-              child: const Icon(Icons.pending_actions, color: Colors.white),
+              onPressed: () async {
+                await showModalBottomSheet(
+                  shape: shapeModalBottomSheet,
+                  context: context,
+                  builder: (_) {
+                    return Schedule();
+                  },
+                );
+              },
+              child: const Icon(
+                Icons.pending_actions,
+                color: Colors.white,
+              ),
             ),
           );
         },
