@@ -92,13 +92,7 @@ class CustomerInfo extends StatelessWidget {
   }
 
   Future _onTapSchedule(BuildContext context) async {
-    await showModalBottomSheet(
-      context: context,
-      shape: shapeModalBottomSheet,
-      builder: (_) {
-        return Schedule();
-      },
-    );
+    await Navigator.pushNamed(context, routeSchedule);
   }
 
   @override

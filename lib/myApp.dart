@@ -50,6 +50,7 @@ class MyApp extends StatelessWidget {
             fontWeight: FontWeight.w600,
             fontSize: 15,
           ),
+
           iconTheme: const IconThemeData(color: Colors.black54),
         ),
         hintColor: const Color(primaryColor),

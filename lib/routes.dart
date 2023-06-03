@@ -25,6 +25,7 @@ import 'package:agendamentos/pages/item/bloc/item_state.dart';
 import 'package:agendamentos/pages/item/item_query.dart';
 import 'package:agendamentos/pages/profile/profile.dart';
 import 'package:agendamentos/pages/report/report.dart';
+import 'package:agendamentos/pages/schedule/schedule.dart';
 import 'package:agendamentos/pages/sign_in/bloc/sign_in_bloc.dart';
 import 'package:agendamentos/pages/sign_in/bloc/sign_in_event.dart';
 import 'package:agendamentos/pages/sign_in/bloc/sign_in_state.dart';
@@ -123,6 +124,12 @@ appRoutes(RouteSettings settings) {
   if (settings.name == routeReport) {
     return MaterialPageRoute(
       builder: (_) => const Report(),
+    );
+  }
+
+  if (settings.name == routeSchedule) {
+    return MaterialPageRoute(
+      builder: (_) => const Schedule(),
     );
   }
 }
