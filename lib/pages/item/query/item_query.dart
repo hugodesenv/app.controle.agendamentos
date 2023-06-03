@@ -4,13 +4,16 @@ import 'package:agendamentos/pages/item/bloc/item_bloc.dart';
 import 'package:agendamentos/pages/item/bloc/item_event.dart';
 import 'package:agendamentos/widgets/text/myTextTitleBottomSheet.dart';
 import 'package:agendamentos/widgets/text_field/my_search_text_field.dart';
+import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../bloc/item_state.dart';
 
 class ItemQuery extends StatelessWidget {
   final TextEditingController _barcodeController = TextEditingController();
+  final TextEditingController _hourTimeController = TextEditingController();
 
   ItemQuery({Key? key}) : super(key: key);
 
@@ -138,12 +141,17 @@ class ItemQuery extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(bottom: 15),
                 child: TextFormField(
+                  controller: _hourTimeController,
                   decoration: const InputDecoration(
                     labelText: 'Tempo',
                     border: UnderlineInputBorder(),
                     suffixIcon: Icon(Icons.timer_sharp),
                   ),
                   keyboardType: TextInputType.number,
+                  inputFormatters: [
+                    FilteringTextInputFormatter.digitsOnly,
+                    HoraInputFormatter(),
+                  ],
                 ),
               ),
               ElevatedButton(

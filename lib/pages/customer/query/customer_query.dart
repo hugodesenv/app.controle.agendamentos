@@ -1,3 +1,4 @@
+import 'package:agendamentos/assets/colorConstantes.dart';
 import 'package:agendamentos/assets/utilsConstantes.dart';
 import 'package:agendamentos/model/arguments/args_customer_info.dart';
 import 'package:agendamentos/model/customer.dart';
@@ -96,17 +97,8 @@ class CustomerQuery extends StatelessWidget {
                               Customer customer = customers[index];
                               String initialLetter = customer.name.substring(0, 1).toUpperCase();
                               Widget customerListTile = ListTile(
-                                title: Text(
-                                  customer.name,
-                                  style: const TextStyle(
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 14,
-                                  ),
-                                ),
-                                subtitle: Text(
-                                  customer.cellphone,
-                                  style: const TextStyle(fontSize: 13),
-                                ),
+                                title: Text(customer.name, style: const TextStyle(fontSize: 14)),
+                                subtitle: Text(customer.cellphone, style: const TextStyle(fontSize: 13)),
                                 trailing: const Icon(Icons.arrow_forward_ios_rounded, size: 10),
                                 onTap: () async => await onTapCustomer(index),
                               );

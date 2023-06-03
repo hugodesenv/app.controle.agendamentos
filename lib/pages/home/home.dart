@@ -157,6 +157,7 @@ class Home extends StatelessWidget {
                     ),
                     Expanded(
                       child: SingleChildScrollView(
+                        padding: const EdgeInsets.only(left: 10, right: 5),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [

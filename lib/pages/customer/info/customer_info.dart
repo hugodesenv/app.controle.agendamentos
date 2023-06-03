@@ -47,7 +47,13 @@ class CustomerInfo extends StatelessWidget {
         ),
       ),
       PopupMenuItem(
-        child: const Text('Excluir', style: TextStyle(fontWeight: FontWeight.w700)),
+        child: const Text(
+          'Excluir',
+          style: TextStyle(
+            fontWeight: FontWeight.w700,
+            color: Colors.red,
+          ),
+        ),
         onTap: () async {
           await Future.delayed(
             zeroDuration,
@@ -137,14 +143,11 @@ class CustomerInfo extends StatelessWidget {
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.only(left: 20, right: 20, top: 10, bottom: 20),
+                        padding: const EdgeInsets.only(left: 20, right: 20, top: 10, bottom: 10),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            const Icon(
-                              Icons.phone,
-                              size: 18,
-                            ),
+                            const Icon(Icons.phone, size: 18),
                             Container(
                               padding: const EdgeInsets.only(left: 10),
                               child: Text(cellphoneController.text, style: const TextStyle(fontSize: 16)),
@@ -152,26 +155,6 @@ class CustomerInfo extends StatelessWidget {
                           ],
                         ),
                       ),
-                      isWhatsAppLoading
-                          ? const Text(
-                              "Carregando...",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(color: Color(whatsappColor), fontWeight: FontWeight.w700),
-                            )
-                          : ElevatedButton(
-                              onPressed: () => onTapWhatsApp(context, customer.cellphone),
-                              style: ElevatedButton.styleFrom(backgroundColor: const Color(whatsappColor), padding: const EdgeInsets.all(10)),
-                              child: const Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(Icons.phone_iphone),
-                                  Padding(
-                                    padding: EdgeInsets.only(left: 10),
-                                    child: Text("Chamar no WhatsApp"),
-                                  ),
-                                ],
-                              ),
-                            ),
                     ],
                   ),
                 ),
@@ -196,25 +179,29 @@ class CustomerInfo extends StatelessWidget {
                     separatorBuilder: (_, int index) => const Divider(),
                   ),
                 ),
-                /*Container(
-                  padding: const EdgeInsets.all(10),
-                  child: ElevatedButton(
-                    onPressed: () => {},
-                    child: const Padding(
-                      padding: EdgeInsets.all(10),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(Icons.schedule),
-                          Padding(
-                            padding: EdgeInsets.only(left: 10),
-                            child: Text('Criar compromisso'),
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: isWhatsAppLoading
+                      ? const Text(
+                          "Carregando...",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(color: Color(whatsappColor), fontWeight: FontWeight.w700),
+                        )
+                      : ElevatedButton(
+                          onPressed: () => onTapWhatsApp(context, customer.cellphone),
+                          style: ElevatedButton.styleFrom(backgroundColor: const Color(whatsappColor), padding: const EdgeInsets.all(10)),
+                          child: const Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(Icons.phone_iphone),
+                              Padding(
+                                padding: EdgeInsets.only(left: 10),
+                                child: Text("Chamar no WhatsApp"),
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),*/
+                        ),
+                ),
               ],
             );
           },
