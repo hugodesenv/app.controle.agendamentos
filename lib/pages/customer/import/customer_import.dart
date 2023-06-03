@@ -1,7 +1,7 @@
 import 'package:agendamentos/pages/customer/import/bloc/customer_import_bloc.dart';
 import 'package:agendamentos/pages/customer/import/bloc/customer_import_event.dart';
 import 'package:agendamentos/pages/customer/import/bloc/customer_import_state.dart';
-import 'package:agendamentos/pages/customer/import/utils/checkbox_contact.dart';
+import 'package:agendamentos/pages/customer/import/model/checkbox_contact.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skeletons/skeletons.dart';

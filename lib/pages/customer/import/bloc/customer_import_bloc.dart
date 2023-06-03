@@ -3,7 +3,7 @@ import 'package:agendamentos/repository/customer_repository.dart';
 import 'package:bloc/bloc.dart';
 import 'package:contacts_service/contacts_service.dart';
 import 'package:permission_handler/permission_handler.dart';
-import '../utils/checkbox_contact.dart';
+import '../model/checkbox_contact.dart';
 import 'customer_import_event.dart';
 import 'customer_import_state.dart';
 

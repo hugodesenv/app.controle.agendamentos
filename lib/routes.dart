@@ -19,6 +19,9 @@ import 'package:agendamentos/pages/customer/query/customer_query.dart';
 import 'package:agendamentos/pages/home/bloc/home_bloc.dart';
 import 'package:agendamentos/pages/home/bloc/home_event.dart';
 import 'package:agendamentos/pages/home/bloc/home_state.dart';
+import 'package:agendamentos/pages/item/bloc/item_bloc.dart';
+import 'package:agendamentos/pages/item/bloc/item_event.dart';
+import 'package:agendamentos/pages/item/bloc/item_state.dart';
 import 'package:agendamentos/pages/item/query/item_query.dart';
 import 'package:agendamentos/pages/profile/profile.dart';
 import 'package:agendamentos/pages/report/report.dart';
@@ -104,7 +107,10 @@ appRoutes(RouteSettings settings) {
 
   if (settings.name == routeItemQuery) {
     return MaterialPageRoute(
-      builder: (_) => const ItemQuery(),
+      builder: (_) => BlocProvider(
+        create: (context) => ItemBloc(ItemStateInitial()),
+        child: ItemQuery(),
+      ),
     );
   }
 

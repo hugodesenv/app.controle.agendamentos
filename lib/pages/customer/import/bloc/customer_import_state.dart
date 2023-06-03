@@ -1,4 +1,4 @@
-import '../utils/checkbox_contact.dart';
+import '../model/checkbox_contact.dart';
 
 abstract class CustomerImportState {}
 
