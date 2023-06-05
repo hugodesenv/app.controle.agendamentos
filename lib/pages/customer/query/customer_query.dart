@@ -1,14 +1,13 @@
-import 'package:agendamentos/assets/colorConstantes.dart';
 import 'package:agendamentos/assets/utilsConstantes.dart';
 import 'package:agendamentos/model/arguments/args_customer_info.dart';
 import 'package:agendamentos/model/customer.dart';
-import 'package:agendamentos/widgets/text_field/my_search_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skeletons/skeletons.dart';
 
 import '../../../assets/routesConstants.dart';
 import '../../../model/arguments/args_customer_new.dart';
+import '../../../widgets/my_search_text_field/my_search_text_field.dart';
 import 'bloc/customer_query_bloc.dart';
 import 'bloc/customer_query_event.dart';
 import 'bloc/customer_query_state.dart';

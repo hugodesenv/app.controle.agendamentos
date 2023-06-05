@@ -2,8 +2,6 @@ import 'package:agendamentos/assets/utilsConstantes.dart';
 import 'package:agendamentos/pages/sign_in/bloc/sign_in_bloc.dart';
 import 'package:agendamentos/pages/sign_in/bloc/sign_in_event.dart';
 import 'package:agendamentos/pages/sign_in/bloc/sign_in_state.dart';
-import 'package:agendamentos/widgets/button/my_loading_button.dart';
-import 'package:agendamentos/widgets/text_field/my_login_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -229,6 +227,119 @@ class SignIn extends StatelessWidget {
           },
         ),
       ),
+    );
+  }
+}
+
+///// internal class
+// ignore: must_be_immutable
+class MyLoadingButton extends StatelessWidget {
+  VoidCallback _onPressed = () {};
+  Widget? _title;
+  double? _thickness;
+  bool? _loading;
+  double _sizeProgress = 0;
+  Color? _colorBackground;
+
+  MyLoadingButton({
+    Key? key,
+    required VoidCallback onPressed,
+    required Widget title,
+    double? thickness,
+    bool? loading,
+    double? sizeProgress,
+    Color? colorBackground,
+  }) : super(key: key) {
+    _onPressed = onPressed;
+    _colorBackground = colorBackground;
+    _title = title;
+    _thickness = thickness;
+    _loading = loading;
+    _sizeProgress = sizeProgress ?? 15;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+      onPressed: () => _onPressed(),
+      style: ElevatedButton.styleFrom(
+        padding: const EdgeInsets.all(15),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(_thickness ?? 20.0)),
+        backgroundColor: _colorBackground ?? Theme.of(context).primaryColor,
+      ),
+      child: _loading == true
+          ? SizedBox(
+              height: _sizeProgress,
+              width: _sizeProgress,
+              child: const CircularProgressIndicator(),
+            )
+          : _title,
+    );
+  }
+}
+
+// ignore: must_be_immutable
+///// internal class...
+class MyLoginTextField extends StatefulWidget {
+  String _labelText = '';
+  TextEditingController? _controller;
+  bool _hideText = true;
+  bool? _isPassword;
+  bool _autoFocus = false;
+  TextInputType? _keyboardType;
+
+  MyLoginTextField({
+    super.key,
+    TextEditingController? controller,
+    required labelText,
+    bool? isPassword,
+    bool? autoFocus,
+    TextInputType? keyboardType,
+  }) {
+    _labelText = labelText;
+    _controller = controller;
+    _isPassword = isPassword ?? false;
+    _autoFocus = autoFocus ?? false;
+    _keyboardType = keyboardType;
+  }
+
+  @override
+  State<MyLoginTextField> createState() => _MyLoginTextFieldState();
+}
+
+class _MyLoginTextFieldState extends State<MyLoginTextField> {
+  Widget _suffixIcon(Color pMainColor) {
+    IconData icon = widget._hideText ? Icons.visibility_off_outlined : Icons.visibility_outlined;
+
+    return GestureDetector(
+      child: Icon(icon, color: widget._hideText ? pMainColor : Colors.pinkAccent),
+      onTap: () async {
+        setState(() {
+          widget._hideText = !widget._hideText;
+        });
+      },
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    Color mainColor = Theme.of(context).primaryColor;
+
+    return TextField(
+      autofocus: widget._autoFocus,
+      controller: widget._controller,
+      obscureText: widget._hideText && widget._isPassword == true,
+      keyboardType: widget._keyboardType,
+      decoration: InputDecoration(
+        labelStyle: TextStyle(color: mainColor, fontWeight: FontWeight.w500, fontSize: 15),
+        labelText: widget._labelText,
+        suffixIcon: widget._isPassword == true ? _suffixIcon(mainColor) : null,
+        suffixIconColor: mainColor,
+        enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: mainColor, width: 1.5), borderRadius: BorderRadius.circular(20)),
+        focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).focusColor, width: 3), borderRadius: BorderRadius.circular(20)),
+      ),
+      cursorColor: mainColor,
+      style: TextStyle(color: mainColor),
     );
   }
 }

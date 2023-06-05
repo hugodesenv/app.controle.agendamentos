@@ -2,13 +2,12 @@ import 'package:agendamentos/assets/colorConstantes.dart';
 import 'package:agendamentos/assets/utilsConstantes.dart';
 import 'package:agendamentos/pages/item/bloc/item_bloc.dart';
 import 'package:agendamentos/pages/item/bloc/item_event.dart';
-import 'package:agendamentos/widgets/text/myTextTitleBottomSheet.dart';
-import 'package:agendamentos/widgets/text_field/my_search_text_field.dart';
 import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../widgets/my_search_text_field/my_search_text_field.dart';
 import 'bloc/item_state.dart';
 
 class ItemQuery extends StatelessWidget {
@@ -59,7 +58,7 @@ class ItemQuery extends StatelessWidget {
                 children: [
                   const Padding(
                     padding: EdgeInsets.only(bottom: 10),
-                    child: MyTextTitleBottomSheet(title: 'Novo produto'),
+                    child: Text('Novo produto', style: textStyleTitleModalBottomSheet),
                   ),
                   const Divider(),
                   Padding(
@@ -126,7 +125,7 @@ class ItemQuery extends StatelessWidget {
             children: [
               const Padding(
                 padding: EdgeInsets.only(bottom: 10),
-                child: MyTextTitleBottomSheet(title: 'Novo serviço'),
+                child: Text('Novo serviço', style: textStyleTitleModalBottomSheet),
               ),
               const Divider(),
               Padding(
@@ -180,7 +179,7 @@ class ItemQuery extends StatelessWidget {
               children: [
                 const Padding(
                   padding: EdgeInsets.all(10),
-                  child: MyTextTitleBottomSheet(title: 'O que deseja cadastrar?'),
+                  child: Text('O que deseja cadastrar?', style: textStyleTitleModalBottomSheet),
                 ),
                 const Divider(),
                 ListTile(

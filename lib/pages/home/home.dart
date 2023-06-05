@@ -1,4 +1,5 @@
 import 'package:agendamentos/assets/colorConstantes.dart';
+import 'package:agendamentos/model/login.dart';
 import 'package:agendamentos/pages/home/bloc/home_bloc.dart';
 import 'package:agendamentos/pages/home/bloc/home_state.dart';
 import 'package:flutter/material.dart';
@@ -13,9 +14,11 @@ import 'bloc/home_event.dart';
 
 class Home extends StatelessWidget {
   final TextEditingController _userNameController;
+  final TextEditingController _companyNameController;
 
   Home({Key? key})
       : _userNameController = TextEditingController(text: 'Usuário indefinido'),
+        _companyNameController = TextEditingController(text: 'Empresa indefinida'),
         super(key: key);
 
   /// fixed widget at the end of drawer
@@ -144,13 +147,34 @@ class Home extends StatelessWidget {
                       bloc: bloc,
                       builder: (_, state) {
                         if (state is HomeStateRefreshUser) {
-                          _userNameController.text = 'Olá, ${state.login.name}';
+                          var login = state.login;
+                          _userNameController.text = 'Olá, ${login.name}';
+                          _companyNameController.text = login.company.name;
                         }
                         return Container(
                           padding: const EdgeInsets.only(bottom: 10, top: 20, left: 20),
-                          child: Text(
-                            _userNameController.text,
-                            style: const TextStyle(color: Color(primaryColor), fontWeight: FontWeight.w700),
+                          child: ListTile(
+                            title: Text(
+                              _userNameController.text,
+                              textAlign: TextAlign.left,
+                              style: const TextStyle(
+                                color: Color(primaryColor),
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                            subtitle: Text(
+                              _companyNameController.text,
+                              style: const TextStyle(
+                                color: Color(primaryColor),
+                              ),
+                            ),
+                            leading: IconButton(
+                              icon: const Icon(
+                                Icons.exit_to_app_rounded,
+                                color: Color(primaryColor),
+                              ),
+                              onPressed: () async => await exitApp(),
+                            ),
                           ),
                         );
                       },
@@ -184,16 +208,8 @@ class Home extends StatelessWidget {
                     const Divider(),
                     _drawerFixed(
                       onTap: () async => Navigator.pushNamed(context, routeProfile),
-                      textTitle: 'Perfil',
+                      textTitle: 'Configurações',
                       iconData: Icons.settings,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 5.0),
-                      child: _drawerFixed(
-                        onTap: () async => await exitApp(),
-                        textTitle: 'Desconectar',
-                        iconData: Icons.exit_to_app,
-                      ),
                     ),
                   ],
                 ),

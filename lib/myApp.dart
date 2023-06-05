@@ -28,6 +28,7 @@ class MyApp extends StatelessWidget {
           backgroundColor: Color(primaryColor),
           splashColor: Colors.pink,
         ),
+
         inputDecorationTheme: InputDecorationTheme(
           filled: true,
           fillColor: const Color(0xFFF8F8F8),
@@ -50,7 +51,6 @@ class MyApp extends StatelessWidget {
             fontWeight: FontWeight.w600,
             fontSize: 15,
           ),
-
           iconTheme: const IconThemeData(color: Colors.black54),
         ),
         hintColor: const Color(primaryColor),
