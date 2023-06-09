@@ -1,3 +1,4 @@
+import 'package:agendamentos/assets/colorConstantes.dart';
 import 'package:agendamentos/assets/utilsConstantes.dart';
 import 'package:agendamentos/model/arguments/args_customer_info.dart';
 import 'package:agendamentos/model/customer.dart';
@@ -26,21 +27,18 @@ class CustomerQuery extends StatelessWidget {
     Future onTapCustomer(int index) async {
       var args = ArgsCustomerInfo(customer: customers[index]);
       await Navigator.pushNamed(context, routeCustomerInfo, arguments: args);
-      blocQuery.add(CustomerQueryEventFetchAll());
     }
 
     Future onTapNew() async {
       await Future.delayed(zeroDuration, () async {
         var args = ArgsCustomerNew.query(queryBloc: blocQuery);
         await Navigator.pushNamed(context, routeCustomerNew, arguments: args);
-        blocQuery.add(CustomerQueryEventFetchAll());
       });
     }
 
     Future onTapImport() async {
       await Future.delayed(zeroDuration, () async {
         await Navigator.pushNamed(context, routeCustomerImport);
-        blocQuery.add(CustomerQueryEventFetchAll());
       });
     }
 
@@ -96,8 +94,8 @@ class CustomerQuery extends StatelessWidget {
                               Customer customer = customers[index];
                               String initialLetter = customer.name.substring(0, 1).toUpperCase();
                               Widget customerListTile = ListTile(
-                                title: Text(customer.name, style: const TextStyle(fontSize: 14)),
-                                subtitle: Text(customer.cellphone, style: const TextStyle(fontSize: 13)),
+                                title: Text(customer.name, style: const TextStyle(fontSize: 15)),
+                                subtitle: Text(customer.cellphone),
                                 trailing: const Icon(Icons.arrow_forward_ios_rounded, size: 10),
                                 onTap: () async => await onTapCustomer(index),
                               );

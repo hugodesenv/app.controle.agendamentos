@@ -14,13 +14,23 @@ class CustomerQueryBloc extends Bloc<CustomerQueryEvent, CustomerQueryState> {
 
   void _fetchAll(event, emit) async {
     emit(CustomerQueryStateLoading(true));
+    try {
+      var repository = CustomerRepository.instance;
+      var snapshot = repository.getFireCloud.snapshots();
 
-    var repository = CustomerRepository.instance;
+      await snapshot.forEach((element) async {
+        _customers.clear();
 
-    _customers.clear();
-    _customers.addAll(await repository.fetchData());
-
-    emit(CustomerQueryStateRefreshList(_customers));
+        for (var doc in element.docs) {
+          Customer customer = Customer.fromJson(doc.data(), doc.id);
+          _customers.add(customer);
+        }
+        // delay to avoid strange behavior on the screen
+        await Future.delayed(const Duration(seconds: 1), () async => emit(CustomerQueryStateRefreshList(_customers)));
+      });
+    } finally {
+      emit(CustomerQueryStateLoading(false));
+    }
   }
 
   void _changedFilter(CustomerQueryEventOnChangedFilter event, emit) {
