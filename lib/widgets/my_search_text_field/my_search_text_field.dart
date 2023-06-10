@@ -1,4 +1,3 @@
-import 'package:agendamentos/assets/colorConstantes.dart';
 import 'package:flutter/material.dart';
 
 class MySearchTextField extends StatelessWidget {
