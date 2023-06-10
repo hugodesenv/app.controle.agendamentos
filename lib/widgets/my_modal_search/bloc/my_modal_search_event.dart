@@ -1,23 +1,21 @@
-import 'package:agendamentos/widgets/my_modal_search/enum/enumTypeModel.dart';
-
 abstract class MyModalSearchEvent {}
 
-class MyModalSearchEventInitial extends MyModalSearchEvent {
-  final TypeModal typeModal;
+/// get the current data by id
+class MyModalSearchEventFetchByID extends MyModalSearchEvent {
+  final String columnShow;
+  final String collection;
+  final String id;
 
-  MyModalSearchEventInitial({required this.typeModal});
+  MyModalSearchEventFetchByID(this.columnShow, this.collection, this.id);
 }
 
-/// fetch data in firebase
-class MyModalSearchEventFetchData extends MyModalSearchEvent {
-  final TypeModal typeModal;
+/// fetch all data in database (when the modal is opened)
+class MyModalSearchEventFetchAll extends MyModalSearchEvent {
+  final String columnShow;
+  final String collection;
 
-  MyModalSearchEventFetchData({required this.typeModal});
-}
-
-/// on click item, resulting the current clicked data
-class MyModalSearchEventTapItem extends MyModalSearchEvent {
-  final Map<String, dynamic> data;
-
-  MyModalSearchEventTapItem({required this.data});
+  MyModalSearchEventFetchAll({
+    required this.columnShow,
+    required this.collection,
+  });
 }

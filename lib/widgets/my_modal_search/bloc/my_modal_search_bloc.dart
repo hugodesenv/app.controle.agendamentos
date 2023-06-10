@@ -1,52 +1,30 @@
 import 'package:agendamentos/widgets/my_modal_search/bloc/my_modal_search_event.dart';
 import 'package:agendamentos/widgets/my_modal_search/bloc/my_modal_search_state.dart';
-import 'package:agendamentos/widgets/my_modal_search/enum/enumTypeModel.dart';
 import 'package:bloc/bloc.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class MyModalSearchBloc extends Bloc<MyModalSearchEvent, MyModalSearchState> {
   MyModalSearchBloc(super.initialState) {
-    on<MyModalSearchEventInitial>(_initial);
-    on<MyModalSearchEventFetchData>(_fetchData);
-    on<MyModalSearchEventTapItem>(_tapItem);
+    on<MyModalSearchEventFetchByID>(_fetchById);
+    on<MyModalSearchEventFetchAll>(_fetchData);
   }
 
-  void _initial(MyModalSearchEventInitial event, emit) {
-    String textTitle = '';
-    switch (event.typeModal) {
-      case TypeModal.CUSTOMER:
-        textTitle = 'Clientes';
-        break;
-    }
-    emit(MyModalSearchStateTextTitle(textTitle: textTitle));
+  void _fetchById(MyModalSearchEventFetchByID event, emit) async {
+    emit(MyModalSearchStateLoadingById());
+
+    var collection = FirebaseFirestore.instance.collection(event.collection);
+    var snapshot = await collection.doc(event.id).get();
+    var description = snapshot.data()![event.columnShow];
+
+    emit(MyModalSearchStateLoadedById(description));
   }
 
-  Future _fetchData(MyModalSearchEventFetchData event, emit) async {
-    List<Map<String, dynamic>> data = [];
-    String title = '';
+  void _fetchData(MyModalSearchEventFetchAll event, emit) async {
+    emit(MyModalSearchStateLoadingAll());
 
-    emit(MyModalSearchStateLoading());
-    try {
-      switch (event.typeModal) {
-        case TypeModal.CUSTOMER:
-          {
-            title = 'Clientes';
+    var collection = FirebaseFirestore.instance.collection(event.collection);
+    var data = await collection.orderBy(event.columnShow).get();
 
-            // só pra testar... @@hugo
-            Map<String, dynamic> map1 = {"key": "1029u3jn12j3kof2", "value": "Gabriella"};
-            data.add(map1);
-
-            Map<String, dynamic> map2 = {"key": "91i23u12j321jnf", "value": "Hugo Silva"};
-            data.add(map2);
-
-            break;
-          }
-      }
-    } finally {
-      emit(MyModalSearchStateLoaded(title: title, list: data));
-    }
-  }
-
-  void _tapItem(MyModalSearchEventTapItem event, emit) {
-    emit(MyModalSearchStateClickedData(data: event.data));
+    emit(MyModalSearchStateLoaded(data.docs));
   }
 }

@@ -3,54 +3,76 @@
 /// the data had been clicked.
 /// I don't know english very good...
 
+import 'package:agendamentos/assets/colorConstantes.dart';
 import 'package:agendamentos/widgets/my_modal_search/bloc/my_modal_search_bloc.dart';
 import 'package:agendamentos/widgets/my_modal_search/bloc/my_modal_search_event.dart';
 import 'package:agendamentos/widgets/my_modal_search/bloc/my_modal_search_state.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'enum/enumTypeModel.dart';
-
 class MyModalSearch extends StatelessWidget {
-  final TypeModal _typeModal;
-  final Function(Map<String, dynamic> value) _onSelected;
+  final TextEditingController _fieldController;
+  final String _initialID;
+  final String _collection;
+  final String _columnShow;
+  final String _title;
+  final Function(String id, Map<String, dynamic> selected) _onSelected;
 
-  const MyModalSearch({Key? key, required TypeModal typeModal, required Function(Map<String, dynamic> value) onSelected})
-      : _typeModal = typeModal,
-        _onSelected = onSelected,
+  MyModalSearch({
+    Key? key,
+    required Function(String id, Map<String, dynamic> selected) onSelected,
+    required String collection,
+    required String columnShow,
+    required String title,
+    required String initialID,
+  })  : _onSelected = onSelected,
+        _collection = collection,
+        _columnShow = columnShow,
+        _title = title,
+        _initialID = initialID,
+        _fieldController = TextEditingController(),
         super(key: key);
 
+  _onTapListTile(BuildContext context, dataSelected) {
+    _onSelected(dataSelected.id, dataSelected.data());
+    _fieldController.text = dataSelected.get(_columnShow);
+    Navigator.pop(context);
+  }
+
   Future _openDialog(BuildContext context, MyModalSearchBloc bloc) async {
-    var title = 'Título indefinido';
     await showDialog(
       context: context,
       builder: (_) {
         return BlocBuilder(
           bloc: bloc,
           builder: (_, state) {
-            List<Map<String, dynamic>> dataList = [];
+            List<QueryDocumentSnapshot<Map<String, dynamic>>> dataList = [];
             if (state is MyModalSearchStateLoaded) {
-              title = state.title;
               dataList.clear();
-              dataList.addAll(state.list);
+              dataList.addAll(state.data);
             }
-
             return AlertDialog(
-              title: Text(title),
+              title: Row(
+                children: [
+                  Expanded(child: Text(_title, textAlign: TextAlign.center)),
+                  IconButton(
+                    onPressed: () => Navigator.pop(context),
+                    icon: const Icon(Icons.close, color: Color(primaryColor)),
+                  ),
+                ],
+              ),
               content: SizedBox(
                 height: MediaQuery.of(context).size.height * 0.6,
                 width: MediaQuery.of(context).size.width,
-                child: state is MyModalSearchStateLoading
+                child: state is MyModalSearchStateLoadingAll
                     ? const Center(child: CircularProgressIndicator())
                     : ListView.separated(
                         itemBuilder: (_, index) {
-                          var data = dataList[index];
+                          var dataSelected = dataList[index];
                           return ListTile(
-                            title: Text(data['value'], style: const TextStyle(fontSize: 15)),
-                            onTap: () {
-                              bloc.add(MyModalSearchEventTapItem(data: data));
-                              Navigator.pop(context);
-                            },
+                            title: Text(dataSelected[_columnShow], style: const TextStyle(fontSize: 15)),
+                            onTap: () => _onTapListTile(context, dataSelected),
                           );
                         },
                         itemCount: dataList.length,
@@ -64,37 +86,45 @@ class MyModalSearch extends StatelessWidget {
     );
   }
 
+  Future<void> _onTapField(context, bloc) async {
+    bloc.add(MyModalSearchEventFetchAll(columnShow: _columnShow, collection: _collection));
+    await _openDialog(context, bloc);
+  }
+
+  Widget _suffixIcon(bool loading) {
+    if (loading) {
+      return Transform.scale(
+        scale: 0.5,
+        child: const CircularProgressIndicator(),
+      );
+    }
+    return const Icon(Icons.search_rounded);
+  }
+
   @override
   Widget build(BuildContext context) {
-    String labelText = '';
-    Map<String, dynamic> currentData = {};
-    TextEditingController textController = TextEditingController();
-    final MyModalSearchBloc bloc = MyModalSearchBloc(MyModalSearchStateInitial())..add(MyModalSearchEventInitial(typeModal: _typeModal));
+    final MyModalSearchBloc bloc = MyModalSearchBloc(MyModalSearchStateInitial())
+      ..add(MyModalSearchEventFetchByID(
+        _columnShow,
+        _collection,
+        _initialID,
+      ));
 
     return BlocProvider.value(
       value: bloc,
       child: BlocBuilder(
         bloc: bloc,
         builder: (_, state) {
-          if (state is MyModalSearchStateTextTitle) {
-            labelText = state.textTitle;
-          } else if (state is MyModalSearchStateClickedData) {
-            currentData = state.data;
-            _onSelected(currentData);
-            textController.text = currentData['value'] ?? '';
+          if (state is MyModalSearchStateLoadedById) {
+            _fieldController.text = state.description;
           }
+
           return GestureDetector(
-            onTap: () async {
-              bloc.add(MyModalSearchEventFetchData(typeModal: _typeModal));
-              await _openDialog(context, bloc);
-            },
+            onTap: () async => await _onTapField(context, bloc),
             child: TextField(
-              controller: textController,
+              controller: _fieldController,
               enabled: false,
-              decoration: InputDecoration(
-                labelText: labelText,
-                suffixIcon: const Icon(Icons.search_rounded),
-              ),
+              decoration: InputDecoration(suffixIcon: _suffixIcon(state is MyModalSearchStateLoadingById)),
             ),
           );
         },

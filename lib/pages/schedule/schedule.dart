@@ -1,4 +1,3 @@
-import 'package:agendamentos/widgets/my_modal_search/enum/enumTypeModel.dart';
 import 'package:agendamentos/widgets/my_modal_search/my_modal_search.dart';
 import 'package:flutter/material.dart';
 
@@ -27,10 +26,14 @@ class Schedule extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             MyModalSearch(
-              typeModal: TypeModal.CUSTOMER,
-              onSelected: (value) {
-                print("** resultado myModalSearch");
-                print(value);
+              title: 'Meus clientes',
+              collection: 'person',
+              columnShow: 'name',
+              initialID: '3sRFp0emBKq0LmE0zJ4r', //para teste
+              onSelected: (id, selected) {
+                print("** dados retornados schedule.dart");
+                print(selected);
+                print(id);
               },
             ),
           ],

@@ -1,4 +1,3 @@
-import 'package:agendamentos/assets/colorConstantes.dart';
 import 'package:agendamentos/assets/utilsConstantes.dart';
 import 'package:agendamentos/model/arguments/args_customer_info.dart';
 import 'package:agendamentos/model/customer.dart';
@@ -46,10 +45,6 @@ class CustomerQuery extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Clientes'),
         actions: [
-          IconButton(
-            onPressed: () => blocQuery.add(CustomerQueryEventFetchAll()),
-            icon: const Icon(Icons.refresh),
-          ),
           PopupMenuButton(
             itemBuilder: (_) => [
               PopupMenuItem(
