@@ -11,13 +11,13 @@ class MySearchTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextField(
-      decoration: const InputDecoration(
-        suffixIcon: Icon(Icons.search),
+      decoration: InputDecoration(
+        suffixIcon: const Icon(Icons.search),
         labelText: 'Filtrar...',
-        labelStyle: TextStyle(color: Color(primaryColor)),
+        labelStyle: TextStyle(color: Theme.of(context).primaryColor),
       ),
-      style: const TextStyle(color: Color(primaryColor)),
-      cursorColor: const Color(primaryColor),
+      style: TextStyle(color: Theme.of(context).primaryColor),
+      cursorColor: Theme.of(context).primaryColor,
       onChanged: _onChanged,
     );
   }
