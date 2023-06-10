@@ -118,7 +118,6 @@ class MyModalSearch extends StatelessWidget {
           if (state is MyModalSearchStateLoadedById) {
             _fieldController.text = state.description;
           }
-
           return GestureDetector(
             onTap: () async => await _onTapField(context, bloc),
             child: TextField(

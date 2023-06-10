@@ -29,7 +29,7 @@ class Schedule extends StatelessWidget {
               title: 'Meus clientes',
               collection: 'person',
               columnShow: 'name',
-              initialID: '3sRFp0emBKq0LmE0zJ4r', //para teste
+              initialID: 'MhLENgGvwhAyug1ktDDE', //para teste
               onSelected: (id, selected) {
                 print("** dados retornados schedule.dart");
                 print(selected);

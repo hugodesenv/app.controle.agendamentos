@@ -22,13 +22,21 @@ class Home extends StatelessWidget {
         super(key: key);
 
   /// fixed widget at the end of drawer
-  Widget _drawerFixed({required Function onTap, required String textTitle, required IconData iconData}) {
+  Widget _drawerFixed({
+    required Function onTap,
+    required String textTitle,
+    required IconData iconData,
+    required BuildContext context,
+  }) {
     return ListTile(
-      leading: Icon(iconData, color: const Color(primaryColor)),
+      leading: Icon(iconData, color: Theme.of(context).primaryColor),
       onTap: () async => await onTap(),
       title: Text(
         textTitle,
-        style: const TextStyle(color: Color(primaryColor), fontWeight: FontWeight.w700),
+        style: TextStyle(
+          color: Theme.of(context).primaryColor,
+          fontWeight: FontWeight.w700,
+        ),
       ),
     );
   }
@@ -69,7 +77,7 @@ class Home extends StatelessWidget {
             onTap: () => Navigator.pushNamed(context, routeCustomerNew),
             title: Text(
               pTitle,
-              style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: Colors.black87),
+              style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
               textAlign: TextAlign.center,
             ),
             subtitle: const Padding(
@@ -133,7 +141,6 @@ class Home extends StatelessWidget {
               ),
             ),
             drawer: Drawer(
-              backgroundColor: Colors.grey[200],
               shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.horizontal(
                   right: Radius.circular(20),
@@ -157,21 +164,21 @@ class Home extends StatelessWidget {
                             title: Text(
                               _userNameController.text,
                               textAlign: TextAlign.left,
-                              style: const TextStyle(
-                                color: Color(primaryColor),
+                              style: TextStyle(
+                                color: Theme.of(context).primaryColor,
                                 fontWeight: FontWeight.w700,
                               ),
                             ),
                             subtitle: Text(
                               _companyNameController.text,
-                              style: const TextStyle(
-                                color: Color(primaryColor),
+                              style: TextStyle(
+                                color: Theme.of(context).primaryColor,
                               ),
                             ),
                             leading: IconButton(
-                              icon: const Icon(
+                              icon: Icon(
                                 Icons.exit_to_app_rounded,
-                                color: Color(primaryColor),
+                                color: Theme.of(context).primaryColor,
                               ),
                               onPressed: () async => await exitApp(),
                             ),
@@ -210,6 +217,7 @@ class Home extends StatelessWidget {
                       onTap: () async => Navigator.pushNamed(context, routeProfile),
                       textTitle: 'Configurações',
                       iconData: Icons.settings,
+                      context: context,
                     ),
                   ],
                 ),

@@ -4,6 +4,8 @@ import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class MyModalSearchBloc extends Bloc<MyModalSearchEvent, MyModalSearchState> {
+  final List<QueryDocumentSnapshot<Map<String, dynamic>>> _docs = [];
+
   MyModalSearchBloc(super.initialState) {
     on<MyModalSearchEventFetchByID>(_fetchById);
     on<MyModalSearchEventFetchAll>(_fetchData);
@@ -20,11 +22,15 @@ class MyModalSearchBloc extends Bloc<MyModalSearchEvent, MyModalSearchState> {
   }
 
   void _fetchData(MyModalSearchEventFetchAll event, emit) async {
-    emit(MyModalSearchStateLoadingAll());
+    if (_docs.isEmpty) {
+      emit(MyModalSearchStateLoadingAll());
 
-    var collection = FirebaseFirestore.instance.collection(event.collection);
-    var data = await collection.orderBy(event.columnShow).get();
+      var collection = FirebaseFirestore.instance.collection(event.collection);
+      var data = await collection.orderBy(event.columnShow).get();
 
-    emit(MyModalSearchStateLoaded(data.docs));
+      _docs.addAll(data.docs);
+    }
+
+    emit(MyModalSearchStateLoaded(_docs));
   }
 }
