@@ -1,5 +1,3 @@
-import 'package:agendamentos/assets/colorConstantes.dart';
-import 'package:agendamentos/model/login.dart';
 import 'package:agendamentos/pages/home/bloc/home_bloc.dart';
 import 'package:agendamentos/pages/home/bloc/home_state.dart';
 import 'package:flutter/material.dart';
@@ -48,6 +46,11 @@ class Home extends StatelessWidget {
       Dialogs.materialDialog(
         context: context,
         title: 'Deseja sair do app?',
+        titleStyle: const TextStyle(
+          color: Colors.black54,
+          fontWeight: FontWeight.w700,
+        ),
+        msgStyle: const TextStyle(color: Colors.black54),
         msg: 'Espero vê-lo novamente! :)',
         actions: [
           IconsButton(

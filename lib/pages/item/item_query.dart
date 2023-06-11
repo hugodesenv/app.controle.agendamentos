@@ -6,12 +6,11 @@ import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import '../../widgets/my_search_text_field/my_search_text_field.dart';
 import 'bloc/item_state.dart';
 
 class ItemQuery extends StatelessWidget {
-  final TextEditingController _barcodeController = TextEditingController();
+  final TextEditingController _productBarcodeController = TextEditingController();
   final TextEditingController _hourTimeController = TextEditingController();
 
   ItemQuery({Key? key}) : super(key: key);
@@ -33,6 +32,12 @@ class ItemQuery extends StatelessWidget {
     bloc.add(ItemEventShowBarCode());
   }
 
+  _saveProduct(ItemBloc bloc) {
+    // handling the controllers values manually.
+    bloc.add(ItemEventSetValues(barcode: _productBarcodeController.text));
+    bloc.add(ItemEventSave());
+  }
+
   Future _onTapProduct(BuildContext context, ItemBloc bloc) async {
     await showModalBottomSheet(
       context: context,
@@ -43,61 +48,65 @@ class ItemQuery extends StatelessWidget {
           bloc: bloc,
           builder: (context, state) {
             if (state is ItemStateHandleBarCode) {
-              _barcodeController.text = state.value;
+              _productBarcodeController.text = state.value;
             }
-            return Padding(
-              padding: EdgeInsets.only(
-                top: 20,
-                right: 20,
-                left: 20,
-                bottom: MediaQuery.of(context).viewInsets.bottom + 10,
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const Padding(
-                    padding: EdgeInsets.only(bottom: 10),
-                    child: Text('Novo produto', style: textStyleTitleModalBottomSheet),
-                  ),
-                  const Divider(),
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 15.0),
-                    child: Row(
-                      children: [
-                        Flexible(
-                          child: TextFormField(
-                            controller: _barcodeController,
-                            decoration: const InputDecoration(
-                              labelText: 'Código',
-                              border: UnderlineInputBorder(),
+            return Form(
+              key: bloc.formKeyMain,
+              child: Padding(
+                padding: EdgeInsets.only(
+                  top: 20,
+                  right: 20,
+                  left: 20,
+                  bottom: MediaQuery.of(context).viewInsets.bottom + 10,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 10),
+                      child: Text('Novo produto', style: textStyleTitleModalBottomSheet(context)),
+                    ),
+                    const Divider(),
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 15.0),
+                      child: Row(
+                        children: [
+                          Flexible(
+                            child: TextFormField(
+                              controller: _productBarcodeController,
+                              decoration: const InputDecoration(
+                                labelText: 'Código de barras',
+                                border: UnderlineInputBorder(),
+                              ),
                             ),
                           ),
-                        ),
-                        IconButton(
-                          onPressed: () => _onTapBarcode(bloc),
-                          icon: const Icon(
-                            Icons.qr_code,
-                            color: Color(primaryColor),
+                          IconButton(
+                            onPressed: () => _onTapBarcode(bloc),
+                            icon: Icon(
+                              Icons.qr_code,
+                              color: primaryColor(context),
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 15),
-                    child: TextFormField(
-                      decoration: const InputDecoration(
-                        labelText: 'Descrição',
-                        border: UnderlineInputBorder(),
+                        ],
                       ),
                     ),
-                  ),
-                  ElevatedButton(
-                    onPressed: () {},
-                    child: const Text('Gravar'),
-                  ),
-                ],
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 15),
+                      child: TextFormField(
+                        onChanged: (value) => bloc.add(ItemEventSetValues(description: value)),
+                        decoration: const InputDecoration(
+                          labelText: 'Descrição',
+                          border: UnderlineInputBorder(),
+                        ),
+                      ),
+                    ),
+                    ElevatedButton(
+                      onPressed: () => _saveProduct(bloc),
+                      child: const Text('Gravar'),
+                    ),
+                  ],
+                ),
               ),
             );
           },
@@ -123,9 +132,9 @@ class ItemQuery extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             mainAxisSize: MainAxisSize.min,
             children: [
-              const Padding(
-                padding: EdgeInsets.only(bottom: 10),
-                child: Text('Novo serviço', style: textStyleTitleModalBottomSheet),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 10),
+                child: Text('Novo serviço', style: textStyleTitleModalBottomSheet(context)),
               ),
               const Divider(),
               Padding(
@@ -171,28 +180,39 @@ class ItemQuery extends StatelessWidget {
         shape: shapeModalBottomSheet,
         context: context,
         builder: (_) {
-          return Padding(
-            padding: const EdgeInsets.all(10),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                const Padding(
-                  padding: EdgeInsets.all(10),
-                  child: Text('O que deseja cadastrar?', style: textStyleTitleModalBottomSheet),
-                ),
-                const Divider(),
-                ListTile(
-                  title: const Text('Produto', style: TextStyle(color: Color(primaryColor))),
-                  leading: const Icon(Icons.hardware_outlined, color: Color(primaryColor)),
-                  onTap: () async => await _onTapProduct(context, bloc),
-                ),
-                ListTile(
-                  title: const Text('Serviço', style: TextStyle(color: Color(primaryColor))),
-                  leading: const Icon(Icons.home_repair_service_outlined, color: Color(primaryColor)),
-                  onTap: () async => await _onTapService(context),
-                ),
-              ],
+          return BlocListener(
+            bloc: bloc,
+            listener: (_, state) {
+              if (state is ItemStateSuccess) {
+                mySnackbar(context, state.message);
+              } else if (state is ItemStateFailure) {
+                mySnackbar(context, state.error);
+              }
+              Navigator.pop(context);
+            },
+            child: Padding(
+              padding: const EdgeInsets.all(10),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: Text('O que deseja cadastrar?', style: textStyleTitleModalBottomSheet(context)),
+                  ),
+                  const Divider(),
+                  ListTile(
+                    title: Text('Produto', style: TextStyle(color: primaryColor(context))),
+                    leading: Icon(Icons.hardware_outlined, color: primaryColor(context)),
+                    onTap: () async => await _onTapProduct(context, bloc),
+                  ),
+                  ListTile(
+                    title: Text('Serviço', style: TextStyle(color: primaryColor(context))),
+                    leading: Icon(Icons.home_repair_service_outlined, color: primaryColor(context)),
+                    onTap: () async => await _onTapService(context),
+                  ),
+                ],
+              ),
             ),
           );
         },

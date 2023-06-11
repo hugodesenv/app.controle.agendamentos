@@ -7,6 +7,7 @@ import 'package:agendamentos/assets/colorConstantes.dart';
 import 'package:agendamentos/widgets/my_modal_search/bloc/my_modal_search_bloc.dart';
 import 'package:agendamentos/widgets/my_modal_search/bloc/my_modal_search_event.dart';
 import 'package:agendamentos/widgets/my_modal_search/bloc/my_modal_search_state.dart';
+import 'package:agendamentos/widgets/my_search_text_field/my_search_text_field.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -55,10 +56,10 @@ class MyModalSearch extends StatelessWidget {
             return AlertDialog(
               title: Row(
                 children: [
-                  Expanded(child: Text(_title, textAlign: TextAlign.center)),
+                  Expanded(child: Text(_title, textAlign: TextAlign.center, style: TextStyle(color: primaryColor(context)))),
                   IconButton(
                     onPressed: () => Navigator.pop(context),
-                    icon: const Icon(Icons.close, color: Color(primaryColor)),
+                    icon: Icon(Icons.close, color: primaryColor(context)),
                   ),
                 ],
               ),
@@ -67,16 +68,29 @@ class MyModalSearch extends StatelessWidget {
                 width: MediaQuery.of(context).size.width,
                 child: state is MyModalSearchStateLoadingAll
                     ? const Center(child: CircularProgressIndicator())
-                    : ListView.separated(
-                        itemBuilder: (_, index) {
-                          var dataSelected = dataList[index];
-                          return ListTile(
-                            title: Text(dataSelected[_columnShow], style: const TextStyle(fontSize: 15)),
-                            onTap: () => _onTapListTile(context, dataSelected),
-                          );
-                        },
-                        itemCount: dataList.length,
-                        separatorBuilder: (_, int index) => const Divider(),
+                    : Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: 10),
+                            child: MySearchTextField(
+                              onChanged: (value) => bloc.add(MyModalSearchEventFilterData(value: value, columnToFilter: _columnShow)),
+                            ),
+                          ),
+                          Expanded(
+                            child: ListView.separated(
+                              itemBuilder: (_, index) {
+                                var dataSelected = dataList[index];
+                                return ListTile(
+                                  title: Text(dataSelected[_columnShow], style: const TextStyle(fontSize: 15)),
+                                  onTap: () => _onTapListTile(context, dataSelected),
+                                );
+                              },
+                              itemCount: dataList.length,
+                              separatorBuilder: (_, int index) => const Divider(),
+                            ),
+                          ),
+                        ],
                       ),
               ),
             );

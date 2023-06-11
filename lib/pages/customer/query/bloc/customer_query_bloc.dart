@@ -19,6 +19,7 @@ class CustomerQueryBloc extends Bloc<CustomerQueryEvent, CustomerQueryState> {
       var snapshot = repository.getFireCloud.snapshots();
 
       await snapshot.forEach((element) async {
+        print("** buscando dados dos clientes async (CustomerQueryBloc)");
         _customers.clear();
 
         for (var doc in element.docs) {
@@ -42,7 +43,7 @@ class CustomerQueryBloc extends Bloc<CustomerQueryEvent, CustomerQueryState> {
       tempCustomers.retainWhere(
         (element) {
           String textElement = element.name.toLowerCase();
-          return textElement.startsWith(textFilter);
+          return textElement.contains(textFilter);
         },
       );
     }

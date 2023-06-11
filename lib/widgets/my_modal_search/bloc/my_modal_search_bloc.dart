@@ -9,6 +9,7 @@ class MyModalSearchBloc extends Bloc<MyModalSearchEvent, MyModalSearchState> {
   MyModalSearchBloc(super.initialState) {
     on<MyModalSearchEventFetchByID>(_fetchById);
     on<MyModalSearchEventFetchAll>(_fetchData);
+    on<MyModalSearchEventFilterData>(_filterData);
   }
 
   void _fetchById(MyModalSearchEventFetchByID event, emit) async {
@@ -21,6 +22,7 @@ class MyModalSearchBloc extends Bloc<MyModalSearchEvent, MyModalSearchState> {
     emit(MyModalSearchStateLoadedById(description));
   }
 
+  /// result the list database data
   void _fetchData(MyModalSearchEventFetchAll event, emit) async {
     if (_docs.isEmpty) {
       emit(MyModalSearchStateLoadingAll());
@@ -32,5 +34,19 @@ class MyModalSearchBloc extends Bloc<MyModalSearchEvent, MyModalSearchState> {
     }
 
     emit(MyModalSearchStateLoaded(_docs));
+  }
+
+  /// filter the data in the list
+  void _filterData(MyModalSearchEventFilterData event, emit) {
+    var docTemp = _docs;
+    var column = event.columnToFilter;
+    var value = event.value;
+
+    docTemp = docTemp.where((e) {
+      var item = e.data()[column].toString().toLowerCase();
+      return item.contains(value);
+    }).toList();
+
+    emit(MyModalSearchStateLoaded(docTemp));
   }
 }

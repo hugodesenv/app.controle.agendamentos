@@ -1,16 +1,27 @@
 import 'package:agendamentos/assets/colorConstantes.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 const zeroDuration = Duration.zero;
 
+/// return the default style modal bottom sheet
 const shapeModalBottomSheet = RoundedRectangleBorder(
   borderRadius: BorderRadius.vertical(
     top: Radius.circular(18.0),
   ),
 );
 
-const textStyleTitleModalBottomSheet = TextStyle(
-  color: Color(primaryColor),
-  fontWeight: FontWeight.w700,
-  fontSize: 15,
-);
+/// returns the style of bottom sheet titles
+TextStyle textStyleTitleModalBottomSheet(BuildContext context) {
+  return TextStyle(
+    color: primaryColor(context),
+    fontWeight: FontWeight.w700,
+    fontSize: 15,
+  );
+}
+
+void mySnackbar(BuildContext context, String message) {
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(content: Text(message)),
+  );
+}
