@@ -1,19 +1,22 @@
-import 'package:agendamentos/model/customer.dart';
+import 'package:agendamentos/interface/crud_interface.dart';
 import 'package:agendamentos/repository/firebase_repository.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class CustomerRepository extends FirebaseRepository {
+import '../model/customer.dart';
+
+class CustomerRepository extends FirebaseRepository implements CrudInterface {
   CustomerRepository._() : super(collection: 'person');
 
   static final instance = CustomerRepository._();
 
-  Future<String> save(Customer customer) async {
-    DocumentReference doc = getFireCloud.doc(customer.id);
-    await doc.set(customer.toMap());
-    return doc.id;
+  @override
+  Future<bool> delete(String id) async {
+    bool res = await getFireCloud.doc(id).delete().then((value) => true).onError((error, stackTrace) => false);
+    return res;
   }
 
-  Future<List<Customer>> fetchData() async {
+  @override
+  Future<List> fetchAll() async {
     List<Customer> customers = [];
     var collections = await getFireCloud.get();
 
@@ -25,8 +28,10 @@ class CustomerRepository extends FirebaseRepository {
     return customers;
   }
 
-  Future<bool> delete(String id) async {
-    bool res = await getFireCloud.doc(id).delete().then((value) => true).onError((error, stackTrace) => false);
-    return res;
+  @override
+  Future<String> save(data) async {
+    DocumentReference doc = getFireCloud.doc(data.id);
+    await doc.set(data.toMap());
+    return doc.id;
   }
 }

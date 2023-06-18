@@ -1,5 +1,6 @@
 import 'package:agendamentos/assets/colorConstantes.dart';
 import 'package:agendamentos/assets/utilsConstantes.dart';
+import 'package:agendamentos/model/item.dart';
 import 'package:agendamentos/pages/item/bloc/item_bloc.dart';
 import 'package:agendamentos/pages/item/bloc/item_event.dart';
 import 'package:brasil_fields/brasil_fields.dart';
@@ -28,7 +29,7 @@ class ItemQuery extends StatelessWidget {
     ];
   }
 
-  _onTapBarcode(ItemBloc bloc) async {
+  _onTapBarcode(ItemBloc bloc) {
     bloc.add(ItemEventShowBarCode());
   }
 
@@ -44,72 +45,74 @@ class ItemQuery extends StatelessWidget {
       isScrollControlled: true,
       shape: shapeModalBottomSheet,
       builder: (_) {
-        return BlocBuilder(
+        return BlocListener(
           bloc: bloc,
-          builder: (context, state) {
+          listener: (_, state) {
             if (state is ItemStateHandleBarCode) {
               _productBarcodeController.text = state.value;
             }
-            return Form(
-              key: bloc.formKeyMain,
-              child: Padding(
-                padding: EdgeInsets.only(
-                  top: 20,
-                  right: 20,
-                  left: 20,
-                  bottom: MediaQuery.of(context).viewInsets.bottom + 10,
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 10),
-                      child: Text('Novo produto', style: textStyleTitleModalBottomSheet(context)),
-                    ),
-                    const Divider(),
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 15.0),
-                      child: Row(
-                        children: [
-                          Flexible(
-                            child: TextFormField(
-                              controller: _productBarcodeController,
-                              decoration: const InputDecoration(
-                                labelText: 'Código de barras',
-                                border: UnderlineInputBorder(),
+          },
+          child: BlocBuilder(
+            bloc: bloc,
+            builder: (context, state) {
+              return Form(
+                key: bloc.formKeyMain,
+                child: Padding(
+                  padding: EdgeInsets.only(
+                    top: 20,
+                    right: 20,
+                    left: 20,
+                    bottom: MediaQuery.of(context).viewInsets.bottom + 10,
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 10),
+                        child: Text('Novo produto', style: textStyleTitleModalBottomSheet(context)),
+                      ),
+                      const Divider(),
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 15.0),
+                        child: Row(
+                          children: [
+                            Flexible(
+                              child: TextFormField(
+                                controller: _productBarcodeController,
+                                decoration: const InputDecoration(
+                                  labelText: 'Código de barras',
+                                  border: UnderlineInputBorder(),
+                                ),
                               ),
                             ),
-                          ),
-                          IconButton(
-                            onPressed: () => _onTapBarcode(bloc),
-                            icon: Icon(
-                              Icons.qr_code,
-                              color: primaryColor(context),
+                            IconButton(
+                              onPressed: () => _onTapBarcode(bloc),
+                              icon: Icon(Icons.qr_code, color: primaryColor(context)),
                             ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 15),
-                      child: TextFormField(
-                        onChanged: (value) => bloc.add(ItemEventSetValues(description: value)),
-                        decoration: const InputDecoration(
-                          labelText: 'Descrição',
-                          border: UnderlineInputBorder(),
+                          ],
                         ),
                       ),
-                    ),
-                    ElevatedButton(
-                      onPressed: () => _saveProduct(bloc),
-                      child: const Text('Gravar'),
-                    ),
-                  ],
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 15),
+                        child: TextFormField(
+                          onChanged: (value) => bloc.add(ItemEventSetValues(description: value)),
+                          decoration: const InputDecoration(
+                            labelText: 'Descrição',
+                            border: UnderlineInputBorder(),
+                          ),
+                        ),
+                      ),
+                      ElevatedButton(
+                        onPressed: () => _saveProduct(bloc),
+                        child: const Text('Gravar'),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            );
-          },
+              );
+            },
+          ),
         );
       },
     );
@@ -185,10 +188,11 @@ class ItemQuery extends StatelessWidget {
             listener: (_, state) {
               if (state is ItemStateSuccess) {
                 mySnackbar(context, state.message);
+                Navigator.pop(context);
               } else if (state is ItemStateFailure) {
                 mySnackbar(context, state.error);
+                Navigator.pop(context);
               }
-              Navigator.pop(context);
             },
             child: Padding(
               padding: const EdgeInsets.all(10),
@@ -231,35 +235,43 @@ class ItemQuery extends StatelessWidget {
       body: BlocBuilder(
         bloc: bloc,
         builder: (BuildContext context, state) {
+          bool loading = state is ItemStateLoading;
+          List<Item> items = [];
+          if (state is ItemStateRefreshList) {
+            items.clear();
+            items.addAll(state.items);
+          }
           return Container(
             padding: const EdgeInsets.all(10),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(left: 10, right: 10, bottom: 20, top: 10),
-                  child: MySearchTextField(
-                    onChanged: (value) => print("** digitado: $value"),
-                  ),
-                ),
-                Expanded(
-                  child: ListView.separated(
-                    itemCount: 40,
-                    separatorBuilder: (_, index) => const Divider(),
-                    itemBuilder: (context, index) {
-                      return const ListTile(
-                        title: Text('Tesoura'),
-                        subtitle: Text('R\$10,00'),
-                        trailing: Icon(
-                          Icons.arrow_forward_ios_rounded,
-                          size: 10,
-                        ),
-                      );
-                    },
-                  ),
-                ),
-              ],
-            ),
+            child: loading
+                ? const Center(child: CircularProgressIndicator())
+                : items.isEmpty
+                    ? const Center(child: Text('Nenhum registro encontrado'))
+                    : Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(left: 10, right: 10, bottom: 20, top: 10),
+                            child: MySearchTextField(
+                              onChanged: (value) => print("** digitado: $value"),
+                            ),
+                          ),
+                          Expanded(
+                            child: ListView.separated(
+                              itemCount: items.length,
+                              separatorBuilder: (_, index) => const Divider(),
+                              itemBuilder: (_, index) {
+                                Item item = items[index];
+                                return ListTile(
+                                  title: Text(item.description),
+                                  subtitle: Text(item.barcode),
+                                  trailing: const Icon(Icons.arrow_forward_ios_rounded, size: 10),
+                                );
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
           );
         },
       ),

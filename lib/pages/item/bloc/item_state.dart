@@ -1,3 +1,5 @@
+import '../../../model/item.dart';
+
 abstract class ItemState {}
 
 class ItemStateInitial extends ItemState {}
@@ -19,3 +21,11 @@ class ItemStateFailure extends ItemState {
 
   ItemStateFailure(this.error);
 }
+
+class ItemStateRefreshList extends ItemState {
+  List<Item> items;
+
+  ItemStateRefreshList({required this.items});
+}
+
+class ItemStateLoading extends ItemState {}

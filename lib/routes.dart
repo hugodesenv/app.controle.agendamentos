@@ -109,7 +109,7 @@ appRoutes(RouteSettings settings) {
   if (settings.name == routeItemQuery) {
     return MaterialPageRoute(
       builder: (_) => BlocProvider(
-        create: (context) => ItemBloc(ItemStateInitial()),
+        create: (context) => ItemBloc(ItemStateInitial())..add(ItemEventFetchAll()),
         child: ItemQuery(),
       ),
     );

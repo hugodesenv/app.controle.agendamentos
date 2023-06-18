@@ -19,9 +19,7 @@ class CustomerQueryBloc extends Bloc<CustomerQueryEvent, CustomerQueryState> {
       var snapshot = repository.getFireCloud.snapshots();
 
       await snapshot.forEach((element) async {
-        print("** buscando dados dos clientes async (CustomerQueryBloc)");
         _customers.clear();
-
         for (var doc in element.docs) {
           Customer customer = Customer.fromJson(doc.data(), doc.id);
           _customers.add(customer);

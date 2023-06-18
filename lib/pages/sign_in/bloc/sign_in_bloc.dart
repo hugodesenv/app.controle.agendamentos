@@ -2,8 +2,6 @@ import 'package:agendamentos/pages/sign_in/bloc/sign_in_event.dart';
 import 'package:agendamentos/pages/sign_in/bloc/sign_in_state.dart';
 import 'package:bloc/bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-
-import '../../../model/login.dart';
 import '../../../repository/user_repository.dart';
 
 class SignInBloc extends Bloc<SignInEvent, SignInState> {

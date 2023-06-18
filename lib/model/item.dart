@@ -2,29 +2,36 @@ import 'package:agendamentos/model/generic_model.dart';
 
 import 'company.dart';
 
-class Product extends GenericModel {
+class Item extends GenericModel {
   String _description;
   String _barcode;
 
-  Product({
-    required String description,
-    required String barcode,
-  })  : _description = description,
-        _barcode = barcode;
+  Item({String? id, required String description, required String barcode})
+      : _description = description,
+        _barcode = barcode,
+        super(id: id);
 
-  Product copyWith({
+  Item copyWith({
     String? description,
     String? barcode,
     Company? company,
   }) {
-    return Product(
+    return Item(
       description: description ?? this.description,
       barcode: barcode ?? this.barcode,
     );
   }
 
-  factory Product.empty() {
-    return Product(description: '', barcode: '');
+  factory Item.fromJson(Map<dynamic, dynamic> json, String id) {
+    return Item(
+      id: id,
+      description: json['description'],
+      barcode: json['barcode'],
+    );
+  }
+
+  factory Item.empty() {
+    return Item(description: '', barcode: '');
   }
 
   Map<String, dynamic> toMap() {
