@@ -29,7 +29,11 @@ class ItemBloc extends Bloc<ItemEvent, ItemState> {
   }
 
   void _setValues(ItemEventSetValues event, emit) {
-    _product = _product.copyWith(barcode: event.barcode, description: event.description);
+    _product = _product.copyWith(
+      barcode: event.barcode,
+      description: event.description,
+      type: event.type,
+    );
   }
 
   Future _save(ItemEventSave event, emit) async {

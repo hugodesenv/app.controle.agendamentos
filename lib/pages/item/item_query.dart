@@ -34,8 +34,11 @@ class ItemQuery extends StatelessWidget {
   }
 
   _saveProduct(ItemBloc bloc) {
-    // handling the controllers values manually.
-    bloc.add(ItemEventSetValues(barcode: _productBarcodeController.text));
+    // Passing manually controllers values and others attributes to the BloC.
+    bloc.add(ItemEventSetValues(
+      barcode: _productBarcodeController.text,
+      type: ItemType.product,
+    ));
     bloc.add(ItemEventSave());
   }
 

@@ -2,23 +2,33 @@ import 'package:agendamentos/model/generic_model.dart';
 
 import 'company.dart';
 
+enum ItemType { product, service, undefined }
+
 class Item extends GenericModel {
+  ItemType _type;
   String _description;
   String _barcode;
 
-  Item({String? id, required String description, required String barcode})
-      : _description = description,
+  Item({
+    String? id,
+    required String description,
+    required String barcode,
+    required ItemType type,
+  })  : _description = description,
         _barcode = barcode,
+        _type = type,
         super(id: id);
 
   Item copyWith({
     String? description,
     String? barcode,
     Company? company,
+    ItemType? type,
   }) {
     return Item(
       description: description ?? this.description,
       barcode: barcode ?? this.barcode,
+      type: type ?? this.type,
     );
   }
 
@@ -27,20 +37,34 @@ class Item extends GenericModel {
       id: id,
       description: json['description'],
       barcode: json['barcode'],
+      type: getTypeFromString(json['type']),
     );
   }
 
   factory Item.empty() {
-    return Item(description: '', barcode: '');
+    return Item(
+      description: '',
+      barcode: '',
+      type: ItemType.undefined,
+    );
   }
 
   Map<String, dynamic> toMap() {
+    print("** type: ${type.name}");
     Map<String, dynamic> map = {
       'description': description,
       'barcode': barcode,
+      'type': type.name,
     };
 
     return map;
+  }
+
+  static ItemType getTypeFromString(String pType) {
+    return ItemType.values.firstWhere(
+      (e) => e.name == pType,
+      orElse: () => ItemType.undefined,
+    );
   }
 
   String get description => _description;
@@ -53,5 +77,11 @@ class Item extends GenericModel {
 
   set barcode(String value) {
     _barcode = value;
+  }
+
+  ItemType get type => _type;
+
+  set type(ItemType value) {
+    _type = value;
   }
 }
