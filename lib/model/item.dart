@@ -5,26 +5,17 @@ import 'company.dart';
 enum ItemType { product, service, undefined }
 
 class Item extends GenericModel {
-  ItemType _type;
-  String _description;
-  String _barcode;
+  ItemType? _type;
+  String? _description;
+  String? _barcode;
 
-  Item({
-    String? id,
-    required String description,
-    required String barcode,
-    required ItemType type,
-  })  : _description = description,
-        _barcode = barcode,
-        _type = type,
-        super(id: id);
+  Item({String? id, required String? description, required String? barcode, required ItemType? type})
+      : _description = description ?? '',
+        _barcode = barcode ?? '',
+        _type = type ?? ItemType.undefined,
+        super(id: id ?? '');
 
-  Item copyWith({
-    String? description,
-    String? barcode,
-    Company? company,
-    ItemType? type,
-  }) {
+  Item copyWith({String? description, String? barcode, Company? company, ItemType? type}) {
     return Item(
       description: description ?? this.description,
       barcode: barcode ?? this.barcode,
@@ -33,10 +24,11 @@ class Item extends GenericModel {
   }
 
   factory Item.fromJson(Map<dynamic, dynamic> json, String id) {
+    print(json);
     return Item(
-      id: id,
-      description: json['description'],
-      barcode: json['barcode'],
+      id: id ?? '',
+      description: json['description'] ?? '',
+      barcode: json['barcode'] ?? '',
       type: getTypeFromString(json['type']),
     );
   }
@@ -50,7 +42,6 @@ class Item extends GenericModel {
   }
 
   Map<String, dynamic> toMap() {
-    print("** type: ${type.name}");
     Map<String, dynamic> map = {
       'description': description,
       'barcode': barcode,
@@ -60,26 +51,26 @@ class Item extends GenericModel {
     return map;
   }
 
-  static ItemType getTypeFromString(String pType) {
+  static ItemType getTypeFromString(String? pType) {
     return ItemType.values.firstWhere(
-      (e) => e.name == pType,
+      (e) => e.name == (pType ?? ''),
       orElse: () => ItemType.undefined,
     );
   }
 
-  String get description => _description;
+  String get description => _description ?? '';
 
   set description(String value) {
     _description = value;
   }
 
-  String get barcode => _barcode;
+  String get barcode => _barcode ?? '';
 
   set barcode(String value) {
     _barcode = value;
   }
 
-  ItemType get type => _type;
+  ItemType get type => _type ?? ItemType.undefined;
 
   set type(ItemType value) {
     _type = value;

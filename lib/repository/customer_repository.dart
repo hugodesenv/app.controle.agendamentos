@@ -18,19 +18,20 @@ class CustomerRepository extends FirebaseRepository implements CrudInterface {
     return res;
   }
 
-  //@@@PENBSAR DUM JEITO MELHOR PRA PROGRAMAR SÓ A PARTE DE DENTRO DO BLOC
-  Future fetchStream(Function(List<Customer>) callbackCustomers) async {
+  @override
+  Future<void> fetchAllStream(Function(List<Customer>) onDataProcessed) async {
     List<Customer> customers = [];
 
-    await for (var querySnapshot in getFireCloud.snapshots()) {
+    await getFireCloud.snapshots().forEach((querySnapshot) {
       customers.clear();
+
       for (var doc in querySnapshot.docs) {
         Customer customer = Customer.fromJson(doc.data(), doc.id);
         customers.add(customer);
       }
-      print("** blz, agora vamos chamar callback e atualizar no bloC");
-      callbackCustomers(customers);
-    }
+
+      onDataProcessed(customers);
+    });
   }
 
   @override
@@ -38,12 +39,5 @@ class CustomerRepository extends FirebaseRepository implements CrudInterface {
     DocumentReference doc = getFireCloud.doc(data.id);
     await doc.set(data.toMap());
     return doc.id;
-  }
-
-  @override
-  Future<List> fetchAll() {
-    //@@@@REMOVER ISSO AQUI E MUDAR TODOS PRO STREAM!!! PRA MANTER UM PADRÃO! :)
-    // TODO: implement fetchAll
-    throw UnimplementedError();
   }
 }

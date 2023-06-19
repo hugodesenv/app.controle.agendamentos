@@ -1,7 +1,7 @@
 abstract class CrudInterface {
   Future<String> save(dynamic data);
 
-  Future<List<dynamic>> fetchAll();
+  Future<void> fetchAllStream(Function(List data) onDataProcessed);
 
   Future<bool> delete(String id);
 }

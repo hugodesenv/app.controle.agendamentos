@@ -19,14 +19,14 @@ class CompanyRepository extends FirebaseRepository implements CrudInterface {
   }
 
   @override
-  Future<List> fetchAll() {
-    // TODO: implement fetchData
+  Future<String> save(data) {
+    // TODO: implement save
     throw UnimplementedError();
   }
 
   @override
-  Future<String> save(data) {
-    // TODO: implement save
+  Future<void> fetchAllStream(Function(List p1) onDataProcessed) {
+    // TODO: implement fetchAllStream
     throw UnimplementedError();
   }
 }

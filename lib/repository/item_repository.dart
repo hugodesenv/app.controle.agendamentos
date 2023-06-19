@@ -15,22 +15,25 @@ class ItemRepository extends FirebaseRepository implements CrudInterface {
   }
 
   @override
-  Future<List<dynamic>> fetchAll() async {
-    var collections = await getFireCloud.get();
-
-    List<Item> items = [];
-    for (var doc in collections.docs) {
-      var item = Item.fromJson(doc.data(), doc.id);
-      items.add(item);
-    }
-
-    return items;
-  }
-
-  @override
   Future<String> save(data) async {
     DocumentReference reference = getFireCloud.doc(data.id);
     await reference.set(data.toMap());
     return reference.id;
+  }
+
+  @override
+  Future<void> fetchAllStream(Function(List data) onDataProcessed) async {
+    List<Item> items = [];
+
+    await getFireCloud.snapshots().forEach((querySnapshot) async {
+      items.clear();
+
+      for (var doc in querySnapshot.docs) {
+        var item = Item.fromJson(doc.data(), doc.id);
+        items.add(item);
+      }
+
+      onDataProcessed(items);
+    });
   }
 }

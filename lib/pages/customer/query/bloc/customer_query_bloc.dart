@@ -18,9 +18,9 @@ class CustomerQueryBloc extends Bloc<CustomerQueryEvent, CustomerQueryState> {
     try {
       var repository = CustomerRepository.instance;
 
-      await repository.fetchStream((callbackCustomers) async {
+      await repository.fetchAllStream((customers) async {
         _customers.clear();
-        _customers.addAll(callbackCustomers);
+        _customers.addAll(customers);
         await Future.delayed(const Duration(seconds: 1), () async => emit(CustomerQueryStateRefreshList(_customers)));
       });
     } finally {

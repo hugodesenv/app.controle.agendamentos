@@ -11,6 +11,7 @@ import '../../../assets/colorConstantes.dart';
 class ItemBloc extends Bloc<ItemEvent, ItemState> {
   Item _product = Item.empty();
   final _formKeyMain = GlobalKey<FormState>();
+  final List<Item> _items = [];
 
   ItemBloc(super.initialState) {
     on<ItemEventShowBarCode>(_showBarCode);
@@ -52,13 +53,16 @@ class ItemBloc extends Bloc<ItemEvent, ItemState> {
   }
 
   Future _fetchAll(ItemEventFetchAll event, emit) async {
-    List<Item> items = [];
-    try {
+    ItemRepository repository = ItemRepository.instance;
+
+    await repository.fetchAllStream((items) async {
       emit(ItemStateLoading());
-      ItemRepository repository = ItemRepository.instance;
-      items = await repository.fetchAll() as List<Item>;
-    } finally {
-      emit(ItemStateRefreshList(items: items));
-    }
+      try {
+        _items.clear();
+        _items.addAll(items as Iterable<Item>);
+      } finally {
+        emit(ItemStateRefreshList(items: _items));
+      }
+    });
   }
 }
