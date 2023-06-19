@@ -5,6 +5,7 @@ import 'package:agendamentos/repository/customer_repository.dart';
 import 'package:bloc/bloc.dart';
 
 class CustomerQueryBloc extends Bloc<CustomerQueryEvent, CustomerQueryState> {
+  //it is necessary to filter the data in the field
   final List<Customer> _customers = [];
 
   CustomerQueryBloc(super.initialState) {
@@ -16,15 +17,10 @@ class CustomerQueryBloc extends Bloc<CustomerQueryEvent, CustomerQueryState> {
     emit(CustomerQueryStateLoading(true));
     try {
       var repository = CustomerRepository.instance;
-      var snapshot = repository.getFireCloud.snapshots();
 
-      await snapshot.forEach((element) async {
+      await repository.fetchStream((callbackCustomers) async {
         _customers.clear();
-        for (var doc in element.docs) {
-          Customer customer = Customer.fromJson(doc.data(), doc.id);
-          _customers.add(customer);
-        }
-        // delay to avoid strange behavior on the screen
+        _customers.addAll(callbackCustomers);
         await Future.delayed(const Duration(seconds: 1), () async => emit(CustomerQueryStateRefreshList(_customers)));
       });
     } finally {
