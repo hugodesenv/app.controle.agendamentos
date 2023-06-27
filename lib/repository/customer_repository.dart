@@ -22,7 +22,7 @@ class CustomerRepository extends FirebaseRepository implements CrudInterface {
   Future<void> fetchAllStream(Function(List<Customer>) onDataProcessed) async {
     List<Customer> customers = [];
 
-    await getFireCloud.snapshots().forEach((querySnapshot) {
+    subscription = getFireCloud.snapshots().listen((querySnapshot) {
       customers.clear();
 
       for (var doc in querySnapshot.docs) {

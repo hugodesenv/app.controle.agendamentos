@@ -1,5 +1,4 @@
 import 'package:agendamentos/assets/colorConstantes.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 const zeroDuration = Duration.zero;
@@ -20,8 +19,8 @@ TextStyle textStyleTitleModalBottomSheet(BuildContext context) {
   );
 }
 
-void mySnackbar(BuildContext context, String message) {
+void mySnackbar(BuildContext context, String message, {Color? background}) {
   ScaffoldMessenger.of(context).showSnackBar(
-    SnackBar(content: Text(message)),
+    SnackBar(content: Text(message), backgroundColor: background),
   );
 }

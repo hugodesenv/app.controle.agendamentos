@@ -1,14 +1,15 @@
 import 'package:agendamentos/assets/colorConstantes.dart';
 import 'package:agendamentos/assets/utilsConstantes.dart';
 import 'package:agendamentos/model/item.dart';
-import 'package:agendamentos/pages/item/bloc/item_bloc.dart';
-import 'package:agendamentos/pages/item/bloc/item_event.dart';
+import 'package:agendamentos/pages/item/query/bloc/item_bloc.dart';
+import 'package:agendamentos/pages/item/query/bloc/item_event.dart';
 import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../widgets/my_search_text_field/my_search_text_field.dart';
-import 'bloc/item_state.dart';
+
+import '../../../widgets/my_search_text_field/my_search_text_field.dart';
+import '../query/bloc/item_state.dart';
 
 class ItemQuery extends StatelessWidget {
   final TextEditingController _productBarcodeController = TextEditingController();
@@ -185,44 +186,122 @@ class ItemQuery extends StatelessWidget {
       () async => await showModalBottomSheet(
         shape: shapeModalBottomSheet,
         context: context,
-        builder: (_) {
-          return BlocListener(
-            bloc: bloc,
-            listener: (_, state) {
-              if (state is ItemStateSuccess) {
-                mySnackbar(context, state.message);
-                Navigator.pop(context);
-              } else if (state is ItemStateFailure) {
-                mySnackbar(context, state.error);
-                Navigator.pop(context);
-              }
-            },
-            child: Padding(
-              padding: const EdgeInsets.all(10),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(10),
-                    child: Text('O que deseja cadastrar?', style: textStyleTitleModalBottomSheet(context)),
+        builder: (context) {
+          return ScaffoldMessenger(
+            child: Builder(
+              builder: (context) {
+                return Scaffold(
+                  backgroundColor: Colors.transparent,
+                  body: BlocListener(
+                    bloc: bloc,
+                    listener: (_, state) {
+                      if (state is ItemStateSuccess) {
+                        mySnackbar(context, state.message);
+                        Navigator.pop(context);
+                      } else if (state is ItemStateFailure) {
+                        mySnackbar(context, state.error, background: Colors.red);
+                        Navigator.pop(context);
+                      }
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.all(10),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(10),
+                            child: Text('O que deseja cadastrar?', style: textStyleTitleModalBottomSheet(context)),
+                          ),
+                          const Divider(),
+                          ListTile(
+                            title: Text('Produto', style: TextStyle(color: primaryColor(context))),
+                            leading: Icon(Icons.hardware_outlined, color: primaryColor(context)),
+                            onTap: () async => await _onTapProduct(context, bloc),
+                          ),
+                          ListTile(
+                            title: Text('Serviço', style: TextStyle(color: primaryColor(context))),
+                            leading: Icon(Icons.home_repair_service_outlined, color: primaryColor(context)),
+                            onTap: () async => await _onTapService(context),
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
-                  const Divider(),
-                  ListTile(
-                    title: Text('Produto', style: TextStyle(color: primaryColor(context))),
-                    leading: Icon(Icons.hardware_outlined, color: primaryColor(context)),
-                    onTap: () async => await _onTapProduct(context, bloc),
-                  ),
-                  ListTile(
-                    title: Text('Serviço', style: TextStyle(color: primaryColor(context))),
-                    leading: Icon(Icons.home_repair_service_outlined, color: primaryColor(context)),
-                    onTap: () async => await _onTapService(context),
-                  ),
-                ],
-              ),
+                );
+              },
             ),
           );
         },
+      ),
+    );
+  }
+
+  final List<Tab> _tabsIcon = [
+    const Tab(icon: Icon(Icons.hardware_outlined, color: Colors.black)),
+    const Tab(icon: Icon(Icons.work_history_outlined, color: Colors.black)),
+  ];
+
+  Widget _firstTab(ItemBloc bloc) {
+    return BlocBuilder(
+      bloc: bloc,
+      builder: (BuildContext context, state) {
+        bool loading = state is ItemStateLoading;
+        List<Item> items = [];
+        if (state is ItemStateRefreshList) {
+          items.clear();
+          items.addAll(state.items);
+        }
+        return Container(
+          padding: const EdgeInsets.all(10),
+          child: loading
+              ? const Center(child: CircularProgressIndicator())
+              : items.isEmpty
+                  ? const Center(child: Text('Nenhum registro encontrado'))
+                  : Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(left: 10, right: 10, bottom: 20, top: 10),
+                          child: MySearchTextField(
+                            labelText: 'Filtrar produtos...',
+                            onChanged: (value) => print("** digitado: $value"),
+                          ),
+                        ),
+                        Expanded(
+                          child: ListView.separated(
+                            itemCount: items.length,
+                            separatorBuilder: (_, index) => const Divider(),
+                            itemBuilder: (_, index) {
+                              Item item = items[index];
+                              return ListTile(
+                                title: Text(item.description),
+                                subtitle: Text(item.barcode),
+                                trailing: const Icon(Icons.arrow_forward_ios_rounded, size: 10),
+                              );
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+        );
+      },
+    );
+  }
+
+  Widget _secondTab() {
+    return Padding(
+      padding: const EdgeInsets.all(10),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(left: 10, right: 10, bottom: 20, top: 10),
+            child: MySearchTextField(
+              labelText: 'Filtrar serviços...',
+              onChanged: (value) {},
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -232,51 +311,23 @@ class ItemQuery extends StatelessWidget {
     var bloc = BlocProvider.of<ItemBloc>(context);
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Itens'),
+        title: const Text('Produtos e serviços'),
         actions: _actionAppBar(context, bloc),
       ),
-      body: BlocBuilder(
-        bloc: bloc,
-        builder: (BuildContext context, state) {
-          bool loading = state is ItemStateLoading;
-          List<Item> items = [];
-          if (state is ItemStateRefreshList) {
-            items.clear();
-            items.addAll(state.items);
-          }
-          return Container(
-            padding: const EdgeInsets.all(10),
-            child: loading
-                ? const Center(child: CircularProgressIndicator())
-                : items.isEmpty
-                    ? const Center(child: Text('Nenhum registro encontrado'))
-                    : Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(left: 10, right: 10, bottom: 20, top: 10),
-                            child: MySearchTextField(
-                              onChanged: (value) => print("** digitado: $value"),
-                            ),
-                          ),
-                          Expanded(
-                            child: ListView.separated(
-                              itemCount: items.length,
-                              separatorBuilder: (_, index) => const Divider(),
-                              itemBuilder: (_, index) {
-                                Item item = items[index];
-                                return ListTile(
-                                  title: Text(item.description),
-                                  subtitle: Text(item.barcode),
-                                  trailing: const Icon(Icons.arrow_forward_ios_rounded, size: 10),
-                                );
-                              },
-                            ),
-                          ),
-                        ],
-                      ),
-          );
-        },
+      body: DefaultTabController(
+        length: _tabsIcon.length,
+        child: Scaffold(
+          appBar: AppBar(
+            toolbarHeight: 0,
+            bottom: TabBar(tabs: _tabsIcon),
+          ),
+          body: TabBarView(
+            children: [
+              _firstTab(bloc),
+              _secondTab(),
+            ],
+          ),
+        ),
       ),
     );
   }

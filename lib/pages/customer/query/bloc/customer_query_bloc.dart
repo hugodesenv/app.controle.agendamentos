@@ -11,19 +11,30 @@ class CustomerQueryBloc extends Bloc<CustomerQueryEvent, CustomerQueryState> {
   CustomerQueryBloc(super.initialState) {
     on<CustomerQueryEventFetchAll>(_fetchAll);
     on<CustomerQueryEventOnChangedFilter>(_changedFilter);
+    on<CustomerQueryEventUpdated>(_customersUpdated);
+  }
+
+  @override
+  Future<void> close() {
+    CustomerRepository.instance.subscription?.cancel();
+    return super.close();
+  }
+
+  Future _customersUpdated(CustomerQueryEventUpdated event, emit) async {
+    await Future.delayed(
+      const Duration(seconds: 1),
+      () async => emit(CustomerQueryStateRefreshList(event.customers)),
+    );
   }
 
   void _fetchAll(event, emit) async {
     var repository = CustomerRepository.instance;
 
     await repository.fetchAllStream((customers) async {
-      emit(CustomerQueryStateLoading(true));
-      try {
-        _customers.clear();
-        _customers.addAll(customers);
-      } finally {
-        await Future.delayed(const Duration(seconds: 1), () async => emit(CustomerQueryStateRefreshList(_customers)));
-      }
+      _customers.clear();
+      _customers.addAll(customers);
+
+      add(CustomerQueryEventUpdated(customers: _customers));
     });
   }
 

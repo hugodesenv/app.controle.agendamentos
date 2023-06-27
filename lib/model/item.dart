@@ -13,7 +13,7 @@ class Item extends GenericModel {
       : _description = description ?? '',
         _barcode = barcode ?? '',
         _type = type ?? ItemType.undefined,
-        super(id: id ?? '');
+        super(id: id);
 
   Item copyWith({String? description, String? barcode, Company? company, ItemType? type}) {
     return Item(

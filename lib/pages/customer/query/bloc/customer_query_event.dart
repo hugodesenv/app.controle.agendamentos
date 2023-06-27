@@ -1,6 +1,7 @@
+import '../../../../model/customer.dart';
+
 abstract class CustomerQueryEvent {}
 
-/// find all customers in database
 class CustomerQueryEventFetchAll extends CustomerQueryEvent {}
 
 class CustomerQueryEventOnChangedFilter extends CustomerQueryEvent {
@@ -9,4 +10,10 @@ class CustomerQueryEventOnChangedFilter extends CustomerQueryEvent {
   CustomerQueryEventOnChangedFilter(this._value);
 
   String get value => _value.toLowerCase();
+}
+
+class CustomerQueryEventUpdated extends CustomerQueryEvent {
+  List<Customer> customers;
+
+  CustomerQueryEventUpdated({required this.customers});
 }

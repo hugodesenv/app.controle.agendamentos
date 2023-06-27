@@ -16,9 +16,9 @@ class ItemRepository extends FirebaseRepository implements CrudInterface {
 
   @override
   Future<String> save(data) async {
-    DocumentReference reference = getFireCloud.doc(data.id);
-    await reference.set(data.toMap());
-    return reference.id;
+    DocumentReference doc = getFireCloud.doc(data.id);
+    await doc.set(data.toMap());
+    return doc.id;
   }
 
   @override

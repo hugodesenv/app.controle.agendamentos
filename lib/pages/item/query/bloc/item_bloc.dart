@@ -1,12 +1,12 @@
 import 'package:agendamentos/model/item.dart';
-import 'package:agendamentos/pages/item/bloc/item_event.dart';
-import 'package:agendamentos/pages/item/bloc/item_state.dart';
+import 'package:agendamentos/pages/item/query/bloc/item_event.dart';
+import 'package:agendamentos/pages/item/query/bloc/item_state.dart';
 import 'package:agendamentos/repository/item_repository.dart';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 
-import '../../../assets/colorConstantes.dart';
+import '../../../../assets/colorConstantes.dart';
 
 class ItemBloc extends Bloc<ItemEvent, ItemState> {
   Item _product = Item.empty();
