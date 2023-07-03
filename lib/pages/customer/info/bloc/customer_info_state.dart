@@ -1,5 +1,3 @@
-import 'package:equatable/equatable.dart';
-
 import '../../../../assets/enum/form_submission_status.dart';
 import '../../../../model/customer.dart';
 

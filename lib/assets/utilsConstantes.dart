@@ -19,8 +19,12 @@ TextStyle textStyleTitleModalBottomSheet(BuildContext context) {
   );
 }
 
-void mySnackbar(BuildContext context, String message, {Color? background}) {
+void mySnackbar(BuildContext context, String message, {Color? background, int? secondsDuration}) {
   ScaffoldMessenger.of(context).showSnackBar(
-    SnackBar(content: Text(message), backgroundColor: background),
+    SnackBar(
+      content: Text(message),
+      backgroundColor: background,
+      duration: Duration(seconds: secondsDuration ?? 1),
+    ),
   );
 }
