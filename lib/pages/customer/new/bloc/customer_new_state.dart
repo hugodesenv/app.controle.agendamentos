@@ -1,32 +1,39 @@
-import '../../../../model/customer.dart';
+import '../../../../assets/enum/form_submission_status.dart';
+import '../formz/model.dart';
 
-abstract class CustomerNewState {}
+class CustomerNewState {
+  final String? id;
+  final NameFormz name;
+  final CellphoneFormz cellphone;
+  final bool isValid;
+  final FormSubmissionStatus status;
+  final String message;
 
-class CustomerNewStateInitial extends CustomerNewState {}
+  CustomerNewState({
+    this.id,
+    NameFormz? name,
+    CellphoneFormz? cellphone,
+    this.isValid = false,
+    this.status = FormSubmissionStatus.initial,
+    this.message = '',
+  })  : name = name ?? NameFormz.pure(),
+        cellphone = cellphone ?? CellphoneFormz.pure();
 
-class CustomerNewStateSuccess extends CustomerNewState {
-  final Customer _customer;
-  final String _message;
-
-  CustomerNewStateSuccess(this._customer, this._message);
-
-  Customer get customer => _customer;
-
-  String get message => _message;
-}
-
-class CustomerNewStateFailure extends CustomerNewState {
-  final String _error;
-
-  CustomerNewStateFailure(this._error);
-
-  String get error => _error;
-}
-
-class CustomerNewStateLoaded extends CustomerNewState {
-  final Customer _customer;
-
-  CustomerNewStateLoaded({required customer}) : _customer = customer;
-
-  Customer get customer => _customer;
+  CustomerNewState copyWith({
+    String? id,
+    FormSubmissionStatus? status,
+    NameFormz? name,
+    CellphoneFormz? cellphone,
+    bool? isValid,
+    String? message,
+  }) {
+    return CustomerNewState(
+      status: status ?? this.status,
+      name: name ?? this.name,
+      cellphone: cellphone ?? this.cellphone,
+      isValid: isValid ?? this.isValid,
+      message: message ?? '',
+      id: id ?? this.id,
+    );
+  }
 }

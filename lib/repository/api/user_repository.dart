@@ -1,6 +1,6 @@
 import 'package:agendamentos/model/login.dart';
-import 'package:agendamentos/repository/company_repository.dart';
-import 'package:agendamentos/repository/firebase_repository.dart';
+import 'package:agendamentos/repository/api/company_repository.dart';
+import 'package:agendamentos/repository/api/firebase_repository.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class UserRepository extends FirebaseRepository {

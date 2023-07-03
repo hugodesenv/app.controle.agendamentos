@@ -1,45 +1,53 @@
+import 'package:agendamentos/assets/enum/form_submission_status.dart';
 import 'package:agendamentos/pages/customer/info/bloc/customer_info_event.dart';
 import 'package:agendamentos/pages/customer/info/bloc/customer_info_state.dart';
-import 'package:agendamentos/repository/customer_repository.dart';
-import 'package:agendamentos/repository/launcher_repository.dart';
+import 'package:agendamentos/repository/api/customer_repository.dart';
+import 'package:agendamentos/repository/classes/launcher_repository.dart';
 import 'package:bloc/bloc.dart';
-import '../../../../model/customer.dart';
 
 class CustomerInfoBloc extends Bloc<CustomerInfoEvent, CustomerInfoState> {
-  late Customer _customer;
-
   CustomerInfoBloc(super.initialState) {
-    on<CustomerInfoEventInitial>(_initial);
-    on<CustomerInfoEventRefresh>(_refresh);
     on<CustomerInfoEventOpenWhatsApp>(_openWhatsApp);
     on<CustomerInfoEventDelete>(_delete);
   }
 
-  void _initial(CustomerInfoEventInitial event, emit) {
-    _customer = event.customer;
-    emit(CustomerInfoStateRefresh(customer: _customer));
-  }
-
-  Future _refresh(CustomerInfoEventRefresh event, emit) async {
-    _customer = event.customer;
-    emit(CustomerInfoStateRefresh(customer: event.customer));
-  }
-
   Future _openWhatsApp(CustomerInfoEventOpenWhatsApp event, emit) async {
-    emit(CustomerInfoStateLoading(true));
+    try {
+      emit(state.copyWith(status: FormSubmissionStatus.inProgress));
 
-    LauncherRepository repository = LauncherRepository.instance;
-    bool res = await repository.launchWhatsApp(event.number);
+      LauncherRepository repository = LauncherRepository.instance;
+      await repository.launchWhatsApp(event.number);
 
-    res ? emit(CustomerInfoStateLoading(false)) : emit(CustomerInfoStateFailure('Ops, não foi possível abrir o WhatsApp! Verifique se ele está instalado!'));
+      emit(state.copyWith(status: FormSubmissionStatus.success));
+    } catch (e) {
+      emit(state.copyWith(
+        status: FormSubmissionStatus.failure,
+        message: 'Não foi possível abrir o WhatsApp',
+      ));
+    }
   }
 
   Future _delete(event, emit) async {
-    var repository = CustomerRepository.instance;
-
-    bool res = await repository.delete(_customer.id ?? '');
-    res
-        ? emit(CustomerInfoStateDeleted(_customer, 'Cliente excluído com sucesso!'))
-        : emit(CustomerInfoStateFailure('Houve uma falha na exclusão do cliente...'));
+    emit(state.copyWith(status: FormSubmissionStatus.inProgress));
+    try {
+      var repository = CustomerRepository.instance;
+      bool res = await repository.delete(state.customer.id ?? '');
+      if (res) {
+        emit(state.copyWith(
+          status: FormSubmissionStatus.deleted,
+          message: 'Cliente excluído com sucesso!',
+        ));
+      } else {
+        emit(state.copyWith(
+          status: FormSubmissionStatus.failure,
+          message: 'Não foi possível excluir o cliente, verifique e tente novamente!',
+        ));
+      }
+    } catch (e) {
+      emit(state.copyWith(
+        status: FormSubmissionStatus.failure,
+        message: 'Falha: ${e.toString()}',
+      ));
+    }
   }
 }

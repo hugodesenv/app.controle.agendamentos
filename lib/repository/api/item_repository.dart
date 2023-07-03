@@ -1,6 +1,6 @@
 import 'package:agendamentos/interface/crud_interface.dart';
 import 'package:agendamentos/model/item.dart';
-import 'package:agendamentos/repository/firebase_repository.dart';
+import 'package:agendamentos/repository/api/firebase_repository.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ItemRepository extends FirebaseRepository implements CrudInterface {

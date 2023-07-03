@@ -1,12 +1,10 @@
 import 'package:agendamentos/assets/utilsConstantes.dart';
-import 'package:agendamentos/model/arguments/args_customer_info.dart';
 import 'package:agendamentos/model/customer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skeletons/skeletons.dart';
 
 import '../../../assets/routesConstants.dart';
-import '../../../model/arguments/args_customer_new.dart';
 import '../../../widgets/my_search_text_field/my_search_text_field.dart';
 import 'bloc/customer_query_bloc.dart';
 import 'bloc/customer_query_event.dart';
@@ -22,16 +20,17 @@ class CustomerQuery extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var blocQuery = BlocProvider.of<CustomerQueryBloc>(context);
-
     Future onTapCustomer(int index) async {
-      var args = ArgsCustomerInfo(customer: customers[index]);
-      await Navigator.pushNamed(context, routeCustomerInfo, arguments: args);
+      await Navigator.pushNamed(context, routeCustomerInfo, arguments: customers[index]);
     }
 
     Future onTapNew() async {
       await Future.delayed(zeroDuration, () async {
-        var args = ArgsCustomerNew.query(queryBloc: blocQuery);
-        await Navigator.pushNamed(context, routeCustomerNew, arguments: args);
+        await Navigator.pushNamed(
+          context,
+          routeCustomerNew,
+          arguments: Customer.empty(),
+        );
       });
     }
 

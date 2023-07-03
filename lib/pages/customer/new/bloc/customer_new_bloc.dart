@@ -1,48 +1,60 @@
 import 'package:agendamentos/model/customer.dart';
 import 'package:agendamentos/pages/customer/new/bloc/customer_new_event.dart';
 import 'package:agendamentos/pages/customer/new/bloc/customer_new_state.dart';
-import 'package:agendamentos/repository/customer_repository.dart';
+import 'package:agendamentos/pages/customer/new/formz/model.dart';
 import 'package:bloc/bloc.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:formz/formz.dart';
+
+import '../../../../assets/enum/form_submission_status.dart';
+import '../../../../repository/api/customer_repository.dart';
 
 class CustomerNewBloc extends Bloc<CustomerNewEvent, CustomerNewState> {
-  final _formKeyMain = GlobalKey<FormState>();
-  late Customer _customer;
-
   CustomerNewBloc(super.initialState) {
+    on<CustomerNewEventNameChanged>(_nameChanged);
+    on<CustomerNewEventCellphoneChanged>(_cellphoneChanged);
     on<CustomerNewEventSubmitted>(_submitted);
-    on<CustomerNewEventOnChanged>(_onChanged);
-    on<CustomerNewEventInitial>(_initial);
   }
 
-  get formKeyMain => _formKeyMain;
-
-  ///when the screen open, in insert or edit mode
-  _initial(CustomerNewEventInitial event, emit) {
-    _customer = event.customer;
-    emit(CustomerNewStateLoaded(customer: _customer));
+  _nameChanged(CustomerNewEventNameChanged event, emit) {
+    final name = NameFormz.dirty(value: event.name);
+    emit(state.copyWith(
+      name: name,
+      isValid: Formz.validate([name, state.cellphone]),
+    ));
   }
 
-  /// when the person saves the customer!
+  _cellphoneChanged(CustomerNewEventCellphoneChanged event, emit) {
+    final cellphone = CellphoneFormz.dirty(value: event.cellphone);
+    emit(
+      state.copyWith(
+        cellphone: cellphone,
+        isValid: Formz.validate([state.name, cellphone]),
+      ),
+    );
+  }
+
   Future _submitted(CustomerNewEventSubmitted event, emit) async {
-    bool isValid = _formKeyMain.currentState!.validate();
-
-    if (isValid) {
+    if (state.isValid) {
+      emit(state.copyWith(status: FormSubmissionStatus.inProgress));
       try {
         var repository = CustomerRepository.instance;
-        _customer.id = await repository.save(_customer);
-        emit(CustomerNewStateSuccess(_customer, 'Processo realizado com sucesso!'));
+
+        await repository.save(Customer(
+          id: state.id,
+          name: state.name.value,
+          cellphone: state.cellphone.value,
+        ));
+
+        emit(state.copyWith(
+          status: FormSubmissionStatus.success,
+          message: 'Cliente gravado com sucesso!',
+        ));
       } catch (e) {
-        emit(CustomerNewStateFailure('Houve uma falha ao gravar, tente novamente!'));
+        emit(state.copyWith(
+          status: FormSubmissionStatus.failure,
+          message: 'Falha: ${e.toString()}',
+        ));
       }
     }
-  }
-
-  ///when the field is changed
-  _onChanged(CustomerNewEventOnChanged event, emit) {
-    _customer = _customer.copyWith(
-      name: event.name,
-      cellphone: event.cellphone,
-    );
   }
 }

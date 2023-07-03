@@ -1,10 +1,10 @@
 import 'dart:async';
 
 import 'package:agendamentos/interface/crud_interface.dart';
-import 'package:agendamentos/repository/firebase_repository.dart';
+import 'package:agendamentos/repository/api/firebase_repository.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-import '../model/customer.dart';
+import '../../model/customer.dart';
 
 class CustomerRepository extends FirebaseRepository implements CrudInterface {
   CustomerRepository._() : super(collection: 'person');
@@ -36,6 +36,7 @@ class CustomerRepository extends FirebaseRepository implements CrudInterface {
 
   @override
   Future<String> save(data) async {
+    print("** save: ${data.id}");
     DocumentReference doc = getFireCloud.doc(data.id);
     await doc.set(data.toMap());
     return doc.id;

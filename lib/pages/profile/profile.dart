@@ -1,4 +1,4 @@
-import 'package:agendamentos/repository/user_repository.dart';
+import 'package:agendamentos/repository/api/user_repository.dart';
 import 'package:flutter/material.dart';
 
 class Profile extends StatelessWidget {

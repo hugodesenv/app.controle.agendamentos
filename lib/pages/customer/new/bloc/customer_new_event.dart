@@ -1,20 +1,20 @@
-import 'package:agendamentos/model/customer.dart';
+import 'package:equatable/equatable.dart';
 
-abstract class CustomerNewEvent {}
+class CustomerNewEvent extends Equatable {
+  @override
+  List<Object?> get props => throw UnimplementedError();
+}
+
+class CustomerNewEventNameChanged extends CustomerNewEvent {
+  final String name;
+
+  CustomerNewEventNameChanged(this.name);
+}
+
+class CustomerNewEventCellphoneChanged extends CustomerNewEvent {
+  final String cellphone;
+
+  CustomerNewEventCellphoneChanged(this.cellphone);
+}
 
 class CustomerNewEventSubmitted extends CustomerNewEvent {}
-
-class CustomerNewEventOnChanged extends CustomerNewEvent {
-  String? name;
-  String? cellphone;
-
-  CustomerNewEventOnChanged({this.name, this.cellphone});
-}
-
-class CustomerNewEventInitial extends CustomerNewEvent {
-  final Customer _customer;
-
-  CustomerNewEventInitial({required customer}) : _customer = customer ?? Customer.empty();
-
-  Customer get customer => _customer;
-}

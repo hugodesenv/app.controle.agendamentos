@@ -1,7 +1,7 @@
 import 'package:agendamentos/model/customer.dart';
 import 'package:agendamentos/pages/customer/query/bloc/customer_query_event.dart';
 import 'package:agendamentos/pages/customer/query/bloc/customer_query_state.dart';
-import 'package:agendamentos/repository/customer_repository.dart';
+import 'package:agendamentos/repository/api/customer_repository.dart';
 import 'package:bloc/bloc.dart';
 
 class CustomerQueryBloc extends Bloc<CustomerQueryEvent, CustomerQueryState> {
