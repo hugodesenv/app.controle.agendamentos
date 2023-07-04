@@ -9,41 +9,46 @@ import '../../../../assets/enum/form_submission_status.dart';
 import '../../../../repository/api/customer_repository.dart';
 
 class CustomerNewBloc extends Bloc<CustomerNewEvent, CustomerNewState> {
-  CustomerNewBloc(super.initialState) {
+  Customer _customer = Customer.empty();
+
+  CustomerNewBloc(Customer customer, super.initialState) {
+    _customer = customer;
     on<CustomerNewEventNameChanged>(_nameChanged);
     on<CustomerNewEventCellphoneChanged>(_cellphoneChanged);
     on<CustomerNewEventSubmitted>(_submitted);
   }
 
   _nameChanged(CustomerNewEventNameChanged event, emit) {
-    final name = NameFormz.dirty(value: event.name);
+    _customer = _customer.copyWith(name: event.name);
+
     emit(state.copyWith(
-      name: name,
-      isValid: Formz.validate([name, state.cellphone]),
+      name: NameFormz.dirty(value: _customer.name),
     ));
   }
 
   _cellphoneChanged(CustomerNewEventCellphoneChanged event, emit) {
-    final cellphone = CellphoneFormz.dirty(value: event.cellphone);
-    emit(
-      state.copyWith(
-        cellphone: cellphone,
-        isValid: Formz.validate([state.name, cellphone]),
-      ),
-    );
+    _customer = _customer.copyWith(cellphone: event.cellphone);
+
+    emit(state.copyWith(
+      cellphone: CellphoneFormz.dirty(value: _customer.cellphone),
+    ));
   }
 
   Future _submitted(CustomerNewEventSubmitted event, emit) async {
+    // validating if the fields is correct
+    emit(state.copyWith(
+      status: FormSubmissionStatus.initial,
+      isValid: Formz.validate([
+        state.name,
+        state.cellphone,
+      ]),
+    ));
+
     if (state.isValid) {
       emit(state.copyWith(status: FormSubmissionStatus.inProgress));
       try {
         var repository = CustomerRepository.instance;
-
-        await repository.save(Customer(
-          id: state.id,
-          name: state.name.value,
-          cellphone: state.cellphone.value,
-        ));
+        await repository.save(_customer);
 
         emit(state.copyWith(
           status: FormSubmissionStatus.success,
@@ -55,6 +60,11 @@ class CustomerNewBloc extends Bloc<CustomerNewEvent, CustomerNewState> {
           message: 'Falha: ${e.toString()}',
         ));
       }
+    } else {
+      emit(state.copyWith(
+        status: FormSubmissionStatus.failure,
+        message: 'Não é possível gravar, confira os campos obrigatórios',
+      ));
     }
   }
 }

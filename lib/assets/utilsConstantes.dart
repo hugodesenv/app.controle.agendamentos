@@ -24,7 +24,7 @@ void mySnackbar(BuildContext context, String message, {Color? background, int? s
     SnackBar(
       content: Text(message),
       backgroundColor: background,
-      duration: Duration(seconds: secondsDuration ?? 1),
+      duration: Duration(seconds: secondsDuration ?? 2),
     ),
   );
 }

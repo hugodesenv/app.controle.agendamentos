@@ -70,17 +70,16 @@ appRoutes(RouteSettings settings) {
   }
 
   if (settings.name == routeCustomerNew) {
-    var customer = settings.arguments != null ? settings.arguments as Customer : Customer.empty();
-    var customerNewState = CustomerNewState(
-      id: customer.id,
+    var customer = settings.arguments as Customer;
+
+    var customerState = CustomerNewState(
       name: NameFormz.dirty(value: customer.name),
       cellphone: CellphoneFormz.dirty(value: customer.cellphone),
-      status: FormSubmissionStatus.initial,
     );
 
     return MaterialPageRoute(builder: (_) {
       return BlocProvider(
-        create: (_) => CustomerNewBloc(customerNewState),
+        create: (_) => CustomerNewBloc(customer, customerState),
         child: const CustomerNew(),
       );
     });

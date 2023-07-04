@@ -2,7 +2,6 @@ import '../../../../assets/enum/form_submission_status.dart';
 import '../formz/model.dart';
 
 class CustomerNewState {
-  final String? id;
   final NameFormz name;
   final CellphoneFormz cellphone;
   final bool isValid;
@@ -10,7 +9,6 @@ class CustomerNewState {
   final String message;
 
   CustomerNewState({
-    this.id,
     NameFormz? name,
     CellphoneFormz? cellphone,
     this.isValid = false,
@@ -20,7 +18,6 @@ class CustomerNewState {
         cellphone = cellphone ?? CellphoneFormz.pure();
 
   CustomerNewState copyWith({
-    String? id,
     FormSubmissionStatus? status,
     NameFormz? name,
     CellphoneFormz? cellphone,
@@ -33,7 +30,6 @@ class CustomerNewState {
       cellphone: cellphone ?? this.cellphone,
       isValid: isValid ?? this.isValid,
       message: message ?? '',
-      id: id ?? this.id,
     );
   }
 }
