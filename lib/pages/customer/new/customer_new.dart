@@ -15,6 +15,17 @@ class CustomerNew extends StatelessWidget {
     return const SizedBox(height: 14);
   }
 
+  _save(FormSubmissionStatus status, CustomerNewBloc bloc) {
+    if (status != FormSubmissionStatus.inProgress) {
+      bloc.add(CustomerNewEventSubmitted());
+    }
+  }
+
+  Widget _getIconSave(FormSubmissionStatus status, BuildContext context) {
+    var color = Theme.of(context).primaryColor;
+    return status == FormSubmissionStatus.inProgress ? Icon(Icons.access_time_rounded, color: color) : const Icon(Icons.save_outlined);
+  }
+
   @override
   Widget build(BuildContext context) {
     var bloc = BlocProvider.of<CustomerNewBloc>(context);
@@ -38,8 +49,8 @@ class CustomerNew extends StatelessWidget {
               title: const Text('Meu cliente'),
               actions: [
                 IconButton(
-                  onPressed: () => bloc.add(CustomerNewEventSubmitted()),
-                  icon: const Icon(Icons.save_outlined),
+                  onPressed: () => _save(state.status, bloc),
+                  icon: _getIconSave(state.status, context),
                 ),
               ],
             ),
