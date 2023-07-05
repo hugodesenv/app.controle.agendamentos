@@ -17,10 +17,9 @@ import 'package:agendamentos/pages/customer/query/customer_query.dart';
 import 'package:agendamentos/pages/home/bloc/home_bloc.dart';
 import 'package:agendamentos/pages/home/bloc/home_event.dart';
 import 'package:agendamentos/pages/home/bloc/home_state.dart';
-import 'package:agendamentos/pages/item/query/bloc/item_bloc.dart';
-import 'package:agendamentos/pages/item/query/bloc/item_event.dart';
-import 'package:agendamentos/pages/item/query/bloc/item_state.dart';
-import 'package:agendamentos/pages/item/query/item_query.dart';
+import 'package:agendamentos/pages/item/bloc/item_query_bloc.dart';
+import 'package:agendamentos/pages/item/bloc/item_query_state.dart';
+import 'package:agendamentos/pages/item/item_query.dart';
 import 'package:agendamentos/pages/profile/profile.dart';
 import 'package:agendamentos/pages/report/report.dart';
 import 'package:agendamentos/pages/schedule/schedule.dart';
@@ -31,7 +30,6 @@ import 'package:agendamentos/pages/sign_in/sign_in.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'assets/enum/form_submission_status.dart';
 import 'assets/routesConstants.dart';
 import 'pages/home/home.dart';
 
@@ -45,9 +43,7 @@ appRoutes(RouteSettings settings) {
         );
       },
     );
-  }
-
-  if (settings.name == routeLogin) {
+  } else if (settings.name == routeLogin) {
     return MaterialPageRoute(
       builder: (_) {
         return BlocProvider(
@@ -56,9 +52,7 @@ appRoutes(RouteSettings settings) {
         );
       },
     );
-  }
-
-  if (settings.name == routeCustomerQuery) {
+  } else if (settings.name == routeCustomerQuery) {
     return MaterialPageRoute(
       builder: (_) {
         return BlocProvider(
@@ -67,9 +61,7 @@ appRoutes(RouteSettings settings) {
         );
       },
     );
-  }
-
-  if (settings.name == routeCustomerNew) {
+  } else if (settings.name == routeCustomerNew) {
     var customer = settings.arguments as Customer;
 
     var customerState = CustomerNewState(
@@ -83,9 +75,7 @@ appRoutes(RouteSettings settings) {
         child: const CustomerNew(),
       );
     });
-  }
-
-  if (settings.name == routeCustomerImport) {
+  } else if (settings.name == routeCustomerImport) {
     return MaterialPageRoute(
       builder: (_) {
         return BlocProvider(
@@ -94,9 +84,7 @@ appRoutes(RouteSettings settings) {
         );
       },
     );
-  }
-
-  if (settings.name == routeCustomerInfo) {
+  } else if (settings.name == routeCustomerInfo) {
     var args = settings.arguments as Customer;
     return MaterialPageRoute(
       builder: (_) => BlocProvider(
@@ -104,32 +92,24 @@ appRoutes(RouteSettings settings) {
         child: const CustomerInfo(),
       ),
     );
-  }
-
-  if (settings.name == routeItemQuery) {
-    return MaterialPageRoute(
-      builder: (_) => BlocProvider(
-        create: (context) => ItemBloc(ItemStateInitial())..add(ItemEventFetchAll()),
-        child: ItemQuery(),
-      ),
-    );
-  }
-
-  if (settings.name == routeProfile) {
+  } else if (settings.name == routeProfile) {
     return MaterialPageRoute(
       builder: (_) => const Profile(),
     );
-  }
-
-  if (settings.name == routeReport) {
+  } else if (settings.name == routeReport) {
     return MaterialPageRoute(
       builder: (_) => const Report(),
     );
-  }
-
-  if (settings.name == routeSchedule) {
+  } else if (settings.name == routeSchedule) {
     return MaterialPageRoute(
       builder: (_) => const Schedule(),
+    );
+  } else if (settings.name == routeItemQuery) {
+    return MaterialPageRoute(
+      builder: (_) => BlocProvider(
+        create: (context) => ItemQueryBloc(ItemQueryStateInitial()),
+        child: const ItemQuery(),
+      ),
     );
   }
 }

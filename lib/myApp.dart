@@ -43,6 +43,16 @@ class MyApp extends StatelessWidget {
           ),
           suffixIconColor: primaryWhiteColor,
         ),
+        tabBarTheme: const TabBarTheme(
+          labelColor: primaryWhiteColor,
+          unselectedLabelColor: Colors.black26,
+          labelPadding: EdgeInsets.all(16),
+          indicator: UnderlineTabIndicator(
+            borderSide: BorderSide(
+              color: Colors.black12,
+            ),
+          ),
+        ),
         appBarTheme: AppBarTheme(
           color: Colors.white,
           elevation: 1,
@@ -109,6 +119,16 @@ class MyApp extends StatelessWidget {
             fontSize: 15,
           ),
           iconTheme: const IconThemeData(color: Colors.white70),
+        ),
+        tabBarTheme: const TabBarTheme(
+          labelColor: primaryDarkColor,
+          unselectedLabelColor: Colors.black26,
+          labelPadding: EdgeInsets.all(16),
+          indicator: UnderlineTabIndicator(
+            borderSide: BorderSide(
+              color: Colors.black12,
+            ),
+          ),
         ),
         inputDecorationTheme: InputDecorationTheme(
           filled: true,

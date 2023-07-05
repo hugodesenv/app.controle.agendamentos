@@ -4,7 +4,7 @@ import 'package:agendamentos/pages/customer/new/formz/model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../assets/enum/form_submission_status.dart';
+import '../../../enum/form_submission_status.dart';
 import '../../../assets/utilsConstantes.dart';
 import 'bloc/customer_new_bloc.dart';
 
