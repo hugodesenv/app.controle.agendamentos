@@ -1,4 +1,5 @@
 import 'package:agendamentos/assets/utilsConstantes.dart';
+import 'package:agendamentos/widgets/my_search_text_field/my_search_text_field.dart';
 import 'package:flutter/material.dart';
 
 class ProductQuery extends StatelessWidget {
@@ -9,6 +10,13 @@ class ProductQuery extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
+        Padding(
+          padding: const EdgeInsets.only(bottom: 10),
+          child: MySearchTextField(
+            onChanged: (value) {},
+            labelText: 'Filtrar produto...',
+          ),
+        ),
         Flexible(
           child: ListView.separated(
             itemBuilder: (context, index) {

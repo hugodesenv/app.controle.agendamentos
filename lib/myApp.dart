@@ -101,6 +101,7 @@ class MyApp extends StatelessWidget {
             backgroundColor: primaryWhiteColor,
           ),
         ),
+        iconTheme: const IconThemeData(color: primaryWhiteColor),
       ),
       darkTheme: ThemeData(
         brightness: Brightness.dark,
@@ -182,6 +183,7 @@ class MyApp extends StatelessWidget {
             backgroundColor: primaryDarkColor,
           ),
         ),
+        iconTheme: const IconThemeData(color: primaryDarkColor),
       ),
       onGenerateRoute: (settings) => appRoutes(settings),
     );

@@ -55,21 +55,13 @@ class CustomerImport extends StatelessWidget {
                         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
                         itemBuilder: (_, index) {
                           var c = contacts[index];
-                          var phone = '';
-                          //@@apenas teste hugo
-                          try {
-                            phone = c.contact.phones?[0].value ?? '';
-                          } catch (e) {
-                            phone = 'inde~finido';
-                          }
-                          //@@ remover o teste
-
+                          String? phone = c.contact.phones!.isNotEmpty ? c.contact.phones![0].value : '';
                           return CheckboxListTile(
                             title: Text(
                               c.contact.displayName!,
                               style: const TextStyle(fontWeight: FontWeight.w700),
                             ),
-                            subtitle: Text(phone),
+                            subtitle: Text(phone!),
                             value: c.isChecked,
                             activeColor: Theme.of(context).primaryColor,
                             onChanged: (bool? checked) => importBloc.add(CustomerImportEventChanged(isSelected: checked, index: index)),

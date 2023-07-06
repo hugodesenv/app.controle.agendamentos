@@ -47,27 +47,21 @@ class CustomerNew extends StatelessWidget {
           return Scaffold(
             appBar: AppBar(
               title: const Text('Meu cliente'),
-              actions: [
-                IconButton(
-                  onPressed: () => _save(state.status, bloc),
-                  icon: _getIconSave(state.status, context),
-                ),
-              ],
             ),
-            body: Container(
+            body: SingleChildScrollView(
               padding: const EdgeInsets.all(16),
-              color: Theme.of(context).highlightColor,
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    const _NameInput(),
-                    spaceHeight(),
-                    const _CellphoneInput(),
-                  ],
-                ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  const _NameInput(),
+                  spaceHeight(),
+                  const _CellphoneInput(),
+                ],
               ),
+            ),
+            floatingActionButton: FloatingActionButton(
+              onPressed: () => _save(state.status, bloc),
+              child: _getIconSave(state.status, context),
             ),
           );
         },
