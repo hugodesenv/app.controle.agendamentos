@@ -43,6 +43,9 @@ class MyApp extends StatelessWidget {
           ),
           suffixIconColor: primaryWhiteColor,
         ),
+        listTileTheme: const ListTileThemeData(
+          iconColor: primaryWhiteColor,
+        ),
         tabBarTheme: const TabBarTheme(
           labelColor: primaryWhiteColor,
           unselectedLabelColor: Colors.black26,
@@ -110,6 +113,9 @@ class MyApp extends StatelessWidget {
         floatingActionButtonTheme: const FloatingActionButtonThemeData(
           backgroundColor: primaryDarkColor,
           splashColor: primaryDarkColor,
+        ),
+        listTileTheme: const ListTileThemeData(
+          iconColor: primaryDarkColor,
         ),
         appBarTheme: AppBarTheme(
           elevation: 1,

@@ -1,7 +1,5 @@
 import 'package:agendamentos/assets/utilsConstantes.dart';
 import 'package:agendamentos/pages/item/bloc/item_query_bloc.dart';
-import 'package:agendamentos/pages/item/bloc/item_query_event.dart';
-import 'package:agendamentos/pages/item/bloc/item_query_state.dart';
 import 'package:agendamentos/pages/item/product/new/product_new.dart';
 import 'package:agendamentos/pages/item/product/query/product_query.dart';
 import 'package:agendamentos/pages/item/service/query/service_query.dart';
@@ -45,7 +43,7 @@ class ItemQuery extends StatelessWidget {
                 ),
                 ListTile(
                   leading: const Icon(Icons.handyman_outlined),
-                  title: const Text('Produto'),
+                  title: _titleWantToRegister('Produto', context),
                   onTap: () async {
                     Navigator.pop(context);
                     await _showProductNew(context);
@@ -54,7 +52,7 @@ class ItemQuery extends StatelessWidget {
                 const Divider(),
                 ListTile(
                   leading: const Icon(Icons.home_repair_service),
-                  title: const Text('Serviço'),
+                  title: _titleWantToRegister('Serviço', context),
                   onTap: () {
                     Navigator.pop(context);
                     // call services screen here
@@ -112,3 +110,8 @@ class ItemQuery extends StatelessWidget {
     );
   }
 }
+
+_titleWantToRegister(String caption, BuildContext context) => Text(
+      caption,
+      style: TextStyle(color: Theme.of(context).primaryColor),
+    );
