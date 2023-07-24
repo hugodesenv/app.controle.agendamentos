@@ -10,8 +10,8 @@ class ProductNewBloc extends Bloc<ProductNewEvent, ProductNewState> {
   }
 
   Future _openBarcodeCamera(event, emit) async {
-    String barcode = await FlutterBarcodeScanner.scanBarcode('#3a48e9', 'Sair', true, ScanMode.DEFAULT);
-    print("** codigo de barras recuperado, continuar o procedimento: $barcode");
+    String barcode = await FlutterBarcodeScanner.scanBarcode('#ff0000', 'Sair', true, ScanMode.DEFAULT);
+    emit(state.copyWith(barcode: barcode));
   }
 
   _submit(event, emit) {

@@ -13,23 +13,23 @@ class ProductNew extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => ProductNewBloc(ProductNewState()),
-      child: Scaffold(
-        appBar: AppBar(
-          title: ListTile(
-            title: Text(
-              'Novo produto',
-              style: textStyleTitleModalBottomSheet(context),
-              textAlign: TextAlign.left,
-            ),
-          ),
-        ),
-        body: Builder(
-          builder: (context) {
-            var bloc = BlocProvider.of<ProductNewBloc>(context);
-            return BlocBuilder(
-              bloc: bloc,
-              builder: (_, state) {
-                return SingleChildScrollView(
+      child: Builder(
+        builder: (BuildContext context) {
+          return BlocBuilder(
+            bloc: BlocProvider.of<ProductNewBloc>(context),
+            builder: (_, state) {
+              var bloc = BlocProvider.of<ProductNewBloc>(context);
+              return Scaffold(
+                appBar: AppBar(
+                  title: ListTile(
+                    title: Text(
+                      'Novo produto',
+                      style: textStyleTitleModalBottomSheet(context),
+                      textAlign: TextAlign.left,
+                    ),
+                  ),
+                ),
+                body: SingleChildScrollView(
                   padding: const EdgeInsets.all(16),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -58,18 +58,18 @@ class ProductNew extends StatelessWidget {
                       )
                     ],
                   ),
-                );
-              },
-            );
-          },
-        ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            var bloc = BlocProvider.of<ProductNewBloc>(context);
-            bloc.add(SubmitEvent());////deu ruim pq ta fora
-          },
-          child: const Icon(Icons.save_outlined),
-        ),
+                ),
+                floatingActionButton: FloatingActionButton(
+                  onPressed: () {
+                    var bloc = BlocProvider.of<ProductNewBloc>(context);
+                    bloc.add(SubmitEvent());
+                  },
+                  child: const Icon(Icons.save_outlined),
+                ),
+              );
+            },
+          );
+        },
       ),
     );
   }
