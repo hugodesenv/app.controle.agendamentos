@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../enum/form_submission_status.dart';
-import '../../../assets/utilsConstantes.dart';
+import '../../../assets/constants/utilsConstantes.dart';
 import 'bloc/customer_new_bloc.dart';
 
 class CustomerNew extends StatelessWidget {

@@ -1,4 +1,3 @@
-import 'package:agendamentos/repository/api/user_repository.dart';
 import 'package:flutter/material.dart';
 
 class Profile extends StatelessWidget {
@@ -6,8 +5,6 @@ class Profile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print("*** login do tipo singleton aqui no profile.dart");
-    print(UserRepository.instance.currentLogin.name);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Meu perfil'),

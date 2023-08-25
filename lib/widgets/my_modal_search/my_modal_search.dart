@@ -3,7 +3,7 @@
 /// the data had been clicked.
 /// I don't know english very good...
 
-import 'package:agendamentos/assets/colorConstantes.dart';
+import 'package:agendamentos/assets/constants/colorConstantes.dart';
 import 'package:agendamentos/widgets/my_modal_search/bloc/my_modal_search_bloc.dart';
 import 'package:agendamentos/widgets/my_modal_search/bloc/my_modal_search_event.dart';
 import 'package:agendamentos/widgets/my_modal_search/bloc/my_modal_search_state.dart';

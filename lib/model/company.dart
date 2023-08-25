@@ -1,3 +1,6 @@
+/***
+ * REMOVER
+ */
 import 'package:agendamentos/model/generic_model.dart';
 
 class Company extends GenericModel {

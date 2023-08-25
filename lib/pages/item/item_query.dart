@@ -1,4 +1,4 @@
-import 'package:agendamentos/assets/utilsConstantes.dart';
+import 'package:agendamentos/assets/constants/utilsConstantes.dart';
 import 'package:agendamentos/pages/item/bloc/item_query_bloc.dart';
 import 'package:agendamentos/pages/item/product/new/product_new.dart';
 import 'package:agendamentos/pages/item/product/query/product_query.dart';

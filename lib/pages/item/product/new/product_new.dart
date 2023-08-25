@@ -4,7 +4,7 @@ import 'package:agendamentos/pages/item/product/new/bloc/product_new_state.dart'
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../assets/utilsConstantes.dart';
+import '../../../../assets/constants/utilsConstantes.dart';
 
 class ProductNew extends StatelessWidget {
   const ProductNew({Key? key}) : super(key: key);

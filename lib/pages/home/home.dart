@@ -7,7 +7,7 @@ import 'package:material_dialogs/widgets/buttons/icon_button.dart';
 import 'package:material_dialogs/widgets/buttons/icon_outline_button.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
-import '../../assets/routesConstants.dart';
+import '../../assets/constants/routesConstants.dart';
 import 'bloc/home_event.dart';
 
 class Home extends StatelessWidget {
@@ -157,9 +157,9 @@ class Home extends StatelessWidget {
                       bloc: bloc,
                       builder: (_, state) {
                         if (state is HomeStateRefreshUser) {
-                          var login = state.login;
-                          _userNameController.text = 'Olá, ${login.name}';
-                          _companyNameController.text = login.company.name;
+                          final session = state.accountConnected;
+                          _userNameController.text = 'Olá, ${session.name}';
+                          _companyNameController.text = session.company.socialName;
                         }
                         return Container(
                           padding: const EdgeInsets.only(bottom: 10, top: 20, left: 20),

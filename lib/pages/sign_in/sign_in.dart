@@ -1,4 +1,4 @@
-import 'package:agendamentos/assets/utilsConstantes.dart';
+import 'package:agendamentos/assets/constants/utilsConstantes.dart';
 import 'package:agendamentos/pages/sign_in/bloc/sign_in_bloc.dart';
 import 'package:agendamentos/pages/sign_in/bloc/sign_in_event.dart';
 import 'package:agendamentos/pages/sign_in/bloc/sign_in_state.dart';
@@ -7,7 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:material_dialogs/dialogs.dart';
 
-import '../../assets/routesConstants.dart';
+import '../../assets/constants/routesConstants.dart';
 
 class SignIn extends StatelessWidget {
   const SignIn({Key? key}) : super(key: key);
@@ -39,7 +39,7 @@ class SignIn extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var bloc = BlocProvider.of<SignInBloc>(context);
-    TextEditingController emailController = TextEditingController();
+    TextEditingController userController = TextEditingController();
     TextEditingController passwordController = TextEditingController();
     TextEditingController emailResetController = TextEditingController();
 
@@ -77,9 +77,8 @@ class SignIn extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.only(bottom: 20),
                         child: MyLoginTextField(
-                          labelText: 'E-mail',
-                          controller: emailController,
-                          keyboardType: TextInputType.emailAddress,
+                          labelText: 'Usuário',
+                          controller: userController,
                         ),
                       ),
                       Padding(
@@ -93,7 +92,7 @@ class SignIn extends StatelessWidget {
                       MyLoadingButton(
                         loading: isLoading,
                         onPressed: () {
-                          bloc.add(SignInEventSubmitted(email: emailController.text, password: passwordController.text));
+                          bloc.add(SignInEventSubmitted(username: userController.text, password: passwordController.text));
                         },
                         title: const Text('Entrar', style: TextStyle(fontWeight: FontWeight.w700)),
                       ),

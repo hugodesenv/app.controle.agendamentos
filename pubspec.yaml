@@ -53,6 +53,8 @@ dependencies:
   brasil_fields: ^1.13.1
   formz: ^0.6.0
   equatable: ^2.0.5
+  dio: ^5.3.2
+  shared_preferences: ^2.2.0
 
 dev_dependencies:
   flutter_test:

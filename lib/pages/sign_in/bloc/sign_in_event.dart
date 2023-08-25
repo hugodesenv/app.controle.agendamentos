@@ -1,17 +1,17 @@
 abstract class SignInEvent {}
 
 class SignInEventSubmitted extends SignInEvent {
-  String? _email;
+  String? _username;
   String? _password;
 
-  SignInEventSubmitted({required email, required password}) {
-    _email = email;
+  SignInEventSubmitted({required username, required password}) {
+    _username = username;
     _password = password;
   }
 
   String get password => _password ?? '';
 
-  String get email => _email ?? '';
+  String get username => _username ?? '';
 }
 
 class SignInEventAuthenticated extends SignInEvent {}

@@ -1,7 +1,10 @@
+import 'package:agendamentos/assets/constants/stringConstants.dart';
+import 'package:agendamentos/models/account.dart';
 import 'package:agendamentos/pages/sign_in/bloc/sign_in_event.dart';
 import 'package:agendamentos/pages/sign_in/bloc/sign_in_state.dart';
 import 'package:bloc/bloc.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 import '../../../repository/api/user_repository.dart';
 
 class SignInBloc extends Bloc<SignInEvent, SignInState> {
@@ -12,11 +15,11 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
   }
 
   Future<void> _signIn(SignInEventSubmitted event, emit) async {
-    String email = event.email;
+    String username = event.username;
     String password = event.password;
 
-    if (email.isEmpty) {
-      emit(SignInStateFailure('E-mail inválido!'));
+    if (username.isEmpty) {
+      emit(SignInStateFailure('Usuário inválido!'));
       return;
     }
 
@@ -27,15 +30,22 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
 
     try {
       emit(SignInStateLoading());
-      await UserRepository.instance.signInEmailPassword(email, password);
+
+      Account res = await UserRepository.instance.signIn(username, password);
+      if (res.username.isEmpty) {
+        emit(SignInStateFailure('Usuário ou senha incorretos!'));
+        return;
+      }
+
       emit(SignInStateSuccess());
     } catch (e) {
-      emit(SignInStateFailure('Falha de autenticação, verifique suas credenciais!'));
+      emit(SignInStateFailure(e.toString()));
     }
   }
 
   Future<void> _directHome(_, emit) async {
-    var user = FirebaseAuth.instance.currentUser;
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    final user = preferences.getString(SHARED_PREFERENCES_USER_SESSION);
     user != null ? emit(SignInStateGoToHome()) : emit(SignInStateInitial());
   }
 

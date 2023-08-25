@@ -1,4 +1,4 @@
-import 'package:agendamentos/assets/colorConstantes.dart';
+import 'package:agendamentos/assets/constants/colorConstantes.dart';
 import 'package:flutter/material.dart';
 
 const zeroDuration = Duration.zero;

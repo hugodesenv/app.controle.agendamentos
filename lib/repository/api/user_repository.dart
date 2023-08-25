@@ -1,46 +1,46 @@
-import 'package:agendamentos/model/login.dart';
-import 'package:agendamentos/repository/api/company_repository.dart';
+import 'dart:convert';
+
+import 'package:agendamentos/assets/constants/stringConstants.dart';
+import 'package:agendamentos/models/account.dart';
 import 'package:agendamentos/repository/api/firebase_repository.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class UserRepository extends FirebaseRepository {
-  UserRepository._() : super(collection: 'user');
-
-  /// retrieve logged user
-  Login _currentLogin = Login.empty();
-
+  UserRepository._() : super(collection: 'account');
   static final instance = UserRepository._();
 
-  Login get currentLogin => _currentLogin;
-
-  User? get currentUser => FirebaseAuth.instance.currentUser;
-
-  Future<void> signOut() async {
-    await FirebaseAuth.instance.signOut();
+  Future<bool> signOut() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    bool prefsClean = await preferences.clear();
+    return prefsClean;
   }
 
-  Future<void> signInEmailPassword(String pemail, String ppassword) async {
-    await FirebaseAuth.instance.signInWithEmailAndPassword(email: pemail, password: ppassword);
+  Future<Account> signIn(String pUsername, String pPassword) async {
+    final body = {'username': pUsername, 'password': pPassword};
+    final response = await dio.post('$apiURL/login', data: body);
+
+    final account = Account.fromMap(response.data);
+    await _saveSession(account);
+
+    return account;
+  }
+
+  Future<void> _saveSession(Account account) async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    await preferences.setString(SHARED_PREFERENCES_USER_SESSION, jsonEncode(account.toMap()));
+  }
+
+  Future<Account> getCurrentUser() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+
+    final sessionJson = jsonDecode(preferences.getString(SHARED_PREFERENCES_USER_SESSION) ?? '');
+    final account = Account.fromMap(sessionJson);
+
+    return account;
   }
 
   Future resetEmailPassword(String pemail) async {
     await FirebaseAuth.instance.sendPasswordResetEmail(email: pemail);
-  }
-
-  Future<void> startSession(String id) async {
-    var dataLogin = await getFireCloud.doc(id).get();
-    var mapLogin = dataLogin.data();
-
-    if (mapLogin!.isNotEmpty) {
-      // get company
-      var companyId = mapLogin['uuid_company'];
-      var companyRepository = CompanyRepository.instance;
-      var mapCompany = await companyRepository.fetchById(companyId);
-
-      // to model
-      mapLogin['id'] = dataLogin.id;
-      mapLogin['company'] = mapCompany;
-      _currentLogin = Login.fromMap(mapLogin);
-    }
   }
 }
