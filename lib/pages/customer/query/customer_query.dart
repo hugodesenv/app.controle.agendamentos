@@ -1,5 +1,5 @@
 import 'package:agendamentos/assets/constants/utilsConstantes.dart';
-import 'package:agendamentos/model/customer.dart';
+import 'package:agendamentos/models/customer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skeletons/skeletons.dart';

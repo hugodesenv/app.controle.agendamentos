@@ -1,4 +1,4 @@
-import '../../../../model/customer.dart';
+import '../../../../models/customer.dart';
 
 abstract class CustomerQueryEvent {}
 

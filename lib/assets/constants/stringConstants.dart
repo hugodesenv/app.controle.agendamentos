@@ -1,1 +1,0 @@
-const SHARED_PREFERENCES_USER_SESSION = 'session';

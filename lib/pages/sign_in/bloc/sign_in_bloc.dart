@@ -1,9 +1,8 @@
-import 'package:agendamentos/assets/constants/stringConstants.dart';
 import 'package:agendamentos/models/account.dart';
 import 'package:agendamentos/pages/sign_in/bloc/sign_in_event.dart';
 import 'package:agendamentos/pages/sign_in/bloc/sign_in_state.dart';
+import 'package:agendamentos/repository/classes/preferences.dart';
 import 'package:bloc/bloc.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../repository/api/user_repository.dart';
 
@@ -44,9 +43,8 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
   }
 
   Future<void> _directHome(_, emit) async {
-    SharedPreferences preferences = await SharedPreferences.getInstance();
-    final user = preferences.getString(SHARED_PREFERENCES_USER_SESSION);
-    user != null ? emit(SignInStateGoToHome()) : emit(SignInStateInitial());
+    Account account = await PreferencesRepository.getPrefsCurrentUser();
+    account.username.isNotEmpty ? emit(SignInStateGoToHome()) : emit(SignInStateInitial());
   }
 
   Future<void> _resetPassword(SignInEventSubmittedForgetPassword event, emit) async {

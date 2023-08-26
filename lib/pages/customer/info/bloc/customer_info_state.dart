@@ -1,5 +1,6 @@
 import '../../../../enum/form_submission_status.dart';
-import '../../../../model/customer.dart';
+import '../../../../models/customer.dart';
+
 
 class CustomerInfoState {
   final Customer customer;

@@ -1,13 +1,16 @@
 import 'dart:async';
 
 import 'package:agendamentos/interface/crud_interface.dart';
+import 'package:agendamentos/models/account.dart';
 import 'package:agendamentos/repository/api/firebase_repository.dart';
+import 'package:agendamentos/repository/classes/preferences.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 
-import '../../model/customer.dart';
+import '../../models/customer.dart';
 
 class CustomerRepository extends FirebaseRepository implements CrudInterface {
-  CustomerRepository._() : super(collection: 'person');
+  CustomerRepository._() : super(controller_name: 'customer');
 
   static final instance = CustomerRepository._();
   StreamSubscription<QuerySnapshot<Map<String, dynamic>>>? subscription;
@@ -19,26 +22,28 @@ class CustomerRepository extends FirebaseRepository implements CrudInterface {
   }
 
   @override
-  Future<void> fetchAllStream(Function(List<Customer>) onDataProcessed) async {
-    List<Customer> customers = [];
-
-    subscription = getFireCloud.snapshots().listen((querySnapshot) {
-      customers.clear();
-
-      for (var doc in querySnapshot.docs) {
-        Customer customer = Customer.fromJson(doc.data(), doc.id);
-        customers.add(customer);
-      }
-
-      onDataProcessed(customers);
-    });
-  }
-
-  @override
   Future<String> save(data) async {
-    print("** save: ${data.id}");
     DocumentReference doc = getFireCloud.doc(data.id);
     await doc.set(data.toMap());
     return doc.id;
+  }
+
+  @override
+  Future<void> fetchAllStream(Function(List data) onDataProcessed) {
+    // TODO: implement fetchAllStream
+    throw UnimplementedError();
+  }
+
+  Future<List<Customer>> fetchAll() async {
+    List<Customer> customers = [];
+    Account currentUser = await PreferencesRepository.getPrefsCurrentUser();
+
+    final response = await dio.get(apiURL, queryParameters: {
+      'company_id': currentUser.company.id,
+    });
+
+    debugPrint(response.data);
+
+    return customers;
   }
 }

@@ -1,13 +1,14 @@
 import 'dart:convert';
 
-import 'package:agendamentos/assets/constants/stringConstants.dart';
 import 'package:agendamentos/models/account.dart';
 import 'package:agendamentos/repository/api/firebase_repository.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../classes/preferences.dart';
+
 class UserRepository extends FirebaseRepository {
-  UserRepository._() : super(collection: 'account');
+  UserRepository._() : super(controller_name: 'account');
   static final instance = UserRepository._();
 
   Future<bool> signOut() async {
@@ -32,11 +33,7 @@ class UserRepository extends FirebaseRepository {
   }
 
   Future<Account> getCurrentUser() async {
-    SharedPreferences preferences = await SharedPreferences.getInstance();
-
-    final sessionJson = jsonDecode(preferences.getString(SHARED_PREFERENCES_USER_SESSION) ?? '');
-    final account = Account.fromMap(sessionJson);
-
+    final account = PreferencesRepository.getPrefsCurrentUser();
     return account;
   }
 

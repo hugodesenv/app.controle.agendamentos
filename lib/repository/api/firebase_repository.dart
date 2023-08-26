@@ -7,13 +7,13 @@ import 'package:dio/dio.dart';
 class FirebaseRepository {
   final dio = Dio();
   final _apiURL = "http://192.168.1.247:3000";
-  final String? _collection;
+  final String? _controller_name;
 
   String get apiURL {
-    return '$_apiURL/$_collection';
+    return '$_apiURL/$_controller_name';
   }
 
-  FirebaseRepository({required String collection}) : _collection = collection;
+  FirebaseRepository({required String controller_name}) : _controller_name = controller_name;
 
-  CollectionReference<Map<String, dynamic>> get getFireCloud => FirebaseFirestore.instance.collection(_collection ?? '');
+  CollectionReference<Map<String, dynamic>> get getFireCloud => FirebaseFirestore.instance.collection(_controller_name ?? '');
 }

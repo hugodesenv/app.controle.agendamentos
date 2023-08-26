@@ -1,4 +1,4 @@
-import 'package:agendamentos/model/customer.dart';
+import 'package:agendamentos/models/customer.dart';
 import 'package:agendamentos/pages/customer/import/bloc/customer_import_bloc.dart';
 import 'package:agendamentos/pages/customer/import/bloc/customer_import_event.dart';
 import 'package:agendamentos/pages/customer/import/bloc/customer_import_state.dart';

@@ -1,4 +1,4 @@
-import 'package:agendamentos/model/customer.dart';
+import 'package:agendamentos/models/customer.dart';
 import 'package:agendamentos/pages/customer/query/bloc/customer_query_event.dart';
 import 'package:agendamentos/pages/customer/query/bloc/customer_query_state.dart';
 import 'package:agendamentos/repository/api/customer_repository.dart';
@@ -29,13 +29,12 @@ class CustomerQueryBloc extends Bloc<CustomerQueryEvent, CustomerQueryState> {
 
   void _fetchAll(event, emit) async {
     var repository = CustomerRepository.instance;
+    var res = await repository.fetchAll();
 
-    await repository.fetchAllStream((customers) async {
-      _customers.clear();
-      _customers.addAll(customers);
+    _customers.clear();
+    _customers.addAll(res);
 
-      add(CustomerQueryEventUpdated(customers: _customers));
-    });
+    add(CustomerQueryEventUpdated(customers: _customers));
   }
 
   void _changedFilter(CustomerQueryEventOnChangedFilter event, emit) {

@@ -1,4 +1,4 @@
-import 'package:agendamentos/model/customer.dart';
+import 'package:agendamentos/models/customer.dart';
 import 'package:agendamentos/repository/api/customer_repository.dart';
 import 'package:bloc/bloc.dart';
 import 'package:contacts_service/contacts_service.dart';

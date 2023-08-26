@@ -2,7 +2,7 @@ import 'package:agendamentos/interface/crud_interface.dart';
 import 'package:agendamentos/repository/api/firebase_repository.dart';
 
 class CompanyRepository extends FirebaseRepository implements CrudInterface {
-  CompanyRepository._() : super(collection: 'company');
+  CompanyRepository._() : super(controller_name: 'company');
 
   static final instance = CompanyRepository._();
 
