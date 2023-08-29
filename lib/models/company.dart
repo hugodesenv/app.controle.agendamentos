@@ -12,6 +12,10 @@ class Company {
     return Company(id: '', socialName: '');
   }
 
+  factory Company.fromJson(Map? json) {
+    return Company(id: json?['id'], socialName: json?['social_name']);
+  }
+
   Map<String, dynamic> toMap() {
     return {
       'id': id,

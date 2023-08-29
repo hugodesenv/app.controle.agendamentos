@@ -14,11 +14,13 @@ class Customer {
         _email = email ?? '',
         _company = Company.empty();
 
-  factory Customer.fromJson(Map<dynamic, dynamic> json, String id) {
+  factory Customer.fromJson(Map<dynamic, dynamic> json) {
     return Customer(
-      id: id,
+      id: json['id'],
       name: json['name'],
       cellphone: json['cellphone'],
+      email: json['email'],
+      company: Company.fromJson(json['company']),
     );
   }
 

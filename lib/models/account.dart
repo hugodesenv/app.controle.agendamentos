@@ -13,9 +13,6 @@ class Account {
         _company = company ?? Company.empty();
 
   factory Account.fromMap(Map data) {
-    print('account,dart -> fromMap');
-    print(data);
-
     Map? mapCompany = data['company'];
     Company company = Company(id: mapCompany?['id'], socialName: mapCompany?['social_name'], active: mapCompany?['active']);
 
