@@ -7,6 +7,7 @@ import 'package:formz/formz.dart';
 
 import '../../../../enum/form_submission_status.dart';
 import '../../../../repository/api/customer_repository.dart';
+import '../../../../repository/classes/preferences_repository.dart';
 
 class CustomerNewBloc extends Bloc<CustomerNewEvent, CustomerNewState> {
   Customer _customer = Customer.empty();
@@ -47,8 +48,14 @@ class CustomerNewBloc extends Bloc<CustomerNewEvent, CustomerNewState> {
     if (state.isValid) {
       emit(state.copyWith(status: FormSubmissionStatus.inProgress));
       try {
-        var repository = CustomerRepository.instance;
-        await repository.save(_customer);
+        CustomerRepository repository = CustomerRepository.instance;
+
+        if (_customer.id.isEmpty) {
+          _customer.company = (await PreferencesRepository.getPrefsCurrentUser()).company;
+          await repository.save(_customer);
+        } else {
+          await repository.update(_customer);
+        }
 
         emit(state.copyWith(
           status: FormSubmissionStatus.success,

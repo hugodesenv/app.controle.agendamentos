@@ -31,16 +31,17 @@ class CustomerInfoBloc extends Bloc<CustomerInfoEvent, CustomerInfoState> {
     emit(state.copyWith(status: FormSubmissionStatus.inProgress));
     try {
       var repository = CustomerRepository.instance;
-      bool res = await repository.delete(state.customer.id ?? '');
-      if (res) {
+      Map res = await repository.delete(state.customer.id);
+
+      if (res['success'] == true) {
         emit(state.copyWith(
           status: FormSubmissionStatus.deleted,
-          message: 'Cliente excluído com sucesso!',
+          message: res["message"],
         ));
       } else {
         emit(state.copyWith(
           status: FormSubmissionStatus.failure,
-          message: 'Não foi possível excluir o cliente, verifique e tente novamente!',
+          message: res["message"],
         ));
       }
     } catch (e) {

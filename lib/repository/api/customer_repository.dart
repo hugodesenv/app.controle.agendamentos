@@ -1,41 +1,48 @@
 import 'dart:async';
-import 'dart:convert';
+import 'dart:developer';
 
-import 'package:agendamentos/interface/crud_interface.dart';
 import 'package:agendamentos/models/account.dart';
 import 'package:agendamentos/repository/api/firebase_repository.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:dio/dio.dart';
 
 import '../../models/customer.dart';
 import '../classes/preferences_repository.dart';
 
-class CustomerRepository extends FirebaseRepository implements CrudInterface {
+class CustomerRepository extends FirebaseRepository {
   CustomerRepository._() : super(controller_name: 'customer');
 
   static final instance = CustomerRepository._();
   StreamSubscription<QuerySnapshot<Map<String, dynamic>>>? subscription;
 
-  @override
-  Future<bool> delete(String id) async {
-    bool res = await getFireCloud.doc(id).delete().then((value) => true).onError((error, stackTrace) => false);
-    return res;
+  Future<Map<String, dynamic>> delete(String id) async {
+    try {
+      var response = await dio.delete('$apiURL/$id');
+      bool deleted = response.data?['rows_affected'] > 0;
+      return {
+        "success": deleted,
+        "message": deleted ? "Exclusão efetuada com sucesso!" : "Nenhum registro foi afetado, verifique!",
+      };
+    } on DioException catch (e) {
+      return {
+        "success": false,
+        "message": e.response?.data['friendlyMessage'],
+      };
+    }
   }
 
-  @override
-  Future<String> save(data) async {
-    DocumentReference doc = getFireCloud.doc(data.id);
-    await doc.set(data.toMap());
-    return doc.id;
+  Future<void> save(Customer customer) async {
+    /// TRATAR...
+    try {
+      Map data = {...customer.toMap(), "action": "insert"};
+      data['email'] = "hugo_sbo04@hotmail.com";
+      var response = await dio.post(apiURL, data: data);
+    } on DioException catch (e) {}
   }
 
-  @override
-  Future<void> fetchAllStream(Function(List data) onDataProcessed) {
-    // TODO: implement fetchAllStream
-    throw UnimplementedError();
-  }
+  Future<void> update(Customer customer) async {}
 
-  Future<List<Customer>> fetchAll() async {
+  Future<List<Customer>> findAll() async {
     List<Customer> customers = [];
     Account currentUser = await PreferencesRepository.getPrefsCurrentUser();
 

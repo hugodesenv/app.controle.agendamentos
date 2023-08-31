@@ -12,7 +12,7 @@ class Customer {
         _name = name ?? '',
         _cellphone = cellphone ?? '',
         _email = email ?? '',
-        _company = Company.empty();
+        _company = company ?? Company.empty();
 
   factory Customer.fromJson(Map<dynamic, dynamic> json) {
     return Customer(
@@ -42,6 +42,8 @@ class Customer {
     return {
       "name": name,
       "cellphone": cellphone,
+      "fk_company": company.id,
+      "email": email,
     };
   }
 
