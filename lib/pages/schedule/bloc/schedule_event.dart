@@ -1,5 +1,3 @@
 abstract class ScheduleEvent {}
 
-class ScheduleEventLoad extends ScheduleEvent {
-
-}
+class ScheduleEventFindAll extends ScheduleEvent {}
