@@ -24,6 +24,17 @@ class Schedule {
         _employee = employee,
         _customer = customer;
 
+  factory Schedule.fromJson(Map data) {
+    return Schedule(
+      id: data['id'],
+      scheduleDate: data['schedule_date'],
+      totalMinutes: data['total_minutes'],
+      totalPrice: data['total_price'],
+      employee: Employee.fromJson(data['employee']),
+      customer: Customer.fromJson(data['customer']),
+    );
+  }
+
   Customer get customer => _customer;
 
   set customer(Customer value) {

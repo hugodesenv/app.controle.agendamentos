@@ -10,10 +10,10 @@ class Company extends GenericModel {
       : _name = name,
         super(id: id);
 
-  factory Company.fromMap(Map<String, dynamic> map) {
+  factory Company.fromMap(Map<String, dynamic>? map) {
     return Company(
-      id: map['id'],
-      name: map['name'],
+      id: map?['id'],
+      name: map?['name'],
     );
   }
 

@@ -1,5 +1,7 @@
+import 'package:agendamentos/models/schedule.dart';
 import 'package:agendamentos/pages/schedule/bloc/schedule_event.dart';
 import 'package:agendamentos/pages/schedule/bloc/schedule_state.dart';
+import 'package:agendamentos/repository/api/schedule_repository.dart';
 import 'package:bloc/bloc.dart';
 
 class ScheduleBloc extends Bloc<ScheduleEvent, ScheduleState> {
@@ -8,6 +10,8 @@ class ScheduleBloc extends Bloc<ScheduleEvent, ScheduleState> {
   }
 
   Future<void> _findAll(ScheduleEventFindAll event, emit) async {
-    // buscar os dados da api aqui...
+    var repository = ScheduleRepository.instance;
+    var schedules = await repository.findAll() as List<Schedule>;
+    emit(state.copyWith(scheduleList: schedules));
   }
 }

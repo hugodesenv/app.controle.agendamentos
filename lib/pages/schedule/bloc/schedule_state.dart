@@ -1,3 +1,11 @@
-abstract class ScheduleState {}
+import '../../../models/schedule.dart';
 
-class ScheduleStateInitial extends ScheduleState {}
+class ScheduleState {
+  List<Schedule> schedules;
+
+  ScheduleState({required this.schedules});
+
+  ScheduleState copyWith({required List<Schedule> scheduleList}) {
+    return ScheduleState(schedules: scheduleList ?? this.schedules);
+  }
+}
