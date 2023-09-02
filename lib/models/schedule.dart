@@ -11,18 +11,18 @@ class Schedule {
   Employee _employee;
 
   Schedule(
-      {required String id,
-      required DateTime scheduleDate,
-      required double totalMinutes,
-      required double totalPrice,
-      required employee,
-      required Customer customer})
-      : _id = id,
-        _scheduleDate = scheduleDate,
-        _totalMinutes = totalMinutes,
-        _totalPrice = totalPrice,
-        _employee = employee,
-        _customer = customer;
+      {required String? id,
+      required DateTime? scheduleDate,
+      required double? totalMinutes,
+      required double? totalPrice,
+      required Employee? employee,
+      required Customer? customer})
+      : _id = id ?? "",
+        _scheduleDate = scheduleDate ?? DateTime.now(),
+        _totalMinutes = totalMinutes ?? 0,
+        _totalPrice = totalPrice ?? 0,
+        _employee = employee ?? Employee.empty(),
+        _customer = customer ?? Customer.empty();
 
   factory Schedule.fromJson(Map data) {
     return Schedule(

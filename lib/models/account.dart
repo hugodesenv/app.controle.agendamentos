@@ -12,6 +12,15 @@ class Account {
         _email = email ?? '',
         _company = company ?? Company.empty();
 
+  factory Account.empty() {
+    return Account(
+      name: "",
+      username: "",
+      email: "",
+      company: Company.empty(),
+    );
+  }
+
   factory Account.fromMap(Map data) {
     Map? mapCompany = data['company'];
     Company company = Company(id: mapCompany?['id'], socialName: mapCompany?['social_name'], active: mapCompany?['active']);

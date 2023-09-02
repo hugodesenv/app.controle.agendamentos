@@ -38,7 +38,7 @@ appRoutes(RouteSettings settings) {
     return MaterialPageRoute(
       builder: (_) {
         return BlocProvider(
-          create: (_) => HomeBloc(HomeInitial())..add(HomeEventInitial()),
+          create: (_) => HomeBloc(HomeStateInitial())..add(HomeEventInitial()),
           child: Home(),
         );
       },

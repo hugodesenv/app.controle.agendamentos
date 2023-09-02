@@ -1,3 +1,4 @@
+import 'package:agendamentos/models/schedule.dart';
 import 'package:agendamentos/repository/api/firebase_repository.dart';
 import 'package:agendamentos/repository/api/global_repository.dart';
 
@@ -13,11 +14,19 @@ class ScheduleRepository extends FirebaseRepository implements GlobalRepository 
 
   @override
   Future<List> findAll() async {
-    var response = await dio.get(apiURL);
-    print("*** response:");
-    print(response.data);
-    // TODO: implement findAll
-    throw UnimplementedError();
+    List<Schedule> schedules = [];
+    try {
+      var response = await dio.get(apiURL);
+      for(var data in response.data) {
+        print("** dentro do for");
+        Schedule schedule = Schedule.fromJson(data);
+        print("** ids");
+        print(schedule.id);
+      }
+    } catch (e) {
+      print("** catch: ${e.toString()}");
+    }
+    return schedules;
   }
 
   @override

@@ -6,22 +6,26 @@ class Employee {
   bool _active;
   Company _company;
 
-  Employee({required String id, String? name, bool? active, required Company company})
-      : _id = id,
+  Employee({
+    required String? id,
+    String? name,
+    bool? active,
+    required Company? company,
+  })  : _id = id ?? '',
         _name = name ?? '',
         _active = active ?? false,
-        _company = company;
+        _company = company ?? Company.empty();
 
   factory Employee.empty() {
-    return Employee(id: '', company: Company.empty());
+    return Employee(id: "", company: Company.empty());
   }
 
-  factory Employee.fromJson(Map data) {
+  factory Employee.fromJson(Map? data) {
     return Employee(
-      id: data['id'],
-      company: Company.fromMap(data['company']),
-      active: data['active'],
-      name: data['name'],
+      id: data?['id'],
+      company: Company.fromMap(data?['company']),
+      active: data?['active'],
+      name: data?['name'],
     );
   }
 

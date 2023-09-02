@@ -9,9 +9,5 @@ class ScheduleBloc extends Bloc<ScheduleEvent, ScheduleState> {
     on<ScheduleEventFindAll>(_findAll);
   }
 
-  Future<void> _findAll(ScheduleEventFindAll event, emit) async {
-    var repository = ScheduleRepository.instance;
-    var schedules = await repository.findAll() as List<Schedule>;
-    emit(state.copyWith(scheduleList: schedules));
-  }
+  Future<void> _findAll(ScheduleEventFindAll event, emit) async {}
 }

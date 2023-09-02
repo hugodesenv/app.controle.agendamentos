@@ -1,8 +1,10 @@
+import 'package:agendamentos/models/company.dart';
 import 'package:agendamentos/models/customer.dart';
 import 'package:agendamentos/repository/api/customer_repository.dart';
 import 'package:bloc/bloc.dart';
 import 'package:contacts_service/contacts_service.dart';
 import 'package:permission_handler/permission_handler.dart';
+
 import '../model/checkbox_contact.dart';
 import 'customer_import_event.dart';
 import 'customer_import_state.dart';
@@ -48,7 +50,12 @@ class CustomerImportBloc extends Bloc<CustomerImportEvent, CustomerImportState> 
       var repository = CustomerRepository.instance;
 
       for (var i in checkedList) {
-        var customer = Customer(cellphone: i.contact.phones?[0].value, name: i.contact.displayName!);
+        var customer = Customer(
+          id: "",
+          company: Company.empty(),
+          cellphone: i.contact.phones?[0].value,
+          name: i.contact.displayName!,
+        );
         repository.save(customer);
       }
 

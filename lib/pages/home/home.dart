@@ -94,8 +94,8 @@ class Home extends StatelessWidget {
 
     return BlocListener(
       bloc: bloc,
-      listener: (context, state) async {
-        if (state is HomeStateSignOut) {
+      listener: (context, HomeState state) async {
+        if (state.isLoggedOut) {
           Navigator.pushReplacementNamed(context, routeLogin);
         }
       },
@@ -103,7 +103,10 @@ class Home extends StatelessWidget {
         bloc: bloc,
         builder: (context, state) {
           return Scaffold(
-            appBar: AppBar(title: const Text("Home")),
+            appBar: AppBar(
+              title: const Text("Home"),
+              actions: _getActionsBar(context),
+            ),
             body: Padding(
               padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
               child: Column(
@@ -155,12 +158,10 @@ class Home extends StatelessWidget {
                   children: [
                     BlocBuilder(
                       bloc: bloc,
-                      builder: (_, state) {
-                        if (state is HomeStateRefreshUser) {
-                          final session = state.accountConnected;
-                          _userNameController.text = 'Olá, ${session.name}';
-                          _companyNameController.text = session.company.socialName;
-                        }
+                      builder: (_, HomeState state) {
+                        final session = state.accountConnected;
+                        _userNameController.text = 'Olá, ${session.name}';
+                        _companyNameController.text = session.company.socialName;
                         return Container(
                           padding: const EdgeInsets.only(bottom: 10, top: 20, left: 20),
                           child: ListTile(
@@ -239,5 +240,17 @@ class Home extends StatelessWidget {
         },
       ),
     );
+  }
+
+  List<Widget> _getActionsBar(BuildContext context) {
+    var bloc = BlocProvider.of<HomeBloc>(context);
+    return [
+      IconButton(
+        onPressed: () {
+          bloc.add(HomeEventFindSchedules());
+        },
+        icon: const Icon(Icons.refresh),
+      ),
+    ];
   }
 }

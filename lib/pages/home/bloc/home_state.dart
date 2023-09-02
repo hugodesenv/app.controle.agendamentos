@@ -1,14 +1,30 @@
-import 'package:agendamentos/model/login.dart';
-import 'package:agendamentos/models/account.dart';
+import 'package:agendamentos/models/schedule.dart';
+import '../../../models/account.dart';
 
-abstract class HomeState {}
-
-class HomeInitial extends HomeState {}
-
-class HomeStateSignOut extends HomeState {}
-
-class HomeStateRefreshUser extends HomeState {
+class HomeState {
   final Account accountConnected;
+  final List<Schedule> schedules;
+  final bool isLoggedOut;
 
-  HomeStateRefreshUser({required this.accountConnected});
+  HomeState({
+    schedules,
+    accountConnected,
+    isLoggedOut,
+  })  : schedules = schedules ?? [],
+        accountConnected = accountConnected ?? Account.empty(),
+        isLoggedOut = isLoggedOut ?? false;
+
+  HomeState copyWith({
+    List<Schedule>? schedules,
+    Account? accountConnected,
+    bool? isLoggedOut,
+  }) {
+    return HomeState(
+      schedules: schedules ?? this.schedules,
+      accountConnected: accountConnected ?? this.accountConnected,
+      isLoggedOut: isLoggedOut ?? this.isLoggedOut,
+    );
+  }
 }
+
+class HomeStateInitial extends HomeState {}

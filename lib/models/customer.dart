@@ -7,14 +7,19 @@ class Customer {
   String _email;
   Company _company;
 
-  Customer({String? id, String? name, String? cellphone, String? email, Company? company})
-      : _id = id ?? '',
+  Customer({
+    required String? id,
+    String? name,
+    String? cellphone,
+    String? email,
+    required Company? company,
+  })  : _id = id ?? '',
         _name = name ?? '',
         _cellphone = cellphone ?? '',
         _email = email ?? '',
         _company = company ?? Company.empty();
 
-  factory Customer.fromJson(Map<dynamic, dynamic> json) {
+  factory Customer.fromJson(Map json) {
     return Customer(
       id: json['id'],
       name: json['name'],
@@ -35,7 +40,10 @@ class Customer {
   }
 
   factory Customer.empty() {
-    return Customer();
+    return Customer(
+      id: "",
+      company: Company.empty(),
+    );
   }
 
   Map<String, dynamic> toMap() {
