@@ -5,7 +5,7 @@ import 'employee.dart';
 class Schedule {
   String _id;
   DateTime _scheduleDate;
-  double _totalMinutes;
+  int _totalMinutes;
   double _totalPrice;
   Customer _customer;
   Employee _employee;
@@ -13,25 +13,30 @@ class Schedule {
   Schedule(
       {required String? id,
       required DateTime? scheduleDate,
-      required double? totalMinutes,
+      required int? totalMinutes,
       required double? totalPrice,
       required Employee? employee,
       required Customer? customer})
       : _id = id ?? "",
         _scheduleDate = scheduleDate ?? DateTime.now(),
         _totalMinutes = totalMinutes ?? 0,
-        _totalPrice = totalPrice ?? 0,
+        _totalPrice = totalPrice ?? 0.0,
         _employee = employee ?? Employee.empty(),
         _customer = customer ?? Customer.empty();
 
   factory Schedule.fromJson(Map data) {
+    DateTime scheduleDate = DateTime.parse(data['schedule_date']);
+    double totalPrice = double.parse(data['total_price'] ?? '0');
+    Employee employee = Employee.fromJson(data['employee']);
+    Customer customer = Customer.fromJson(data['customer']);
+
     return Schedule(
       id: data['id'],
-      scheduleDate: data['schedule_date'],
+      scheduleDate: scheduleDate,
       totalMinutes: data['total_minutes'],
-      totalPrice: data['total_price'],
-      employee: Employee.fromJson(data['employee']),
-      customer: Customer.fromJson(data['customer']),
+      totalPrice: totalPrice,
+      employee: employee,
+      customer: customer,
     );
   }
 
@@ -47,9 +52,9 @@ class Schedule {
     _totalPrice = value;
   }
 
-  double get totalMinutes => _totalMinutes;
+  int get totalMinutes => _totalMinutes;
 
-  set totalMinutes(double value) {
+  set totalMinutes(int value) {
     _totalMinutes = value;
   }
 

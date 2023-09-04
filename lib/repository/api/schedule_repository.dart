@@ -1,6 +1,7 @@
 import 'package:agendamentos/models/schedule.dart';
 import 'package:agendamentos/repository/api/firebase_repository.dart';
 import 'package:agendamentos/repository/api/global_repository.dart';
+import 'package:agendamentos/widgets/sf_calendar_schedules/model/schedules_model.dart';
 
 class ScheduleRepository extends FirebaseRepository implements GlobalRepository {
   ScheduleRepository._() : super(controller_name: "schedule");
@@ -14,17 +15,16 @@ class ScheduleRepository extends FirebaseRepository implements GlobalRepository 
 
   @override
   Future<List> findAll() async {
-    List<Schedule> schedules = [];
+    List<ScheduleModule> schedules = [];
     try {
       var response = await dio.get(apiURL);
-      for(var data in response.data) {
-        print("** dentro do for");
+      for (var data in response.data) {
         Schedule schedule = Schedule.fromJson(data);
-        print("** ids");
-        print(schedule.id);
+        ScheduleModule calendarWidgetSchedule = ScheduleModule(schedule);
+        schedules.add(calendarWidgetSchedule);
       }
     } catch (e) {
-      print("** catch: ${e.toString()}");
+      throw Exception('Falha na busca pelos agendamentos: ${e.toString()}');
     }
     return schedules;
   }
@@ -41,3 +41,4 @@ class ScheduleRepository extends FirebaseRepository implements GlobalRepository 
     throw UnimplementedError();
   }
 }
+

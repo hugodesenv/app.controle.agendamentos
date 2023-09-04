@@ -1,11 +1,11 @@
 import 'package:agendamentos/pages/home/bloc/home_bloc.dart';
 import 'package:agendamentos/pages/home/bloc/home_state.dart';
+import 'package:agendamentos/widgets/sf_calendar_schedules/sf_calendar_schedule.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:material_dialogs/dialogs.dart';
 import 'package:material_dialogs/widgets/buttons/icon_button.dart';
 import 'package:material_dialogs/widgets/buttons/icon_outline_button.dart';
-import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 import '../../assets/constants/routesConstants.dart';
 import 'bloc/home_event.dart';
@@ -101,7 +101,7 @@ class Home extends StatelessWidget {
       },
       child: BlocBuilder(
         bloc: bloc,
-        builder: (context, state) {
+        builder: (context, HomeState state) {
           return Scaffold(
             appBar: AppBar(
               title: const Text("Home"),
@@ -128,19 +128,9 @@ class Home extends StatelessWidget {
                     ),
                   ),
                   Expanded(
-                    child: SfCalendar(
-                      todayHighlightColor: Theme.of(context).primaryColor,
-                      allowedViews: const [
-                        CalendarView.day,
-                        CalendarView.month,
-                        CalendarView.schedule,
-                        CalendarView.timelineDay,
-                        CalendarView.timelineMonth,
-                        CalendarView.timelineWeek,
-                        CalendarView.timelineWorkWeek,
-                        CalendarView.week,
-                        CalendarView.workWeek,
-                      ],
+                    child: SfCalendarSchedule(
+                      context: context,
+                      refresh: state.refreshSchedules,
                     ),
                   ),
                 ],

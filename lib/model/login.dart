@@ -1,6 +1,6 @@
 import 'package:agendamentos/model/generic_model.dart';
 
-import 'company.dart';
+import '../models/company.dart';
 
 class Login extends GenericModel {
   String _name;
@@ -13,7 +13,7 @@ class Login extends GenericModel {
 
   factory Login.fromMap(Map<String, dynamic>? mapLogin) {
     return Login(
-      company: Company.fromMap(mapLogin?['company']),
+      company: Company.fromJson(mapLogin?['company']),
       id: mapLogin?['id'],
       name: mapLogin?['name'],
     );

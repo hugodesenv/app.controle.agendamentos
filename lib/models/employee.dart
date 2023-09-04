@@ -1,4 +1,4 @@
-import '../model/company.dart';
+import '../models/company.dart';
 
 class Employee {
   String _id;
@@ -21,9 +21,10 @@ class Employee {
   }
 
   factory Employee.fromJson(Map? data) {
+    Company company = Company.fromJson(data?['company']);
     return Employee(
       id: data?['id'],
-      company: Company.fromMap(data?['company']),
+      company: company,
       active: data?['active'],
       name: data?['name'],
     );

@@ -20,12 +20,13 @@ class Customer {
         _company = company ?? Company.empty();
 
   factory Customer.fromJson(Map json) {
+    Company company = Company.fromJson(json['company']);
     return Customer(
       id: json['id'],
       name: json['name'],
       cellphone: json['cellphone'],
       email: json['email'],
-      company: Company.fromJson(json['company']),
+      company: company,
     );
   }
 

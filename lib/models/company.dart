@@ -13,7 +13,10 @@ class Company {
   }
 
   factory Company.fromJson(Map? json) {
-    return Company(id: json?['id'], socialName: json?['social_name']);
+    return Company(
+      id: json?['id'],
+      socialName: json?['social_name'],
+    );
   }
 
   Map<String, dynamic> toMap() {
