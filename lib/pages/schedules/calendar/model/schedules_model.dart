@@ -1,4 +1,4 @@
-import '../../../models/schedule.dart';
+import '../../../../models/schedule.dart';
 
 class ScheduleModule {
   final Schedule schedule;

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
-import '../../../models/schedule.dart';
+import '../../../../models/schedule.dart';
 import 'schedules_model.dart';
 
 class ScheduleDataSource extends CalendarDataSource {

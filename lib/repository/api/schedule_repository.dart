@@ -1,7 +1,8 @@
 import 'package:agendamentos/models/schedule.dart';
 import 'package:agendamentos/repository/api/firebase_repository.dart';
 import 'package:agendamentos/repository/api/global_repository.dart';
-import 'package:agendamentos/widgets/sf_calendar_schedules/model/schedules_model.dart';
+
+import '../../pages/schedules/calendar/model/schedules_model.dart';
 
 class ScheduleRepository extends FirebaseRepository implements GlobalRepository {
   ScheduleRepository._() : super(controller_name: "schedule");

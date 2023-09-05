@@ -1,6 +1,6 @@
 import 'package:agendamentos/pages/home/bloc/home_bloc.dart';
 import 'package:agendamentos/pages/home/bloc/home_state.dart';
-import 'package:agendamentos/widgets/sf_calendar_schedules/sf_calendar_schedule.dart';
+import 'package:agendamentos/pages/schedules/calendar/schedule_calendar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:material_dialogs/dialogs.dart';
@@ -127,11 +127,8 @@ class Home extends StatelessWidget {
                       ),
                     ),
                   ),
-                  Expanded(
-                    child: SfCalendarSchedule(
-                      context: context,
-                      refresh: state.refreshSchedules,
-                    ),
+                  const Expanded(
+                    child: ScheduleCalendar(),
                   ),
                 ],
               ),

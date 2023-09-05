@@ -1,5 +1,3 @@
-import 'package:agendamentos/widgets/sf_calendar_schedules/model/schedules_model.dart';
-
 import '../../../models/account.dart';
 
 class HomeState {
