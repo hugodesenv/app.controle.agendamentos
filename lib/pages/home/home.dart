@@ -1,5 +1,8 @@
 import 'package:agendamentos/pages/home/bloc/home_bloc.dart';
 import 'package:agendamentos/pages/home/bloc/home_state.dart';
+import 'package:agendamentos/pages/schedules/calendar/bloc/schedules_bloc.dart';
+import 'package:agendamentos/pages/schedules/calendar/bloc/schedules_event.dart';
+import 'package:agendamentos/pages/schedules/calendar/bloc/schedules_state.dart';
 import 'package:agendamentos/pages/schedules/calendar/schedule_calendar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -13,6 +16,7 @@ import 'bloc/home_event.dart';
 class Home extends StatelessWidget {
   final TextEditingController _userNameController;
   final TextEditingController _companyNameController;
+  final SchedulesBloc scheduleCalendarBloc = SchedulesBloc(SchedulesState())..add(SchedulesEventLoad());
 
   Home({Key? key})
       : _userNameController = TextEditingController(text: 'Usuário indefinido'),
@@ -101,7 +105,7 @@ class Home extends StatelessWidget {
       },
       child: BlocBuilder(
         bloc: bloc,
-        builder: (context, HomeState state) {
+        builder: (_, HomeState state) {
           return Scaffold(
             appBar: AppBar(
               title: const Text("Home"),
@@ -127,8 +131,11 @@ class Home extends StatelessWidget {
                       ),
                     ),
                   ),
-                  const Expanded(
-                    child: ScheduleCalendar(),
+                  Expanded(
+                    child: BlocProvider(
+                      create: (_) => SchedulesBloc(SchedulesState())..add(SchedulesEventLoad()),
+                      child: ScheduleCalendar(bloc: scheduleCalendarBloc),
+                    ),
                   ),
                 ],
               ),
@@ -230,12 +237,9 @@ class Home extends StatelessWidget {
   }
 
   List<Widget> _getActionsBar(BuildContext context) {
-    var bloc = BlocProvider.of<HomeBloc>(context);
     return [
       IconButton(
-        onPressed: () {
-          bloc.add(HomeEventFindSchedules());
-        },
+        onPressed: () => scheduleCalendarBloc.add(SchedulesEventLoad()),
         icon: const Icon(Icons.refresh),
       ),
     ];

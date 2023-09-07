@@ -11,8 +11,6 @@ class SchedulesBloc extends Bloc<SchedulesEvent, SchedulesState> {
   }
 
   _loadAll(SchedulesEventLoad event, emit) async {
-    print("====> schedules_bloc _loadAll");
-
     var repository = ScheduleRepository.instance;
     var scheduleResult = await repository.findAll() as List<ScheduleModule>;
     emit(SchedulesState(schedules: scheduleResult));

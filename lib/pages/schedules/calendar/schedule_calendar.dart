@@ -1,46 +1,41 @@
-import 'package:agendamentos/pages/schedules/calendar/bloc/schedules_event.dart';
-import 'package:agendamentos/pages/schedules/calendar/model/schedules_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
-
+import '../../../assets/constants/utilsConstantes.dart';
 import 'bloc/schedules_bloc.dart';
 import 'bloc/schedules_state.dart';
 import 'model/schedules_datasource.dart';
+import 'model/schedules_model.dart';
 
 class ScheduleCalendar extends StatelessWidget {
-  const ScheduleCalendar({Key? key}) : super(key: key);
+  late SchedulesBloc _bloc;
+
+  ScheduleCalendar({Key? key, required SchedulesBloc bloc}) : super(key: key) {
+    _bloc = bloc;
+  }
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => SchedulesBloc(SchedulesState())..add(SchedulesEventLoad()),
-      child: Builder(
-        builder: (BuildContext context) {
-          var bloc = BlocProvider.of<SchedulesBloc>(context);
-          return BlocBuilder(
-            bloc: bloc,
-            builder: (_, SchedulesState state) {
-              return SfCalendar(
-                dataSource: ScheduleDataSource(state.schedules),
-                todayHighlightColor: Theme.of(context).primaryColor,
-                onTap: (calendarTapDetails) => _openDetails(context, calendarTapDetails),
-                allowedViews: const [
-                  CalendarView.day,
-                  CalendarView.month,
-                  CalendarView.schedule,
-                  CalendarView.timelineDay,
-                  CalendarView.timelineMonth,
-                  CalendarView.timelineWeek,
-                  CalendarView.timelineWorkWeek,
-                  CalendarView.week,
-                  CalendarView.workWeek,
-                ],
-              );
-            },
-          );
-        },
-      ),
+    return BlocBuilder(
+      bloc: _bloc,
+      builder: (_, SchedulesState state) {
+        return SfCalendar(
+          dataSource: ScheduleDataSource(state.schedules),
+          todayHighlightColor: Theme.of(context).primaryColor,
+          onTap: (calendarTapDetails) async => await _openDetails(context, calendarTapDetails),
+          allowedViews: const [
+            CalendarView.day,
+            CalendarView.month,
+            CalendarView.schedule,
+            CalendarView.timelineDay,
+            CalendarView.timelineMonth,
+            CalendarView.timelineWeek,
+            CalendarView.timelineWorkWeek,
+            CalendarView.week,
+            CalendarView.workWeek,
+          ],
+        );
+      },
     );
   }
 
@@ -50,16 +45,52 @@ class ScheduleCalendar extends StatelessWidget {
 
       await showModalBottomSheet(
         context: context,
+        shape: shapeModalBottomSheet,
         builder: (context) {
-          return Container(
-            padding: const EdgeInsets.all(16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Text(scheduleModule.schedule.customer.name),
-                Text(scheduleModule.schedule.totalMinutes.toString()),
-              ],
-            ),
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(top: 20.0),
+                child: Text(
+                  'Detalhamento',
+                  textAlign: TextAlign.center,
+                  style: textStyleTitleModalBottomSheet(context),
+                ),
+              ),
+              Flexible(
+                child: SingleChildScrollView(
+                  padding: EdgeInsets.only(left: 16.0, right: 16.0, top: 16.0, bottom: MediaQuery.of(context).viewInsets.bottom + 16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      ListTile(
+                        leading: const Icon(Icons.person_2_outlined),
+                        title: const Text("Nome"),
+                        subtitle: Text(scheduleModule.schedule.customer.name),
+                      ),
+                      ListTile(
+                        leading: const Icon(Icons.local_phone_outlined),
+                        title: const Text("Celular"),
+                        subtitle: Text(scheduleModule.schedule.customer.cellphone),
+                      ),
+                      ListTile(
+                        leading: const Icon(Icons.timer_sharp),
+                        title: const Text("Tempo total (Minutos)"),
+                        subtitle: Text(scheduleModule.schedule.totalMinutes.toString()),
+                      ),
+                      ListTile(
+                        leading: const Icon(Icons.attach_money_rounded),
+                        title: const Text("Preço R\$"),
+                        subtitle: Text(scheduleModule.schedule.totalPrice.toString()),
+                      ),
+                    ],
+                  ),
+                ),
+              )
+            ],
           );
         },
       );

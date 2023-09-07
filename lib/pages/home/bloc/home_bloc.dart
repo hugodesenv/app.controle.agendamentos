@@ -10,13 +10,11 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   HomeBloc(super.initialState) {
     on<HomeEventInitial>(_initial);
     on<HomeEventSignOut>(_signOut);
-    on<HomeEventFindSchedules>(_findSchedules);
   }
 
   Future<void> _initial(_, emit) async {
     Account userSession = await PreferencesRepository.getPrefsCurrentUser();
     emit(state.copyWith(accountConnected: userSession));
-    add(HomeEventFindSchedules());
   }
 
   Future<void> _signOut(HomeEventSignOut event, emit) async {
@@ -24,9 +22,5 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     if (await repository.signOut()) {
       emit(state.copyWith(isLoggedOut: true));
     }
-  }
-
-  _findSchedules(HomeEventFindSchedules event, emit) async {
-    emit(state.copyWith(refreshSchedules: true));
   }
 }
