@@ -5,5 +5,5 @@ abstract class GlobalRepository {
 
   Future<Map> update(data);
 
-  Future<List> findAll();
+  Future<Map> findAll();
 }

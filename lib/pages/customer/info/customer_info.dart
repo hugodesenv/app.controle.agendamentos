@@ -39,11 +39,8 @@ class CustomerInfo extends StatelessWidget {
       ),
       PopupMenuItem(
         child: const Text(
-          'Excluir',
-          style: TextStyle(
-            fontWeight: FontWeight.w700,
-            color: Colors.red,
-          ),
+          'Remover',
+          style: TextStyle(fontWeight: FontWeight.w700, color: Colors.red),
         ),
         onTap: () async {
           await Future.delayed(

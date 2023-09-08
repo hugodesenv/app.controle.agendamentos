@@ -32,7 +32,7 @@ class CustomerRepository extends FirebaseRepository implements GlobalRepository 
   }
 
   @override
-  Future<List<Customer>> findAll() async {
+  Future<Map> findAll() async {
     List<Customer> customers = [];
     Account currentUser = await PreferencesRepository.getPrefsCurrentUser();
 
@@ -42,7 +42,7 @@ class CustomerRepository extends FirebaseRepository implements GlobalRepository 
       customers.add(customer);
     }
 
-    return customers;
+    return {"customers": customers};
   }
 
   @override

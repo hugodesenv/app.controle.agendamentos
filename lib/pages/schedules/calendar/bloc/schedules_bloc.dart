@@ -3,7 +3,6 @@ import 'package:agendamentos/pages/schedules/calendar/bloc/schedules_state.dart'
 import 'package:bloc/bloc.dart';
 
 import '../../../../repository/api/schedule_repository.dart';
-import '../model/schedules_model.dart';
 
 class SchedulesBloc extends Bloc<SchedulesEvent, SchedulesState> {
   SchedulesBloc(super.initialState) {
@@ -12,7 +11,10 @@ class SchedulesBloc extends Bloc<SchedulesEvent, SchedulesState> {
 
   _loadAll(SchedulesEventLoad event, emit) async {
     var repository = ScheduleRepository.instance;
-    var scheduleResult = await repository.findAll() as List<ScheduleModule>;
-    emit(SchedulesState(schedules: scheduleResult));
+    Map scheduleResult = await repository.findAll();
+    emit(SchedulesState(
+      schedules: scheduleResult['schedules'],
+      totals: scheduleResult['totals'],
+    ));
   }
 }

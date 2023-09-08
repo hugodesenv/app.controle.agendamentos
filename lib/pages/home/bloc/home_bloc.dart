@@ -10,6 +10,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   HomeBloc(super.initialState) {
     on<HomeEventInitial>(_initial);
     on<HomeEventSignOut>(_signOut);
+    on<HomeEventsScheduleListener>(_handleTotals);
   }
 
   Future<void> _initial(_, emit) async {
@@ -22,5 +23,9 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     if (await repository.signOut()) {
       emit(state.copyWith(isLoggedOut: true));
     }
+  }
+
+  _handleTotals(HomeEventsScheduleListener event, emit) {
+    emit(state.copyWith(totals: event.totals));
   }
 }

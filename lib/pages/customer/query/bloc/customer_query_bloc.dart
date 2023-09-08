@@ -29,7 +29,7 @@ class CustomerQueryBloc extends Bloc<CustomerQueryEvent, CustomerQueryState> {
 
   void _fetchAll(event, emit) async {
     CustomerRepository repository = CustomerRepository.instance;
-    List<Customer> res = await repository.findAll();
+    List<Customer> res = (await repository.findAll())["customers"];
 
     _customers.clear();
     _customers.addAll(res);

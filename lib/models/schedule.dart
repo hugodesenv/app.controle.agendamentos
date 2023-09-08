@@ -9,20 +9,23 @@ class Schedule {
   double _totalPrice;
   Customer _customer;
   Employee _employee;
+  String _situation;
 
-  Schedule(
-      {required String? id,
-      required DateTime? scheduleDate,
-      required int? totalMinutes,
-      required double? totalPrice,
-      required Employee? employee,
-      required Customer? customer})
-      : _id = id ?? "",
+  Schedule({
+    required String? id,
+    required DateTime? scheduleDate,
+    required int? totalMinutes,
+    required double? totalPrice,
+    required Employee? employee,
+    required Customer? customer,
+    required String? situation,
+  })  : _id = id ?? "",
         _scheduleDate = scheduleDate ?? DateTime.now(),
         _totalMinutes = totalMinutes ?? 0,
         _totalPrice = totalPrice ?? 0.0,
         _employee = employee ?? Employee.empty(),
-        _customer = customer ?? Customer.empty();
+        _customer = customer ?? Customer.empty(),
+        _situation = situation ?? "";
 
   factory Schedule.fromJson(Map data) {
     DateTime scheduleDate = DateTime.parse(data['schedule_date']);
@@ -37,6 +40,7 @@ class Schedule {
       totalPrice: totalPrice,
       employee: employee,
       customer: customer,
+      situation: data['situation'],
     );
   }
 
@@ -74,5 +78,11 @@ class Schedule {
 
   set employee(Employee value) {
     _employee = value;
+  }
+
+  String get situation => _situation;
+
+  set situation(String value) {
+    _situation = value;
   }
 }

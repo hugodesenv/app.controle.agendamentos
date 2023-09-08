@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 import '../../../assets/constants/utilsConstantes.dart';
 import 'bloc/schedules_bloc.dart';
@@ -9,9 +10,15 @@ import 'model/schedules_model.dart';
 
 class ScheduleCalendar extends StatelessWidget {
   late SchedulesBloc _bloc;
+  late Function(DateTime? date, Map values) _onListenerResults;
 
-  ScheduleCalendar({Key? key, required SchedulesBloc bloc}) : super(key: key) {
+  ScheduleCalendar({
+    Key? key,
+    required SchedulesBloc bloc,
+    required Function(DateTime? date, Map values) onListenerResults,
+  }) : super(key: key) {
     _bloc = bloc;
+    _onListenerResults = onListenerResults;
   }
 
   @override
@@ -23,14 +30,13 @@ class ScheduleCalendar extends StatelessWidget {
           dataSource: ScheduleDataSource(state.schedules),
           todayHighlightColor: Theme.of(context).primaryColor,
           onTap: (calendarTapDetails) async => await _openDetails(context, calendarTapDetails),
+          showDatePickerButton: true,
+          onSelectionChanged: (calendarSelectionDetails) => _onResultValues(calendarSelectionDetails.date, state.totals),
+          onViewChanged: (viewChangedDetails) => _onResultValues(viewChangedDetails.visibleDates[0], state.totals),
           allowedViews: const [
             CalendarView.day,
             CalendarView.month,
             CalendarView.schedule,
-            CalendarView.timelineDay,
-            CalendarView.timelineMonth,
-            CalendarView.timelineWeek,
-            CalendarView.timelineWorkWeek,
             CalendarView.week,
             CalendarView.workWeek,
           ],
@@ -51,13 +57,36 @@ class ScheduleCalendar extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             mainAxisSize: MainAxisSize.min,
             children: [
-              Padding(
-                padding: const EdgeInsets.only(top: 20.0),
-                child: Text(
-                  'Detalhamento',
-                  textAlign: TextAlign.center,
-                  style: textStyleTitleModalBottomSheet(context),
-                ),
+              Row(
+                children: [
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 20.0),
+                      child: Text(
+                        'Detalhamento',
+                        textAlign: TextAlign.center,
+                        style: textStyleTitleModalBottomSheet(context),
+                      ),
+                    ),
+                  ),
+                  PopupMenuButton(
+                    padding: EdgeInsets.only(top: 20.0),
+                    itemBuilder: (context) {
+                      return [
+                        const PopupMenuItem(child: Text("Alterar")),
+                        const PopupMenuItem(
+                          child: Text(
+                            "Excluir",
+                            style: TextStyle(
+                              color: Colors.red,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ];
+                    },
+                  ),
+                ],
               ),
               Flexible(
                 child: SingleChildScrollView(
@@ -95,5 +124,10 @@ class ScheduleCalendar extends StatelessWidget {
         },
       );
     }
+  }
+
+  _onResultValues(DateTime? date, Map totals) {
+    String key = DateFormat.yMMMMd().format(date!);
+    totals[key] != null ? _onListenerResults(date, totals[key]) : _onListenerResults(date, {});
   }
 }

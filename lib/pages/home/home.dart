@@ -1,3 +1,4 @@
+import 'package:agendamentos/assets/constants/stringConstantes.dart';
 import 'package:agendamentos/pages/home/bloc/home_bloc.dart';
 import 'package:agendamentos/pages/home/bloc/home_state.dart';
 import 'package:agendamentos/pages/schedules/calendar/bloc/schedules_bloc.dart';
@@ -23,7 +24,6 @@ class Home extends StatelessWidget {
         _companyNameController = TextEditingController(text: 'Empresa indefinida'),
         super(key: key);
 
-  /// fixed widget at the end of drawer
   Widget _drawerFixed({
     required Function onTap,
     required String textTitle,
@@ -76,20 +76,23 @@ class Home extends StatelessWidget {
       );
     }
 
-    Widget cardInfo(String pTitle) {
+    Widget cardInfo(String title, double? value) {
       return SizedBox(
         width: 150.0,
         child: Center(
           child: ListTile(
-            onTap: () => Navigator.pushNamed(context, routeCustomerNew),
             title: Text(
-              pTitle,
+              title,
               style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
               textAlign: TextAlign.center,
             ),
-            subtitle: const Padding(
-              padding: EdgeInsets.only(top: 6),
-              child: Text('R\$1450,00', textAlign: TextAlign.center, style: TextStyle(fontSize: 12)),
+            subtitle: Padding(
+              padding: const EdgeInsets.only(top: 6),
+              child: Text(
+                (value ?? 0).toString(),
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 12),
+              ),
             ),
           ),
         ),
@@ -123,10 +126,10 @@ class Home extends StatelessWidget {
                       child: ListView(
                         scrollDirection: Axis.horizontal,
                         children: [
-                          cardInfo('Atendidos'),
-                          cardInfo('Desmarcados'),
-                          cardInfo('R\$ Recebido'),
-                          cardInfo('R\$ Previsto'),
+                          cardInfo('Atendidos', state.totals['finished']),
+                          cardInfo('Desmarcados', 0),
+                          cardInfo('R\$ Recebido', 0),
+                          cardInfo('R\$ Previsto', 0),
                         ],
                       ),
                     ),
@@ -134,7 +137,10 @@ class Home extends StatelessWidget {
                   Expanded(
                     child: BlocProvider(
                       create: (_) => SchedulesBloc(SchedulesState())..add(SchedulesEventLoad()),
-                      child: ScheduleCalendar(bloc: scheduleCalendarBloc),
+                      child: ScheduleCalendar(
+                        bloc: scheduleCalendarBloc,
+                        onListenerResults: (date, values) => bloc.add(HomeEventsScheduleListener(date, values)),
+                      ),
                     ),
                   ),
                 ],
