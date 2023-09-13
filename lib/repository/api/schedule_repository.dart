@@ -24,11 +24,6 @@ class ScheduleRepository extends FirebaseRepository implements GlobalRepository 
       for (var data in response.data) {
         Schedule schedule = Schedule.fromJson(data);
 
-        Qual o proximo passo no SKedol?
-        Criar a coluna de situacao na tabela "schedule"
-        Fazer as tratativas na API para gravar e editar
-        Criar um enumerado para melhor organização com essas coisas, pra usar aqui e na tabela Home
-
         _handleTotal(
           totals,
           schedule.scheduleDate,

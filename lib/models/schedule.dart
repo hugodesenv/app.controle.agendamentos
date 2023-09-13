@@ -28,6 +28,8 @@ class Schedule {
         _situation = situation ?? "";
 
   factory Schedule.fromJson(Map data) {
+    print("** ${data}");
+
     DateTime scheduleDate = DateTime.parse(data['schedule_date']);
     double totalPrice = double.parse(data['total_price'] ?? '0');
     Employee employee = Employee.fromJson(data['employee']);

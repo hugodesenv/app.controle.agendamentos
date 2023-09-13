@@ -1,4 +1,3 @@
-import 'package:agendamentos/assets/constants/stringConstantes.dart';
 import 'package:agendamentos/pages/home/bloc/home_bloc.dart';
 import 'package:agendamentos/pages/home/bloc/home_state.dart';
 import 'package:agendamentos/pages/schedules/calendar/bloc/schedules_bloc.dart';
@@ -139,7 +138,10 @@ class Home extends StatelessWidget {
                       create: (_) => SchedulesBloc(SchedulesState())..add(SchedulesEventLoad()),
                       child: ScheduleCalendar(
                         bloc: scheduleCalendarBloc,
-                        onListenerResults: (date, values) => bloc.add(HomeEventsScheduleListener(date, values)),
+                        onListenerResults: (date, values) {
+                          print("** ${values}");
+                          bloc.add(HomeEventsScheduleListener(date, values));
+                        },
                       ),
                     ),
                   ),

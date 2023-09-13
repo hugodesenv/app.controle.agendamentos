@@ -28,7 +28,18 @@ class ScheduleDataSource extends CalendarDataSource {
 
   @override
   Color getColor(int index) {
-    return Colors.green;
+    String situation = _getSchedulesData(index).schedule.situation;
+    if (situation == 'confirmed') {
+      return Colors.green;
+    } else if (situation == 'progress') {
+      return Colors.amber;
+    } else if (situation == 'canceled') {
+      return Colors.redAccent;
+    } else if (situation == 'completed') {
+      return Colors.lightBlueAccent;
+    } else {
+      return Colors.grey;
+    }
   }
 
   ScheduleModule _getSchedulesData(int index) {
