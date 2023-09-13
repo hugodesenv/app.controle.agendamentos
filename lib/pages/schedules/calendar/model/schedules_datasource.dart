@@ -1,6 +1,6 @@
+import 'package:agendamentos/utils/toColorUtils.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
-
 import '../../../../models/schedule.dart';
 import 'schedules_model.dart';
 
@@ -29,17 +29,7 @@ class ScheduleDataSource extends CalendarDataSource {
   @override
   Color getColor(int index) {
     String situation = _getSchedulesData(index).schedule.situation;
-    if (situation == 'confirmed') {
-      return Colors.green;
-    } else if (situation == 'progress') {
-      return Colors.amber;
-    } else if (situation == 'canceled') {
-      return Colors.redAccent;
-    } else if (situation == 'completed') {
-      return Colors.lightBlueAccent;
-    } else {
-      return Colors.grey;
-    }
+    return ToColorUtils.scheduleSituation(situation);
   }
 
   ScheduleModule _getSchedulesData(int index) {

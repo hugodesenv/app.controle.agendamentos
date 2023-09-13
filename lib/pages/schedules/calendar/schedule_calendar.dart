@@ -1,3 +1,6 @@
+import 'package:agendamentos/repository/api/schedule_repository.dart';
+import 'package:agendamentos/utils/displayFormatUtils.dart';
+import 'package:agendamentos/utils/toColorUtils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -53,6 +56,9 @@ class ScheduleCalendar extends StatelessWidget {
         context: context,
         shape: shapeModalBottomSheet,
         builder: (context) {
+          String situation = scheduleModule.schedule.situation;
+          String displaySituation = DisplayFormatUtils.scheduleSituation(situation);
+          Color colorSituation = ToColorUtils.scheduleSituation(situation);
           return Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             mainAxisSize: MainAxisSize.min,
@@ -61,16 +67,21 @@ class ScheduleCalendar extends StatelessWidget {
                 children: [
                   Expanded(
                     child: Padding(
-                      padding: const EdgeInsets.only(top: 20.0),
-                      child: Text(
-                        'Detalhamento',
-                        textAlign: TextAlign.center,
-                        style: textStyleTitleModalBottomSheet(context),
+                      padding: const EdgeInsets.only(top: 10.0),
+                      child: ListTile(
+                        title: Text(
+                          displaySituation,
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontWeight: FontWeight.w700,
+                            color: colorSituation,
+                          ),
+                        ),
                       ),
                     ),
                   ),
                   PopupMenuButton(
-                    padding: EdgeInsets.only(top: 20.0),
+                    padding: const EdgeInsets.only(top: 10.0),
                     itemBuilder: (context) {
                       return [
                         const PopupMenuItem(child: Text("Alterar")),
@@ -90,7 +101,7 @@ class ScheduleCalendar extends StatelessWidget {
               ),
               Flexible(
                 child: SingleChildScrollView(
-                  padding: EdgeInsets.only(left: 16.0, right: 16.0, top: 16.0, bottom: MediaQuery.of(context).viewInsets.bottom + 16.0),
+                  padding: EdgeInsets.only(left: 16.0, right: 16.0, top: 0, bottom: MediaQuery.of(context).viewInsets.bottom + 16.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     mainAxisSize: MainAxisSize.min,

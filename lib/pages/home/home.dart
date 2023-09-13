@@ -1,3 +1,4 @@
+import 'package:agendamentos/enum/schedule_situation.dart';
 import 'package:agendamentos/pages/home/bloc/home_bloc.dart';
 import 'package:agendamentos/pages/home/bloc/home_state.dart';
 import 'package:agendamentos/pages/schedules/calendar/bloc/schedules_bloc.dart';
@@ -6,6 +7,7 @@ import 'package:agendamentos/pages/schedules/calendar/bloc/schedules_state.dart'
 import 'package:agendamentos/pages/schedules/calendar/schedule_calendar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:material_dialogs/dialogs.dart';
 import 'package:material_dialogs/widgets/buttons/icon_button.dart';
 import 'package:material_dialogs/widgets/buttons/icon_outline_button.dart';
@@ -90,7 +92,7 @@ class Home extends StatelessWidget {
               child: Text(
                 (value ?? 0).toString(),
                 textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 12),
+                style: const TextStyle(fontSize: 12),
               ),
             ),
           ),
@@ -125,10 +127,10 @@ class Home extends StatelessWidget {
                       child: ListView(
                         scrollDirection: Axis.horizontal,
                         children: [
-                          cardInfo('Atendidos', state.totals['finished']),
-                          cardInfo('Desmarcados', 0),
-                          cardInfo('R\$ Recebido', 0),
-                          cardInfo('R\$ Previsto', 0),
+                          cardInfo('Pendentes', state.totals[ScheduleSituationEnum.PENDING.text()]),
+                          cardInfo('Confirmados', state.totals[ScheduleSituationEnum.CONFIRMED.text()]),
+                          cardInfo('Cancelados', state.totals[ScheduleSituationEnum.CANCELED.text()]),
+                          cardInfo('Finalizados', state.totals[ScheduleSituationEnum.COMPLETED.text()]),
                         ],
                       ),
                     ),
