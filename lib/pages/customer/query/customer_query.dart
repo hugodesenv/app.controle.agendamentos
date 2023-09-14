@@ -19,43 +19,15 @@ class CustomerQuery extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var blocQuery = BlocProvider.of<CustomerQueryBloc>(context);
+
     Future onTapCustomer(int index) async {
       await Navigator.pushNamed(context, routeCustomerInfo, arguments: customers[index]);
-    }
-
-    Future onTapNew() async {
-      await Future.delayed(zeroDuration, () async {
-        await Navigator.pushNamed(
-          context,
-          routeCustomerNew,
-          arguments: Customer.empty(),
-        );
-      });
-    }
-
-    Future onTapImport() async {
-      await Future.delayed(zeroDuration, () async {
-        await Navigator.pushNamed(context, routeCustomerImport);
-      });
     }
 
     return Scaffold(
       appBar: AppBar(
         title: const Text('Clientes'),
-        actions: [
-          PopupMenuButton(
-            itemBuilder: (_) => [
-              PopupMenuItem(
-                child: const Text('Novo'),
-                onTap: () async => await onTapNew(),
-              ),
-              PopupMenuItem(
-                child: const Text('Importar'),
-                onTap: () async => await onTapImport(),
-              ),
-            ],
-          ),
-        ],
+        actions: _actions(context),
       ),
       body: BlocBuilder(
         bloc: blocQuery,
@@ -125,5 +97,47 @@ class CustomerQuery extends StatelessWidget {
         },
       ),
     );
+  }
+
+  Future _onTapNew(BuildContext context) async {
+    await Future.delayed(zeroDuration, () async {
+      await Navigator.pushNamed(
+        context,
+        routeCustomerNew,
+        arguments: Customer.empty(),
+      );
+    });
+  }
+
+  Future _onTapImport(BuildContext context) async {
+    await Future.delayed(zeroDuration, () async {
+      await Navigator.pushNamed(context, routeCustomerImport);
+    });
+  }
+
+  _refresh(BuildContext context) {
+    var bloc = BlocProvider.of<CustomerQueryBloc>(context);
+    bloc.add(CustomerQueryEventFetchAll());
+  }
+
+  List<Widget> _actions(BuildContext context) {
+    return [
+      IconButton(
+        onPressed: () => _refresh(context),
+        icon: const Icon(Icons.refresh),
+      ),
+      PopupMenuButton(
+        itemBuilder: (_) => [
+          PopupMenuItem(
+            child: const Text('Novo'),
+            onTap: () async => await _onTapNew(context),
+          ),
+          PopupMenuItem(
+            child: const Text('Importar'),
+            onTap: () async => await _onTapImport(context),
+          ),
+        ],
+      ),
+    ];
   }
 }
