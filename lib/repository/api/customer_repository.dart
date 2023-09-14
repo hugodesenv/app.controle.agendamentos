@@ -1,5 +1,7 @@
 import 'dart:async';
+import 'dart:convert';
 
+import 'package:agendamentos/enum/database_enum.dart';
 import 'package:agendamentos/models/account.dart';
 import 'package:agendamentos/repository/api/firebase_repository.dart';
 import 'package:agendamentos/repository/api/global_repository.dart';
@@ -46,21 +48,35 @@ class CustomerRepository extends FirebaseRepository implements GlobalRepository 
   }
 
   @override
-  Future<Map> update(data) {
-    // TODO: implement update
-    throw UnimplementedError();
+  Future<Map> update(data) async {
+    Customer customer = data as Customer;
+    try {
+      var data = {...customer.toMap(), 'action': DatabaseAction.UPDATE.text()};
+      var res = await dio.patch('$apiURL/${customer.id}', data: data);
+      return res.data;
+    } catch (e) {
+      return {
+        'success': false,
+        'message': e.toString(),
+      };
+    }
   }
 
   @override
   Future<Map> save(data) async {
     Customer customer = data as Customer;
     try {
-      Map data = {...customer.toMap(), "action": "insert"};
-      data['email'] = "hugo_sbo04@hotmail.com";
+      Map data = {...customer.toMap(), 'action': DatabaseAction.INSERT.text()};
       await dio.post(apiURL, data: data);
-      return {"success": true, "message": "Operação efetuada!"};
+      return {
+        "success": true,
+        "message": "Operação efetuada!",
+      };
     } on DioException catch (e) {
-      return {"success": false, "message": e.toString()};
+      return {
+        "success": false,
+        "message": e.toString(),
+      };
     }
   }
 }

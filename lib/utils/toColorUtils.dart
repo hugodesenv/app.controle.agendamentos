@@ -3,7 +3,7 @@
 /// Assistindo o jogo do Brasil contra o Peru 13/09/2023 00h34
 
 import 'package:flutter/material.dart';
-import '../enum/schedule_situation.dart';
+import '../enum/schedule_enum.dart';
 
 class ToColorUtils {
   static Color scheduleSituation(String situation) {

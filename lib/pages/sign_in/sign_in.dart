@@ -1,4 +1,3 @@
-import 'package:agendamentos/assets/constants/utilsConstantes.dart';
 import 'package:agendamentos/pages/sign_in/bloc/sign_in_bloc.dart';
 import 'package:agendamentos/pages/sign_in/bloc/sign_in_event.dart';
 import 'package:agendamentos/pages/sign_in/bloc/sign_in_state.dart';
@@ -7,7 +6,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:material_dialogs/dialogs.dart';
 
-import '../../assets/constants/routesConstants.dart';
+import '../../utils/constants/routesConstants.dart';
+import '../../utils/constants/widgetsConstantes.dart';
 
 class SignIn extends StatelessWidget {
   const SignIn({Key? key}) : super(key: key);

@@ -1,6 +1,7 @@
-import 'package:agendamentos/assets/constants/utilsConstantes.dart';
 import 'package:agendamentos/widgets/my_search_text_field/my_search_text_field.dart';
 import 'package:flutter/material.dart';
+
+import '../../../../utils/constants/widgetsConstantes.dart';
 
 class ProductQuery extends StatelessWidget {
   const ProductQuery({Key? key}) : super(key: key);

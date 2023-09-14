@@ -1,4 +1,4 @@
-import '../enum/schedule_situation.dart';
+import '../enum/schedule_enum.dart';
 
 /// Classe responsável para tratar conversões de display de tipos para nome amigável.
 /// Apenas isso!

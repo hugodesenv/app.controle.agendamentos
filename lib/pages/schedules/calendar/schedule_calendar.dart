@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
-import '../../../assets/constants/utilsConstantes.dart';
+import '../../../utils/constants/widgetsConstantes.dart';
 import 'bloc/schedules_bloc.dart';
 import 'bloc/schedules_state.dart';
 import 'model/schedules_datasource.dart';

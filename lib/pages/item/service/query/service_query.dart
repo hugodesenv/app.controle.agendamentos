@@ -1,6 +1,6 @@
-import 'package:agendamentos/assets/constants/utilsConstantes.dart';
 import 'package:flutter/material.dart';
 
+import '../../../../utils/constants/widgetsConstantes.dart';
 import '../../../../widgets/my_search_text_field/my_search_text_field.dart';
 
 class ServiceQuery extends StatelessWidget {

@@ -3,7 +3,6 @@
 /// the data had been clicked.
 /// I don't know english very good...
 
-import 'package:agendamentos/assets/constants/colorConstantes.dart';
 import 'package:agendamentos/widgets/my_modal_search/bloc/my_modal_search_bloc.dart';
 import 'package:agendamentos/widgets/my_modal_search/bloc/my_modal_search_event.dart';
 import 'package:agendamentos/widgets/my_modal_search/bloc/my_modal_search_state.dart';
@@ -11,6 +10,8 @@ import 'package:agendamentos/widgets/my_search_text_field/my_search_text_field.d
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../utils/constants/colorConstantes.dart';
 
 class MyModalSearch extends StatelessWidget {
   final TextEditingController _fieldController;

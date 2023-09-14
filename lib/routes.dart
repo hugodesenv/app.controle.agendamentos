@@ -27,10 +27,9 @@ import 'package:agendamentos/pages/sign_in/bloc/sign_in_bloc.dart';
 import 'package:agendamentos/pages/sign_in/bloc/sign_in_event.dart';
 import 'package:agendamentos/pages/sign_in/bloc/sign_in_state.dart';
 import 'package:agendamentos/pages/sign_in/sign_in.dart';
+import 'package:agendamentos/utils/constants/routesConstants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-import 'assets/constants/routesConstants.dart';
 import 'pages/home/home.dart';
 
 appRoutes(RouteSettings settings) {

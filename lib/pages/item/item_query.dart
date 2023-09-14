@@ -1,10 +1,11 @@
-import 'package:agendamentos/assets/constants/utilsConstantes.dart';
 import 'package:agendamentos/pages/item/bloc/item_query_bloc.dart';
 import 'package:agendamentos/pages/item/product/new/product_new.dart';
 import 'package:agendamentos/pages/item/product/query/product_query.dart';
 import 'package:agendamentos/pages/item/service/query/service_query.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../utils/constants/widgetsConstantes.dart';
 
 class ItemQuery extends StatelessWidget {
   const ItemQuery({Key? key}) : super(key: key);

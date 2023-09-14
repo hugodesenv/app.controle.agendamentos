@@ -48,19 +48,18 @@ class CustomerNewBloc extends Bloc<CustomerNewEvent, CustomerNewState> {
     if (state.isValid) {
       emit(state.copyWith(status: FormSubmissionStatus.inProgress));
       try {
+        var res = {};
         CustomerRepository repository = CustomerRepository.instance;
 
         if (_customer.id.isEmpty) {
           _customer.company = (await PreferencesRepository.getPrefsCurrentUser()).company;
-          await repository.save(_customer);
+          res = await repository.save(_customer);
         } else {
-          await repository.update(_customer);
+          res = await repository.update(_customer);
         }
 
-        emit(state.copyWith(
-          status: FormSubmissionStatus.success,
-          message: 'Cliente gravado com sucesso!',
-        ));
+        var formStatus = res['success'] == true ? FormSubmissionStatus.success : FormSubmissionStatus.failure;
+        emit(state.copyWith(status: formStatus, message: res['message']));
       } catch (e) {
         emit(state.copyWith(
           status: FormSubmissionStatus.failure,

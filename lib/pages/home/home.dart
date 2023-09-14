@@ -1,4 +1,3 @@
-import 'package:agendamentos/enum/schedule_situation.dart';
 import 'package:agendamentos/pages/home/bloc/home_bloc.dart';
 import 'package:agendamentos/pages/home/bloc/home_state.dart';
 import 'package:agendamentos/pages/schedules/calendar/bloc/schedules_bloc.dart';
@@ -7,12 +6,11 @@ import 'package:agendamentos/pages/schedules/calendar/bloc/schedules_state.dart'
 import 'package:agendamentos/pages/schedules/calendar/schedule_calendar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
 import 'package:material_dialogs/dialogs.dart';
 import 'package:material_dialogs/widgets/buttons/icon_button.dart';
 import 'package:material_dialogs/widgets/buttons/icon_outline_button.dart';
-
-import '../../assets/constants/routesConstants.dart';
+import '../../enum/schedule_enum.dart';
+import '../../utils/constants/routesConstants.dart';
 import 'bloc/home_event.dart';
 
 class Home extends StatelessWidget {
