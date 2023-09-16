@@ -1,3 +1,4 @@
+import 'package:agendamentos/widgets/my_date_field/my_date_field.dart';
 import 'package:agendamentos/widgets/my_modal_search/my_modal_search.dart';
 import 'package:flutter/material.dart';
 
@@ -13,16 +14,15 @@ class Schedule extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Agendar'),
-      ),
-      body: Container(
-        padding: const EdgeInsets.only(left: 30.0, right: 30.0, bottom: 8.0, top: 30.0),
+      appBar: AppBar(title: const Text('Agendar')),
+      body: Padding(
+        padding: const EdgeInsets.only(left: 20.0, right: 20.0, bottom: 8.0, top: 20.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             MyModalSearch(
               title: 'Meus clientes',
+              fieldTitle: 'Cliente',
               collection: 'person',
               columnShow: 'name',
               initialID: 'MhLENgGvwhAyug1ktDDE',
@@ -33,12 +33,25 @@ class Schedule extends StatelessWidget {
                 print(id);
               },
             ),
+            Padding(
+              padding: EdgeInsets.only(top: 16.0),
+              child: MyDateField(
+                title: 'Data / Hora',
+                onChanged: (selectedDate) {
+                  print("** ${selectedDate}");
+                },
+              ),
+            ),
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        child: const Icon(Icons.save_outlined),
+      bottomSheet: Container(
+        width: double.infinity,
+        padding: EdgeInsets.all(10.0),
+        child: ElevatedButton(
+          onPressed: () {},
+          child: Text('Gravar'),
+        ),
       ),
     );
   }

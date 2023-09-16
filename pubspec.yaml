@@ -55,7 +55,9 @@ dependencies:
   equatable: ^2.0.5
   dio: ^5.3.2
   shared_preferences: ^2.2.0
-  intl: ^0.18.1
+  intl: any
+  flutter_localizations:
+    sdk: flutter
 
 dev_dependencies:
   flutter_test:

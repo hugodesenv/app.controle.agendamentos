@@ -35,8 +35,8 @@ class ScheduleCalendar extends StatelessWidget {
         return SfCalendar(
           dataSource: ScheduleDataSource(state.schedules),
           todayHighlightColor: Theme.of(context).primaryColor,
-          onTap: (calendarTapDetails) async => await _openDetails(context, calendarTapDetails),
           showDatePickerButton: true,
+          onTap: (calendarTapDetails) async => await _openDetails(context, calendarTapDetails),
           onSelectionChanged: (calendarSelectionDetails) => _onResultValues(calendarSelectionDetails.date, state.totals),
           onViewChanged: (viewChangedDetails) => _onResultValues(viewChangedDetails.visibleDates[0], state.totals),
           allowedViews: const [
@@ -55,7 +55,7 @@ class ScheduleCalendar extends StatelessWidget {
     if (details.targetElement == CalendarElement.appointment || details.targetElement == CalendarElement.agenda) {
       ScheduleModule scheduleModule = details.appointments![0];
       _onScheduleClick(scheduleModule);
-    } else {
+    } else if (details.targetElement == CalendarElement.calendarCell) {
       _onEmptyClick(details.date ?? DateTime.timestamp());
     }
   }

@@ -5,6 +5,7 @@ import 'package:agendamentos/pages/sign_in/sign_in.dart';
 import 'package:agendamentos/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class MyApp extends StatelessWidget {
@@ -16,11 +17,20 @@ class MyApp extends StatelessWidget {
     const primaryDarkColor = Colors.pink;
 
     return MaterialApp(
+      title: 'Skedol',
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: const [
+        Locale('en'), // English
+        Locale('pt', 'BR'), // Portuguese
+      ],
       home: BlocProvider<SignInBloc>(
         create: (_) => SignInBloc(SignInStateInitial())..add(SignInEventAuthenticated()),
         child: const SignIn(),
       ),
-      title: 'Skedol',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primaryColor: primaryWhiteColor,
@@ -105,6 +115,9 @@ class MyApp extends StatelessWidget {
           ),
         ),
         iconTheme: const IconThemeData(color: primaryWhiteColor),
+        datePickerTheme: const DatePickerThemeData(
+          headerBackgroundColor: primaryWhiteColor,
+        ),
       ),
       darkTheme: ThemeData(
         brightness: Brightness.dark,
@@ -190,6 +203,9 @@ class MyApp extends StatelessWidget {
           ),
         ),
         iconTheme: const IconThemeData(color: primaryDarkColor),
+        datePickerTheme: const DatePickerThemeData(
+          headerBackgroundColor: primaryDarkColor,
+        ),
       ),
       onGenerateRoute: (settings) => appRoutes(settings),
     );

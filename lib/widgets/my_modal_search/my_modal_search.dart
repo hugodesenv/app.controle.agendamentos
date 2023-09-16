@@ -19,6 +19,7 @@ class MyModalSearch extends StatelessWidget {
   final String _collection;
   final String _columnShow;
   final String _title;
+  final String _fieldTitle;
   final Function(String id, Map<String, dynamic> selected) _onSelected;
 
   MyModalSearch({
@@ -28,12 +29,14 @@ class MyModalSearch extends StatelessWidget {
     required String columnShow,
     required String title,
     required String initialID,
+    required String fieldTitle,
   })  : _onSelected = onSelected,
         _collection = collection,
         _columnShow = columnShow,
         _title = title,
         _initialID = initialID,
         _fieldController = TextEditingController(),
+        _fieldTitle = fieldTitle,
         super(key: key);
 
   _onTapListTile(BuildContext context, dataSelected) {
@@ -133,13 +136,23 @@ class MyModalSearch extends StatelessWidget {
           if (state is MyModalSearchStateLoadedById) {
             _fieldController.text = state.description;
           }
-          return GestureDetector(
-            onTap: () async => await _onTapField(context, bloc),
-            child: TextField(
-              controller: _fieldController,
-              enabled: false,
-              decoration: InputDecoration(suffixIcon: _suffixIcon(state is MyModalSearchStateLoadingById)),
-            ),
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(bottom: 5.0),
+                child: Text(
+                  _fieldTitle,
+                  style: const TextStyle(fontWeight: FontWeight.w700),
+                ),
+              ),
+              TextField(
+                controller: _fieldController,
+                readOnly: true,
+                decoration: InputDecoration(suffixIcon: _suffixIcon(state is MyModalSearchStateLoadingById)),
+                onTap: () async => await _onTapField(context, bloc),
+              ),
+            ],
           );
         },
       ),
