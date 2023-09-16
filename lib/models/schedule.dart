@@ -27,9 +27,19 @@ class Schedule {
         _customer = customer ?? Customer.empty(),
         _situation = situation ?? "";
 
-  factory Schedule.fromJson(Map data) {
-    print("** ${data}");
+  factory Schedule.empty() {
+    return Schedule(
+      id: '',
+      scheduleDate: DateTime.now(),
+      totalMinutes: 0,
+      totalPrice: 0,
+      employee: Employee.empty(),
+      customer: Customer.empty(),
+      situation: '',
+    );
+  }
 
+  factory Schedule.fromJson(Map data) {
     DateTime scheduleDate = DateTime.parse(data['schedule_date']);
     double totalPrice = double.parse(data['total_price'] ?? '0');
     Employee employee = Employee.fromJson(data['employee']);

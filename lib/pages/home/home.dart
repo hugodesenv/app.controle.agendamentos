@@ -1,16 +1,22 @@
 import 'package:agendamentos/pages/home/bloc/home_bloc.dart';
 import 'package:agendamentos/pages/home/bloc/home_state.dart';
+import 'package:agendamentos/pages/schedule/schedule.dart';
 import 'package:agendamentos/pages/schedules/calendar/bloc/schedules_bloc.dart';
 import 'package:agendamentos/pages/schedules/calendar/bloc/schedules_event.dart';
 import 'package:agendamentos/pages/schedules/calendar/bloc/schedules_state.dart';
+import 'package:agendamentos/pages/schedules/calendar/model/schedules_model.dart';
 import 'package:agendamentos/pages/schedules/calendar/schedule_calendar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:material_dialogs/dialogs.dart';
 import 'package:material_dialogs/widgets/buttons/icon_button.dart';
 import 'package:material_dialogs/widgets/buttons/icon_outline_button.dart';
+
 import '../../enum/schedule_enum.dart';
 import '../../utils/constants/routesConstants.dart';
+import '../../utils/constants/widgetsConstantes.dart';
+import '../../utils/displayFormatUtils.dart';
+import '../../utils/toColorUtils.dart';
 import 'bloc/home_event.dart';
 
 class Home extends StatelessWidget {
@@ -138,9 +144,13 @@ class Home extends StatelessWidget {
                       create: (_) => SchedulesBloc(SchedulesState())..add(SchedulesEventLoad()),
                       child: ScheduleCalendar(
                         bloc: scheduleCalendarBloc,
-                        onListenerResults: (date, values) {
-                          print("** ${values}");
-                          bloc.add(HomeEventsScheduleListener(date, values));
+                        onTotals: (date, values) => bloc.add(HomeEventsScheduleListener(date, values)),
+                        onScheduleClick: (scheduleModule) async {
+                          await _showScheduleDetail(context, scheduleModule);
+                        },
+                        onEmptyClick: (date) async {
+                          var arguments = ScheduleParameters(scheduleDate: date);
+                          await _showAddSchedule(context, params: arguments);
                         },
                       ),
                     ),
@@ -231,7 +241,7 @@ class Home extends StatelessWidget {
             ),
             floatingActionButton: FloatingActionButton(
               onPressed: () async {
-                await Navigator.pushNamed(context, routeSchedule);
+                await _showAddSchedule(context);
               },
               child: const Icon(
                 Icons.pending_actions,
@@ -251,5 +261,94 @@ class Home extends StatelessWidget {
         icon: const Icon(Icons.refresh),
       ),
     ];
+  }
+
+  Future<void> _showAddSchedule(BuildContext context, {ScheduleParameters? params}) async {
+    await Navigator.pushNamed(context, routeSchedule, arguments: params);
+  }
+
+  _showScheduleDetail(BuildContext context, ScheduleModule scheduleModule) async {
+    await showModalBottomSheet(
+      context: context,
+      shape: shapeModalBottomSheet,
+      builder: (context) {
+        String situation = scheduleModule.schedule.situation;
+        String displaySituation = DisplayFormatUtils.scheduleSituation(situation);
+        Color colorSituation = ToColorUtils.scheduleSituation(situation);
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Row(
+              children: [
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 10.0),
+                    child: ListTile(
+                      title: Text(
+                        displaySituation,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontWeight: FontWeight.w700,
+                          color: colorSituation,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                PopupMenuButton(
+                  padding: const EdgeInsets.only(top: 10.0),
+                  itemBuilder: (context) {
+                    return [
+                      const PopupMenuItem(child: Text("Alterar")),
+                      const PopupMenuItem(
+                        child: Text(
+                          "Excluir",
+                          style: TextStyle(
+                            color: Colors.red,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ];
+                  },
+                ),
+              ],
+            ),
+            Flexible(
+              child: SingleChildScrollView(
+                padding: EdgeInsets.only(left: 16.0, right: 16.0, top: 0, bottom: MediaQuery.of(context).viewInsets.bottom + 16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    ListTile(
+                      leading: const Icon(Icons.person_2_outlined),
+                      title: const Text("Nome"),
+                      subtitle: Text(scheduleModule.schedule.customer.name),
+                    ),
+                    ListTile(
+                      leading: const Icon(Icons.local_phone_outlined),
+                      title: const Text("Celular"),
+                      subtitle: Text(scheduleModule.schedule.customer.cellphone),
+                    ),
+                    ListTile(
+                      leading: const Icon(Icons.timer_sharp),
+                      title: const Text("Tempo total (Minutos)"),
+                      subtitle: Text(scheduleModule.schedule.totalMinutes.toString()),
+                    ),
+                    ListTile(
+                      leading: const Icon(Icons.attach_money_rounded),
+                      title: const Text("Preço R\$"),
+                      subtitle: Text(scheduleModule.schedule.totalPrice.toString()),
+                    ),
+                  ],
+                ),
+              ),
+            )
+          ],
+        );
+      },
+    );
   }
 }

@@ -100,8 +100,9 @@ appRoutes(RouteSettings settings) {
       builder: (_) => const Report(),
     );
   } else if (settings.name == routeSchedule) {
+    ScheduleParameters? arguments = settings.arguments as ScheduleParameters?;
     return MaterialPageRoute(
-      builder: (_) => const Schedule(),
+      builder: (_) => Schedule(parameters: arguments),
     );
   } else if (settings.name == routeItemQuery) {
     return MaterialPageRoute(

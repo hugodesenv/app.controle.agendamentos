@@ -30,7 +30,11 @@ class ScheduleRepository extends FirebaseRepository implements GlobalRepository 
           schedule.totalPrice,
         );
 
-        ScheduleModule calendarWidgetSchedule = ScheduleModule(schedule);
+        ScheduleModule calendarWidgetSchedule = ScheduleModule(
+          schedule: schedule,
+          eventDate: schedule.scheduleDate,
+        );
+
         schedules.add(calendarWidgetSchedule);
       }
     } catch (e) {
