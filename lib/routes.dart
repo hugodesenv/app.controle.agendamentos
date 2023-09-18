@@ -22,7 +22,7 @@ import 'package:agendamentos/pages/item/bloc/item_query_state.dart';
 import 'package:agendamentos/pages/item/item_query.dart';
 import 'package:agendamentos/pages/profile/profile.dart';
 import 'package:agendamentos/pages/report/report.dart';
-import 'package:agendamentos/pages/schedule/schedule.dart';
+import 'package:agendamentos/pages/schedules/schedule.dart';
 import 'package:agendamentos/pages/sign_in/bloc/sign_in_bloc.dart';
 import 'package:agendamentos/pages/sign_in/bloc/sign_in_event.dart';
 import 'package:agendamentos/pages/sign_in/bloc/sign_in_state.dart';

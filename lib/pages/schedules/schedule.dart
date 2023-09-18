@@ -2,14 +2,14 @@ import 'package:agendamentos/widgets/my_date_field/my_date_field.dart';
 import 'package:agendamentos/widgets/my_modal_search/my_modal_search.dart';
 import 'package:flutter/material.dart';
 
+import '../../widgets/my_modal_search/enum/my_modal_search_enum.dart';
+
 class Schedule extends StatelessWidget {
   late ScheduleParameters? _parameters;
 
   Schedule({Key? key, required ScheduleParameters? parameters})
       : _parameters = parameters,
-        super(key: key) {
-    print("** o que trouxemos aqui? ${_parameters?.scheduleDate.toString()}");
-  }
+        super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -21,16 +21,9 @@ class Schedule extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             MyModalSearch(
-              title: 'Meus clientes',
-              fieldTitle: 'Cliente',
-              collection: 'person',
-              columnShow: 'name',
-              initialID: 'MhLENgGvwhAyug1ktDDE',
-              //para teste
-              onSelected: (id, selected) {
-                print("** dados retornados schedule.dart");
-                print(selected);
-                print(id);
+              typeSearch: MyModalSearchEnum.CUSTOMER,
+              onTap: (String id) {
+                print("** id do client selecionado: ${id}");
               },
             ),
             Padding(

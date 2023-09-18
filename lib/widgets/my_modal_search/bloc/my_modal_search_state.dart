@@ -1,25 +1,15 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+class MyModalSearchState {
+  final List<MyModalSearchValues>? _values;
 
-abstract class MyModalSearchState {}
+  MyModalSearchState({values}) : _values = values;
 
-class MyModalSearchStateInitial extends MyModalSearchState {}
-
-/// when the modal is open and fetch all data
-class MyModalSearchStateLoadingAll extends MyModalSearchState {}
-
-/// when the data is loaded, returns the list
-class MyModalSearchStateLoaded extends MyModalSearchState {
-  List<QueryDocumentSnapshot<Map<String, dynamic>>> data;
-
-  MyModalSearchStateLoaded(this.data);
+  List get values => _values ?? [];
 }
 
-/// with the id passed, returns the description
-class MyModalSearchStateLoadedById extends MyModalSearchState {
-  final String description;
+class MyModalSearchValues {
+  String id;
+  String title;
+  String subtitle;
 
-  MyModalSearchStateLoadedById(this.description);
+  MyModalSearchValues(this.id, this.title, this.subtitle);
 }
-
-/// when the data by id is loading (to show to user that data is loading)
-class MyModalSearchStateLoadingById extends MyModalSearchState {}

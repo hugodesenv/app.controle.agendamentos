@@ -1,6 +1,6 @@
 import 'package:agendamentos/pages/home/bloc/home_bloc.dart';
 import 'package:agendamentos/pages/home/bloc/home_state.dart';
-import 'package:agendamentos/pages/schedule/schedule.dart';
+import 'package:agendamentos/pages/schedules/schedule.dart';
 import 'package:agendamentos/pages/schedules/calendar/bloc/schedules_bloc.dart';
 import 'package:agendamentos/pages/schedules/calendar/bloc/schedules_event.dart';
 import 'package:agendamentos/pages/schedules/calendar/bloc/schedules_state.dart';
