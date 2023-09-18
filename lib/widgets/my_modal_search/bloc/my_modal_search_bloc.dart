@@ -12,7 +12,7 @@ class MyModalSearchBloc extends Bloc<MyModalSearchEvent, MyModalSearchState> {
 
   Future<void> _findAll(MyModalSearchEventFindAll event, emit) async {
     try {
-      List<MyModalSearchValues> res = [];
+      List<MyModalSearchValues> results = [];
       List values = [];
 
       switch (event.typeSelection) {
@@ -24,11 +24,11 @@ class MyModalSearchBloc extends Bloc<MyModalSearchEvent, MyModalSearchState> {
 
       for (var data in values) {
         if (data is Customer) {
-          res.add(MyModalSearchValues(data.id, data.name, data.cellphone));
+          results.add(MyModalSearchValues(data.id, data.name, data.cellphone));
         }
       }
 
-      emit(MyModalSearchState(values: res));
+      emit(MyModalSearchState(values: results));
     } catch (e) {
       print("** my_modal_search_bloc catch ${e.toString()}");
     }

@@ -22,12 +22,13 @@ class Schedule extends StatelessWidget {
           children: [
             MyModalSearch(
               typeSearch: MyModalSearchEnum.CUSTOMER,
+              initialValue: 'Hugo Souza',
               onTap: (String id) {
                 print("** id do client selecionado: ${id}");
               },
             ),
             Padding(
-              padding: EdgeInsets.only(top: 16.0),
+              padding: const EdgeInsets.only(top: 16.0),
               child: MyDateField(
                 title: 'Data / Hora',
                 onChanged: (selectedDate) {

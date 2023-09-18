@@ -10,14 +10,17 @@ import 'enum/my_modal_search_enum.dart';
 class MyModalSearch extends StatelessWidget {
   late MyModalSearchEnum _typeSearch;
   late Function(String id) _onTap;
+  late TextEditingController _tecValue;
 
   MyModalSearch({
     Key? key,
     required MyModalSearchEnum typeSearch,
     required Function(String id) onTap,
+    String? initialValue,
   }) : super(key: key) {
     _typeSearch = typeSearch;
     _onTap = onTap;
+    _tecValue = TextEditingController(text: initialValue);
   }
 
   _getTitleCaption() {
@@ -49,11 +52,12 @@ class MyModalSearch extends StatelessWidget {
                   children: [
                     Expanded(
                       child: TextField(
+                        controller: _tecValue,
                         onTap: () async => await _showModal(context, state.values),
                         readOnly: true,
                       ),
                     ),
-                    IconButton(onPressed: () {}, icon: Icon(Icons.search_rounded)),
+                    IconButton(onPressed: () {}, icon: const Icon(Icons.search_rounded)),
                   ],
                 )
               ],
@@ -82,7 +86,11 @@ class MyModalSearch extends StatelessWidget {
                     return ListTile(
                       title: Text(i.title),
                       subtitle: Text(i.subtitle),
-                      onTap: () => _onTap(i.id),
+                      onTap: () {
+                        _onTap(i.id);
+                        _tecValue.text = i.title;
+                        Navigator.pop(context);
+                      },
                     );
                   },
                 )
