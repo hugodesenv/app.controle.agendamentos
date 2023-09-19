@@ -1,5 +1,5 @@
 class MyModalSearchState {
-  final List<MyModalSearchValues>? _values;
+  List<MyModalSearchValues>? _values;
 
   MyModalSearchState({values}) : _values = values;
 

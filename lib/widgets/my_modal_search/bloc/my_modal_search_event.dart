@@ -7,3 +7,17 @@ class MyModalSearchEventFindAll extends MyModalSearchEvent {
 
   MyModalSearchEventFindAll(this.typeSelection);
 }
+
+class MyModalSearchEventChangeFilter extends MyModalSearchEvent {
+  late String _value;
+
+  MyModalSearchEventChangeFilter({required String value}) {
+    _value = value;
+  }
+
+  String get value => _value;
+
+  set value(String value) {
+    _value = value.toLowerCase();
+  }
+}
