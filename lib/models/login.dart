@@ -1,6 +1,6 @@
-import 'package:agendamentos/model/generic_model.dart';
+import 'package:agendamentos/models/generic_model.dart';
 
-import '../models/company.dart';
+import 'company.dart';
 
 class Login extends GenericModel {
   String _name;

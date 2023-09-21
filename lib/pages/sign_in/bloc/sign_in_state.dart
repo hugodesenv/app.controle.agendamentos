@@ -1,4 +1,4 @@
-import 'package:agendamentos/model/login.dart';
+import 'package:agendamentos/models/login.dart';
 
 abstract class SignInState {}
 
