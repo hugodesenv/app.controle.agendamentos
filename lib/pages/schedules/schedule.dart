@@ -4,6 +4,12 @@ import 'package:flutter/material.dart';
 
 import '../../widgets/my_modal_search/enum/my_modal_search_enum.dart';
 
+class ScheduleParameters {
+  DateTime scheduleDate;
+
+  ScheduleParameters({DateTime? scheduleDate}) : scheduleDate = scheduleDate ?? DateTime.now();
+}
+
 class Schedule extends StatelessWidget {
   late ScheduleParameters? _parameters;
 
@@ -36,6 +42,10 @@ class Schedule extends StatelessWidget {
                 },
               ),
             ),
+            Padding(
+              padding: EdgeInsets.only(top: 16.0),
+              child: _situationsGroup(),
+            ),
           ],
         ),
       ),
@@ -49,10 +59,20 @@ class Schedule extends StatelessWidget {
       ),
     );
   }
-}
 
-class ScheduleParameters {
-  DateTime scheduleDate;
-
-  ScheduleParameters({DateTime? scheduleDate}) : scheduleDate = scheduleDate ?? DateTime.now();
+  Widget _situationsGroup() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(bottom: 5.0),
+          child: Text('Situações', style: const TextStyle(fontWeight: FontWeight.w700)),
+        ),
+        ListTile(
+          title: Text(''),
+        ),
+        ListTile(),
+      ],
+    );
+  }
 }

@@ -1,6 +1,7 @@
-import 'package:agendamentos/utils/toColorUtils.dart';
+import 'package:agendamentos/utils/schedule_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
+
 import '../../../../models/schedule.dart';
 import 'schedules_model.dart';
 
@@ -29,7 +30,7 @@ class ScheduleDataSource extends CalendarDataSource {
   @override
   Color getColor(int index) {
     String situation = _getSchedulesData(index).schedule.situation;
-    return ToColorUtils.scheduleSituation(situation);
+    return ScheduleUtils.fromText(situation)['color'];
   }
 
   ScheduleModule _getSchedulesData(int index) {

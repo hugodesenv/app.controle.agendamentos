@@ -1,22 +1,20 @@
 import 'package:agendamentos/pages/home/bloc/home_bloc.dart';
 import 'package:agendamentos/pages/home/bloc/home_state.dart';
-import 'package:agendamentos/pages/schedules/schedule.dart';
 import 'package:agendamentos/pages/schedules/calendar/bloc/schedules_bloc.dart';
 import 'package:agendamentos/pages/schedules/calendar/bloc/schedules_event.dart';
 import 'package:agendamentos/pages/schedules/calendar/bloc/schedules_state.dart';
 import 'package:agendamentos/pages/schedules/calendar/model/schedules_model.dart';
 import 'package:agendamentos/pages/schedules/calendar/schedule_calendar.dart';
+import 'package:agendamentos/pages/schedules/schedule.dart';
+import 'package:agendamentos/utils/schedule_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:material_dialogs/dialogs.dart';
 import 'package:material_dialogs/widgets/buttons/icon_button.dart';
 import 'package:material_dialogs/widgets/buttons/icon_outline_button.dart';
 
-import '../../enum/schedule_enum.dart';
 import '../../utils/constants/routesConstants.dart';
 import '../../utils/constants/widgetsConstantes.dart';
-import '../../utils/displayFormatUtils.dart';
-import '../../utils/toColorUtils.dart';
 import 'bloc/home_event.dart';
 
 class Home extends StatelessWidget {
@@ -272,9 +270,10 @@ class Home extends StatelessWidget {
       context: context,
       shape: shapeModalBottomSheet,
       builder: (context) {
-        String situation = scheduleModule.schedule.situation;
-        String displaySituation = DisplayFormatUtils.scheduleSituation(situation);
-        Color colorSituation = ToColorUtils.scheduleSituation(situation);
+        String typeSituation = scheduleModule.schedule.situation;
+        Map situation = ScheduleUtils.fromText(typeSituation);
+        String displaySituation = situation['description'];
+        Color colorSituation = situation['color'];
         return Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           mainAxisSize: MainAxisSize.min,

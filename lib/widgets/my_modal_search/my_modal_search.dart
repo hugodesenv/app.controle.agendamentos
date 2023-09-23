@@ -1,10 +1,10 @@
-import 'package:agendamentos/widgets/my_modal_search/bloc/my_modal_search_bloc.dart';
 import 'package:agendamentos/widgets/my_modal_search/bloc/my_modal_search_event.dart';
 import 'package:agendamentos/widgets/my_modal_search/bloc/my_modal_search_state.dart';
 import 'package:agendamentos/widgets/my_search_text_field/my_search_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'bloc/my_modal_search_bloc.dart';
 import 'enum/my_modal_search_enum.dart';
 import 'model/my_modal_search_values.dart';
 
@@ -29,6 +29,29 @@ class MyModalSearch extends StatefulWidget {
 }
 
 class _MyModalSearchState extends State<MyModalSearch> {
+  late ScrollController _scrollController;
+
+  @override
+  void initState() {
+    // definindo um controle para o scroll para obtermos o final da listagem.
+    _scrollController = ScrollController();
+    _scrollController.addListener(() {
+      if (_scrollController.position.pixels == _scrollController.position.maxScrollExtent) {
+        _addMoreItems();
+      }
+    });
+
+    super.initState();
+  }
+
+  _addMoreItems() {}
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -85,6 +108,7 @@ class _MyModalSearchState extends State<MyModalSearch> {
             bloc: BlocProvider.of<MyModalSearchBloc>(context),
             builder: (_, MyModalSearchState state) {
               var bloc = BlocProvider.of<MyModalSearchBloc>(context);
+              var itemsCount = state.values.length;
               return Padding(
                 padding: const EdgeInsets.all(20.0),
                 child: Column(
@@ -95,7 +119,9 @@ class _MyModalSearchState extends State<MyModalSearch> {
                     Padding(
                       padding: const EdgeInsets.only(bottom: 8.0),
                       child: MySearchTextField(
-                        onChanged: (value) => bloc.add(MyModalSearchEventChangeFilter(value: value)),
+                        onChanged: (value) {
+                          bloc.add(MyModalSearchEventChangeFilter(value: value));
+                        },
                       ),
                     ),
                     const Divider(),
@@ -103,22 +129,24 @@ class _MyModalSearchState extends State<MyModalSearch> {
                         ? const Center(heightFactor: 1, child: Text('Ops... Nada encontrado!'))
                         : Flexible(
                             child: ListView.separated(
+                              controller: _scrollController,
                               separatorBuilder: (_, index) => const Divider(),
-                              itemCount: state.values.length,
+                              itemCount: itemsCount + 1,
                               itemBuilder: (_, index) {
-                                MyModalSearchValues i = state.values[index];
-                                return ListTile(
-                                  title: Text(
-                                    i.title,
-                                    style: const TextStyle(fontWeight: FontWeight.w700),
-                                  ),
-                                  subtitle: Text(i.subtitle),
-                                  onTap: () {
-                                    widget._onTap(i.id);
-                                    widget._tecValue.text = i.title;
-                                    Navigator.pop(context);
-                                  },
-                                );
+                                if (index < itemsCount) {
+                                  MyModalSearchValues i = state.values[index];
+                                  return ListTile(
+                                    title: Text(i.title, style: const TextStyle(fontWeight: FontWeight.w700)),
+                                    subtitle: Text(i.subtitle),
+                                    onTap: () {
+                                      widget._onTap(i.id);
+                                      widget._tecValue.text = i.title;
+                                      Navigator.pop(context);
+                                    },
+                                  );
+                                } else {
+                                  return Center(child: Text('Carregando mais informações...'));
+                                }
                               },
                             ),
                           ),

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:agendamentos/repository/api/customer_repository.dart';
 import 'package:agendamentos/widgets/my_modal_search/bloc/my_modal_search_event.dart';
 import 'package:agendamentos/widgets/my_modal_search/bloc/my_modal_search_state.dart';
@@ -7,6 +9,7 @@ import 'package:bloc/bloc.dart';
 import '../model/my_modal_search_values.dart';
 
 class MyModalSearchBloc extends Bloc<MyModalSearchEvent, MyModalSearchState> {
+  //late Timer _fetchTimeout;
   List<MyModalSearchValues> originalList = [];
 
   MyModalSearchBloc(super.initialState) {
@@ -38,6 +41,15 @@ class MyModalSearchBloc extends Bloc<MyModalSearchEvent, MyModalSearchState> {
   }
 
   _filterList(MyModalSearchEventChangeFilter event, emit) {
+    // ** implementar futuramente a lista aqui...
+    /*_fetchTimeout != null ? _fetchTimeout.cancel() : null;
+
+    _fetchTimeout = Timer(const Duration(seconds: 2), () {
+      print("** bom, agora deve puxar os dados da api...");
+      print("** isso de acordo com o que foi digitado");
+      print("** dados a ser buscado ${event.value}");
+    });*/
+
     var filtered = originalList.where((e) {
       String title = e.title.toString().toLowerCase();
       return title.contains(event.value);
