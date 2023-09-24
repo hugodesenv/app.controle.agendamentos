@@ -271,9 +271,9 @@ class Home extends StatelessWidget {
       shape: shapeModalBottomSheet,
       builder: (context) {
         String typeSituation = scheduleModule.schedule.situation;
-        Map situation = ScheduleUtils.fromText(typeSituation);
-        String displaySituation = situation['description'];
-        Color colorSituation = situation['color'];
+        var res = ScheduleUtils.fromText(typeSituation);
+        String displaySituation = res[ScheduleFromText.tDescription];
+        Color colorSituation = res[ScheduleFromText.tColor];
         return Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           mainAxisSize: MainAxisSize.min,

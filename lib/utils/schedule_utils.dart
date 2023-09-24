@@ -28,37 +28,39 @@ extension ScheduleSituationEnumExtension on ScheduleSituationEnum {
   }
 }
 
+enum ScheduleFromText { tDescription, tColor }
+
 class ScheduleUtils {
-  static Map fromText(String situation) {
+  static Map<ScheduleFromText, dynamic> fromText(String situation) {
     if (situation == ScheduleSituationEnum.PENDING.text()) {
       return {
-        'description': 'Pendente',
-        'color': Colors.orange,
+        ScheduleFromText.tDescription: 'Pendente',
+        ScheduleFromText.tColor: Colors.orange,
       };
     } else if (situation == ScheduleSituationEnum.CANCELED.text()) {
       return {
-        'description': 'Cancelado',
-        'color': Colors.redAccent,
+        ScheduleFromText.tDescription: 'Cancelado',
+        ScheduleFromText.tColor: Colors.red,
       };
     } else if (situation == ScheduleSituationEnum.CONFIRMED.text()) {
       return {
-        'description': 'Confirmado',
-        'color': Colors.blueAccent,
+        ScheduleFromText.tDescription: 'Confirmado',
+        ScheduleFromText.tColor: Colors.teal,
       };
     } else if (situation == ScheduleSituationEnum.PROGRESS.text()) {
       return {
-        'description': 'Em andamento',
-        'color': Colors.purpleAccent,
+        ScheduleFromText.tDescription: 'Em andamento',
+        ScheduleFromText.tColor: Colors.purpleAccent,
       };
     } else if (situation == ScheduleSituationEnum.COMPLETED.text()) {
       return {
-        'description': 'Finalizado',
-        'color': Colors.greenAccent,
+        ScheduleFromText.tDescription: 'Finalizado',
+        ScheduleFromText.tColor: Colors.blue,
       };
     } else {
       return {
-        'description': 'Indefinido',
-        'color': Colors.black,
+        ScheduleFromText.tDescription: 'Indefinido',
+        ScheduleFromText.tColor: Colors.grey,
       };
     }
   }

@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skeletons/skeletons.dart';
 import '../../../utils/constants/routesConstants.dart';
 import '../../../utils/constants/widgetsConstantes.dart';
-import '../../../widgets/my_search_text_field/my_search_text_field.dart';
+import '../../../widgets/my_search_text_field.dart';
 import 'bloc/customer_query_bloc.dart';
 import 'bloc/customer_query_event.dart';
 import 'bloc/customer_query_state.dart';

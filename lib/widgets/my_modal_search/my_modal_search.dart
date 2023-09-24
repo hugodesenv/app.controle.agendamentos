@@ -1,9 +1,10 @@
 import 'package:agendamentos/widgets/my_modal_search/bloc/my_modal_search_event.dart';
 import 'package:agendamentos/widgets/my_modal_search/bloc/my_modal_search_state.dart';
-import 'package:agendamentos/widgets/my_search_text_field/my_search_text_field.dart';
+import 'package:agendamentos/widgets/my_search_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../my_text_title.dart';
 import 'bloc/my_modal_search_bloc.dart';
 import 'enum/my_modal_search_enum.dart';
 import 'model/my_modal_search_values.dart';
@@ -63,15 +64,7 @@ class _MyModalSearchState extends State<MyModalSearch> {
             return Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 5.0),
-                  child: Text(
-                    widget._typeSearch.displayTitle(),
-                    style: const TextStyle(
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                ),
+                MyTextTitle(title: widget._typeSearch.displayTitle()),
                 Row(
                   children: [
                     Expanded(

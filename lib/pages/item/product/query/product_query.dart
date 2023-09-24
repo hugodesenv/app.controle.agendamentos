@@ -1,4 +1,4 @@
-import 'package:agendamentos/widgets/my_search_text_field/my_search_text_field.dart';
+import 'package:agendamentos/widgets/my_search_text_field.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../utils/constants/widgetsConstantes.dart';

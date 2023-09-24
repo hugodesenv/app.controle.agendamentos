@@ -1,3 +1,4 @@
+import 'package:agendamentos/widgets/my_text_title.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -28,13 +29,7 @@ class _MyDateFieldState extends State<MyDateField> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Padding(
-          padding: const EdgeInsets.only(bottom: 5.0),
-          child: Text(
-            widget._title,
-            style: const TextStyle(fontWeight: FontWeight.w700),
-          ),
-        ),
+        MyTextTitle(title: widget._title),
         Row(
           children: [
             Flexible(
