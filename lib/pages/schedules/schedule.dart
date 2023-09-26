@@ -2,7 +2,6 @@ import 'package:agendamentos/widgets/my_date_field.dart';
 import 'package:agendamentos/widgets/my_modal_search/my_modal_search.dart';
 import 'package:agendamentos/widgets/my_text_title.dart';
 import 'package:flutter/material.dart';
-
 import '../../utils/schedule_utils.dart';
 import '../../widgets/my_modal_search/enum/my_modal_search_enum.dart';
 
@@ -51,6 +50,10 @@ class _ScheduleState extends State<Schedule> {
                 ),
               ),
               Padding(
+                padding: EdgeInsets.only(top: 16.0),
+                child: _ScheduleItems(),
+              ),
+              Padding(
                 padding: const EdgeInsets.only(top: 16.0),
                 child: SituationRadioGroup(
                   onClick: ({ScheduleSituationEnum? enumuerator, String? text}) {
@@ -65,13 +68,11 @@ class _ScheduleState extends State<Schedule> {
           ),
         ),
       ),
-      bottomSheet: Container(
-        width: double.infinity,
-        padding: const EdgeInsets.all(10.0),
-        child: ElevatedButton(
-          onPressed: () {},
-          child: const Text('Gravar'),
-        ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          print("** chamar a inclusao do agendamento aqui");
+        },
+        child: const Icon(Icons.save_outlined),
       ),
     );
   }
@@ -124,7 +125,7 @@ class _SituationRadioGroupState extends State<SituationRadioGroup> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        MyTextTitle(title: 'Situações'),
+        MyTextTitle(title: 'Situação'),
         ...components.map(
           (e) {
             ScheduleSituationEnum situationType = e['type'];
@@ -153,6 +154,81 @@ class _SituationRadioGroupState extends State<SituationRadioGroup> {
             );
           },
         ),
+      ],
+    );
+  }
+}
+
+class _ScheduleItems extends StatefulWidget {
+  _ScheduleItems({Key? key}) : super(key: key);
+
+  List _items = [
+    {
+      'description': 'Corte de cabelo',
+    },
+    {
+      'description': 'Maquiagem',
+    }
+  ];
+
+  @override
+  State<_ScheduleItems> createState() => _ScheduleItemsState();
+}
+
+class _ScheduleItemsState extends State<_ScheduleItems> {
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Divider(),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            MyTextTitle(title: 'Adicionar itens'),
+            IconButton(
+              icon: const Icon(Icons.add),
+              onPressed: () {
+                print("** chamar uma tela aqui que selecione os itens...");
+                setState(() {
+                  widget._items.add({
+                    'description': 'Pintura',
+                  });
+                });
+              },
+            ),
+          ],
+        ),
+        ...widget._items.map((e) {
+          return ListTile(
+            title: Text(
+              e['description'],
+              style: const TextStyle(fontSize: 14.0),
+            ),
+            subtitle: const Text('Preço: 12.0 / Tempo: 120'),
+            contentPadding: EdgeInsets.zero,
+            trailing: IconButton(
+              onPressed: () {},
+              icon: const Icon(
+                Icons.delete_outlined,
+                color: Colors.black38,
+              ),
+            ),
+          );
+        }),
+        Divider(),
+        Padding(
+          padding: EdgeInsets.only(top: 5.0, bottom: 5.0),
+          child: Text(
+            'Tempo total: 1h30 / Valor total: R\$129,90',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 12.0,
+              color: Colors.grey,
+            ),
+          ),
+        ),
+        Divider(),
       ],
     );
   }
