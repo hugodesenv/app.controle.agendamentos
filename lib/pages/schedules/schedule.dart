@@ -1,5 +1,7 @@
+import 'package:agendamentos/utils/constants/widgetsConstantes.dart';
 import 'package:agendamentos/widgets/my_date_field.dart';
 import 'package:agendamentos/widgets/my_modal_search/my_modal_search.dart';
+import 'package:agendamentos/widgets/my_text_field.dart';
 import 'package:agendamentos/widgets/my_text_title.dart';
 import 'package:flutter/material.dart';
 import '../../utils/schedule_utils.dart';
@@ -50,7 +52,7 @@ class _ScheduleState extends State<Schedule> {
                 ),
               ),
               Padding(
-                padding: EdgeInsets.only(top: 16.0),
+                padding: const EdgeInsets.only(top: 16.0),
                 child: _ScheduleItems(),
               ),
               Padding(
@@ -176,26 +178,70 @@ class _ScheduleItems extends StatefulWidget {
 }
 
 class _ScheduleItemsState extends State<_ScheduleItems> {
+  Future<void> modalAddItems() async {
+    await showModalBottomSheet(
+      context: context,
+      shape: shapeModalBottomSheet,
+      isScrollControlled: true,
+      builder: (context) {
+        return SingleChildScrollView(
+          padding: EdgeInsets.all(20.0),
+          child: Padding(
+            padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 16.0),
+                  child: MyModalSearch(
+                    typeSearch: MyModalSearchEnum.ITEM,
+                    onTap: (id) {},
+                  ),
+                ),
+                Row(
+                  children: [
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.only(right: 5.0),
+                        child: MyTextField(
+                          title: 'Valor',
+                          suffixIcon: Icon(Icons.monetization_on_outlined),
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 5.0),
+                        child: MyTextField(
+                          title: 'Tempo',
+                          suffixIcon: Icon(Icons.timer_sharp),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Divider(),
+        const Divider(),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             MyTextTitle(title: 'Adicionar itens'),
             IconButton(
               icon: const Icon(Icons.add),
-              onPressed: () {
-                print("** chamar uma tela aqui que selecione os itens...");
-                setState(() {
-                  widget._items.add({
-                    'description': 'Pintura',
-                  });
-                });
-              },
+              onPressed: () async => await modalAddItems(),
             ),
           ],
         ),
@@ -216,8 +262,8 @@ class _ScheduleItemsState extends State<_ScheduleItems> {
             ),
           );
         }),
-        Divider(),
-        Padding(
+        const Divider(),
+        const Padding(
           padding: EdgeInsets.only(top: 5.0, bottom: 5.0),
           child: Text(
             'Tempo total: 1h30 / Valor total: R\$129,90',
@@ -228,7 +274,7 @@ class _ScheduleItemsState extends State<_ScheduleItems> {
             ),
           ),
         ),
-        Divider(),
+        const Divider(),
       ],
     );
   }

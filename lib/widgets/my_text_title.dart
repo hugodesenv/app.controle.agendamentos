@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 
 class MyTextTitle extends StatelessWidget {
   late String _title;
+  TextAlign? _align;
 
-  MyTextTitle({Key? key, required String title}) : super(key: key) {
+  MyTextTitle({Key? key, required String title, TextAlign? align}) : super(key: key) {
     _title = title;
+    _align = align;
   }
 
   @override
@@ -13,7 +15,10 @@ class MyTextTitle extends StatelessWidget {
       padding: const EdgeInsets.only(bottom: 5.0),
       child: Text(
         _title,
-        style: const TextStyle(fontWeight: FontWeight.w700),
+        textAlign: _align,
+        style: const TextStyle(
+          fontWeight: FontWeight.w700,
+        ),
       ),
     );
   }

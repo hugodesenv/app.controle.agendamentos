@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class MyDateField extends StatefulWidget {
-  late String _title;
-  late Function(DateTime? selectedDate) _onChanged;
+  late final String _title;
+  late final Function(DateTime? selectedDate) _onChanged;
 
   MyDateField({Key? key, required String title, required Function(DateTime? selectedDate) onChanged})
       : _title = title,
@@ -30,24 +30,15 @@ class _MyDateFieldState extends State<MyDateField> {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         MyTextTitle(title: widget._title),
-        Row(
-          children: [
-            Flexible(
-              child: TextField(
-                controller: tecValue,
-                readOnly: true,
-                onTap: () async {
-                  await callDateTimePicker(context);
-                },
-              ),
-            ),
-            IconButton(
-              icon: const Icon(Icons.date_range_outlined),
-              onPressed: () async {
-                await callDateTimePicker(context);
-              },
-            ),
-          ],
+        TextField(
+          controller: tecValue,
+          readOnly: true,
+          decoration: const InputDecoration(
+            suffixIcon: Icon(Icons.date_range_outlined),
+          ),
+          onTap: () async {
+            await callDateTimePicker(context);
+          },
         ),
       ],
     );

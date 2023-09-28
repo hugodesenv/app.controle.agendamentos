@@ -65,21 +65,14 @@ class _MyModalSearchState extends State<MyModalSearch> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 MyTextTitle(title: widget._typeSearch.displayTitle()),
-                Row(
-                  children: [
-                    Expanded(
-                      child: TextField(
-                        controller: widget._tecValue,
-                        onTap: () async => await _showModal(context),
-                        readOnly: true,
-                      ),
-                    ),
-                    IconButton(
-                      onPressed: () async => await _showModal(context),
-                      icon: const Icon(Icons.search_rounded),
-                    ),
-                  ],
-                )
+                TextField(
+                  controller: widget._tecValue,
+                  onTap: () async => await _showModal(context),
+                  readOnly: true,
+                  decoration: const InputDecoration(
+                    suffixIcon: Icon(Icons.search_rounded),
+                  ),
+                ),
               ],
             );
           },
