@@ -149,7 +149,7 @@ class MyApp extends StatelessWidget {
 }
 
 class SkedolTheme {
-  static const _primaryWhiteColor = Colors.teal;
+  static const _primaryWhiteColor = Colors.deepOrangeAccent;
   static const _primaryDarkColor = Colors.pink;
 
   get primaryWhiteColor => _primaryWhiteColor;
@@ -164,6 +164,8 @@ class SkedolTheme {
     return const FloatingActionButtonThemeData(
       backgroundColor: _primaryWhiteColor,
       splashColor: _primaryDarkColor,
+      foregroundColor: Colors.white,
+      hoverColor: Colors.white,
     );
   }
 
@@ -199,7 +201,7 @@ class SkedolTheme {
   ListTileThemeData getWhiteListTileTheme() {
     return const ListTileThemeData(
       iconColor: Colors.black45,
-      titleTextStyle: TextStyle(fontSize: 14.0, color: Colors.black45)
+      titleTextStyle: TextStyle(fontSize: 14.0, color: Colors.black54),
     );
   }
 
