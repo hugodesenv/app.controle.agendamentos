@@ -1,5 +1,6 @@
 import 'package:agendamentos/repository/api/firebase_repository.dart';
 import 'package:agendamentos/repository/api/global_repository.dart';
+import 'package:agendamentos/utils/schedule_utils.dart';
 import 'package:intl/intl.dart';
 import '../../models/schedule.dart';
 import '../../pages/schedules/calendar/model/schedules_model.dart';
@@ -26,7 +27,7 @@ class ScheduleRepository extends FirebaseRepository implements GlobalRepository 
         _handleTotal(
           totals,
           schedule.scheduleDate,
-          schedule.situation,
+          schedule.situation.text(),
           schedule.totalPrice,
         );
 

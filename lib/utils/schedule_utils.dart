@@ -28,7 +28,7 @@ extension ScheduleSituationEnumExtension on ScheduleSituationEnum {
   }
 }
 
-enum ScheduleFromText { tDescription, tColor }
+enum ScheduleFromText { tDescription, tColor, tType }
 
 class ScheduleUtils {
   static Map<ScheduleFromText, dynamic> fromText(String situation) {
@@ -36,31 +36,37 @@ class ScheduleUtils {
       return {
         ScheduleFromText.tDescription: 'Pendente',
         ScheduleFromText.tColor: Colors.orange,
+        ScheduleFromText.tType: ScheduleSituationEnum.PENDING,
       };
     } else if (situation == ScheduleSituationEnum.CANCELED.text()) {
       return {
         ScheduleFromText.tDescription: 'Cancelado',
         ScheduleFromText.tColor: Colors.red,
+        ScheduleFromText.tType: ScheduleSituationEnum.CANCELED,
       };
     } else if (situation == ScheduleSituationEnum.CONFIRMED.text()) {
       return {
         ScheduleFromText.tDescription: 'Confirmado',
         ScheduleFromText.tColor: Colors.teal,
+        ScheduleFromText.tType: ScheduleSituationEnum.CONFIRMED,
       };
     } else if (situation == ScheduleSituationEnum.PROGRESS.text()) {
       return {
         ScheduleFromText.tDescription: 'Em andamento',
         ScheduleFromText.tColor: Colors.purpleAccent,
+        ScheduleFromText.tType: ScheduleSituationEnum.PROGRESS,
       };
     } else if (situation == ScheduleSituationEnum.COMPLETED.text()) {
       return {
         ScheduleFromText.tDescription: 'Finalizado',
         ScheduleFromText.tColor: Colors.blue,
+        ScheduleFromText.tType: ScheduleSituationEnum.COMPLETED,
       };
     } else {
       return {
         ScheduleFromText.tDescription: 'Indefinido',
         ScheduleFromText.tColor: Colors.grey,
+        ScheduleFromText.tType: ScheduleSituationEnum.UNDEFINED,
       };
     }
   }

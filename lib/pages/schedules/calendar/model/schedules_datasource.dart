@@ -29,7 +29,7 @@ class ScheduleDataSource extends CalendarDataSource {
 
   @override
   Color getColor(int index) {
-    String situation = _getSchedulesData(index).schedule.situation;
+    String situation = _getSchedulesData(index).schedule.situation.text();
     var map = ScheduleUtils.fromText(situation);
     return map[ScheduleFromText.tColor];
   }

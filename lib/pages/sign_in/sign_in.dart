@@ -94,7 +94,13 @@ class SignIn extends StatelessWidget {
                         onPressed: () {
                           bloc.add(SignInEventSubmitted(username: userController.text, password: passwordController.text));
                         },
-                        title: const Text('Entrar', style: TextStyle(fontWeight: FontWeight.w700)),
+                        title: const Text(
+                          'Entrar',
+                          style: TextStyle(
+                            fontWeight: FontWeight.w700,
+                            color: Colors.white,
+                          ),
+                        ),
                       ),
                       TextButton(
                         onPressed: () {},
@@ -178,22 +184,25 @@ class SignIn extends StatelessWidget {
           bloc: bloc,
           builder: (_, state) {
             return Container(
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 gradient: LinearGradient(
-                  colors: [Colors.indigoAccent[200]!, Colors.indigo[700]!],
-                  begin: Alignment.topRight,
-                  end: Alignment.bottomLeft,
+                  colors: [
+                    Colors.black,
+                    Color(0xFF5ee0ad),
+                  ],
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
                 ),
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  Text(
+                  const Text(
                     'Skedol',
                     textAlign: TextAlign.center,
-                    style: GoogleFonts.sora(
-                      fontSize: 40,
+                    style: TextStyle(
+                      fontSize: 42,
                       fontWeight: FontWeight.bold,
                       color: Colors.white,
                     ),

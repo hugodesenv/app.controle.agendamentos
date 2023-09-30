@@ -69,8 +69,9 @@ class _MyModalSearchState extends State<MyModalSearch> {
                   controller: widget._tecValue,
                   onTap: () async => await _showModal(context),
                   readOnly: true,
-                  decoration: const InputDecoration(
-                    suffixIcon: Icon(Icons.search_rounded),
+                  decoration: InputDecoration(
+                    suffixIcon: const Icon(Icons.search_rounded),
+                    fillColor: Colors.grey[200],
                   ),
                 ),
               ],
@@ -95,7 +96,8 @@ class _MyModalSearchState extends State<MyModalSearch> {
             builder: (_, MyModalSearchState state) {
               var bloc = BlocProvider.of<MyModalSearchBloc>(context);
               var itemsCount = state.values.length;
-              return Padding(
+              return Container(
+                width: double.infinity,
                 padding: const EdgeInsets.all(20.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -111,31 +113,36 @@ class _MyModalSearchState extends State<MyModalSearch> {
                       ),
                     ),
                     const Divider(),
-                    state.values.isEmpty
-                        ? const Center(heightFactor: 1, child: Text('Ops... Nada encontrado!'))
-                        : Flexible(
-                            child: ListView.separated(
-                              controller: _scrollController,
-                              separatorBuilder: (_, index) => const Divider(),
-                              itemCount: itemsCount + 1,
-                              itemBuilder: (_, index) {
-                                if (index < itemsCount) {
-                                  MyModalSearchValues i = state.values[index];
-                                  return ListTile(
-                                    title: Text(i.title, style: const TextStyle(fontWeight: FontWeight.w700)),
-                                    subtitle: Text(i.subtitle),
-                                    onTap: () {
-                                      widget._onTap(i.id);
-                                      widget._tecValue.text = i.title;
-                                      Navigator.pop(context);
-                                    },
-                                  );
-                                } else {
-                                  return Center(child: Text('Carregando mais informações...'));
-                                }
+                    Flexible(
+                      child: ListView.separated(
+                        controller: _scrollController,
+                        separatorBuilder: (_, index) => const Divider(),
+                        itemCount: itemsCount + 1,
+                        itemBuilder: (_, index) {
+                          if (index < itemsCount) {
+                            MyModalSearchValues i = state.values[index];
+                            return ListTile(
+                              title: Text(
+                                i.title,
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ),
+                              subtitle: Text(i.subtitle),
+                              onTap: () {
+                                widget._onTap(i.id);
+                                widget._tecValue.text = i.title;
+                                Navigator.pop(context);
                               },
-                            ),
-                          ),
+                            );
+                          } else {
+                            return const Center(
+                              child: Text('Buscando informações...'),
+                            );
+                          }
+                        },
+                      ),
+                    ),
                   ],
                 ),
               );

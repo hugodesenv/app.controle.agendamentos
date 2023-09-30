@@ -1,4 +1,5 @@
 import 'package:agendamentos/models/customer.dart';
+import 'package:agendamentos/utils/schedule_utils.dart';
 
 import 'employee.dart';
 
@@ -9,7 +10,7 @@ class Schedule {
   double _totalPrice;
   Customer _customer;
   Employee _employee;
-  String _situation;
+  ScheduleSituationEnum _situation;
 
   Schedule({
     required String? id,
@@ -18,14 +19,14 @@ class Schedule {
     required double? totalPrice,
     required Employee? employee,
     required Customer? customer,
-    required String? situation,
+    required ScheduleSituationEnum? situation,
   })  : _id = id ?? "",
         _scheduleDate = scheduleDate ?? DateTime.now(),
         _totalMinutes = totalMinutes ?? 0,
         _totalPrice = totalPrice ?? 0.0,
         _employee = employee ?? Employee.empty(),
         _customer = customer ?? Customer.empty(),
-        _situation = situation ?? "";
+        _situation = situation ?? ScheduleSituationEnum.UNDEFINED;
 
   factory Schedule.empty() {
     return Schedule(
@@ -35,7 +36,7 @@ class Schedule {
       totalPrice: 0,
       employee: Employee.empty(),
       customer: Customer.empty(),
-      situation: '',
+      situation: ScheduleSituationEnum.UNDEFINED,
     );
   }
 
@@ -52,7 +53,7 @@ class Schedule {
       totalPrice: totalPrice,
       employee: employee,
       customer: customer,
-      situation: data['situation'],
+      situation: ScheduleUtils.fromText(data['situation'] ?? '')[ScheduleFromText.tType],
     );
   }
 
@@ -92,9 +93,9 @@ class Schedule {
     _employee = value;
   }
 
-  String get situation => _situation;
+  ScheduleSituationEnum get situation => _situation;
 
-  set situation(String value) {
+  set situation(ScheduleSituationEnum value) {
     _situation = value;
   }
 }

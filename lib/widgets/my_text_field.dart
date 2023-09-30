@@ -24,7 +24,10 @@ class MyTextField extends StatelessWidget {
       children: [
         MyTextTitle(title: _title, align: _titleAlign),
         TextField(
-          decoration: InputDecoration(suffixIcon: _suffixIcon),
+          decoration: InputDecoration(
+            suffixIcon: _suffixIcon,
+            fillColor: Colors.grey[200],
+          ),
         ),
       ],
     );
