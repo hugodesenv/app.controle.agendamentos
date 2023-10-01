@@ -1,10 +1,10 @@
 import 'package:agendamentos/models/customer.dart';
+import 'package:agendamentos/models/generic_model.dart';
 import 'package:agendamentos/utils/schedule_utils.dart';
 
 import 'employee.dart';
 
-class Schedule {
-  String _id;
+class Schedule extends GenericModel {
   DateTime _scheduleDate;
   int _totalMinutes;
   double _totalPrice;
@@ -20,13 +20,13 @@ class Schedule {
     required Employee? employee,
     required Customer? customer,
     required ScheduleSituationEnum? situation,
-  })  : _id = id ?? "",
-        _scheduleDate = scheduleDate ?? DateTime.now(),
+  })  : _scheduleDate = scheduleDate ?? DateTime.now(),
         _totalMinutes = totalMinutes ?? 0,
         _totalPrice = totalPrice ?? 0.0,
         _employee = employee ?? Employee.empty(),
         _customer = customer ?? Customer.empty(),
-        _situation = situation ?? ScheduleSituationEnum.UNDEFINED;
+        _situation = situation ?? ScheduleSituationEnum.UNDEFINED,
+        super(id: id);
 
   factory Schedule.empty() {
     return Schedule(
@@ -79,12 +79,6 @@ class Schedule {
 
   set scheduleDate(DateTime value) {
     _scheduleDate = value;
-  }
-
-  String get id => _id;
-
-  set id(String value) {
-    _id = value;
   }
 
   Employee get employee => _employee;

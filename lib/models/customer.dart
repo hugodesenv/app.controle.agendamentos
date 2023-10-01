@@ -1,7 +1,8 @@
+import 'package:agendamentos/models/generic_model.dart';
+
 import 'company.dart';
 
-class Customer {
-  String _id;
+class Customer extends GenericModel {
   String _name;
   String _cellphone;
   String _email;
@@ -13,11 +14,11 @@ class Customer {
     String? cellphone,
     String? email,
     required Company? company,
-  })  : _id = id ?? '',
-        _name = name ?? '',
+  })  : _name = name ?? '',
         _cellphone = cellphone ?? '',
         _email = email ?? '',
-        _company = company ?? Company.empty();
+        _company = company ?? Company.empty(),
+        super(id: id);
 
   factory Customer.fromJson(Map json) {
     Company company = Company.fromJson(json['company']);
@@ -54,12 +55,6 @@ class Customer {
       "fk_company": company.id,
       "email": email,
     };
-  }
-
-  String get id => _id;
-
-  set id(String value) {
-    _id = value;
   }
 
   String get name => _name;

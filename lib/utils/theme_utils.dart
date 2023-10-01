@@ -128,6 +128,7 @@ class SkedolTheme {
     return ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
         backgroundColor: primaryWhiteColor,
+        foregroundColor: Colors.white,
       ),
     );
   }

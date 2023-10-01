@@ -185,7 +185,7 @@ class _ScheduleItemsState extends State<_ScheduleItems> {
       isScrollControlled: true,
       builder: (context) {
         return SingleChildScrollView(
-          padding: EdgeInsets.all(20.0),
+          padding: const EdgeInsets.all(20.0),
           child: Padding(
             padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
             child: Column(
@@ -206,7 +206,7 @@ class _ScheduleItemsState extends State<_ScheduleItems> {
                         padding: const EdgeInsets.only(right: 5.0),
                         child: MyTextField(
                           title: 'Valor',
-                          suffixIcon: Icon(Icons.monetization_on_outlined),
+                          suffixIcon: const Icon(Icons.monetization_on_outlined),
                         ),
                       ),
                     ),
@@ -215,11 +215,18 @@ class _ScheduleItemsState extends State<_ScheduleItems> {
                         padding: const EdgeInsets.only(left: 5.0),
                         child: MyTextField(
                           title: 'Tempo',
-                          suffixIcon: Icon(Icons.timer_sharp),
+                          suffixIcon: const Icon(Icons.timer_sharp),
                         ),
                       ),
                     ),
                   ],
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 16.0),
+                  child: ElevatedButton(
+                    onPressed: () {},
+                    child: const Icon(Icons.save_outlined),
+                  ),
                 ),
               ],
             ),

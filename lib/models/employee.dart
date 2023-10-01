@@ -1,7 +1,8 @@
+import 'package:agendamentos/models/generic_model.dart';
+
 import '../models/company.dart';
 
-class Employee {
-  String _id;
+class Employee extends GenericModel {
   String _name;
   bool _active;
   Company _company;
@@ -11,10 +12,10 @@ class Employee {
     String? name,
     bool? active,
     required Company? company,
-  })  : _id = id ?? '',
-        _name = name ?? '',
+  })  : _name = name ?? '',
         _active = active ?? false,
-        _company = company ?? Company.empty();
+        _company = company ?? Company.empty(),
+        super(id: id);
 
   factory Employee.empty() {
     return Employee(id: "", company: Company.empty());
@@ -46,11 +47,5 @@ class Employee {
 
   set name(String value) {
     _name = value;
-  }
-
-  String get id => _id;
-
-  set id(String value) {
-    _id = value;
   }
 }

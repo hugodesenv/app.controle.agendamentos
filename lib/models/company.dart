@@ -1,12 +1,13 @@
-class Company {
-  String _id;
+import 'package:agendamentos/models/generic_model.dart';
+
+class Company extends GenericModel {
   String _socialName;
   bool _active;
 
   Company({required String? id, required String? socialName, bool? active})
-      : _id = id ?? '',
-        _socialName = socialName ?? '',
-        _active = active ?? false;
+      : _socialName = socialName ?? '',
+        _active = active ?? false,
+        super(id: id);
 
   factory Company.empty() {
     return Company(id: '', socialName: '');
@@ -25,12 +26,6 @@ class Company {
       'social_name': socialName,
       'active': active,
     };
-  }
-
-  String get id => _id;
-
-  set id(String value) {
-    _id = value;
   }
 
   String get socialName => _socialName;

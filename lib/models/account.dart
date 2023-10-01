@@ -1,6 +1,7 @@
 import 'package:agendamentos/models/company.dart';
+import 'package:agendamentos/models/generic_model.dart';
 
-class Account {
+class Account extends GenericModel {
   String _name;
   String _username;
   String _email;

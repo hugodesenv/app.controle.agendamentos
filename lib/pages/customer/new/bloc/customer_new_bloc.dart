@@ -51,7 +51,7 @@ class CustomerNewBloc extends Bloc<CustomerNewEvent, CustomerNewState> {
         var res = {};
         CustomerRepository repository = CustomerRepository.instance;
 
-        if (_customer.id.isEmpty) {
+        if (_customer.id!.isEmpty) {
           _customer.company = (await PreferencesRepository.getPrefsCurrentUser()).company;
           res = await repository.save(_customer);
         } else {
