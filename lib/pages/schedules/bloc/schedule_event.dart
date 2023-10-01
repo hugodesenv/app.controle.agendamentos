@@ -1,21 +1,33 @@
+import 'package:agendamentos/models/schedule_item.dart';
+import 'package:agendamentos/utils/schedule_utils.dart';
+import '../../../models/customer.dart';
+
 abstract class ScheduleEvent {}
 
 class SendToDB extends ScheduleEvent {}
 
 class CustomerChange extends ScheduleEvent {
-  String customerID;
+  late Customer customer;
 
-  CustomerChange(this.customerID);
+  CustomerChange(String id, String name) {
+    customer = Customer(id: id, name: name);
+  }
 }
 
 class ScheduleDateChange extends ScheduleEvent {
-  DateTime scheduleDate;
+  DateTime? scheduleDate;
 
   ScheduleDateChange(this.scheduleDate);
 }
 
 class SituationChange extends ScheduleEvent {
-  String situation;
+  ScheduleSituationEnum? situation;
 
   SituationChange(this.situation);
+}
+
+class AddItem extends ScheduleEvent {
+  late ScheduleItem item;
+
+  AddItem(this.item);
 }

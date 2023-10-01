@@ -1,69 +1,69 @@
-import '../../../models/item.dart';
+import 'package:agendamentos/utils/schedule_utils.dart';
+
+import '../../../models/customer.dart';
 
 class ScheduleState {
-  late String _customerID;
-  late List<Item> _itemsInsert;
-  late List<Item> _itemsUpdate;
-  late DateTime _scheduleDate;
-  late String _situation;
+  Customer? _customer;
+  DateTime? _scheduleDate;
+  ScheduleSituationEnum? _situation;
 
-  ScheduleState(
-    String customerID,
-    DateTime scheduleDate,
-    String situation,
-    List<Item> itemsInsert,
-    List<Item> itemsUpdate,
+  /// {
+  ///    modified: true,
+  ///    object: ScheduleItem()...
+  /// }
+  List<Map>? _items;
+
+  ScheduleState();
+
+  ScheduleState._initial(
+    Customer? customer,
+    DateTime? scheduleDate,
+    ScheduleSituationEnum? situation,
+    List<Map>? items,
   ) {
-    _itemsInsert = itemsInsert;
-    _itemsUpdate = itemsUpdate;
-    _customerID = customerID;
+    _items = items;
+    _customer = customer;
     _situation = situation;
     _scheduleDate = scheduleDate;
   }
 
   ScheduleState copyWith({
-    String? customerID,
+    Customer? customer,
     DateTime? scheduleDate,
-    String? situation,
-    List<Item>? itemsInsert,
-    List<Item>? itemsUpdate,
+    ScheduleSituationEnum? situation,
+    List<Map>? items,
   }) {
-    return ScheduleState(
-      customerID ?? _customerID,
+    return ScheduleState._initial(
+      customer ?? _customer,
       scheduleDate ?? _scheduleDate,
       situation ?? _situation,
-      itemsInsert ?? _itemsInsert,
-      itemsUpdate ?? _itemsUpdate,
+      items ?? _items,
     );
   }
 
-  List<Item> get itemsUpdate => _itemsUpdate;
+  List<Map> get items => _items ?? [];
 
-  set itemsUpdate(List<Item> value) {
-    _itemsUpdate = value;
+  set items(List<Map> value) {
+    _items = value;
   }
 
-  List<Item> get itemsInsert => _itemsInsert;
+  ScheduleSituationEnum get situation => _situation ?? ScheduleSituationEnum.UNDEFINED;
 
-  set itemsInsert(List<Item> value) {
-    _itemsInsert = value;
+  set situation(ScheduleSituationEnum value) {
+    _situation = value;
   }
 
-  String get customerID => _customerID;
-
-  set customerID(String value) {
-    _customerID = value;
-  }
-
-  DateTime get scheduleDate => _scheduleDate;
+  DateTime get scheduleDate => _scheduleDate ?? DateTime.timestamp();
 
   set scheduleDate(DateTime value) {
     _scheduleDate = value;
   }
 
-  String get situation => _situation;
+  Customer get customer => _customer ?? Customer.empty();
 
-  set situation(String value) {
-    _situation = value;
+  set customer(Customer value) {
+    _customer = value;
   }
 }
+
+class Initial extends ScheduleState {}

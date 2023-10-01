@@ -86,8 +86,8 @@ class SkedolTheme {
   }
 
   DatePickerThemeData getWhiteDatePickerTheme() {
-    return DatePickerThemeData(
-      headerBackgroundColor: primaryWhiteColor,
+    return const DatePickerThemeData(
+      headerForegroundColor: _primaryWhiteColor,
     );
   }
 

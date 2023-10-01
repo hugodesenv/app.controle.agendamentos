@@ -13,7 +13,7 @@ class Customer extends GenericModel {
     String? name,
     String? cellphone,
     String? email,
-    required Company? company,
+    Company? company,
   })  : _name = name ?? '',
         _cellphone = cellphone ?? '',
         _email = email ?? '',

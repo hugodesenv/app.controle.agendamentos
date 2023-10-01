@@ -1,4 +1,4 @@
-enum ItemType { tProduct, tService }
+enum ItemType { tUndefined, tProduct, tService }
 
 extension ItemTypeExtension on ItemType {
   String text() {

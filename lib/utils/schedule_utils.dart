@@ -47,19 +47,19 @@ class ScheduleUtils {
     } else if (situation == ScheduleSituationEnum.CONFIRMED.text()) {
       return {
         ScheduleFromText.tDescription: 'Confirmado',
-        ScheduleFromText.tColor: Colors.teal,
+        ScheduleFromText.tColor: Colors.indigoAccent,
         ScheduleFromText.tType: ScheduleSituationEnum.CONFIRMED,
       };
     } else if (situation == ScheduleSituationEnum.PROGRESS.text()) {
       return {
         ScheduleFromText.tDescription: 'Em andamento',
-        ScheduleFromText.tColor: Colors.purpleAccent,
+        ScheduleFromText.tColor: Colors.yellow,
         ScheduleFromText.tType: ScheduleSituationEnum.PROGRESS,
       };
     } else if (situation == ScheduleSituationEnum.COMPLETED.text()) {
       return {
         ScheduleFromText.tDescription: 'Finalizado',
-        ScheduleFromText.tColor: Colors.blue,
+        ScheduleFromText.tColor: Colors.green,
         ScheduleFromText.tType: ScheduleSituationEnum.COMPLETED,
       };
     } else {

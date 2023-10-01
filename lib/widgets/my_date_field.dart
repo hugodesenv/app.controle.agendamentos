@@ -3,11 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class MyDateField extends StatefulWidget {
-  late final String _title;
-  late final Function(DateTime? selectedDate) _onChanged;
+  final String _title;
+  final Function(DateTime? selectedDate) _onChanged;
 
-  MyDateField({Key? key, required String title, required Function(DateTime? selectedDate) onChanged})
-      : _title = title,
+  const MyDateField({
+    Key? key,
+    required String title,
+    required Function(DateTime? selectedDate) onChanged,
+  })  : _title = title,
         _onChanged = onChanged,
         super(key: key);
 

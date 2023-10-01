@@ -187,8 +187,8 @@ class SignIn extends StatelessWidget {
               decoration: const BoxDecoration(
                 gradient: LinearGradient(
                   colors: [
-                    Colors.black,
                     Color(0xFF5ee0ad),
+                    Colors.teal,
                   ],
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,

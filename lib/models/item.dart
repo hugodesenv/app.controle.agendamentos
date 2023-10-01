@@ -23,6 +23,16 @@ class Item extends GenericModel {
     _type = type;
   }
 
+  static Item empty() {
+    return Item(
+      company: Company.empty(),
+      description: '',
+      serviceMinutes: 0,
+      active: false,
+      type: ItemType.tUndefined,
+    );
+  }
+
   ItemType get type => _type;
 
   set type(ItemType value) {

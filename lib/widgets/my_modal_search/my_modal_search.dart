@@ -11,18 +11,18 @@ import 'model/my_modal_search_values.dart';
 
 class MyModalSearch extends StatefulWidget {
   late MyModalSearchEnum _typeSearch;
-  late Function(String id) _onTap;
-  late TextEditingController _tecValue;
+  late Function(String id, String lookup) _onTap;
+  late String _initialValue;
 
   MyModalSearch({
     Key? key,
     required MyModalSearchEnum typeSearch,
-    required Function(String id) onTap,
+    required Function(String id, String lookup) onTap,
     String? initialValue,
   }) : super(key: key) {
     _typeSearch = typeSearch;
     _onTap = onTap;
-    _tecValue = TextEditingController(text: initialValue);
+    _initialValue = initialValue ?? '';
   }
 
   @override
@@ -31,10 +31,14 @@ class MyModalSearch extends StatefulWidget {
 
 class _MyModalSearchState extends State<MyModalSearch> {
   late ScrollController _scrollController;
+  late TextEditingController _tecValue;
 
   @override
   void initState() {
+    _tecValue = TextEditingController(text: widget._initialValue);
+
     // definindo um controle para o scroll para obtermos o final da listagem.
+    print("** cai uma vez aqui");
     _scrollController = ScrollController();
     _scrollController.addListener(() {
       if (_scrollController.position.pixels == _scrollController.position.maxScrollExtent) {
@@ -66,7 +70,7 @@ class _MyModalSearchState extends State<MyModalSearch> {
               children: [
                 MyTextTitle(title: widget._typeSearch.displayTitle()),
                 TextField(
-                  controller: widget._tecValue,
+                  controller: _tecValue,
                   onTap: () async => await _showModal(context),
                   readOnly: true,
                   decoration: InputDecoration(
@@ -130,8 +134,8 @@ class _MyModalSearchState extends State<MyModalSearch> {
                               ),
                               subtitle: Text(i.subtitle),
                               onTap: () {
-                                widget._onTap(i.id);
-                                widget._tecValue.text = i.title;
+                                _tecValue.text = i.title;
+                                widget._onTap(i.id, i.title);
                                 Navigator.pop(context);
                               },
                             );

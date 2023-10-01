@@ -1,9 +1,13 @@
+import 'package:agendamentos/pages/schedules/bloc/schedule_bloc.dart';
+import 'package:agendamentos/pages/schedules/bloc/schedule_event.dart';
 import 'package:agendamentos/utils/constants/widgetsConstantes.dart';
 import 'package:agendamentos/widgets/my_date_field.dart';
 import 'package:agendamentos/widgets/my_modal_search/my_modal_search.dart';
 import 'package:agendamentos/widgets/my_text_field.dart';
 import 'package:agendamentos/widgets/my_text_title.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
 import '../../utils/schedule_utils.dart';
 import '../../widgets/my_modal_search/enum/my_modal_search_enum.dart';
 
@@ -27,55 +31,54 @@ class Schedule extends StatefulWidget {
 class _ScheduleState extends State<Schedule> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Agendar')),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.only(left: 20.0, right: 20.0, bottom: 8.0, top: 20.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              MyModalSearch(
-                typeSearch: MyModalSearchEnum.CUSTOMER,
-                initialValue: 'Hugo Souza',
-                onTap: (String id) {
-                  print("** id do client selecionado: ${id}");
-                },
+    return BlocBuilder(
+      bloc: BlocProvider.of<ScheduleBloc>(context),
+      builder: (_, state) {
+        var bloc = BlocProvider.of<ScheduleBloc>(context);
+        return Scaffold(
+          appBar: AppBar(title: const Text('Agendar')),
+          body: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.only(left: 20.0, right: 20.0, bottom: 8.0, top: 20.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  MyModalSearch(
+                    typeSearch: MyModalSearchEnum.CUSTOMER,
+                    initialValue: 'Hugo Souza',
+                    onTap: (String id, String lookup) {
+                      bloc.add(CustomerChange(id, lookup));
+                    },
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 16.0),
+                    child: MyDateField(
+                      title: 'Data / Hora',
+                      onChanged: (DateTime? selectedDate) => bloc.add(ScheduleDateChange(selectedDate)),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 16.0),
+                    child: _ScheduleItems(),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 16.0),
+                    child: SituationRadioGroup(
+                      onClick: ({ScheduleSituationEnum? enumuerator, String? text}) {
+                        bloc.add(SituationChange(enumuerator));
+                      },
+                    ),
+                  ),
+                ],
               ),
-              Padding(
-                padding: const EdgeInsets.only(top: 16.0),
-                child: MyDateField(
-                  title: 'Data / Hora',
-                  onChanged: (selectedDate) {
-                    print("** ${selectedDate}");
-                  },
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 16.0),
-                child: _ScheduleItems(),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 16.0),
-                child: SituationRadioGroup(
-                  onClick: ({ScheduleSituationEnum? enumuerator, String? text}) {
-                    print("** click no radio group... usar para salvar na api...");
-                    print("** ${enumuerator.toString()}");
-                    print("** ${text}");
-                    print("---------------------------------------------------------");
-                  },
-                ),
-              ),
-            ],
+            ),
           ),
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          print("** chamar a inclusao do agendamento aqui");
-        },
-        child: const Icon(Icons.save_outlined),
-      ),
+          floatingActionButton: FloatingActionButton(
+            onPressed: () => bloc.add(SendToDB()),
+            child: const Icon(Icons.save_outlined),
+          ),
+        );
+      },
     );
   }
 }
@@ -196,7 +199,7 @@ class _ScheduleItemsState extends State<_ScheduleItems> {
                   padding: const EdgeInsets.only(bottom: 16.0),
                   child: MyModalSearch(
                     typeSearch: MyModalSearchEnum.ITEM,
-                    onTap: (id) {},
+                    onTap: (String id, String lookup) {},
                   ),
                 ),
                 Row(

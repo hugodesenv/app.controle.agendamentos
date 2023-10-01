@@ -22,6 +22,8 @@ import 'package:agendamentos/pages/item/bloc/item_query_state.dart';
 import 'package:agendamentos/pages/item/item_query.dart';
 import 'package:agendamentos/pages/profile/profile.dart';
 import 'package:agendamentos/pages/report/report.dart';
+import 'package:agendamentos/pages/schedules/bloc/schedule_bloc.dart';
+import 'package:agendamentos/pages/schedules/bloc/schedule_state.dart';
 import 'package:agendamentos/pages/schedules/schedule.dart';
 import 'package:agendamentos/pages/sign_in/bloc/sign_in_bloc.dart';
 import 'package:agendamentos/pages/sign_in/bloc/sign_in_event.dart';
@@ -102,7 +104,10 @@ appRoutes(RouteSettings settings) {
   } else if (settings.name == routeSchedule) {
     ScheduleParameters? arguments = settings.arguments as ScheduleParameters?;
     return MaterialPageRoute(
-      builder: (_) => Schedule(parameters: arguments),
+      builder: (_) => BlocProvider(
+        create: (context) => ScheduleBloc(ScheduleState()),
+        child: Schedule(parameters: arguments),
+      ),
     );
   } else if (settings.name == routeItemQuery) {
     return MaterialPageRoute(

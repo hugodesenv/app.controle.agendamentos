@@ -1,5 +1,6 @@
 import 'package:agendamentos/models/customer.dart';
 import 'package:agendamentos/models/generic_model.dart';
+import 'package:agendamentos/models/schedule_item.dart';
 import 'package:agendamentos/utils/schedule_utils.dart';
 
 import 'employee.dart';
@@ -11,6 +12,7 @@ class Schedule extends GenericModel {
   Customer _customer;
   Employee _employee;
   ScheduleSituationEnum _situation;
+  List<ScheduleItem>? _scheduleItem;
 
   Schedule({
     required String? id,
@@ -20,12 +22,14 @@ class Schedule extends GenericModel {
     required Employee? employee,
     required Customer? customer,
     required ScheduleSituationEnum? situation,
+    required List<ScheduleItem>? scheduleItem,
   })  : _scheduleDate = scheduleDate ?? DateTime.now(),
         _totalMinutes = totalMinutes ?? 0,
         _totalPrice = totalPrice ?? 0.0,
         _employee = employee ?? Employee.empty(),
         _customer = customer ?? Customer.empty(),
         _situation = situation ?? ScheduleSituationEnum.UNDEFINED,
+        _scheduleItem = scheduleItem ?? [],
         super(id: id);
 
   factory Schedule.empty() {
@@ -37,6 +41,7 @@ class Schedule extends GenericModel {
       employee: Employee.empty(),
       customer: Customer.empty(),
       situation: ScheduleSituationEnum.UNDEFINED,
+      scheduleItem: [],
     );
   }
 
@@ -54,6 +59,7 @@ class Schedule extends GenericModel {
       employee: employee,
       customer: customer,
       situation: ScheduleUtils.fromText(data['situation'] ?? '')[ScheduleFromText.tType],
+      scheduleItem: [], // alterar isto dps...
     );
   }
 

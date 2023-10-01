@@ -1,5 +1,6 @@
 import 'package:agendamentos/pages/schedules/bloc/schedule_event.dart';
 import 'package:agendamentos/pages/schedules/bloc/schedule_state.dart';
+import 'package:agendamentos/utils/schedule_utils.dart';
 import 'package:bloc/bloc.dart';
 
 class ScheduleBloc extends Bloc<ScheduleEvent, ScheduleState> {
@@ -11,11 +12,15 @@ class ScheduleBloc extends Bloc<ScheduleEvent, ScheduleState> {
   }
 
   Future<void> _saveToDB(SendToDB event, emit) async {
-    
+    print("** resultado final para mandar pro banco de dados::");
+    print("-> customer : ${state.customer.name} e o id: ${state.customer.id}");
+    print("-> date: ${state.scheduleDate.toString()}");
+    print("-> situation: ${state.situation.text()}");
+    // agora, gravar a capa e depois ver como mandar os itens...
   }
 
   void _customerChange(CustomerChange event, emit) {
-    emit(state.copyWith(customerID: event.customerID));
+    emit(state.copyWith(customer: event.customer));
   }
 
   void _dateChange(ScheduleDateChange event, emit) {
