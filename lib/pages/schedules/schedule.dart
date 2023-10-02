@@ -44,11 +44,21 @@ class _ScheduleState extends State<Schedule> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   MyModalSearch(
-                    typeSearch: MyModalSearchEnum.CUSTOMER,
+                    typeSearch: MyModalSearchEnum.EMPLOYEE,
                     initialValue: 'Hugo Souza',
                     onTap: (String id, String lookup) {
-                      bloc.add(CustomerChange(id, lookup));
+                      bloc.add(EmployeeChange(id, lookup));
                     },
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 16.0),
+                    child: MyModalSearch(
+                      typeSearch: MyModalSearchEnum.CUSTOMER,
+                      initialValue: 'Hugo Souza',
+                      onTap: (String id, String lookup) {
+                        bloc.add(CustomerChange(id, lookup));
+                      },
+                    ),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(top: 16.0),

@@ -1,11 +1,13 @@
 class GenericModel {
   String? _id;
 
-  String? get id => _id;
+  GenericModel({id}) : _id = id;
+
+  String get id => _id ?? '';
 
   set id(String? value) {
     _id = value;
   }
 
-  GenericModel({id}) : _id = id;
+  String get action => id.isEmpty ? 'insert' : 'update';
 }

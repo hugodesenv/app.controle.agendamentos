@@ -1,68 +1,46 @@
+import 'package:agendamentos/models/employee.dart';
+import 'package:agendamentos/models/schedule.dart';
+import 'package:agendamentos/models/schedule_item.dart';
 import 'package:agendamentos/utils/schedule_utils.dart';
 
 import '../../../models/customer.dart';
 
 class ScheduleState {
-  Customer? _customer;
-  DateTime? _scheduleDate;
-  ScheduleSituationEnum? _situation;
-
-  /// {
-  ///    modified: true,
-  ///    object: ScheduleItem()...
-  /// }
-  List<Map>? _items;
+  Schedule? schedule;
 
   ScheduleState();
 
-  ScheduleState._initial(
+  ScheduleState._initial({
     Customer? customer,
     DateTime? scheduleDate,
     ScheduleSituationEnum? situation,
-    List<Map>? items,
-  ) {
-    _items = items;
-    _customer = customer;
-    _situation = situation;
-    _scheduleDate = scheduleDate;
+    List<ScheduleItem>? items,
+    Employee? employee,
+  }) {
+    schedule = Schedule.copyWith(
+      scheduleItem: items,
+      situation: situation,
+      scheduleDate: scheduleDate,
+      customer: customer,
+    );
   }
 
   ScheduleState copyWith({
     Customer? customer,
     DateTime? scheduleDate,
     ScheduleSituationEnum? situation,
-    List<Map>? items,
+    List<ScheduleItem>? items,
+    Employee? employee,
   }) {
-    return ScheduleState._initial(
-      customer ?? _customer,
-      scheduleDate ?? _scheduleDate,
-      situation ?? _situation,
-      items ?? _items,
+    var instance = ScheduleState._initial(
+      customer: customer,
+      scheduleDate: scheduleDate,
+      situation: situation,
+      items: items,
+      employee: employee,
     );
-  }
 
-  List<Map> get items => _items ?? [];
-
-  set items(List<Map> value) {
-    _items = value;
-  }
-
-  ScheduleSituationEnum get situation => _situation ?? ScheduleSituationEnum.UNDEFINED;
-
-  set situation(ScheduleSituationEnum value) {
-    _situation = value;
-  }
-
-  DateTime get scheduleDate => _scheduleDate ?? DateTime.timestamp();
-
-  set scheduleDate(DateTime value) {
-    _scheduleDate = value;
-  }
-
-  Customer get customer => _customer ?? Customer.empty();
-
-  set customer(Customer value) {
-    _customer = value;
+    return instance;
   }
 }
 

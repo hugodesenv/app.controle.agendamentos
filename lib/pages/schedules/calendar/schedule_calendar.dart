@@ -52,11 +52,22 @@ class ScheduleCalendar extends StatelessWidget {
   }
 
   _openDetails(BuildContext context, CalendarTapDetails details) async {
-    if (details.targetElement == CalendarElement.appointment || details.targetElement == CalendarElement.agenda) {
-      ScheduleModule scheduleModule = details.appointments![0];
-      _onScheduleClick(scheduleModule);
-    } else if (details.targetElement == CalendarElement.calendarCell) {
-      _onEmptyClick(details.date ?? DateTime.timestamp());
+    switch (details.targetElement) {
+      case CalendarElement.appointment:
+      case CalendarElement.agenda:
+        {
+          ScheduleModule scheduleModule = details.appointments![0];
+          _onScheduleClick(scheduleModule);
+        }
+        break;
+      case CalendarElement.calendarCell:
+        {
+          int length = details.appointments?.length ?? 0;
+          if (length == 0) {
+            _onEmptyClick(details.date ?? DateTime.timestamp());
+          }
+        }
+        break;
     }
   }
 

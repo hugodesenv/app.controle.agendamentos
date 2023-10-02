@@ -1,4 +1,4 @@
-enum MyModalSearchEnum { CUSTOMER, ITEM }
+enum MyModalSearchEnum { CUSTOMER, ITEM, EMPLOYEE }
 
 extension MyModalSearchDisplay on MyModalSearchEnum {
   displayTitle() {
@@ -7,6 +7,8 @@ extension MyModalSearchDisplay on MyModalSearchEnum {
         return 'Cliente';
       case MyModalSearchEnum.ITEM:
         return 'Item';
+      case MyModalSearchEnum.EMPLOYEE:
+        return 'Profissional';
     }
   }
 }

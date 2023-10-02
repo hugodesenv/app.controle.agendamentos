@@ -1,5 +1,7 @@
+import 'package:agendamentos/models/employee.dart';
 import 'package:agendamentos/models/schedule_item.dart';
 import 'package:agendamentos/utils/schedule_utils.dart';
+
 import '../../../models/customer.dart';
 
 abstract class ScheduleEvent {}
@@ -11,6 +13,14 @@ class CustomerChange extends ScheduleEvent {
 
   CustomerChange(String id, String name) {
     customer = Customer(id: id, name: name);
+  }
+}
+
+class EmployeeChange extends ScheduleEvent {
+  late Employee employee;
+
+  EmployeeChange(String id, String name) {
+    employee = Employee(id: id, name: name);
   }
 }
 

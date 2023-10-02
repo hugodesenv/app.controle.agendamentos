@@ -13,16 +13,18 @@ class Schedule extends GenericModel {
   Employee _employee;
   ScheduleSituationEnum _situation;
   List<ScheduleItem>? _scheduleItem;
+  DateTime? _dateChanged;
 
   Schedule({
-    required String? id,
-    required DateTime? scheduleDate,
-    required int? totalMinutes,
-    required double? totalPrice,
-    required Employee? employee,
-    required Customer? customer,
-    required ScheduleSituationEnum? situation,
-    required List<ScheduleItem>? scheduleItem,
+    String? id,
+    DateTime? scheduleDate,
+    int? totalMinutes,
+    double? totalPrice,
+    Employee? employee,
+    Customer? customer,
+    ScheduleSituationEnum? situation,
+    List<ScheduleItem>? scheduleItem,
+    DateTime? dateChanged,
   })  : _scheduleDate = scheduleDate ?? DateTime.now(),
         _totalMinutes = totalMinutes ?? 0,
         _totalPrice = totalPrice ?? 0.0,
@@ -30,6 +32,7 @@ class Schedule extends GenericModel {
         _customer = customer ?? Customer.empty(),
         _situation = situation ?? ScheduleSituationEnum.UNDEFINED,
         _scheduleItem = scheduleItem ?? [],
+        _dateChanged = dateChanged ?? DateTime(1899),
         super(id: id);
 
   factory Schedule.empty() {
@@ -42,11 +45,16 @@ class Schedule extends GenericModel {
       customer: Customer.empty(),
       situation: ScheduleSituationEnum.UNDEFINED,
       scheduleItem: [],
+      dateChanged: DateTime.now(),
     );
   }
 
   factory Schedule.fromJson(Map data) {
     DateTime scheduleDate = DateTime.parse(data['schedule_date']);
+
+    String sDateChange = data?['date_changed'] ?? DateTime(1899).toIso8601String();
+    DateTime? dateChanged = DateTime.parse(sDateChange);
+
     double totalPrice = double.parse(data['total_price'] ?? '0');
     Employee employee = Employee.fromJson(data['employee']);
     Customer customer = Customer.fromJson(data['customer']);
@@ -59,7 +67,39 @@ class Schedule extends GenericModel {
       employee: employee,
       customer: customer,
       situation: ScheduleUtils.fromText(data['situation'] ?? '')[ScheduleFromText.tType],
-      scheduleItem: [], // alterar isto dps...
+      scheduleItem: [],
+      // alterar dps..
+      dateChanged: dateChanged,
+    );
+  }
+
+  Map toMap() {
+    Map res = {
+      'action': action,
+      'fk_employee': employee.id,
+      'fk_customer': customer.id,
+      'schedule_date': scheduleDate.toString(),
+    };
+
+    return res;
+  }
+
+  static Schedule copyWith({
+    String? id,
+    Customer? customer,
+    DateTime? scheduleDate,
+    ScheduleSituationEnum? situation,
+    List<ScheduleItem>? scheduleItem,
+    Employee? employee,
+  }) {
+    return Schedule(
+      customer: customer,
+      scheduleDate: scheduleDate,
+      situation: situation,
+      scheduleItem: scheduleItem,
+      id: id,
+      dateChanged: DateTime.now(),
+      employee: employee,
     );
   }
 
@@ -97,5 +137,17 @@ class Schedule extends GenericModel {
 
   set situation(ScheduleSituationEnum value) {
     _situation = value;
+  }
+
+  List<ScheduleItem> get scheduleItem => _scheduleItem ?? [];
+
+  set scheduleItem(List<ScheduleItem> value) {
+    _scheduleItem = value;
+  }
+
+  DateTime get dateChanged => _dateChanged ?? DateTime(1899);
+
+  set dateChanged(DateTime value) {
+    _dateChanged = value;
   }
 }

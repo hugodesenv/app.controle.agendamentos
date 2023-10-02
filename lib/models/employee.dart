@@ -11,7 +11,7 @@ class Employee extends GenericModel {
     required String? id,
     String? name,
     bool? active,
-    required Company? company,
+    Company? company,
   })  : _name = name ?? '',
         _active = active ?? false,
         _company = company ?? Company.empty(),

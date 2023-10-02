@@ -7,17 +7,20 @@ class ScheduleItem extends GenericModel {
   late Item _item;
   late int _serviceMinutes;
   late double _price;
+  late DateTime _dateChanged;
 
   ScheduleItem({
     Schedule? schedule,
     Item? item,
     int? serviceMinutes,
     double? price,
+    DateTime? dateChanged,
   }) {
     _schedule = schedule ?? Schedule.empty();
     _item = item ?? Item.empty();
     _serviceMinutes = serviceMinutes ?? 0;
     _price = price ?? 0.0;
+    _dateChanged = dateChanged ?? DateTime(1899);
   }
 
   static ScheduleItem empty() {
@@ -46,5 +49,11 @@ class ScheduleItem extends GenericModel {
 
   set schedule(Schedule value) {
     _schedule = value;
+  }
+
+  DateTime get dateChanged => _dateChanged;
+
+  set dateChanged(DateTime value) {
+    _dateChanged = value;
   }
 }

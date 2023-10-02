@@ -4,9 +4,11 @@ class ScheduleModule {
   final DateTime _eventDate;
   final Schedule _schedule;
 
-  ScheduleModule({Schedule? schedule, required DateTime eventDate})
-      : _schedule = schedule ?? Schedule.empty(),
-        _eventDate = eventDate;
+  ScheduleModule({
+    Schedule? schedule,
+    required DateTime? eventDate,
+  })  : _schedule = schedule ?? Schedule.empty(),
+        _eventDate = eventDate ?? DateTime(1899);
 
   factory ScheduleModule.empty() {
     return ScheduleModule(eventDate: DateTime.timestamp(), schedule: Schedule.empty());
