@@ -1,13 +1,13 @@
-enum MyModalSearchEnum { CUSTOMER, ITEM, EMPLOYEE }
+enum MyModalSearchEnum { tCustomer, tItem, tEmployee }
 
 extension MyModalSearchDisplay on MyModalSearchEnum {
   displayTitle() {
     switch (this) {
-      case MyModalSearchEnum.CUSTOMER:
+      case MyModalSearchEnum.tCustomer:
         return 'Cliente';
-      case MyModalSearchEnum.ITEM:
+      case MyModalSearchEnum.tItem:
         return 'Item';
-      case MyModalSearchEnum.EMPLOYEE:
+      case MyModalSearchEnum.tEmployee:
         return 'Profissional';
     }
   }

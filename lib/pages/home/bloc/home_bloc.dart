@@ -2,9 +2,8 @@ import 'package:agendamentos/models/account.dart';
 import 'package:agendamentos/pages/home/bloc/home_event.dart';
 import 'package:agendamentos/pages/home/bloc/home_state.dart';
 import 'package:agendamentos/repository/api/user_repository.dart';
+import 'package:agendamentos/utils/preferences_util.dart';
 import 'package:bloc/bloc.dart';
-
-import '../../../repository/classes/preferences_repository.dart';
 
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
   HomeBloc(super.initialState) {
@@ -14,7 +13,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   }
 
   Future<void> _initial(_, emit) async {
-    Account userSession = await PreferencesRepository.getPrefsCurrentUser();
+    Account userSession = await PreferencesUtil.getPrefsCurrentUser();
     emit(state.copyWith(accountConnected: userSession));
   }
 

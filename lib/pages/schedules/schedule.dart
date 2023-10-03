@@ -44,7 +44,7 @@ class _ScheduleState extends State<Schedule> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   MyModalSearch(
-                    typeSearch: MyModalSearchEnum.EMPLOYEE,
+                    typeSearch: MyModalSearchEnum.tEmployee,
                     initialValue: 'Hugo Souza',
                     onTap: (String id, String lookup) {
                       bloc.add(EmployeeChange(id, lookup));
@@ -53,7 +53,7 @@ class _ScheduleState extends State<Schedule> {
                   Padding(
                     padding: const EdgeInsets.only(top: 16.0),
                     child: MyModalSearch(
-                      typeSearch: MyModalSearchEnum.CUSTOMER,
+                      typeSearch: MyModalSearchEnum.tCustomer,
                       initialValue: 'Hugo Souza',
                       onTap: (String id, String lookup) {
                         bloc.add(CustomerChange(id, lookup));
@@ -208,7 +208,7 @@ class _ScheduleItemsState extends State<_ScheduleItems> {
                 Padding(
                   padding: const EdgeInsets.only(bottom: 16.0),
                   child: MyModalSearch(
-                    typeSearch: MyModalSearchEnum.ITEM,
+                    typeSearch: MyModalSearchEnum.tItem,
                     onTap: (String id, String lookup) {},
                   ),
                 ),

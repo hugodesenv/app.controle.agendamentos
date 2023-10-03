@@ -38,7 +38,6 @@ class _MyModalSearchState extends State<MyModalSearch> {
     _tecValue = TextEditingController(text: widget._initialValue);
 
     // definindo um controle para o scroll para obtermos o final da listagem.
-    print("** cai uma vez aqui");
     _scrollController = ScrollController();
     _scrollController.addListener(() {
       if (_scrollController.position.pixels == _scrollController.position.maxScrollExtent) {
@@ -68,7 +67,9 @@ class _MyModalSearchState extends State<MyModalSearch> {
             return Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                MyTextTitle(title: widget._typeSearch.displayTitle()),
+                MyTextTitle(
+                  title: widget._typeSearch.displayTitle(),
+                ),
                 TextField(
                   controller: _tecValue,
                   onTap: () async => await _showModal(context),
@@ -128,9 +129,7 @@ class _MyModalSearchState extends State<MyModalSearch> {
                             return ListTile(
                               title: Text(
                                 i.title,
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.w700,
-                                ),
+                                style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 16.0),
                               ),
                               subtitle: Text(i.subtitle),
                               onTap: () {
@@ -139,11 +138,12 @@ class _MyModalSearchState extends State<MyModalSearch> {
                                 Navigator.pop(context);
                               },
                             );
-                          } else {
+                          } /*
+                          else {
                             return const Center(
                               child: Text('Buscando informações...'),
                             );
-                          }
+                          }*/
                         },
                       ),
                     ),

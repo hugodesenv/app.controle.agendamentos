@@ -2,12 +2,12 @@ import 'package:agendamentos/models/customer.dart';
 import 'package:agendamentos/pages/customer/new/bloc/customer_new_event.dart';
 import 'package:agendamentos/pages/customer/new/bloc/customer_new_state.dart';
 import 'package:agendamentos/pages/customer/new/formz/model.dart';
+import 'package:agendamentos/utils/preferences_util.dart';
 import 'package:bloc/bloc.dart';
 import 'package:formz/formz.dart';
 
 import '../../../../enum/form_submission_status.dart';
 import '../../../../repository/api/customer_repository.dart';
-import '../../../../repository/classes/preferences_repository.dart';
 
 class CustomerNewBloc extends Bloc<CustomerNewEvent, CustomerNewState> {
   Customer _customer = Customer.empty();
@@ -52,7 +52,7 @@ class CustomerNewBloc extends Bloc<CustomerNewEvent, CustomerNewState> {
         CustomerRepository repository = CustomerRepository.instance;
 
         if (_customer.id!.isEmpty) {
-          _customer.company = (await PreferencesRepository.getPrefsCurrentUser()).company;
+          _customer.company = (await PreferencesUtil.getPrefsCurrentUser()).company;
           res = await repository.save(_customer);
         } else {
           res = await repository.update(_customer);

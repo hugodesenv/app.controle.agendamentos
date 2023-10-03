@@ -5,7 +5,7 @@ import 'package:agendamentos/repository/api/firebase_repository.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../classes/preferences_repository.dart';
+import '../../utils/preferences_util.dart';
 
 class UserRepository extends FirebaseRepository {
   UserRepository._() : super(controller_name: 'account');

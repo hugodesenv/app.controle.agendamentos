@@ -24,9 +24,18 @@ class Account extends GenericModel {
 
   factory Account.fromMap(Map data) {
     Map? mapCompany = data['company'];
-    Company company = Company(id: mapCompany?['id'], socialName: mapCompany?['social_name'], active: mapCompany?['active']);
+    Company company = Company(
+      id: mapCompany?['id'],
+      socialName: mapCompany?['social_name'],
+      active: mapCompany?['active'],
+    );
 
-    return Account(name: data['name'], username: data['username'], email: data['email'], company: company);
+    return Account(
+      name: data['name'],
+      username: data['username'],
+      email: data['email'],
+      company: company,
+    );
   }
 
   Map<String, dynamic> toMap() {

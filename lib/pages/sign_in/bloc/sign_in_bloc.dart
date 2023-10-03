@@ -1,10 +1,10 @@
 import 'package:agendamentos/models/account.dart';
 import 'package:agendamentos/pages/sign_in/bloc/sign_in_event.dart';
 import 'package:agendamentos/pages/sign_in/bloc/sign_in_state.dart';
+import 'package:agendamentos/utils/preferences_util.dart';
 import 'package:bloc/bloc.dart';
 
 import '../../../repository/api/user_repository.dart';
-import '../../../repository/classes/preferences_repository.dart';
 
 class SignInBloc extends Bloc<SignInEvent, SignInState> {
   SignInBloc(super.initialState) {
@@ -43,7 +43,7 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
   }
 
   Future<void> _directHome(_, emit) async {
-    Account account = await PreferencesRepository.getPrefsCurrentUser();
+    Account account = await PreferencesUtil.getPrefsCurrentUser();
     account.username.isNotEmpty ? emit(SignInStateGoToHome()) : emit(SignInStateInitial());
   }
 

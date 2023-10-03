@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:agendamentos/repository/api/customer_repository.dart';
+import 'package:agendamentos/repository/api/employee_repository.dart';
 import 'package:agendamentos/widgets/my_modal_search/bloc/my_modal_search_event.dart';
 import 'package:agendamentos/widgets/my_modal_search/bloc/my_modal_search_state.dart';
 import 'package:agendamentos/widgets/my_modal_search/enum/my_modal_search_enum.dart';
@@ -26,10 +27,16 @@ class MyModalSearchBloc extends Bloc<MyModalSearchEvent, MyModalSearchState> {
 
       originalList = [];
       switch (event.typeSelection) {
-        case MyModalSearchEnum.CUSTOMER:
+        case MyModalSearchEnum.tCustomer:
           var res = await CustomerRepository.instance.findAll();
           for (var i in res['customers']) {
             originalList.add(MyModalSearchValues(i.id, i.name, i.cellphone));
+          }
+          break;
+        case MyModalSearchEnum.tEmployee:
+          var res = await EmployeeRepository.instance.findAll();
+          for (var i in res['employee']) {
+            originalList.add(MyModalSearchValues(i.id, i.name, 'Clique para selecionar'));
           }
           break;
       }

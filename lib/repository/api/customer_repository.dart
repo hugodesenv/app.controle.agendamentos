@@ -1,14 +1,14 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:agendamentos/enum/database_enum.dart';
 import 'package:agendamentos/models/account.dart';
 import 'package:agendamentos/repository/api/firebase_repository.dart';
 import 'package:agendamentos/repository/api/global_repository.dart';
+import 'package:agendamentos/utils/preferences_util.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
+
 import '../../models/customer.dart';
-import '../classes/preferences_repository.dart';
 
 class CustomerRepository extends FirebaseRepository implements GlobalRepository {
   CustomerRepository._() : super(controller_name: 'customer');
@@ -36,7 +36,7 @@ class CustomerRepository extends FirebaseRepository implements GlobalRepository 
   @override
   Future<Map> findAll() async {
     List<Customer> customers = [];
-    Account currentUser = await PreferencesRepository.getPrefsCurrentUser();
+    Account currentUser = await PreferencesUtil.getPrefsCurrentUser();
 
     var response = await dio.get('$apiURL/${currentUser.company.id}');
     for (var data in response.data) {
@@ -44,7 +44,9 @@ class CustomerRepository extends FirebaseRepository implements GlobalRepository 
       customers.add(customer);
     }
 
-    return {"customers": customers};
+    return {
+      "customers": customers,
+    };
   }
 
   @override

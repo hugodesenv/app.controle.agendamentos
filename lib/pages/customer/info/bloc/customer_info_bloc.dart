@@ -2,7 +2,7 @@ import 'package:agendamentos/enum/form_submission_status.dart';
 import 'package:agendamentos/pages/customer/info/bloc/customer_info_event.dart';
 import 'package:agendamentos/pages/customer/info/bloc/customer_info_state.dart';
 import 'package:agendamentos/repository/api/customer_repository.dart';
-import 'package:agendamentos/repository/classes/launcher_repository.dart';
+import 'package:agendamentos/utils/launcher_util.dart';
 import 'package:bloc/bloc.dart';
 
 class CustomerInfoBloc extends Bloc<CustomerInfoEvent, CustomerInfoState> {
@@ -15,7 +15,7 @@ class CustomerInfoBloc extends Bloc<CustomerInfoEvent, CustomerInfoState> {
     try {
       emit(state.copyWith(status: FormSubmissionStatus.inProgress));
 
-      LauncherRepository repository = LauncherRepository.instance;
+      LauncherUtils repository = LauncherUtils.instance;
       await repository.launchWhatsApp(event.number);
 
       emit(state.copyWith(status: FormSubmissionStatus.success));
