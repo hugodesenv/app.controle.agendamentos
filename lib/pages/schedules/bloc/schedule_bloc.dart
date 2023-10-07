@@ -13,6 +13,7 @@ class ScheduleBloc extends Bloc<ScheduleEvent, ScheduleState> {
 
   Future<void> _saveToDB(SendToDB event, emit) async {
     var mapData = state.schedule?.toMap();
+    print(mapData);
   }
 
   void _customerChange(CustomerChange event, emit) {

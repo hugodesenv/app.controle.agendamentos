@@ -52,7 +52,7 @@ class Schedule extends GenericModel {
   factory Schedule.fromJson(Map data) {
     DateTime scheduleDate = DateTime.parse(data['schedule_date']);
 
-    String sDateChange = data?['date_changed'] ?? DateTime(1899).toIso8601String();
+    String sDateChange = data['date_changed'] ?? DateTime(1899).toIso8601String();
     DateTime? dateChanged = DateTime.parse(sDateChange);
 
     double totalPrice = double.parse(data['total_price'] ?? '0');
