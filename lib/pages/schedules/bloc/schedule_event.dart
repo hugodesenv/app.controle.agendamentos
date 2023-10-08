@@ -41,3 +41,8 @@ class AddItem extends ScheduleEvent {
 
   AddItem(this.item);
 }
+
+class SetInitialData extends ScheduleEvent {
+  DateTime scheduleDate;
+  SetInitialData(this.scheduleDate);
+}

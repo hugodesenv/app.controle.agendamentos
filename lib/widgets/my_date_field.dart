@@ -4,14 +4,17 @@ import 'package:intl/intl.dart';
 
 class MyDateField extends StatefulWidget {
   final String _title;
+  final DateTime? _initialValue;
   final Function(DateTime? selectedDate) _onChanged;
 
   const MyDateField({
     Key? key,
     required String title,
     required Function(DateTime? selectedDate) onChanged,
+    required DateTime? initialValue,
   })  : _title = title,
         _onChanged = onChanged,
+        _initialValue = initialValue,
         super(key: key);
 
   @override
@@ -19,12 +22,27 @@ class MyDateField extends StatefulWidget {
 }
 
 class _MyDateFieldState extends State<MyDateField> {
-  var tecValue = TextEditingController();
+  final _tecValue = TextEditingController();
 
   @override
   void dispose() {
-    tecValue.dispose();
+    _tecValue.dispose();
     super.dispose();
+  }
+
+  set textValue(DateTime? selectedDate) {
+    if (selectedDate != null) {
+      String formatDate = DateFormat("dd/MM/yyyy").format(selectedDate);
+      String formatTime = DateFormat("HH:mm").format(selectedDate);
+
+      _tecValue.text = "$formatDate às $formatTime";
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    textValue = widget._initialValue;
   }
 
   @override
@@ -34,30 +52,21 @@ class _MyDateFieldState extends State<MyDateField> {
       children: [
         MyTextTitle(title: widget._title),
         TextField(
-          controller: tecValue,
+          controller: _tecValue,
           readOnly: true,
           decoration: const InputDecoration(
             suffixIcon: Icon(Icons.date_range_outlined),
           ),
-          onTap: () async {
-            await callDateTimePicker(context);
-          },
+          onTap: () async => await callDateTimePicker(context),
         ),
       ],
     );
   }
 
   Future<void> callDateTimePicker(BuildContext context) async {
-    DateTime? selected_date = await _showDateTimePicket(context);
-
-    if (selected_date != null) {
-      String formatDate = DateFormat("dd/MM/yyyy").format(selected_date!);
-      String formatTime = DateFormat("HH:mm").format(selected_date!);
-
-      tecValue.text = "$formatDate às $formatTime";
-    }
-
-    widget._onChanged(selected_date);
+    DateTime? selectedDate = await _showDateTimePicket(context);
+    textValue = selectedDate;
+    widget._onChanged(selectedDate);
   }
 
   Future<DateTime?> _showDateTimePicket(context) async {

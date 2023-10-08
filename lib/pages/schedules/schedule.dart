@@ -1,6 +1,6 @@
 import 'package:agendamentos/pages/schedules/bloc/schedule_bloc.dart';
 import 'package:agendamentos/pages/schedules/bloc/schedule_event.dart';
-import 'package:agendamentos/pages/schedules/calendar/bloc/schedules_bloc.dart';
+import 'package:agendamentos/pages/schedules/bloc/schedule_state.dart';
 import 'package:agendamentos/utils/constants/widgetsConstantes.dart';
 import 'package:agendamentos/widgets/my_date_field.dart';
 import 'package:agendamentos/widgets/my_modal_search/my_modal_search.dart';
@@ -13,29 +13,19 @@ import '../../utils/schedule_utils.dart';
 import '../../widgets/my_modal_search/enum/my_modal_search_enum.dart';
 
 class ScheduleParameters {
-  DateTime scheduleDate;
+  DateTime? scheduleDate;
 
-  ScheduleParameters({DateTime? scheduleDate})
-      : scheduleDate = scheduleDate ?? DateTime.now();
+  ScheduleParameters({required this.scheduleDate});
 }
 
-class Schedule extends StatefulWidget {
-  late ScheduleParameters? _parameters;
+class Schedule extends StatelessWidget {
+  const Schedule({Key? key}) : super(key: key);
 
-  Schedule({Key? key, required ScheduleParameters? parameters})
-      : _parameters = parameters,
-        super(key: key);
-
-  @override
-  State<Schedule> createState() => _ScheduleState();
-}
-
-class _ScheduleState extends State<Schedule> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder(
       bloc: BlocProvider.of<ScheduleBloc>(context),
-      builder: (_, state) {
+      builder: (_, ScheduleState state) {
         var bloc = BlocProvider.of<ScheduleBloc>(context);
         return Scaffold(
           appBar: AppBar(title: const Text('Agendar')),
@@ -67,6 +57,7 @@ class _ScheduleState extends State<Schedule> {
                     padding: const EdgeInsets.only(top: 16.0),
                     child: MyDateField(
                       title: 'Data / Hora',
+                      initialValue: state.schedule.scheduleDate,
                       onChanged: (DateTime? selectedDate) =>
                           bloc.add(ScheduleDateChange(selectedDate)),
                     ),

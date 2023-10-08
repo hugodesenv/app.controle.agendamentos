@@ -5,11 +5,16 @@ import 'package:bloc/bloc.dart';
 
 class ScheduleBloc extends Bloc<ScheduleEvent, ScheduleState> {
   ScheduleBloc(super.initialState) {
+    on<SetInitialData>(_setInitialData);
     on<SendToDB>(_saveToDB);
     on<CustomerChange>(_customerChange);
     on<ScheduleDateChange>(_dateChange);
     on<SituationChange>(_situationChange);
     on<EmployeeChange>(_employeeChange);
+  }
+
+  void _setInitialData(SetInitialData event, emit) {
+    emit(state.copyWith(scheduleDate: event.scheduleDate));
   }
 
   Future<void> _saveToDB(SendToDB event, emit) async {

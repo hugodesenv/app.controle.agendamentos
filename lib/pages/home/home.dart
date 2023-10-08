@@ -20,11 +20,13 @@ import 'bloc/home_event.dart';
 class Home extends StatelessWidget {
   final TextEditingController _userNameController;
   final TextEditingController _companyNameController;
-  final SchedulesBloc scheduleCalendarBloc = SchedulesBloc(SchedulesState())..add(SchedulesEventLoad());
+  final SchedulesBloc scheduleCalendarBloc = SchedulesBloc(SchedulesState())
+    ..add(SchedulesEventLoad());
 
   Home({Key? key})
       : _userNameController = TextEditingController(text: 'Usuário indefinido'),
-        _companyNameController = TextEditingController(text: 'Empresa indefinida'),
+        _companyNameController =
+            TextEditingController(text: 'Empresa indefinida'),
         super(key: key);
 
   Widget _drawerFixed({
@@ -129,25 +131,40 @@ class Home extends StatelessWidget {
                       child: ListView(
                         scrollDirection: Axis.horizontal,
                         children: [
-                          cardInfo('Pendentes', state.totals[ScheduleSituationEnum.PENDING.text()]),
-                          cardInfo('Confirmados', state.totals[ScheduleSituationEnum.CONFIRMED.text()]),
-                          cardInfo('Cancelados', state.totals[ScheduleSituationEnum.CANCELED.text()]),
-                          cardInfo('Finalizados', state.totals[ScheduleSituationEnum.COMPLETED.text()]),
+                          cardInfo(
+                              'Pendentes',
+                              state.totals[
+                                  ScheduleSituationEnum.PENDING.text()]),
+                          cardInfo(
+                              'Confirmados',
+                              state.totals[
+                                  ScheduleSituationEnum.CONFIRMED.text()]),
+                          cardInfo(
+                              'Cancelados',
+                              state.totals[
+                                  ScheduleSituationEnum.CANCELED.text()]),
+                          cardInfo(
+                              'Finalizados',
+                              state.totals[
+                                  ScheduleSituationEnum.COMPLETED.text()]),
                         ],
                       ),
                     ),
                   ),
                   Expanded(
                     child: BlocProvider(
-                      create: (_) => SchedulesBloc(SchedulesState())..add(SchedulesEventLoad()),
+                      create: (_) => SchedulesBloc(SchedulesState())
+                        ..add(SchedulesEventLoad()),
                       child: ScheduleCalendar(
                         bloc: scheduleCalendarBloc,
-                        onTotals: (date, values) => bloc.add(HomeEventsScheduleListener(date, values)),
+                        onTotals: (date, values) =>
+                            bloc.add(HomeEventsScheduleListener(date, values)),
                         onScheduleClick: (scheduleModule) async {
                           await _showScheduleDetail(context, scheduleModule);
                         },
                         onEmptyClick: (date) async {
-                          var arguments = ScheduleParameters(scheduleDate: date);
+                          var arguments =
+                              ScheduleParameters(scheduleDate: date);
                           await _showAddSchedule(context, params: arguments);
                         },
                       ),
@@ -171,9 +188,11 @@ class Home extends StatelessWidget {
                       builder: (_, HomeState state) {
                         final session = state.accountConnected;
                         _userNameController.text = 'Olá, ${session.name}';
-                        _companyNameController.text = session.company.socialName;
+                        _companyNameController.text =
+                            session.company.socialName;
                         return Container(
-                          padding: const EdgeInsets.only(bottom: 10, top: 20, left: 20),
+                          padding: const EdgeInsets.only(
+                              bottom: 10, top: 20, left: 20),
                           child: ListTile(
                             title: Text(
                               _userNameController.text,
@@ -209,17 +228,20 @@ class Home extends StatelessWidget {
                             const Divider(),
                             ListTile(
                               leading: const Icon(Icons.person_outline),
-                              onTap: () => Navigator.pushNamed(context, routeCustomerQuery),
+                              onTap: () => Navigator.pushNamed(
+                                  context, routeCustomerQuery),
                               title: const Text('Clientes'),
                             ),
                             ListTile(
                               leading: const Icon(Icons.hardware_outlined),
-                              onTap: () => Navigator.pushNamed(context, routeItemQuery),
+                              onTap: () =>
+                                  Navigator.pushNamed(context, routeItemQuery),
                               title: const Text('Produtos e serviços'),
                             ),
                             ListTile(
                               leading: const Icon(Icons.auto_graph_sharp),
-                              onTap: () async => await Navigator.pushNamed(context, routeReport),
+                              onTap: () async => await Navigator.pushNamed(
+                                  context, routeReport),
                               title: const Text('Relatórios'),
                             ),
                           ],
@@ -228,7 +250,8 @@ class Home extends StatelessWidget {
                     ),
                     const Divider(),
                     _drawerFixed(
-                      onTap: () async => Navigator.pushNamed(context, routeProfile),
+                      onTap: () async =>
+                          Navigator.pushNamed(context, routeProfile),
                       textTitle: 'Configurações',
                       iconData: Icons.settings,
                       context: context,
@@ -261,11 +284,19 @@ class Home extends StatelessWidget {
     ];
   }
 
-  Future<void> _showAddSchedule(BuildContext context, {ScheduleParameters? params}) async {
-    await Navigator.pushNamed(context, routeSchedule, arguments: params);
+  Future<void> _showAddSchedule(
+    BuildContext context, {
+    ScheduleParameters? params,
+  }) async {
+    await Navigator.pushNamed(
+      context,
+      routeSchedule,
+      arguments: params,
+    );
   }
 
-  _showScheduleDetail(BuildContext context, ScheduleModule scheduleModule) async {
+  _showScheduleDetail(
+      BuildContext context, ScheduleModule scheduleModule) async {
     await showModalBottomSheet(
       context: context,
       shape: shapeModalBottomSheet,
@@ -290,7 +321,7 @@ class Home extends StatelessWidget {
                         style: TextStyle(
                           fontWeight: FontWeight.w700,
                           color: colorSituation,
-                          fontSize: 16.0
+                          fontSize: 16.0,
                         ),
                       ),
                     ),
@@ -317,7 +348,11 @@ class Home extends StatelessWidget {
             ),
             Flexible(
               child: SingleChildScrollView(
-                padding: EdgeInsets.only(left: 16.0, right: 16.0, top: 0, bottom: MediaQuery.of(context).viewInsets.bottom + 16.0),
+                padding: EdgeInsets.only(
+                    left: 16.0,
+                    right: 16.0,
+                    top: 0,
+                    bottom: MediaQuery.of(context).viewInsets.bottom + 16.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   mainAxisSize: MainAxisSize.min,
@@ -330,17 +365,20 @@ class Home extends StatelessWidget {
                     ListTile(
                       leading: const Icon(Icons.local_phone_outlined),
                       title: const Text("Celular"),
-                      subtitle: Text(scheduleModule.schedule.customer.cellphone),
+                      subtitle:
+                          Text(scheduleModule.schedule.customer.cellphone),
                     ),
                     ListTile(
                       leading: const Icon(Icons.timer_sharp),
                       title: const Text("Tempo total (Minutos)"),
-                      subtitle: Text(scheduleModule.schedule.totalMinutes.toString()),
+                      subtitle:
+                          Text(scheduleModule.schedule.totalMinutes.toString()),
                     ),
                     ListTile(
                       leading: const Icon(Icons.attach_money_rounded),
                       title: const Text("Preço R\$"),
-                      subtitle: Text(scheduleModule.schedule.totalPrice.toString()),
+                      subtitle:
+                          Text(scheduleModule.schedule.totalPrice.toString()),
                     ),
                   ],
                 ),

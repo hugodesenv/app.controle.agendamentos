@@ -48,7 +48,8 @@ appRoutes(RouteSettings settings) {
     return MaterialPageRoute(
       builder: (_) {
         return BlocProvider(
-          create: (_) => SignInBloc(SignInStateInitial())..add(SignInEventAuthenticated()),
+          create: (_) =>
+              SignInBloc(SignInStateInitial())..add(SignInEventAuthenticated()),
           child: const SignIn(),
         );
       },
@@ -57,7 +58,8 @@ appRoutes(RouteSettings settings) {
     return MaterialPageRoute(
       builder: (_) {
         return BlocProvider(
-          create: (_) => CustomerQueryBloc(CustomerQueryStateLoading(true))..add(CustomerQueryEventFetchAll()),
+          create: (_) => CustomerQueryBloc(CustomerQueryStateLoading(true))
+            ..add(CustomerQueryEventFetchAll()),
           child: CustomerQuery(),
         );
       },
@@ -80,7 +82,8 @@ appRoutes(RouteSettings settings) {
     return MaterialPageRoute(
       builder: (_) {
         return BlocProvider(
-          create: (_) => CustomerImportBloc(CustomerImportStateInitial())..add(CustomerImportEventFetchAll()),
+          create: (_) => CustomerImportBloc(CustomerImportStateInitial())
+            ..add(CustomerImportEventFetchAll()),
           child: const CustomerImport(),
         );
       },
@@ -105,8 +108,10 @@ appRoutes(RouteSettings settings) {
     ScheduleParameters? arguments = settings.arguments as ScheduleParameters?;
     return MaterialPageRoute(
       builder: (_) => BlocProvider(
-        create: (context) => ScheduleBloc(ScheduleState()),
-        child: Schedule(parameters: arguments),
+        create: (context) => ScheduleBloc(ScheduleState(
+          scheduleDate: arguments?.scheduleDate,
+        )),
+        child: const Schedule(),
       ),
     );
   } else if (settings.name == routeItemQuery) {
