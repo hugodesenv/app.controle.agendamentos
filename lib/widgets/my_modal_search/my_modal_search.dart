@@ -40,7 +40,8 @@ class _MyModalSearchState extends State<MyModalSearch> {
     // definindo um controle para o scroll para obtermos o final da listagem.
     _scrollController = ScrollController();
     _scrollController.addListener(() {
-      if (_scrollController.position.pixels == _scrollController.position.maxScrollExtent) {
+      if (_scrollController.position.pixels ==
+          _scrollController.position.maxScrollExtent) {
         _addMoreItems();
       }
     });
@@ -95,7 +96,8 @@ class _MyModalSearchState extends State<MyModalSearch> {
       useSafeArea: true,
       builder: (_) {
         return BlocProvider.value(
-          value: BlocProvider.of<MyModalSearchBloc>(context)..add(MyModalSearchEventFindAll(widget._typeSearch)),
+          value: BlocProvider.of<MyModalSearchBloc>(context)
+            ..add(MyModalSearchEventFindAll(widget._typeSearch)),
           child: BlocBuilder(
             bloc: BlocProvider.of<MyModalSearchBloc>(context),
             builder: (_, MyModalSearchState state) {
@@ -113,39 +115,44 @@ class _MyModalSearchState extends State<MyModalSearch> {
                       padding: const EdgeInsets.only(bottom: 8.0),
                       child: MySearchTextField(
                         onChanged: (value) {
-                          bloc.add(MyModalSearchEventChangeFilter(value: value));
+                          bloc.add(
+                              MyModalSearchEventChangeFilter(value: value));
                         },
                       ),
                     ),
                     const Divider(),
                     Flexible(
-                      child: ListView.separated(
-                        controller: _scrollController,
-                        separatorBuilder: (_, index) => const Divider(),
-                        itemCount: itemsCount + 1,
-                        itemBuilder: (_, index) {
-                          if (index < itemsCount) {
-                            MyModalSearchValues i = state.values[index];
-                            return ListTile(
-                              title: Text(
-                                i.title,
-                                style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 16.0),
-                              ),
-                              subtitle: Text(i.subtitle),
-                              onTap: () {
-                                _tecValue.text = i.title;
-                                widget._onTap(i.id, i.title);
-                                Navigator.pop(context);
-                              },
-                            );
-                          } /*
+                      child: state.values.isEmpty
+                          ? const Center(child: CircularProgressIndicator())
+                          : ListView.separated(
+                              controller: _scrollController,
+                              separatorBuilder: (_, index) => const Divider(),
+                              itemCount: itemsCount + 1,
+                              itemBuilder: (_, index) {
+                                if (index < itemsCount) {
+                                  MyModalSearchValues i = state.values[index];
+                                  return ListTile(
+                                    title: Text(
+                                      i.title,
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.w700,
+                                          fontSize: 16.0),
+                                    ),
+                                    subtitle: Text(i.subtitle),
+                                    onTap: () {
+                                      _tecValue.text = i.title;
+                                      widget._onTap(i.id, i.title);
+                                      Navigator.pop(context);
+                                    },
+                                  );
+                                } /*
                           else {
                             return const Center(
                               child: Text('Buscando informações...'),
                             );
                           }*/
-                        },
-                      ),
+                              },
+                            ),
                     ),
                   ],
                 ),

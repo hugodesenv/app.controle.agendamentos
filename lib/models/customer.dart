@@ -31,7 +31,13 @@ class Customer extends GenericModel {
     );
   }
 
-  Customer copyWith({String? id, String? name, String? cellphone, Company? company, String? email}) {
+  Customer copyWith({
+    String? id,
+    String? name,
+    String? cellphone,
+    Company? company,
+    String? email,
+  }) {
     return Customer(
       id: id ?? this.id,
       name: name ?? this.name,

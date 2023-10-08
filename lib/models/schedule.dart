@@ -2,6 +2,7 @@ import 'package:agendamentos/models/customer.dart';
 import 'package:agendamentos/models/generic_model.dart';
 import 'package:agendamentos/models/schedule_item.dart';
 import 'package:agendamentos/utils/schedule_utils.dart';
+import 'package:intl/intl.dart';
 
 import 'employee.dart';
 
@@ -52,7 +53,8 @@ class Schedule extends GenericModel {
   factory Schedule.fromJson(Map data) {
     DateTime scheduleDate = DateTime.parse(data['schedule_date']);
 
-    String sDateChange = data['date_changed'] ?? DateTime(1899).toIso8601String();
+    String sDateChange =
+        data['date_changed'] ?? DateTime(1899).toIso8601String();
     DateTime? dateChanged = DateTime.parse(sDateChange);
 
     double totalPrice = double.parse(data['total_price'] ?? '0');
@@ -66,7 +68,8 @@ class Schedule extends GenericModel {
       totalPrice: totalPrice,
       employee: employee,
       customer: customer,
-      situation: ScheduleUtils.fromText(data['situation'] ?? '')[ScheduleFromText.tType],
+      situation: ScheduleUtils.fromText(
+          data['situation'] ?? '')[ScheduleFromText.tType],
       scheduleItem: [],
       // alterar dps..
       dateChanged: dateChanged,
@@ -78,13 +81,18 @@ class Schedule extends GenericModel {
       'action': action,
       'fk_employee': employee.id,
       'fk_customer': customer.id,
-      'schedule_date': scheduleDate.toString(),
+      'schedule_date': DateFormat('yyyy-MM-dd HH:mm:ss').format(scheduleDate),
+      'situation': situation.text(),
+      "items": [],
     };
+
+    print('garoto do carrinho');
+    print(res);
 
     return res;
   }
 
-  static Schedule copyWith({
+  Schedule copyWith({
     String? id,
     Customer? customer,
     DateTime? scheduleDate,
@@ -93,13 +101,13 @@ class Schedule extends GenericModel {
     Employee? employee,
   }) {
     return Schedule(
-      customer: customer,
-      scheduleDate: scheduleDate,
-      situation: situation,
-      scheduleItem: scheduleItem,
-      id: id,
+      customer: customer ?? this.customer,
+      scheduleDate: scheduleDate ?? this.scheduleDate,
+      situation: situation ?? this.situation,
+      scheduleItem: scheduleItem ?? this.scheduleItem,
+      id: id ?? this.id,
       dateChanged: DateTime.now(),
-      employee: employee,
+      employee: employee ?? this.employee,
     );
   }
 

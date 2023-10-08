@@ -1,5 +1,6 @@
 import 'package:agendamentos/pages/schedules/bloc/schedule_bloc.dart';
 import 'package:agendamentos/pages/schedules/bloc/schedule_event.dart';
+import 'package:agendamentos/pages/schedules/calendar/bloc/schedules_bloc.dart';
 import 'package:agendamentos/utils/constants/widgetsConstantes.dart';
 import 'package:agendamentos/widgets/my_date_field.dart';
 import 'package:agendamentos/widgets/my_modal_search/my_modal_search.dart';
@@ -14,7 +15,8 @@ import '../../widgets/my_modal_search/enum/my_modal_search_enum.dart';
 class ScheduleParameters {
   DateTime scheduleDate;
 
-  ScheduleParameters({DateTime? scheduleDate}) : scheduleDate = scheduleDate ?? DateTime.now();
+  ScheduleParameters({DateTime? scheduleDate})
+      : scheduleDate = scheduleDate ?? DateTime.now();
 }
 
 class Schedule extends StatefulWidget {
@@ -39,7 +41,8 @@ class _ScheduleState extends State<Schedule> {
           appBar: AppBar(title: const Text('Agendar')),
           body: SingleChildScrollView(
             child: Padding(
-              padding: const EdgeInsets.only(left: 20.0, right: 20.0, bottom: 8.0, top: 20.0),
+              padding: const EdgeInsets.only(
+                  left: 20.0, right: 20.0, bottom: 8.0, top: 20.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
@@ -64,7 +67,8 @@ class _ScheduleState extends State<Schedule> {
                     padding: const EdgeInsets.only(top: 16.0),
                     child: MyDateField(
                       title: 'Data / Hora',
-                      onChanged: (DateTime? selectedDate) => bloc.add(ScheduleDateChange(selectedDate)),
+                      onChanged: (DateTime? selectedDate) =>
+                          bloc.add(ScheduleDateChange(selectedDate)),
                     ),
                   ),
                   Padding(
@@ -74,7 +78,10 @@ class _ScheduleState extends State<Schedule> {
                   Padding(
                     padding: const EdgeInsets.only(top: 16.0),
                     child: SituationRadioGroup(
-                      onClick: ({ScheduleSituationEnum? enumuerator, String? text}) {
+                      onResult: ({
+                        ScheduleSituationEnum? enumuerator,
+                        String? text,
+                      }) {
                         bloc.add(SituationChange(enumuerator));
                       },
                     ),
@@ -94,13 +101,14 @@ class _ScheduleState extends State<Schedule> {
 }
 
 class SituationRadioGroup extends StatefulWidget {
-  late Function({String? text, ScheduleSituationEnum? enumuerator}) _onClick;
+  late Function({String? text, ScheduleSituationEnum? enumuerator}) _onResult;
 
   SituationRadioGroup({
     Key? key,
-    required Function({String? text, ScheduleSituationEnum? enumuerator}) onClick,
+    required Function({String? text, ScheduleSituationEnum? enumuerator})
+        onResult,
   }) : super(key: key) {
-    _onClick = onClick;
+    _onResult = onResult;
   }
 
   @override
@@ -115,6 +123,11 @@ class _SituationRadioGroupState extends State<SituationRadioGroup> {
   void initState() {
     super.initState();
     buildList();
+
+    widget._onResult(
+      enumuerator: ScheduleSituationEnum.PENDING,
+      text: ScheduleSituationEnum.PENDING.text(),
+    );
   }
 
   void buildList() {
@@ -126,7 +139,8 @@ class _SituationRadioGroupState extends State<SituationRadioGroup> {
     }
   }
 
-  TextStyle titleStyle(ScheduleSituationEnum commingSituation, Color commingColor) {
+  TextStyle titleStyle(
+      ScheduleSituationEnum commingSituation, Color commingColor) {
     bool isOK = commingSituation == _situationGroup;
     return TextStyle(
       fontSize: 15.0,
@@ -159,7 +173,7 @@ class _SituationRadioGroupState extends State<SituationRadioGroup> {
                   setState(() {
                     _situationGroup = value;
 
-                    widget._onClick(
+                    widget._onResult(
                       text: _situationGroup?.text(),
                       enumuerator: _situationGroup,
                     );
@@ -200,7 +214,8 @@ class _ScheduleItemsState extends State<_ScheduleItems> {
         return SingleChildScrollView(
           padding: const EdgeInsets.all(20.0),
           child: Padding(
-            padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+            padding: EdgeInsets.only(
+                bottom: MediaQuery.of(context).viewInsets.bottom),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -219,7 +234,8 @@ class _ScheduleItemsState extends State<_ScheduleItems> {
                         padding: const EdgeInsets.only(right: 5.0),
                         child: MyTextField(
                           title: 'Valor',
-                          suffixIcon: const Icon(Icons.monetization_on_outlined),
+                          suffixIcon:
+                              const Icon(Icons.monetization_on_outlined),
                         ),
                       ),
                     ),

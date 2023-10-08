@@ -1,5 +1,6 @@
 import 'package:agendamentos/pages/schedules/bloc/schedule_event.dart';
 import 'package:agendamentos/pages/schedules/bloc/schedule_state.dart';
+import 'package:agendamentos/repository/api/schedule_repository.dart';
 import 'package:bloc/bloc.dart';
 
 class ScheduleBloc extends Bloc<ScheduleEvent, ScheduleState> {
@@ -12,8 +13,9 @@ class ScheduleBloc extends Bloc<ScheduleEvent, ScheduleState> {
   }
 
   Future<void> _saveToDB(SendToDB event, emit) async {
-    var mapData = state.schedule?.toMap();
-    print(mapData);
+    ScheduleRepository repository = ScheduleRepository.instance;
+    var res = repository.save(state.schedule);
+    print(res);
   }
 
   void _customerChange(CustomerChange event, emit) {

@@ -1,46 +1,38 @@
 import 'package:agendamentos/models/employee.dart';
 import 'package:agendamentos/models/schedule.dart';
-import 'package:agendamentos/models/schedule_item.dart';
 import 'package:agendamentos/utils/schedule_utils.dart';
 
 import '../../../models/customer.dart';
 
 class ScheduleState {
-  Schedule? schedule;
+  late Schedule schedule;
 
-  ScheduleState();
-
-  ScheduleState._initial({
+  ScheduleState({
     Customer? customer,
+    Employee? employee,
     DateTime? scheduleDate,
     ScheduleSituationEnum? situation,
-    List<ScheduleItem>? items,
-    Employee? employee,
   }) {
-    schedule = Schedule.copyWith(
-      scheduleItem: items,
-      situation: situation,
-      scheduleDate: scheduleDate,
+    schedule = Schedule(
       customer: customer,
+      employee: employee,
+      scheduleDate: scheduleDate,
+      situation: situation,
     );
   }
 
   ScheduleState copyWith({
     Customer? customer,
+    Employee? employee,
     DateTime? scheduleDate,
     ScheduleSituationEnum? situation,
-    List<ScheduleItem>? items,
-    Employee? employee,
   }) {
-    var instance = ScheduleState._initial(
-      customer: customer,
-      scheduleDate: scheduleDate,
-      situation: situation,
-      items: items,
-      employee: employee,
+    return ScheduleState(
+      customer: customer ?? schedule.customer,
+      employee: employee ?? schedule.employee,
+      scheduleDate: scheduleDate ?? schedule.scheduleDate,
+      situation: situation ?? schedule.situation,
     );
-
-    return instance;
   }
 }
 

@@ -5,7 +5,8 @@ import 'package:intl/intl.dart';
 import '../../models/schedule.dart';
 import '../../pages/schedules/calendar/model/schedules_model.dart';
 
-class ScheduleRepository extends FirebaseRepository implements GlobalRepository {
+class ScheduleRepository extends FirebaseRepository
+    implements GlobalRepository {
   ScheduleRepository._() : super(controller_name: "schedule");
   static final instance = ScheduleRepository._();
 
@@ -54,9 +55,13 @@ class ScheduleRepository extends FirebaseRepository implements GlobalRepository 
   }
 
   @override
-  Future<Map> save(data) {
-    // TODO: implement save
-    throw UnimplementedError();
+  Future<Map> save(data) async {
+    Schedule schedule = data as Schedule;
+    Map toMap = schedule.toMap();
+    var response = await dio.post(apiURL, data: toMap);
+
+    //terminar o processo...
+    return {};
   }
 
   @override

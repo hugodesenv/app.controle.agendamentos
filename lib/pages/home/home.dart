@@ -290,6 +290,7 @@ class Home extends StatelessWidget {
                         style: TextStyle(
                           fontWeight: FontWeight.w700,
                           color: colorSituation,
+                          fontSize: 16.0
                         ),
                       ),
                     ),
