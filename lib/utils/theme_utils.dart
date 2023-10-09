@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class SkedolTheme {
-  static const _primaryWhiteColor = Color(0xFF2abf84);
+  static const _primaryWhiteColor = Color.fromARGB(255, 8, 84, 160);
   static const _primaryDarkColor = Colors.pink;
 
   get primaryWhiteColor => _primaryWhiteColor;

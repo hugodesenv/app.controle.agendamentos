@@ -1,7 +1,6 @@
 import 'package:agendamentos/models/employee.dart';
 import 'package:agendamentos/models/schedule_item.dart';
 import 'package:agendamentos/utils/schedule_utils.dart';
-
 import '../../../models/customer.dart';
 
 abstract class ScheduleEvent {}
@@ -26,13 +25,11 @@ class EmployeeChange extends ScheduleEvent {
 
 class ScheduleDateChange extends ScheduleEvent {
   DateTime? scheduleDate;
-
   ScheduleDateChange(this.scheduleDate);
 }
 
 class SituationChange extends ScheduleEvent {
   ScheduleSituationEnum? situation;
-
   SituationChange(this.situation);
 }
 

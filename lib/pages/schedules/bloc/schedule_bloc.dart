@@ -1,3 +1,4 @@
+import 'package:agendamentos/enum/form_submission_status.dart';
 import 'package:agendamentos/pages/schedules/bloc/schedule_event.dart';
 import 'package:agendamentos/pages/schedules/bloc/schedule_state.dart';
 import 'package:agendamentos/repository/api/schedule_repository.dart';
@@ -14,13 +15,21 @@ class ScheduleBloc extends Bloc<ScheduleEvent, ScheduleState> {
   }
 
   void _setInitialData(SetInitialData event, emit) {
-    emit(state.copyWith(scheduleDate: event.scheduleDate));
+    emit(state.copyWith(
+      scheduleDate: event.scheduleDate,
+    ));
   }
 
   Future<void> _saveToDB(SendToDB event, emit) async {
-    ScheduleRepository repository = ScheduleRepository.instance;
-    var res = repository.save(state.schedule);
-    print(res);
+    emit(state.copyWith(formStatus: FormSubmissionStatus.inProgress));
+    return;
+    try {
+      ScheduleRepository repository = ScheduleRepository.instance;
+      var res = repository.save(state.schedule);
+      emit(state.copyWith(formStatus: FormSubmissionStatus.success));
+    } catch (e) {
+      emit(state.copyWith(formStatus: FormSubmissionStatus.failure));
+    }
   }
 
   void _customerChange(CustomerChange event, emit) {

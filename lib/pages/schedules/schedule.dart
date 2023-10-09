@@ -1,3 +1,4 @@
+import 'package:agendamentos/enum/form_submission_status.dart';
 import 'package:agendamentos/pages/schedules/bloc/schedule_bloc.dart';
 import 'package:agendamentos/pages/schedules/bloc/schedule_event.dart';
 import 'package:agendamentos/pages/schedules/bloc/schedule_state.dart';
@@ -14,7 +15,6 @@ import '../../widgets/my_modal_search/enum/my_modal_search_enum.dart';
 
 class ScheduleParameters {
   DateTime? scheduleDate;
-
   ScheduleParameters({required this.scheduleDate});
 }
 
@@ -28,17 +28,33 @@ class Schedule extends StatelessWidget {
       builder: (_, ScheduleState state) {
         var bloc = BlocProvider.of<ScheduleBloc>(context);
         return Scaffold(
-          appBar: AppBar(title: const Text('Agendar')),
+          appBar: AppBar(
+            title: const Text('Compromisso'),
+            actions: [
+              IconButton(
+                icon: const Icon(Icons.save_outlined),
+                onPressed: () {
+                  if (state.formStatus != FormSubmissionStatus.inProgress) {
+                    bloc.add(SendToDB());
+                  }
+                },
+              )
+            ],
+          ),
           body: SingleChildScrollView(
             child: Padding(
               padding: const EdgeInsets.only(
-                  left: 20.0, right: 20.0, bottom: 8.0, top: 20.0),
+                left: 20.0,
+                right: 20.0,
+                bottom: 8.0,
+                top: 20.0,
+              ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   MyModalSearch(
                     typeSearch: MyModalSearchEnum.tEmployee,
-                    initialValue: 'Hugo Souza',
+                    initialValue: state.schedule.employee.name,
                     onTap: (String id, String lookup) {
                       bloc.add(EmployeeChange(id, lookup));
                     },
@@ -47,7 +63,7 @@ class Schedule extends StatelessWidget {
                     padding: const EdgeInsets.only(top: 16.0),
                     child: MyModalSearch(
                       typeSearch: MyModalSearchEnum.tCustomer,
-                      initialValue: 'Hugo Souza',
+                      initialValue: state.schedule.customer.name,
                       onTap: (String id, String lookup) {
                         bloc.add(CustomerChange(id, lookup));
                       },
@@ -69,10 +85,8 @@ class Schedule extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.only(top: 16.0),
                     child: SituationRadioGroup(
-                      onResult: ({
-                        ScheduleSituationEnum? enumuerator,
-                        String? text,
-                      }) {
+                      onResult: (
+                          {ScheduleSituationEnum? enumuerator, String? text}) {
                         bloc.add(SituationChange(enumuerator));
                       },
                     ),
@@ -80,10 +94,6 @@ class Schedule extends StatelessWidget {
                 ],
               ),
             ),
-          ),
-          floatingActionButton: FloatingActionButton(
-            onPressed: () => bloc.add(SendToDB()),
-            child: const Icon(Icons.save_outlined),
           ),
         );
       },

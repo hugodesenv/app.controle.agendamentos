@@ -260,15 +260,6 @@ class Home extends StatelessWidget {
                 ),
               ),
             ),
-            floatingActionButton: FloatingActionButton(
-              onPressed: () async {
-                await _showAddSchedule(context);
-              },
-              child: const Icon(
-                Icons.pending_actions,
-                color: Colors.white,
-              ),
-            ),
           );
         },
       ),
@@ -277,9 +268,25 @@ class Home extends StatelessWidget {
 
   List<Widget> _getActionsBar(BuildContext context) {
     return [
-      IconButton(
-        onPressed: () => scheduleCalendarBloc.add(SchedulesEventLoad()),
-        icon: const Icon(Icons.refresh),
+      PopupMenuButton(
+        itemBuilder: (context) {
+          return [
+            PopupMenuItem(
+              child: const ListTile(
+                leading: Icon(Icons.refresh),
+                title: Text('Atualizar'),
+              ),
+              onTap: () => scheduleCalendarBloc.add(SchedulesEventLoad()),
+            ),
+            PopupMenuItem(
+              child: const ListTile(
+                leading: Icon(Icons.pending_actions),
+                title: Text('Incluir'),
+              ),
+              onTap: () async => await _showAddSchedule(context),
+            ),
+          ];
+        },
       ),
     ];
   }
@@ -288,11 +295,7 @@ class Home extends StatelessWidget {
     BuildContext context, {
     ScheduleParameters? params,
   }) async {
-    await Navigator.pushNamed(
-      context,
-      routeSchedule,
-      arguments: params,
-    );
+    await Navigator.pushNamed(context, routeSchedule, arguments: params);
   }
 
   _showScheduleDetail(

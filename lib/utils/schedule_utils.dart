@@ -35,7 +35,7 @@ class ScheduleUtils {
     if (situation == ScheduleSituationEnum.PENDING.text()) {
       return {
         ScheduleFromText.tDescription: 'Pendente',
-        ScheduleFromText.tColor: Colors.orange,
+        ScheduleFromText.tColor: const Color.fromARGB(255, 173, 173, 173),
         ScheduleFromText.tType: ScheduleSituationEnum.PENDING,
       };
     } else if (situation == ScheduleSituationEnum.CANCELED.text()) {
