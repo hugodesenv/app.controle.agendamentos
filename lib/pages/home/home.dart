@@ -266,7 +266,7 @@ class Home extends StatelessWidget {
     );
   }
 
-  List<Widget> _getActionsBar(BuildContext context) {
+  List<Widget> _getActionsBar(BuildContext pContext) {
     return [
       PopupMenuButton(
         itemBuilder: (context) {
@@ -283,7 +283,13 @@ class Home extends StatelessWidget {
                 leading: Icon(Icons.pending_actions),
                 title: Text('Incluir'),
               ),
-              onTap: () async => await _showAddSchedule(context),
+              onTap: () async {
+                //When a pop up menu is clicked, it will call pop() on the navigator to dismiss itself.
+                //So pushing an extra route would cause it to pop that route immediately, instead of dismissing itself.
+                await Future.delayed(Duration.zero).then((_) async {
+                  await _showAddSchedule(pContext);
+                });
+              },
             ),
           ];
         },
@@ -295,7 +301,11 @@ class Home extends StatelessWidget {
     BuildContext context, {
     ScheduleParameters? params,
   }) async {
-    await Navigator.pushNamed(context, routeSchedule, arguments: params);
+    await Navigator.pushNamed(
+      context,
+      routeSchedule,
+      arguments: params,
+    );
   }
 
   _showScheduleDetail(

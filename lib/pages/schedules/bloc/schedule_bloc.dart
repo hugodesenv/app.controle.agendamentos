@@ -15,6 +15,7 @@ class ScheduleBloc extends Bloc<ScheduleEvent, ScheduleState> {
   }
 
   void _setInitialData(SetInitialData event, emit) {
+    print("** schedule_bloc.dart");
     emit(state.copyWith(
       scheduleDate: event.scheduleDate,
     ));
