@@ -35,7 +35,7 @@ class ScheduleUtils {
     if (situation == ScheduleSituationEnum.PENDING.text()) {
       return {
         ScheduleFromText.tDescription: 'Pendente',
-        ScheduleFromText.tColor: const Color.fromARGB(255, 173, 173, 173),
+        ScheduleFromText.tColor: Color.fromARGB(255, 145, 145, 145),
         ScheduleFromText.tType: ScheduleSituationEnum.PENDING,
       };
     } else if (situation == ScheduleSituationEnum.CANCELED.text()) {
@@ -47,13 +47,13 @@ class ScheduleUtils {
     } else if (situation == ScheduleSituationEnum.CONFIRMED.text()) {
       return {
         ScheduleFromText.tDescription: 'Confirmado',
-        ScheduleFromText.tColor: const Color.fromARGB(255, 130, 141, 209),
+        ScheduleFromText.tColor: Color.fromARGB(255, 190, 30, 211),
         ScheduleFromText.tType: ScheduleSituationEnum.CONFIRMED,
       };
     } else if (situation == ScheduleSituationEnum.PROGRESS.text()) {
       return {
         ScheduleFromText.tDescription: 'Em andamento',
-        ScheduleFromText.tColor: Color.fromARGB(255, 106, 126, 240),
+        ScheduleFromText.tColor: Color.fromARGB(255, 106, 186, 240),
         ScheduleFromText.tType: ScheduleSituationEnum.PROGRESS,
       };
     } else if (situation == ScheduleSituationEnum.COMPLETED.text()) {
@@ -65,7 +65,7 @@ class ScheduleUtils {
     } else {
       return {
         ScheduleFromText.tDescription: 'Indefinido',
-        ScheduleFromText.tColor: Colors.grey,
+        ScheduleFromText.tColor: Color.fromARGB(255, 0, 0, 0),
         ScheduleFromText.tType: ScheduleSituationEnum.UNDEFINED,
       };
     }

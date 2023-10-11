@@ -10,19 +10,19 @@ class Item extends GenericModel {
   late ItemType _type;
 
   Item({
-    required Company company,
-    required String description,
-    required int serviceMinutes,
-    required bool active,
-    required ItemType type,
+    Company? company,
+    String? description,
+    int? serviceMinutes,
+    bool? active,
+    ItemType? type,
   }) {
-    _company = company;
-    _description = description;
-    _serviceMinutes = serviceMinutes;
-    _active = active;
-    _type = type;
+    _company = company ?? Company.empty();
+    _description = description ?? '';
+    _serviceMinutes = serviceMinutes ?? 0;
+    _active = active ?? false;
+    _type = type ?? ItemType.tUndefined;
   }
-
+ 
   static Item empty() {
     return Item(
       company: Company.empty(),

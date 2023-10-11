@@ -1,4 +1,5 @@
 import 'package:agendamentos/enum/form_submission_status.dart';
+import 'package:agendamentos/models/item.dart';
 import 'package:agendamentos/pages/schedules/bloc/schedule_bloc.dart';
 import 'package:agendamentos/pages/schedules/bloc/schedule_event.dart';
 import 'package:agendamentos/pages/schedules/bloc/schedule_state.dart';
@@ -10,6 +11,7 @@ import 'package:agendamentos/widgets/my_text_title.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../models/schedule_item.dart';
 import '../../utils/schedule_utils.dart';
 import '../../widgets/my_modal_search/enum/my_modal_search_enum.dart';
 
@@ -30,16 +32,6 @@ class Schedule extends StatelessWidget {
         return Scaffold(
           appBar: AppBar(
             title: const Text('Compromisso'),
-            actions: [
-              IconButton(
-                icon: const Icon(Icons.save_outlined),
-                onPressed: () {
-                  if (state.formStatus != FormSubmissionStatus.inProgress) {
-                    bloc.add(SendToDB());
-                  }
-                },
-              )
-            ],
           ),
           body: SingleChildScrollView(
             child: Padding(
@@ -78,8 +70,8 @@ class Schedule extends StatelessWidget {
                           bloc.add(ScheduleDateChange(selectedDate)),
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 16.0),
+                  const Padding(
+                    padding: EdgeInsets.only(top: 16.0),
                     child: _ScheduleItems(),
                   ),
                   Padding(
@@ -94,6 +86,14 @@ class Schedule extends StatelessWidget {
                 ],
               ),
             ),
+          ),
+          floatingActionButton: FloatingActionButton(
+            child: const Icon(Icons.save_outlined),
+            onPressed: () {
+              if (state.formStatus != FormSubmissionStatus.inProgress) {
+                bloc.add(SendToDB());
+              }
+            },
           ),
         );
       },
@@ -155,7 +155,7 @@ class _SituationRadioGroupState extends State<SituationRadioGroup> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        MyTextTitle(title: 'Situação'),
+        MyTextTitle(title: 'Situa??o'),
         ...components.map(
           (e) {
             ScheduleSituationEnum situationType = e['type'];
@@ -171,14 +171,16 @@ class _SituationRadioGroupState extends State<SituationRadioGroup> {
                 groupValue: _situationGroup,
                 activeColor: situationColor,
                 onChanged: (value) {
-                  setState(() {
-                    _situationGroup = value;
+                  setState(
+                    () {
+                      _situationGroup = value;
 
-                    widget._onResult(
-                      text: _situationGroup?.text(),
-                      enumuerator: _situationGroup,
-                    );
-                  });
+                      widget._onResult(
+                        text: _situationGroup?.text(),
+                        enumuerator: _situationGroup,
+                      );
+                    },
+                  );
                 },
               ),
             );
@@ -190,129 +192,148 @@ class _SituationRadioGroupState extends State<SituationRadioGroup> {
 }
 
 class _ScheduleItems extends StatefulWidget {
-  _ScheduleItems({Key? key}) : super(key: key);
-
-  List _items = [
-    {
-      'description': 'Corte de cabelo',
-    },
-    {
-      'description': 'Maquiagem',
-    }
-  ];
+  const _ScheduleItems({Key? key}) : super(key: key);
 
   @override
   State<_ScheduleItems> createState() => _ScheduleItemsState();
 }
 
 class _ScheduleItemsState extends State<_ScheduleItems> {
-  Future<void> modalAddItems() async {
+  @override
+  Widget build(BuildContext context) {
+    var bloc = BlocProvider.of<ScheduleBloc>(context);
+    return BlocProvider.value(
+      value: bloc,
+      child: BlocBuilder(
+        bloc: bloc,
+        builder: (context, ScheduleState state) {
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              const Divider(),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  MyTextTitle(title: 'Adicionar itens'),
+                  IconButton(
+                    icon: const Icon(Icons.add),
+                    onPressed: () async => await _modalAddItems(),
+                  ),
+                ],
+              ),
+              ...state.schedule.scheduleItem.map(
+                (e) {
+                  return ListTile(
+                    title: Text(
+                      e.item.description,
+                      style: const TextStyle(fontSize: 14.0),
+                    ),
+                    subtitle: Text(
+                        'Preco: ${e.price.toString()} / Tempo: ${e.serviceMinutes.toString()}'),
+                    contentPadding: EdgeInsets.zero,
+                    trailing: IconButton(
+                      onPressed: () {
+                        _remove(e);
+                      },
+                      icon: const Icon(
+                        Icons.delete_outlined,
+                        color: Colors.black38,
+                      ),
+                    ),
+                  );
+                },
+              ),
+              const Divider(),
+              const Padding(
+                padding: EdgeInsets.only(top: 5.0, bottom: 5.0),
+                child: Text(
+                  'Tempo total: 1h30 / Valor total: R\$129,90',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 12.0,
+                    color: Colors.grey,
+                  ),
+                ),
+              ),
+              const Divider(),
+            ],
+          );
+        },
+      ),
+    );
+  }
+
+  void _remove(ScheduleItem item) {
+    print("** remover o item");
+    print(item.item.description);
+  }
+
+  Future<void> _modalAddItems() async {
     await showModalBottomSheet(
       context: context,
       shape: shapeModalBottomSheet,
       isScrollControlled: true,
-      builder: (context) {
-        return SingleChildScrollView(
-          padding: const EdgeInsets.all(20.0),
-          child: Padding(
-            padding: EdgeInsets.only(
-                bottom: MediaQuery.of(context).viewInsets.bottom),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 16.0),
-                  child: MyModalSearch(
-                    typeSearch: MyModalSearchEnum.tItem,
-                    onTap: (String id, String lookup) {},
-                  ),
-                ),
-                Row(
-                  children: [
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.only(right: 5.0),
-                        child: MyTextField(
-                          title: 'Valor',
-                          suffixIcon:
-                              const Icon(Icons.monetization_on_outlined),
+      builder: (_) {
+        var bloc = BlocProvider.of<ScheduleBloc>(context);
+        return BlocProvider.value(
+          value: bloc,
+          child: BlocBuilder(
+            bloc: bloc,
+            builder: (context, state) {
+              return SingleChildScrollView(
+                padding: const EdgeInsets.all(20.0),
+                child: Padding(
+                  padding: EdgeInsets.only(
+                      bottom: MediaQuery.of(context).viewInsets.bottom),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 16.0),
+                        child: MyModalSearch(
+                          typeSearch: MyModalSearchEnum.tItem,
+                          onTap: (String id, String lookup) {},
                         ),
                       ),
-                    ),
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 5.0),
-                        child: MyTextField(
-                          title: 'Tempo',
-                          suffixIcon: const Icon(Icons.timer_sharp),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Padding(
+                              padding: const EdgeInsets.only(right: 5.0),
+                              child: MyTextField(
+                                title: 'Valor',
+                                suffixIcon:
+                                    const Icon(Icons.monetization_on_outlined),
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            child: Padding(
+                              padding: const EdgeInsets.only(left: 5.0),
+                              child: MyTextField(
+                                title: 'Tempo',
+                                suffixIcon: const Icon(Icons.timer_sharp),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 16.0),
+                        child: ElevatedButton(
+                          onPressed: () {},
+                          child: const Icon(Icons.save_outlined),
                         ),
                       ),
-                    ),
-                  ],
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 16.0),
-                  child: ElevatedButton(
-                    onPressed: () {},
-                    child: const Icon(Icons.save_outlined),
+                    ],
                   ),
                 ),
-              ],
-            ),
+              );
+            },
           ),
         );
       },
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        const Divider(),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            MyTextTitle(title: 'Adicionar itens'),
-            IconButton(
-              icon: const Icon(Icons.add),
-              onPressed: () async => await modalAddItems(),
-            ),
-          ],
-        ),
-        ...widget._items.map((e) {
-          return ListTile(
-            title: Text(
-              e['description'],
-              style: const TextStyle(fontSize: 14.0),
-            ),
-            subtitle: const Text('Preço: 12.0 / Tempo: 120'),
-            contentPadding: EdgeInsets.zero,
-            trailing: IconButton(
-              onPressed: () {},
-              icon: const Icon(
-                Icons.delete_outlined,
-                color: Colors.black38,
-              ),
-            ),
-          );
-        }),
-        const Divider(),
-        const Padding(
-          padding: EdgeInsets.only(top: 5.0, bottom: 5.0),
-          child: Text(
-            'Tempo total: 1h30 / Valor total: R\$129,90',
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: 12.0,
-              color: Colors.grey,
-            ),
-          ),
-        ),
-        const Divider(),
-      ],
     );
   }
 }

@@ -12,7 +12,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:material_dialogs/dialogs.dart';
 import 'package:material_dialogs/widgets/buttons/icon_button.dart';
 import 'package:material_dialogs/widgets/buttons/icon_outline_button.dart';
-
 import '../../utils/constants/routesConstants.dart';
 import '../../utils/constants/widgetsConstantes.dart';
 import 'bloc/home_event.dart';
@@ -28,25 +27,6 @@ class Home extends StatelessWidget {
         _companyNameController =
             TextEditingController(text: 'Empresa indefinida'),
         super(key: key);
-
-  Widget _drawerFixed({
-    required Function onTap,
-    required String textTitle,
-    required IconData iconData,
-    required BuildContext context,
-  }) {
-    return ListTile(
-      leading: Icon(iconData, color: Theme.of(context).primaryColor),
-      onTap: () async => await onTap(),
-      title: Text(
-        textTitle,
-        style: TextStyle(
-          color: Theme.of(context).primaryColor,
-          fontWeight: FontWeight.w700,
-        ),
-      ),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -260,12 +240,14 @@ class Home extends StatelessWidget {
                 ),
               ),
             ),
+            
           );
         },
       ),
     );
   }
 
+  // action bar
   List<Widget> _getActionsBar(BuildContext pContext) {
     return [
       PopupMenuButton(
@@ -297,6 +279,7 @@ class Home extends StatelessWidget {
     ];
   }
 
+  // calling the screem, passing the parameters
   Future<void> _showAddSchedule(
     BuildContext context, {
     ScheduleParameters? params,
@@ -308,6 +291,7 @@ class Home extends StatelessWidget {
     );
   }
 
+  // click on detail
   _showScheduleDetail(
       BuildContext context, ScheduleModule scheduleModule) async {
     await showModalBottomSheet(
@@ -400,6 +384,26 @@ class Home extends StatelessWidget {
           ],
         );
       },
+    );
+  }
+
+  // sidebar
+  Widget _drawerFixed({
+    required Function onTap,
+    required String textTitle,
+    required IconData iconData,
+    required BuildContext context,
+  }) {
+    return ListTile(
+      leading: Icon(iconData, color: Theme.of(context).primaryColor),
+      onTap: () async => await onTap(),
+      title: Text(
+        textTitle,
+        style: TextStyle(
+          color: Theme.of(context).primaryColor,
+          fontWeight: FontWeight.w700,
+        ),
+      ),
     );
   }
 }

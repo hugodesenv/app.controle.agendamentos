@@ -33,13 +33,8 @@ class SituationChange extends ScheduleEvent {
   SituationChange(this.situation);
 }
 
-class AddItem extends ScheduleEvent {
+class ItemChange extends ScheduleEvent {
   late ScheduleItem item;
 
-  AddItem(this.item);
-}
-
-class SetInitialData extends ScheduleEvent {
-  DateTime scheduleDate;
-  SetInitialData(this.scheduleDate);
+  ItemChange(this.item);
 }

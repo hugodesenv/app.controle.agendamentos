@@ -4,6 +4,8 @@ import 'package:agendamentos/models/schedule.dart';
 import 'package:agendamentos/utils/schedule_utils.dart';
 
 import '../../../models/customer.dart';
+import '../../../models/item.dart';
+import '../../../models/schedule_item.dart';
 
 class ScheduleState {
   late Schedule schedule;
@@ -22,6 +24,24 @@ class ScheduleState {
       scheduleDate: scheduleDate,
       situation: situation,
     );
+
+    // apenas teste...
+    final List<ScheduleItem> _items = [
+      ScheduleItem(
+        item: Item(description: 'Corte de Batata'),
+        price: 120.0,
+        serviceMinutes: 30,
+      ),
+      ScheduleItem(
+        item: Item(description: 'Unha'),
+        price: 77.0,
+        serviceMinutes: 60,
+      ),
+    ];
+
+    schedule.scheduleItem = _items;
+
+    /// remover depois
 
     this.formStatus = formStatus ?? FormSubmissionStatus.initial;
   }

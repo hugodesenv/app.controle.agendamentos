@@ -6,7 +6,7 @@ import 'package:dio/dio.dart';
  */
 class FirebaseRepository {
   final dio = Dio();
-  final _apiURL = "http://192.168.1.247:3000";
+  final _apiURL = "http://10.0.0.199:3000";
   final String? _controller_name;
 
   String get apiURL {
