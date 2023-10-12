@@ -21,7 +21,7 @@ class ScheduleBloc extends Bloc<ScheduleEvent, ScheduleState> {
       emit(state.copyWith(employee: event.employee));
     });
     on<ItemShow>(
-      (event, emit) => emit(ItemDetail(event.scheduleItem)),
+      (event, emit) => emit(state.copyWith(itemDetail: event.scheduleItem)),
     );
     on<ItemSave>(_modifyItemList);
   }

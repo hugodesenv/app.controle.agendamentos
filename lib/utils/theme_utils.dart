@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class SkedolTheme {
-  static const _primaryWhiteColor = Color.fromARGB(255, 113, 173, 136);
+  static const _primaryWhiteColor = Color.fromARGB(255, 0, 51, 255);
   static const _primaryDarkColor = Colors.pink;
 
   get primaryWhiteColor => _primaryWhiteColor;
@@ -60,16 +60,19 @@ class SkedolTheme {
   ListTileThemeData getWhiteListTileTheme() {
     return const ListTileThemeData(
       iconColor: Colors.black45,
-      titleTextStyle: TextStyle(fontSize: 14.0, color: Colors.black54),
+      titleTextStyle: TextStyle(color: Colors.black54),
     );
   }
 
   AppBarTheme getWhiteAppBarTheme() {
     return AppBarTheme(
-      color: Colors.white,
-      elevation: 1,
-      titleTextStyle: GoogleFonts.poppins(color: Colors.black45, fontWeight: FontWeight.w600),
-      iconTheme: const IconThemeData(color: Colors.black54),
+      elevation: 2,
+      titleTextStyle: GoogleFonts.nunito(
+        color: Colors.black45, 
+        fontWeight: FontWeight.w600,
+        fontSize: 16.0,
+      ),
+      iconTheme: const IconThemeData(color: Colors.black45),
     );
   }
 
@@ -114,11 +117,10 @@ class SkedolTheme {
     return DialogTheme(
       elevation: 8,
       titleTextStyle: const TextStyle(
-        fontSize: 14,
         color: _primaryWhiteColor,
         fontWeight: FontWeight.w600,
       ),
-      contentTextStyle: const TextStyle(fontSize: 14, color: _primaryWhiteColor),
+      contentTextStyle: const TextStyle(color: _primaryWhiteColor),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
       shadowColor: primaryWhiteColor,
     );

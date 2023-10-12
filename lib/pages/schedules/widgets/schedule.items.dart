@@ -1,0 +1,177 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../../models/schedule_item.dart';
+import '../../../utils/constants/widgetsConstantes.dart';
+import '../../../widgets/my_modal_search/enum/my_modal_search_enum.dart';
+import '../../../widgets/my_modal_search/my_modal_search.dart';
+import '../../../widgets/my_text_field.dart';
+import '../../../widgets/my_text_title.dart';
+import '../bloc/schedule_bloc.dart';
+import '../bloc/schedule_event.dart';
+import '../bloc/schedule_state.dart';
+
+class ScheduleItems extends StatefulWidget {
+  const ScheduleItems({Key? key}) : super(key: key);
+
+  @override
+  State<ScheduleItems> createState() => ScheduleItemsState();
+}
+
+class ScheduleItemsState extends State<ScheduleItems> {
+  @override
+  Widget build(BuildContext context) {
+    var bloc = BlocProvider.of<ScheduleBloc>(context);
+    return BlocProvider.value(
+      value: bloc,
+      child: BlocBuilder(
+        bloc: bloc,
+        builder: (context, ScheduleState state) {
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              const Divider(),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  MyTextTitle(title: 'Adicionar itens'),
+                  IconButton(
+                    icon: const Icon(Icons.add),
+                    onPressed: () async {
+                      bloc.add(ItemShow());
+                      await _modalAddItems();
+                    },
+                  ),
+                ],
+              ),
+              ...state.schedule.scheduleItem.map(
+                (e) {
+                  return ListTile(
+                    title: Text(
+                      e.item.description,
+                      style: const TextStyle(fontSize: 14.0),
+                    ),
+                    subtitle: Text(
+                        'Preco: ${e.price.toString()} / Tempo: ${e.serviceMinutes.toString()}'),
+                    contentPadding: EdgeInsets.zero,
+                    onTap: () async {
+                      bloc.add(ItemShow(scheduleItem: e));
+                      await _modalAddItems();
+                    },
+                    trailing: IconButton(
+                      onPressed: () => _remove(e),
+                      icon: const Icon(
+                        Icons.delete_outlined,
+                        color: Colors.black38,
+                      ),
+                    ),
+                  );
+                },
+              ),
+              const Divider(),
+              const Padding(
+                padding: EdgeInsets.only(top: 5.0, bottom: 5.0),
+                child: Text(
+                  'Tempo total: 1h30 / Valor total: R\$129,90',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 12.0,
+                    color: Colors.grey,
+                  ),
+                ),
+              ),
+              const Divider(),
+            ],
+          );
+        },
+      ),
+    );
+  }
+
+  void _remove(ScheduleItem item) {
+    print("** remover o item");
+    print(item.item.description);
+  }
+
+  Future<void> _modalAddItems() async {
+    await showModalBottomSheet(
+      context: context,
+      shape: shapeModalBottomSheet,
+      isScrollControlled: true,
+      builder: (_) {
+        var bloc = BlocProvider.of<ScheduleBloc>(context);
+        return BlocProvider.value(
+          value: bloc,
+          child: BlocBuilder(
+            bloc: bloc,
+            builder: (context, ScheduleState state) {
+              ScheduleItem item = state.itemToModify;
+              return SingleChildScrollView(
+                padding: const EdgeInsets.all(20.0),
+                child: Padding(
+                  padding: EdgeInsets.only(
+                      bottom: MediaQuery.of(context).viewInsets.bottom),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 16.0),
+                        child: MyModalSearch(
+                          typeSearch: MyModalSearchEnum.tItem,
+                          onTap: (String id, String lookup) {
+                            item.item.id = id;
+                            item.item.description = lookup;
+                          },
+                          initialValue: item.item.description,
+                        ),
+                      ),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Padding(
+                              padding: const EdgeInsets.only(right: 5.0),
+                              child: MyTextField(
+                                title: 'Valor',
+                                initialValue: item.price.toString(),
+                                suffixIcon:
+                                    const Icon(Icons.monetization_on_outlined),
+                                onChange: (value) => item.price = value,
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            child: Padding(
+                              padding: const EdgeInsets.only(left: 5.0),
+                              child: MyTextField(
+                                title: 'Tempo',
+                                suffixIcon: const Icon(Icons.timer_sharp),
+                                initialValue: item.serviceMinutes.toString(),
+                                onChange: (value) =>
+                                    item.serviceMinutes = value,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 16.0),
+                        child: ElevatedButton(
+                          onPressed: () async {
+                            bloc.add(ItemSave(scheduleItem: item));
+                            Navigator.pop(context);
+                          },
+                          child: const Icon(Icons.save_outlined),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            },
+          ),
+        );
+      },
+    );
+  }
+}

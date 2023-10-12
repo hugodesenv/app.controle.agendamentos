@@ -10,6 +10,7 @@ class ScheduleState {
   late Schedule schedule;
   late FormSubmissionStatus formStatus;
   late FormSubmissionStatus itemsStatus;
+  late ScheduleItem itemToModify;
 
   ScheduleState({
     Customer? customer,
@@ -19,6 +20,7 @@ class ScheduleState {
     FormSubmissionStatus? formStatus,
     FormSubmissionStatus? itemsStatus,
     List<ScheduleItem>? items,
+    ScheduleItem? itemToModify,
   }) {
     schedule = Schedule(
       customer: customer,
@@ -30,6 +32,7 @@ class ScheduleState {
 
     this.formStatus = formStatus ?? FormSubmissionStatus.initial;
     this.itemsStatus = itemsStatus ?? FormSubmissionStatus.initial;
+    this.itemToModify = itemToModify ?? ScheduleItem.empty();
   }
 
   ScheduleState copyWith({
@@ -40,6 +43,7 @@ class ScheduleState {
     FormSubmissionStatus? formStatus,
     FormSubmissionStatus? itemsStatus,
     List<ScheduleItem>? items,
+    ScheduleItem? itemDetail,
   }) {
     return ScheduleState(
       customer: customer ?? schedule.customer,
@@ -51,11 +55,4 @@ class ScheduleState {
       items: items ?? schedule.scheduleItem,
     );
   }
-}
-
-class Initial extends ScheduleState {}
-
-class ItemDetail extends ScheduleState {
-  ScheduleItem scheduleItem;
-  ItemDetail(this.scheduleItem);
 }

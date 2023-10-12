@@ -68,7 +68,7 @@ class Home extends StatelessWidget {
           child: ListTile(
             title: Text(
               title,
-              style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
+              style: const TextStyle(fontWeight: FontWeight.w600),
               textAlign: TextAlign.center,
             ),
             subtitle: Padding(
@@ -240,7 +240,6 @@ class Home extends StatelessWidget {
                 ),
               ),
             ),
-            
           );
         },
       ),

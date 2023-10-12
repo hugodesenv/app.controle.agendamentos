@@ -3,7 +3,6 @@ import 'package:agendamentos/pages/sign_in/bloc/sign_in_event.dart';
 import 'package:agendamentos/pages/sign_in/bloc/sign_in_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:material_dialogs/dialogs.dart';
 
 import '../../utils/constants/routesConstants.dart';
@@ -24,7 +23,8 @@ class SignIn extends StatelessWidget {
     );
   }
 
-  Future<void> _simpleDialog(BuildContext context, String message, {bool? isError}) async {
+  Future<void> _simpleDialog(BuildContext context, String message,
+      {bool? isError}) async {
     await Dialogs.materialDialog(
       context: context,
       title: message,
@@ -57,7 +57,8 @@ class SignIn extends StatelessWidget {
               } else if (state is SignInStateFailure) {
                 await _simpleDialog(context, state.message);
               } else if (state is SignInStateResetPassword) {
-                await _simpleDialog(context, state.message, isError: state.emailSent == false);
+                await _simpleDialog(context, state.message,
+                    isError: state.emailSent == false);
               }
             },
             child: BlocBuilder(
@@ -65,7 +66,11 @@ class SignIn extends StatelessWidget {
               builder: (_, state) {
                 bool isLoading = state is SignInStateLoading;
                 return Container(
-                  padding: EdgeInsets.only(left: 30, right: 30, top: 30, bottom: MediaQuery.of(context).viewInsets.bottom),
+                  padding: EdgeInsets.only(
+                      left: 30,
+                      right: 30,
+                      top: 30,
+                      bottom: MediaQuery.of(context).viewInsets.bottom),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     mainAxisSize: MainAxisSize.min,
@@ -92,7 +97,9 @@ class SignIn extends StatelessWidget {
                       MyLoadingButton(
                         loading: isLoading,
                         onPressed: () {
-                          bloc.add(SignInEventSubmitted(username: userController.text, password: passwordController.text));
+                          bloc.add(SignInEventSubmitted(
+                              username: userController.text,
+                              password: passwordController.text));
                         },
                         title: const Text(
                           'Entrar',
@@ -104,7 +111,8 @@ class SignIn extends StatelessWidget {
                       ),
                       TextButton(
                         onPressed: () {},
-                        style: const ButtonStyle(alignment: Alignment.topCenter),
+                        style:
+                            const ButtonStyle(alignment: Alignment.topCenter),
                         child: TextButton(
                           onPressed: () async {
                             await showModalBottomSheet(
@@ -115,37 +123,54 @@ class SignIn extends StatelessWidget {
                                 return BlocBuilder(
                                   bloc: bloc,
                                   builder: (_, state) {
-                                    bool isLoadingReset = state is SignInStateWaitingEmailReset;
+                                    bool isLoadingReset =
+                                        state is SignInStateWaitingEmailReset;
                                     return Padding(
-                                      padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom + 20, left: 20, top: 20, right: 20),
+                                      padding: EdgeInsets.only(
+                                          bottom: MediaQuery.of(context)
+                                                  .viewInsets
+                                                  .bottom +
+                                              20,
+                                          left: 20,
+                                          top: 20,
+                                          right: 20),
                                       child: Column(
                                         mainAxisSize: MainAxisSize.min,
-                                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.stretch,
                                         children: [
                                           Padding(
-                                            padding: const EdgeInsets.only(bottom: 20),
-                                            child: _textTitle('Redefinir senha', context),
+                                            padding: const EdgeInsets.only(
+                                                bottom: 20),
+                                            child: _textTitle(
+                                                'Redefinir senha', context),
                                           ),
                                           Padding(
-                                            padding: const EdgeInsets.only(bottom: 20),
+                                            padding: const EdgeInsets.only(
+                                                bottom: 20),
                                             child: Text(
                                               'Digite o seu e-mail e clique no botão p/ enviar a redefinição de senha:',
                                               textAlign: TextAlign.center,
-                                              style: TextStyle(color: Theme.of(context).primaryColor),
+                                              style: TextStyle(
+                                                  color: Theme.of(context)
+                                                      .primaryColor),
                                             ),
                                           ),
                                           Padding(
-                                            padding: const EdgeInsets.only(bottom: 20),
+                                            padding: const EdgeInsets.only(
+                                                bottom: 20),
                                             child: MyLoginTextField(
                                               labelText: 'E-mail',
                                               controller: emailResetController,
                                               autoFocus: true,
-                                              keyboardType: TextInputType.emailAddress,
+                                              keyboardType:
+                                                  TextInputType.emailAddress,
                                             ),
                                           ),
                                           MyLoadingButton(
                                             onPressed: () => bloc.add(
-                                              SignInEventSubmittedForgetPassword(emailResetController.text),
+                                              SignInEventSubmittedForgetPassword(
+                                                  emailResetController.text),
                                             ),
                                             title: const Text('Enviar'),
                                             loading: isLoadingReset,
@@ -158,7 +183,8 @@ class SignIn extends StatelessWidget {
                               },
                             );
                           },
-                          child: const Text('Esqueceu sua senha?', style: TextStyle(color: Colors.black26)),
+                          child: const Text('Esqueceu sua senha?',
+                              style: TextStyle(color: Colors.black26)),
                         ),
                       ),
                     ],
@@ -184,11 +210,11 @@ class SignIn extends StatelessWidget {
           bloc: bloc,
           builder: (_, state) {
             return Container(
-              decoration: const BoxDecoration(
+              decoration: BoxDecoration(
                 gradient: LinearGradient(
                   colors: [
-                    Color(0xFF5ee0ad),
-                    Colors.teal,
+                    Theme.of(context).primaryColor,
+                    const Color.fromARGB(255, 104, 185, 252),
                   ],
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
@@ -225,7 +251,8 @@ class SignIn extends StatelessWidget {
                       colorBackground: Colors.transparent,
                       title: const Text(
                         'Acessar o app',
-                        style: TextStyle(fontWeight: FontWeight.w700, color: Colors.white),
+                        style: TextStyle(
+                            fontWeight: FontWeight.w700, color: Colors.white),
                       ),
                     ),
                   ),
@@ -272,7 +299,8 @@ class MyLoadingButton extends StatelessWidget {
       onPressed: () => _onPressed(),
       style: ElevatedButton.styleFrom(
         padding: const EdgeInsets.all(15),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(_thickness ?? 20.0)),
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(_thickness ?? 20.0)),
         backgroundColor: _colorBackground ?? Theme.of(context).primaryColor,
       ),
       child: _loading == true
@@ -317,10 +345,13 @@ class MyLoginTextField extends StatefulWidget {
 
 class _MyLoginTextFieldState extends State<MyLoginTextField> {
   Widget _suffixIcon(Color pMainColor) {
-    IconData icon = widget._hideText ? Icons.visibility_off_outlined : Icons.visibility_outlined;
+    IconData icon = widget._hideText
+        ? Icons.visibility_off_outlined
+        : Icons.visibility_outlined;
 
     return GestureDetector(
-      child: Icon(icon, color: widget._hideText ? pMainColor : Colors.pinkAccent),
+      child:
+          Icon(icon, color: widget._hideText ? pMainColor : Colors.pinkAccent),
       onTap: () async {
         setState(() {
           widget._hideText = !widget._hideText;
@@ -339,12 +370,18 @@ class _MyLoginTextFieldState extends State<MyLoginTextField> {
       obscureText: widget._hideText && widget._isPassword == true,
       keyboardType: widget._keyboardType,
       decoration: InputDecoration(
-        labelStyle: TextStyle(color: mainColor, fontWeight: FontWeight.w500, fontSize: 15),
+        labelStyle: TextStyle(
+            color: mainColor, fontWeight: FontWeight.w500, fontSize: 15),
         labelText: widget._labelText,
         suffixIcon: widget._isPassword == true ? _suffixIcon(mainColor) : null,
         suffixIconColor: mainColor,
-        enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: mainColor, width: 1.5), borderRadius: BorderRadius.circular(20)),
-        focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).focusColor, width: 3), borderRadius: BorderRadius.circular(20)),
+        enabledBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: mainColor, width: 1.5),
+            borderRadius: BorderRadius.circular(20)),
+        focusedBorder: OutlineInputBorder(
+            borderSide:
+                BorderSide(color: Theme.of(context).focusColor, width: 3),
+            borderRadius: BorderRadius.circular(20)),
       ),
       cursorColor: mainColor,
       style: TextStyle(color: mainColor),

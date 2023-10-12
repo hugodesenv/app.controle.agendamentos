@@ -22,7 +22,7 @@ class MyTextTitle extends StatelessWidget {
         textAlign: _align,
         style: TextStyle(
           fontWeight: FontWeight.w700,
-          fontSize: _fontSize,
+          fontSize: _fontSize ?? 13,
         ),
       ),
     );
