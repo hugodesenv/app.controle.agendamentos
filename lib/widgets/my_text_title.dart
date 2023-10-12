@@ -5,7 +5,9 @@ class MyTextTitle extends StatelessWidget {
   TextAlign? _align;
   double? _fontSize;
 
-  MyTextTitle({Key? key, required String title, TextAlign? align, double? fontSize}) : super(key: key) {
+  MyTextTitle(
+      {Key? key, required String title, TextAlign? align, double? fontSize})
+      : super(key: key) {
     _title = title;
     _align = align;
     _fontSize = fontSize;

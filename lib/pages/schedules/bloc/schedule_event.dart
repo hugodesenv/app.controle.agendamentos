@@ -33,8 +33,13 @@ class SituationChange extends ScheduleEvent {
   SituationChange(this.situation);
 }
 
+// show the details from item when it is clicked or, the users wants a new
 class ItemChange extends ScheduleEvent {
-  late ScheduleItem item;
+  late ScheduleItem? item;
+  ItemChange({this.item});
+}
 
-  ItemChange(this.item);
+class ItemSave extends ScheduleEvent {
+  late ScheduleItem? item;
+  ItemSave({this.item});
 }

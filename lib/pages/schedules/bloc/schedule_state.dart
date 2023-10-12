@@ -64,3 +64,8 @@ class ScheduleState {
 }
 
 class Initial extends ScheduleState {}
+
+class ItemDetail extends ScheduleState {
+  ScheduleItem? scheduleItem;
+  ItemDetail(this.scheduleItem);
+}

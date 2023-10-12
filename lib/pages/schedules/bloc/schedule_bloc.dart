@@ -7,14 +7,23 @@ import 'package:bloc/bloc.dart';
 class ScheduleBloc extends Bloc<ScheduleEvent, ScheduleState> {
   ScheduleBloc(super.initialState) {
     on<SendToDB>(_saveToDB);
-    on<CustomerChange>(_customerChange);
-    on<ScheduleDateChange>(_dateChange);
-    on<SituationChange>(_situationChange);
-    on<EmployeeChange>(_employeeChange);
-    on<ItemChange>(_itemChange);
+    on<CustomerChange>((event, emit) {
+      emit(state.copyWith(customer: event.customer));
+    });
+    on<ScheduleDateChange>((event, emit) {
+      emit(state.copyWith(scheduleDate: event.scheduleDate));
+    });
+    on<SituationChange>((event, emit) {
+      emit(state.copyWith(situation: event.situation));
+    });
+    on<EmployeeChange>((event, emit) {
+      emit(state.copyWith(employee: event.employee));
+    });
+    on<ItemChange>((event, emit) {
+      emit(ItemDetail(event.item));
+    });
+    on<ItemSave>(_addItem);
   }
-
-  _itemChange(ItemChange event, emit) {}
 
   Future<void> _saveToDB(SendToDB event, emit) async {
     emit(state.copyWith(formStatus: FormSubmissionStatus.inProgress));
@@ -27,19 +36,9 @@ class ScheduleBloc extends Bloc<ScheduleEvent, ScheduleState> {
     }
   }
 
-  void _customerChange(CustomerChange event, emit) {
-    emit(state.copyWith(customer: event.customer));
-  }
-
-  void _employeeChange(EmployeeChange event, emit) {
-    emit(state.copyWith(employee: event.employee));
-  }
-
-  void _dateChange(ScheduleDateChange event, emit) {
-    emit(state.copyWith(scheduleDate: event.scheduleDate));
-  }
-
-  void _situationChange(SituationChange event, emit) {
-    emit(state.copyWith(situation: event.situation));
+  _addItem(ItemSave event, emit) {
+    // fazer a logica para alterar essa instancia na lista e fazer o refresh
+    print("** resultado aqui no bloc:");
+    print(event.item?.serviceMinutes.toString());
   }
 }
