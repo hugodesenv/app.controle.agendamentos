@@ -86,19 +86,19 @@ class Schedule extends GenericModel {
       "items": [],
     };
 
-    print('garoto do carrinho');
-    print(res);
-
     return res;
   }
 
   Schedule copyWith({
     String? id,
-    Customer? customer,
     DateTime? scheduleDate,
+    int? totalMinutes,
+    double? totalPrice,
+    Employee? employee,
+    Customer? customer,
     ScheduleSituationEnum? situation,
     List<ScheduleItem>? scheduleItem,
-    Employee? employee,
+    DateTime? dateChanged,
   }) {
     return Schedule(
       customer: customer ?? this.customer,

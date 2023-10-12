@@ -33,13 +33,19 @@ class SituationChange extends ScheduleEvent {
   SituationChange(this.situation);
 }
 
-// show the details from item when it is clicked or, the users wants a new
-class ItemChange extends ScheduleEvent {
-  late ScheduleItem? item;
-  ItemChange({this.item});
+/// Quando o usuário clica sob o item na lista e abrimos o detalhamento dele para edição/inserção.
+class ItemShow extends ScheduleEvent {
+  ScheduleItem? _scheduleItem;
+
+  ItemShow({ScheduleItem? scheduleItem}) {
+    _scheduleItem = scheduleItem ?? ScheduleItem.empty();
+  }
+
+  ScheduleItem get scheduleItem => _scheduleItem ?? ScheduleItem.empty();
 }
 
+/// Guardamos (ou editamos) a instancia do item na lista do Schedule.
 class ItemSave extends ScheduleEvent {
-  late ScheduleItem? item;
-  ItemSave({this.item});
+  ScheduleItem scheduleItem;
+  ItemSave({required this.scheduleItem});
 }

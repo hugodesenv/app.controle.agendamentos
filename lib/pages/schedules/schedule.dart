@@ -207,6 +207,9 @@ class _ScheduleItemsState extends State<_ScheduleItems> {
       child: BlocBuilder(
         bloc: bloc,
         builder: (context, ScheduleState state) {
+          print("** rebuilding...");
+          print("** count: ${state.schedule.scheduleItem.length}");
+
           return Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
@@ -218,7 +221,7 @@ class _ScheduleItemsState extends State<_ScheduleItems> {
                   IconButton(
                     icon: const Icon(Icons.add),
                     onPressed: () async {
-                      bloc.add(ItemChange());
+                      bloc.add(ItemShow());
                       await _modalAddItems();
                     },
                   ),
@@ -227,13 +230,15 @@ class _ScheduleItemsState extends State<_ScheduleItems> {
               ...state.schedule.scheduleItem.map(
                 (e) {
                   return ListTile(
-                    title: Text(e.item.description,
-                        style: const TextStyle(fontSize: 14.0)),
+                    title: Text(
+                      e.item.description,
+                      style: const TextStyle(fontSize: 14.0),
+                    ),
                     subtitle: Text(
                         'Preco: ${e.price.toString()} / Tempo: ${e.serviceMinutes.toString()}'),
                     contentPadding: EdgeInsets.zero,
                     onTap: () async {
-                      bloc.add(ItemChange(item: e));
+                      bloc.add(ItemShow(scheduleItem: e));
                       await _modalAddItems();
                     },
                     trailing: IconButton(
@@ -283,70 +288,72 @@ class _ScheduleItemsState extends State<_ScheduleItems> {
           child: BlocBuilder(
             bloc: bloc,
             builder: (context, state) {
+              ScheduleItem item = ScheduleItem.empty();
               if (state is ItemDetail) {
-                var it = state.scheduleItem;
-                return SingleChildScrollView(
-                  padding: const EdgeInsets.all(20.0),
-                  child: Padding(
-                    padding: EdgeInsets.only(
-                        bottom: MediaQuery.of(context).viewInsets.bottom),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: 16.0),
-                          child: MyModalSearch(
-                            typeSearch: MyModalSearchEnum.tItem,
-                            onTap: (String id, String lookup) {
-                              it?.item.id = id;
-                              it?.item.description = lookup;
-                            },
-                            initialValue: it?.item.description,
-                          ),
-                        ),
-                        Row(
-                          children: [
-                            Expanded(
-                              child: Padding(
-                                padding: const EdgeInsets.only(right: 5.0),
-                                child: MyTextField(
-                                  title: 'Valor',
-                                  initialValue: it?.price.toString(),
-                                  suffixIcon: const Icon(
-                                      Icons.monetization_on_outlined),
-                                  onChange: (value) => it?.price = value,
-                                ),
-                              ),
-                            ),
-                            Expanded(
-                              child: Padding(
-                                padding: const EdgeInsets.only(left: 5.0),
-                                child: MyTextField(
-                                  title: 'Tempo',
-                                  suffixIcon: const Icon(Icons.timer_sharp),
-                                  initialValue: it?.serviceMinutes.toString(),
-                                  onChange: (value) =>
-                                      it?.serviceMinutes = value,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 16.0),
-                          child: ElevatedButton(
-                            onPressed: () => bloc.add(ItemSave(item: it)),
-                            child: const Icon(Icons.save_outlined),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                );
-              } else {
-                return Container();
+                item = state.scheduleItem;
               }
+              return SingleChildScrollView(
+                padding: const EdgeInsets.all(20.0),
+                child: Padding(
+                  padding: EdgeInsets.only(
+                      bottom: MediaQuery.of(context).viewInsets.bottom),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 16.0),
+                        child: MyModalSearch(
+                          typeSearch: MyModalSearchEnum.tItem,
+                          onTap: (String id, String lookup) {
+                            item.item.id = id;
+                            item.item.description = lookup;
+                          },
+                          initialValue: item.item.description,
+                        ),
+                      ),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Padding(
+                              padding: const EdgeInsets.only(right: 5.0),
+                              child: MyTextField(
+                                title: 'Valor',
+                                initialValue: item.price.toString(),
+                                suffixIcon:
+                                    const Icon(Icons.monetization_on_outlined),
+                                onChange: (value) => item.price = value,
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            child: Padding(
+                              padding: const EdgeInsets.only(left: 5.0),
+                              child: MyTextField(
+                                title: 'Tempo',
+                                suffixIcon: const Icon(Icons.timer_sharp),
+                                initialValue: item.serviceMinutes.toString(),
+                                onChange: (value) =>
+                                    item.serviceMinutes = value,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 16.0),
+                        child: ElevatedButton(
+                          onPressed: () async {
+                            bloc.add(ItemSave(scheduleItem: item));
+                            Navigator.pop(context);
+                          },
+                          child: const Icon(Icons.save_outlined),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              );
             },
           ),
         );

@@ -10,6 +10,7 @@ import '../../../models/schedule_item.dart';
 class ScheduleState {
   late Schedule schedule;
   late FormSubmissionStatus formStatus;
+  late FormSubmissionStatus itemsStatus;
 
   ScheduleState({
     Customer? customer,
@@ -17,33 +18,36 @@ class ScheduleState {
     DateTime? scheduleDate,
     ScheduleSituationEnum? situation,
     FormSubmissionStatus? formStatus,
+    FormSubmissionStatus? itemsStatus,
   }) {
-    schedule = Schedule(
+    // isso deve ser instancializado...
+    schedule = schedule.copyWith(
       customer: customer,
       employee: employee,
       scheduleDate: scheduleDate,
       situation: situation,
     );
 
-    // apenas teste...
-    final List<ScheduleItem> _items = [
-      ScheduleItem(
-        item: Item(description: 'Corte de Batata'),
-        price: 120.0,
-        serviceMinutes: 30,
-      ),
-      ScheduleItem(
-        item: Item(description: 'Unha'),
-        price: 77.0,
-        serviceMinutes: 60,
-      ),
-    ];
+    // // apenas teste...
+    // final List<ScheduleItem> _items = [
+    //   ScheduleItem(
+    //     item: Item(description: 'Corte de Batata'),
+    //     price: 120.0,
+    //     serviceMinutes: 30,
+    //   ),
+    //   ScheduleItem(
+    //     item: Item(description: 'Unha'),
+    //     price: 77.0,
+    //     serviceMinutes: 60,
+    //   ),
+    // ];
 
-    schedule.scheduleItem = _items;
+    // schedule.scheduleItem = _items;
 
-    /// remover depois
+    // /// remover depois
 
     this.formStatus = formStatus ?? FormSubmissionStatus.initial;
+    this.itemsStatus = itemsStatus ?? FormSubmissionStatus.initial;
   }
 
   ScheduleState copyWith({
@@ -52,6 +56,7 @@ class ScheduleState {
     DateTime? scheduleDate,
     ScheduleSituationEnum? situation,
     FormSubmissionStatus? formStatus,
+    FormSubmissionStatus? itemsStatus,
   }) {
     return ScheduleState(
       customer: customer ?? schedule.customer,
@@ -59,6 +64,7 @@ class ScheduleState {
       scheduleDate: scheduleDate ?? schedule.scheduleDate,
       situation: situation ?? schedule.situation,
       formStatus: formStatus ?? this.formStatus,
+      itemsStatus: itemsStatus ?? this.itemsStatus,
     );
   }
 }
@@ -66,6 +72,6 @@ class ScheduleState {
 class Initial extends ScheduleState {}
 
 class ItemDetail extends ScheduleState {
-  ScheduleItem? scheduleItem;
+  ScheduleItem scheduleItem;
   ItemDetail(this.scheduleItem);
 }

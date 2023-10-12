@@ -1,4 +1,5 @@
 import 'package:agendamentos/enum/form_submission_status.dart';
+import 'package:agendamentos/models/schedule_item.dart';
 import 'package:agendamentos/pages/schedules/bloc/schedule_event.dart';
 import 'package:agendamentos/pages/schedules/bloc/schedule_state.dart';
 import 'package:agendamentos/repository/api/schedule_repository.dart';
@@ -19,10 +20,10 @@ class ScheduleBloc extends Bloc<ScheduleEvent, ScheduleState> {
     on<EmployeeChange>((event, emit) {
       emit(state.copyWith(employee: event.employee));
     });
-    on<ItemChange>((event, emit) {
-      emit(ItemDetail(event.item));
-    });
-    on<ItemSave>(_addItem);
+    on<ItemShow>(
+      (event, emit) => emit(ItemDetail(event.scheduleItem)),
+    );
+    on<ItemSave>(_modifyItemList);
   }
 
   Future<void> _saveToDB(SendToDB event, emit) async {
@@ -36,9 +37,17 @@ class ScheduleBloc extends Bloc<ScheduleEvent, ScheduleState> {
     }
   }
 
-  _addItem(ItemSave event, emit) {
-    // fazer a logica para alterar essa instancia na lista e fazer o refresh
-    print("** resultado aqui no bloc:");
-    print(event.item?.serviceMinutes.toString());
+  void _modifyItemList(ItemSave event, emit) {
+    ScheduleItem item = event.scheduleItem;
+    int index = state.schedule.scheduleItem.indexOf(item);
+
+    if (index == -1) {
+      state.schedule.scheduleItem.add(item);
+      print("** contagem {${state.schedule.scheduleItem.length}}");
+    } else {
+      state.schedule.scheduleItem[index] = item;
+    }
+
+    emit(state.copyWith(itemsStatus: FormSubmissionStatus.inProgress));
   }
 }
