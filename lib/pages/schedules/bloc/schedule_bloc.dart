@@ -39,15 +39,19 @@ class ScheduleBloc extends Bloc<ScheduleEvent, ScheduleState> {
 
   void _modifyItemList(ItemSave event, emit) {
     ScheduleItem item = event.scheduleItem;
-    int index = state.schedule.scheduleItem.indexOf(item);
+    List<ScheduleItem> items = state.schedule.scheduleItem;
+
+    int index = items.indexOf(item);
 
     if (index == -1) {
-      state.schedule.scheduleItem.add(item);
-      print("** contagem {${state.schedule.scheduleItem.length}}");
+      items.add(item);
     } else {
-      state.schedule.scheduleItem[index] = item;
+      items[index] = item;
     }
 
-    emit(state.copyWith(itemsStatus: FormSubmissionStatus.inProgress));
+    emit(state.copyWith(
+      itemsStatus: FormSubmissionStatus.inProgress,
+      items: items,
+    ));
   }
 }

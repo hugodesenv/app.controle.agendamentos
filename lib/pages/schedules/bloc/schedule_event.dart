@@ -38,7 +38,7 @@ class ItemShow extends ScheduleEvent {
   ScheduleItem? _scheduleItem;
 
   ItemShow({ScheduleItem? scheduleItem}) {
-    _scheduleItem = scheduleItem ?? ScheduleItem.empty();
+    _scheduleItem = scheduleItem;
   }
 
   ScheduleItem get scheduleItem => _scheduleItem ?? ScheduleItem.empty();

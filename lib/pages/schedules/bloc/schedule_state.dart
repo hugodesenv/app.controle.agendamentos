@@ -4,7 +4,6 @@ import 'package:agendamentos/models/schedule.dart';
 import 'package:agendamentos/utils/schedule_utils.dart';
 
 import '../../../models/customer.dart';
-import '../../../models/item.dart';
 import '../../../models/schedule_item.dart';
 
 class ScheduleState {
@@ -19,32 +18,15 @@ class ScheduleState {
     ScheduleSituationEnum? situation,
     FormSubmissionStatus? formStatus,
     FormSubmissionStatus? itemsStatus,
+    List<ScheduleItem>? items,
   }) {
-    // isso deve ser instancializado...
-    schedule = schedule.copyWith(
+    schedule = Schedule(
       customer: customer,
       employee: employee,
       scheduleDate: scheduleDate,
       situation: situation,
+      scheduleItem: items,
     );
-
-    // // apenas teste...
-    // final List<ScheduleItem> _items = [
-    //   ScheduleItem(
-    //     item: Item(description: 'Corte de Batata'),
-    //     price: 120.0,
-    //     serviceMinutes: 30,
-    //   ),
-    //   ScheduleItem(
-    //     item: Item(description: 'Unha'),
-    //     price: 77.0,
-    //     serviceMinutes: 60,
-    //   ),
-    // ];
-
-    // schedule.scheduleItem = _items;
-
-    // /// remover depois
 
     this.formStatus = formStatus ?? FormSubmissionStatus.initial;
     this.itemsStatus = itemsStatus ?? FormSubmissionStatus.initial;
@@ -57,6 +39,7 @@ class ScheduleState {
     ScheduleSituationEnum? situation,
     FormSubmissionStatus? formStatus,
     FormSubmissionStatus? itemsStatus,
+    List<ScheduleItem>? items,
   }) {
     return ScheduleState(
       customer: customer ?? schedule.customer,
@@ -65,6 +48,7 @@ class ScheduleState {
       situation: situation ?? schedule.situation,
       formStatus: formStatus ?? this.formStatus,
       itemsStatus: itemsStatus ?? this.itemsStatus,
+      items: items ?? schedule.scheduleItem,
     );
   }
 }

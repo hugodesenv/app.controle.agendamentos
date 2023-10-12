@@ -207,9 +207,6 @@ class _ScheduleItemsState extends State<_ScheduleItems> {
       child: BlocBuilder(
         bloc: bloc,
         builder: (context, ScheduleState state) {
-          print("** rebuilding...");
-          print("** count: ${state.schedule.scheduleItem.length}");
-
           return Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
