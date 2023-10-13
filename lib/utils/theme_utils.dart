@@ -3,7 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 class SkedolTheme {
   static const _primaryWhiteColor = Color.fromARGB(255, 0, 51, 255);
-  static const _primaryDarkColor = Colors.pink;
+  static const _primaryDarkColor = Color.fromARGB(255, 0, 191, 255);
 
   get primaryWhiteColor => _primaryWhiteColor;
 

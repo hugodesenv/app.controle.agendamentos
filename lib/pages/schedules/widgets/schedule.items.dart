@@ -1,3 +1,4 @@
+import 'package:agendamentos/models/generic_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -36,7 +37,7 @@ class ScheduleItemsState extends State<ScheduleItems> {
                 children: [
                   MyTextTitle(title: 'Adicionar itens'),
                   IconButton(
-                    icon: const Icon(Icons.add),
+                    icon: const Icon(Icons.post_add_sharp),
                     onPressed: () async {
                       bloc.add(ItemShow());
                       await _modalAddItems();
@@ -59,7 +60,9 @@ class ScheduleItemsState extends State<ScheduleItems> {
                       await _modalAddItems();
                     },
                     trailing: IconButton(
-                      onPressed: () => _remove(e),
+                      onPressed: () {
+                        bloc.add(ItemDelete(scheduleItem: e));
+                      },
                       icon: const Icon(
                         Icons.delete_outlined,
                         color: Colors.black38,
@@ -88,11 +91,6 @@ class ScheduleItemsState extends State<ScheduleItems> {
     );
   }
 
-  void _remove(ScheduleItem item) {
-    print("** remover o item");
-    print(item.item.description);
-  }
-
   Future<void> _modalAddItems() async {
     await showModalBottomSheet(
       context: context,
@@ -115,15 +113,22 @@ class ScheduleItemsState extends State<ScheduleItems> {
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
+                      MyTextTitle(
+                        title: item.action == ActionAPI.tInsert
+                            ? 'Adicionar'
+                            : 'Alterar',
+                        align: TextAlign.center,
+                      ),
+                      const Divider(),
                       Padding(
                         padding: const EdgeInsets.only(bottom: 16.0),
                         child: MyModalSearch(
+                          initialValue: item.item.description,
                           typeSearch: MyModalSearchEnum.tItem,
                           onTap: (String id, String lookup) {
-                            item.item.id = id;
-                            item.item.description = lookup;
+                            //item.item.id = id;
+                            //item.item.description = lookup;
                           },
-                          initialValue: item.item.description,
                         ),
                       ),
                       Row(
@@ -136,7 +141,9 @@ class ScheduleItemsState extends State<ScheduleItems> {
                                 initialValue: item.price.toString(),
                                 suffixIcon:
                                     const Icon(Icons.monetization_on_outlined),
-                                onChange: (value) => item.price = value,
+                                onChange: (value) {
+                                  //item.price = double.tryParse(value) ?? 0.0;
+                                },
                               ),
                             ),
                           ),
@@ -147,8 +154,10 @@ class ScheduleItemsState extends State<ScheduleItems> {
                                 title: 'Tempo',
                                 suffixIcon: const Icon(Icons.timer_sharp),
                                 initialValue: item.serviceMinutes.toString(),
-                                onChange: (value) =>
-                                    item.serviceMinutes = value,
+                                onChange: (value) {
+                                  //item.serviceMinutes =
+                                  //    int.tryParse(value) ?? 0;
+                                },
                               ),
                             ),
                           ),
@@ -158,6 +167,9 @@ class ScheduleItemsState extends State<ScheduleItems> {
                         padding: const EdgeInsets.only(top: 16.0),
                         child: ElevatedButton(
                           onPressed: () async {
+                            //@@ aqui nao vai mais passar o item por parametro
+                            //@@ porque na verdade, vou passar o evento change pro bloc
+                            //@@ e só la vai ter acesso a instancia e setar o valor.
                             bloc.add(ItemSave(scheduleItem: item));
                             Navigator.pop(context);
                           },

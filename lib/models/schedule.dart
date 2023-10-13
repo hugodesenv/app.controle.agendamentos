@@ -2,8 +2,8 @@ import 'package:agendamentos/models/customer.dart';
 import 'package:agendamentos/models/generic_model.dart';
 import 'package:agendamentos/models/schedule_item.dart';
 import 'package:agendamentos/utils/schedule_utils.dart';
+import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-
 import 'employee.dart';
 
 class Schedule extends GenericModel {
@@ -13,8 +13,8 @@ class Schedule extends GenericModel {
   Customer _customer;
   Employee _employee;
   ScheduleSituationEnum _situation;
-  List<ScheduleItem>? _scheduleItem;
   DateTime? _dateChanged;
+  List<ScheduleItem>? _scheduleItem;
 
   Schedule({
     String? id,
@@ -71,22 +71,19 @@ class Schedule extends GenericModel {
       situation: ScheduleUtils.fromText(
           data['situation'] ?? '')[ScheduleFromText.tType],
       scheduleItem: [],
-      // alterar dps..
       dateChanged: dateChanged,
     );
   }
 
   Map toMap() {
-    Map res = {
-      'action': action,
+    return {
+      'action': action.text(),
       'fk_employee': employee.id,
       'fk_customer': customer.id,
       'schedule_date': DateFormat('yyyy-MM-dd HH:mm:ss').format(scheduleDate),
       'situation': situation.text(),
       "items": [],
     };
-
-    return res;
   }
 
   Schedule copyWith({
@@ -109,6 +106,36 @@ class Schedule extends GenericModel {
       dateChanged: DateTime.now(),
       employee: employee ?? this.employee,
     );
+  }
+
+  void removeItem(ScheduleItem item) {
+    if (item.action == ActionAPI.tInsert) {
+      scheduleItem.remove(item);
+      print("** cai no if");
+      return;
+    }
+
+    int index = scheduleItem.indexOf(item);
+    print("** index: ${index}");
+    scheduleItem[index].action = ActionAPI.tDeleted;
+  }
+
+  List<ScheduleItem> filterItems(ActionAPI action, bool isEquals) {
+    if (isEquals) {
+      return scheduleItem.where((element) => element.action == action).toList();
+    } else {
+      return scheduleItem.where((element) => element.action != action).toList();
+    }
+  }
+
+  void modifyItem(ScheduleItem item) {
+    int index = scheduleItem.indexOf(item);
+
+    if (index == -1) {
+      scheduleItem.add(item);
+    } else {
+      scheduleItem[index] = item;
+    }
   }
 
   Customer get customer => _customer;

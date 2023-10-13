@@ -44,8 +44,12 @@ class ItemShow extends ScheduleEvent {
   ScheduleItem get scheduleItem => _scheduleItem ?? ScheduleItem.empty();
 }
 
-/// Guardamos (ou editamos) a instancia do item na lista do Schedule.
 class ItemSave extends ScheduleEvent {
   ScheduleItem scheduleItem;
   ItemSave({required this.scheduleItem});
+}
+
+class ItemDelete extends ScheduleEvent {
+  ScheduleItem scheduleItem;
+  ItemDelete({required this.scheduleItem});
 }

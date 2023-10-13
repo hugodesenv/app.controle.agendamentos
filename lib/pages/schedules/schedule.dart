@@ -67,8 +67,8 @@ class Schedule extends StatelessWidget {
                     ),
                   ),
                   const Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: Divider(),
+                    padding: EdgeInsets.only(top: 16.0, bottom: 16.0),
+                    child: ScheduleItems(),
                   ),
                   SituationRadioGroup(
                     onResult: (
@@ -83,9 +83,9 @@ class Schedule extends StatelessWidget {
           floatingActionButton: FloatingActionButton(
             child: const Icon(Icons.save_outlined),
             onPressed: () {
-              if (state.formStatus != FormSubmissionStatus.inProgress) {
-                bloc.add(SendToDB());
-              }
+              //if (state.formStatus != FormSubmissionStatus.inProgress) {
+              bloc.add(SendToDB());
+              //}
             },
           ),
         );

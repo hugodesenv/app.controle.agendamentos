@@ -1,15 +1,13 @@
-import 'package:agendamentos/enum/form_submission_status.dart';
 import 'package:agendamentos/models/employee.dart';
 import 'package:agendamentos/models/schedule.dart';
 import 'package:agendamentos/utils/schedule_utils.dart';
-
 import '../../../models/customer.dart';
 import '../../../models/schedule_item.dart';
 
 class ScheduleState {
   late Schedule schedule;
-  late FormSubmissionStatus formStatus;
-  late FormSubmissionStatus itemsStatus;
+  //late FormSubmissionStatus formStatus;
+  //late FormSubmissionStatus itemsStatus;
   late ScheduleItem itemToModify;
 
   ScheduleState({
@@ -17,8 +15,8 @@ class ScheduleState {
     Employee? employee,
     DateTime? scheduleDate,
     ScheduleSituationEnum? situation,
-    FormSubmissionStatus? formStatus,
-    FormSubmissionStatus? itemsStatus,
+    //FormSubmissionStatus? formStatus,
+    //FormSubmissionStatus? itemsStatus,
     List<ScheduleItem>? items,
     ScheduleItem? itemToModify,
   }) {
@@ -30,8 +28,8 @@ class ScheduleState {
       scheduleItem: items,
     );
 
-    this.formStatus = formStatus ?? FormSubmissionStatus.initial;
-    this.itemsStatus = itemsStatus ?? FormSubmissionStatus.initial;
+    //this.formStatus = formStatus ?? FormSubmissionStatus.initial;
+    //this.itemsStatus = itemsStatus ?? FormSubmissionStatus.initial;
     this.itemToModify = itemToModify ?? ScheduleItem.empty();
   }
 
@@ -40,19 +38,20 @@ class ScheduleState {
     Employee? employee,
     DateTime? scheduleDate,
     ScheduleSituationEnum? situation,
-    FormSubmissionStatus? formStatus,
-    FormSubmissionStatus? itemsStatus,
+    //FormSubmissionStatus? formStatus,
+    //FormSubmissionStatus? itemsStatus,
     List<ScheduleItem>? items,
-    ScheduleItem? itemDetail,
+    ScheduleItem? itemToModify,
   }) {
     return ScheduleState(
       customer: customer ?? schedule.customer,
       employee: employee ?? schedule.employee,
       scheduleDate: scheduleDate ?? schedule.scheduleDate,
       situation: situation ?? schedule.situation,
-      formStatus: formStatus ?? this.formStatus,
-      itemsStatus: itemsStatus ?? this.itemsStatus,
+      //formStatus: formStatus ?? this.formStatus,
+      //itemsStatus: itemsStatus ?? this.itemsStatus,
       items: items ?? schedule.scheduleItem,
+      itemToModify: itemToModify ?? this.itemToModify,
     );
   }
 }

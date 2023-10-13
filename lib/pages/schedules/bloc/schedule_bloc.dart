@@ -1,4 +1,5 @@
 import 'package:agendamentos/enum/form_submission_status.dart';
+import 'package:agendamentos/models/generic_model.dart';
 import 'package:agendamentos/models/schedule_item.dart';
 import 'package:agendamentos/pages/schedules/bloc/schedule_event.dart';
 import 'package:agendamentos/pages/schedules/bloc/schedule_state.dart';
@@ -21,37 +22,34 @@ class ScheduleBloc extends Bloc<ScheduleEvent, ScheduleState> {
       emit(state.copyWith(employee: event.employee));
     });
     on<ItemShow>(
-      (event, emit) => emit(state.copyWith(itemDetail: event.scheduleItem)),
+      (event, emit) => emit(state.copyWith(itemToModify: event.scheduleItem)),
     );
     on<ItemSave>(_modifyItemList);
+    on<ItemDelete>(_deleteItem);
   }
 
   Future<void> _saveToDB(SendToDB event, emit) async {
-    emit(state.copyWith(formStatus: FormSubmissionStatus.inProgress));
     try {
       ScheduleRepository repository = ScheduleRepository.instance;
       var res = repository.save(state.schedule);
-      emit(state.copyWith(formStatus: FormSubmissionStatus.success));
-    } catch (e) {
-      emit(state.copyWith(formStatus: FormSubmissionStatus.failure));
-    }
+    } catch (e) {}
   }
 
   void _modifyItemList(ItemSave event, emit) {
-    ScheduleItem item = event.scheduleItem;
-    List<ScheduleItem> items = state.schedule.scheduleItem;
+    state.schedule.modifyItem(event.scheduleItem);
 
-    int index = items.indexOf(item);
+    List<ScheduleItem> filtered =
+        state.schedule.filterItems(ActionAPI.tDeleted, false);
 
-    if (index == -1) {
-      items.add(item);
-    } else {
-      items[index] = item;
-    }
+    emit(state.copyWith(items: filtered));
+  }
 
-    emit(state.copyWith(
-      itemsStatus: FormSubmissionStatus.inProgress,
-      items: items,
-    ));
+  void _deleteItem(ItemDelete event, emit) {
+    state.schedule.removeItem(event.scheduleItem);
+
+    List<ScheduleItem> filtered =
+        state.schedule.filterItems(ActionAPI.tDeleted, false);
+
+    emit(state.copyWith(items: filtered));
   }
 }
