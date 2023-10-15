@@ -1,4 +1,4 @@
-enum ActionAPI { tUndefined, tInsert, tUpdate, tDeleted }
+enum ActionAPI { tInsert, tUpdate, tDeleted }
 
 extension ActionAPIExtension on ActionAPI {
   String text() {
@@ -9,22 +9,25 @@ extension ActionAPIExtension on ActionAPI {
         return 'update';
       case ActionAPI.tDeleted:
         return 'delete';
-      case ActionAPI.tUndefined:
-        return 'undefined';
     }
   }
 }
 
 class GenericModel {
-  String? _id;
-  ActionAPI action = ActionAPI.tUndefined;
+  String _id;
+  late ActionAPI action;
 
-  GenericModel({id}) : _id = id;
+  GenericModel({String? id}) : _id = id ?? '' {
+    action = ActionAPI.tInsert;
+  }
 
-  String get id => _id ?? '';
+  String get id => _id;
 
-  set id(String? value) {
+  set id(String value) {
     _id = value;
-    action = _id == '' ? ActionAPI.tInsert : ActionAPI.tUpdate;
+
+    if (id.isNotEmpty) {
+      action = ActionAPI.tInsert;
+    }
   }
 }

@@ -2,7 +2,6 @@ import 'package:agendamentos/models/customer.dart';
 import 'package:agendamentos/models/generic_model.dart';
 import 'package:agendamentos/models/schedule_item.dart';
 import 'package:agendamentos/utils/schedule_utils.dart';
-import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'employee.dart';
 
@@ -76,14 +75,30 @@ class Schedule extends GenericModel {
   }
 
   Map toMap() {
-    return {
+    Map items = {
+      'insert': [],
+      'update': [],
+      'delete': [],
+    };
+
+    for (var data in scheduleItem) {
+      String action = data.action.text();
+      items[action].add(data.toMap());
+    }
+
+    Map res = {
       'action': action.text(),
       'fk_employee': employee.id,
       'fk_customer': customer.id,
       'schedule_date': DateFormat('yyyy-MM-dd HH:mm:ss').format(scheduleDate),
       'situation': situation.text(),
-      "items": [],
+      'items': items,
     };
+
+    print("*** schedule.dart toMap");
+    print(res);
+
+    return res;
   }
 
   Schedule copyWith({
@@ -111,12 +126,10 @@ class Schedule extends GenericModel {
   void removeItem(ScheduleItem item) {
     if (item.action == ActionAPI.tInsert) {
       scheduleItem.remove(item);
-      print("** cai no if");
       return;
     }
 
     int index = scheduleItem.indexOf(item);
-    print("** index: ${index}");
     scheduleItem[index].action = ActionAPI.tDeleted;
   }
 

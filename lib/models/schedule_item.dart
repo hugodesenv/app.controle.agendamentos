@@ -27,6 +27,15 @@ class ScheduleItem extends GenericModel {
     return ScheduleItem();
   }
 
+  Map toMap() {
+    return {
+      'action': action.text(),
+      'fk_item': item.id,
+      'service_minutes': serviceMinutes,
+      'price': price,
+    };
+  }
+
   double get price => _price;
 
   set price(double value) {

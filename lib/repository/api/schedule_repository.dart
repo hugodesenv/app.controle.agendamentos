@@ -58,6 +58,11 @@ class ScheduleRepository extends FirebaseRepository
   Future<Map> save(data) async {
     Schedule schedule = data as Schedule;
     Map toMap = schedule.toMap();
+
+    print("** schedule_repository - save result");
+    print(toMap);
+
+    return {};
     var response = await dio.post(apiURL, data: toMap);
 
     //terminar o processo...

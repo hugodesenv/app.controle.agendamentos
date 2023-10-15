@@ -126,8 +126,8 @@ class ScheduleItemsState extends State<ScheduleItems> {
                           initialValue: item.item.description,
                           typeSearch: MyModalSearchEnum.tItem,
                           onTap: (String id, String lookup) {
-                            //item.item.id = id;
-                            //item.item.description = lookup;
+                            item.item.id = id;
+                            item.item.description = lookup;
                           },
                         ),
                       ),
@@ -142,7 +142,7 @@ class ScheduleItemsState extends State<ScheduleItems> {
                                 suffixIcon:
                                     const Icon(Icons.monetization_on_outlined),
                                 onChange: (value) {
-                                  //item.price = double.tryParse(value) ?? 0.0;
+                                  item.price = double.tryParse(value) ?? 0.0;
                                 },
                               ),
                             ),
@@ -155,8 +155,8 @@ class ScheduleItemsState extends State<ScheduleItems> {
                                 suffixIcon: const Icon(Icons.timer_sharp),
                                 initialValue: item.serviceMinutes.toString(),
                                 onChange: (value) {
-                                  //item.serviceMinutes =
-                                  //    int.tryParse(value) ?? 0;
+                                  item.serviceMinutes =
+                                      int.tryParse(value) ?? 0;
                                 },
                               ),
                             ),
@@ -167,9 +167,6 @@ class ScheduleItemsState extends State<ScheduleItems> {
                         padding: const EdgeInsets.only(top: 16.0),
                         child: ElevatedButton(
                           onPressed: () async {
-                            //@@ aqui nao vai mais passar o item por parametro
-                            //@@ porque na verdade, vou passar o evento change pro bloc
-                            //@@ e só la vai ter acesso a instancia e setar o valor.
                             bloc.add(ItemSave(scheduleItem: item));
                             Navigator.pop(context);
                           },
