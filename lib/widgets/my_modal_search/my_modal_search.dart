@@ -54,7 +54,7 @@ class _MyModalSearchState extends State<MyModalSearch> {
   @override
   void dispose() {
     _scrollController.dispose();
-    super.dispose();
+    super.dispose(); 
   }
 
   @override

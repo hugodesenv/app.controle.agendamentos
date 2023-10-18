@@ -1,6 +1,7 @@
 import 'package:agendamentos/models/company.dart';
 import 'package:agendamentos/models/generic_model.dart';
-import 'package:agendamentos/utils/api/item_utils.dart';
+
+import '../utils/api/item_utils.dart';
 
 class Item extends GenericModel {
   late Company _company;

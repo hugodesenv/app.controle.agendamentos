@@ -4,24 +4,40 @@ enum ItemType {
   tService,
 }
 
+enum ItemTypeOptions {
+  tCode,
+  tDescription,
+}
+
 extension ItemTypeExtension on ItemType {
-  String text() {
+  String get typeCode => options()[ItemTypeOptions.tCode];
+  String get typeDescription => options()[ItemTypeOptions.tDescription];
+
+  Map<ItemTypeOptions, dynamic> options() {
     switch (this) {
       case ItemType.tProduct:
-        return 'product';
+        return {
+          ItemTypeOptions.tCode: 'product',
+          ItemTypeOptions.tDescription: 'Produto',
+        };
       case ItemType.tService:
-        return 'service';
+        return {
+          ItemTypeOptions.tCode: 'service',
+          ItemTypeOptions.tDescription: 'Serviço',
+        };
       default:
-        return 'undefined';
+        return {
+          ItemTypeOptions.tCode: 'undefined',
+          ItemTypeOptions.tDescription: 'Indefinido',
+        };
     }
   }
 }
 
 class ItemUtils {
   static ItemType toEnum(String value) {
-    for (var data in ItemType.values) {
-      if (data.text() == value) return data;
-    }
-    return ItemType.tUndefined;
+    return ItemType.values.firstWhere((element) {
+      return element.typeCode == value;
+    });
   }
 }

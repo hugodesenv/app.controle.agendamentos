@@ -1,4 +1,5 @@
 import 'package:agendamentos/models/account.dart';
+import 'package:agendamentos/models/item.dart';
 import 'package:agendamentos/repository/api/firebase_repository.dart';
 import 'package:agendamentos/repository/api/global_repository.dart';
 import 'package:agendamentos/utils/preferences_util.dart';
@@ -17,13 +18,24 @@ class ItemRepository extends FirebaseRepository implements GlobalRepository {
   @override
   Future<Map> findAll() async {
     Account currentUser = await PreferencesUtil.getPrefsCurrentUser();
+    List<Item> items = [];
 
     var res = await dio.get(
       apiURL,
-      data: {'fk_company': currentUser.company.id},
+      data: {
+        'company_id': currentUser.company.id,
+        'active': true,
+      },
     );
-    
-    return {"data": {}};
+
+    for (var data in res.data) {
+      Item item = Item.fromJson(data);
+      items.add(item);
+    }
+
+    items.sort((a, b) => a.description.compareTo(b.description));
+
+    return {'items': items};
   }
 
   @override

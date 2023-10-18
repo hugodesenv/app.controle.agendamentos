@@ -2,11 +2,14 @@ import 'dart:async';
 
 import 'package:agendamentos/repository/api/customer_repository.dart';
 import 'package:agendamentos/repository/api/employee_repository.dart';
+import 'package:agendamentos/repository/api/item_repository.dart';
+import 'package:agendamentos/utils/api/item_utils.dart';
 import 'package:agendamentos/widgets/my_modal_search/bloc/my_modal_search_event.dart';
 import 'package:agendamentos/widgets/my_modal_search/bloc/my_modal_search_state.dart';
 import 'package:agendamentos/widgets/my_modal_search/enum/my_modal_search_enum.dart';
 import 'package:bloc/bloc.dart';
 
+import '../../../models/item.dart';
 import '../model/my_modal_search_values.dart';
 
 class MyModalSearchBloc extends Bloc<MyModalSearchEvent, MyModalSearchState> {
@@ -36,14 +39,25 @@ class MyModalSearchBloc extends Bloc<MyModalSearchEvent, MyModalSearchState> {
         case MyModalSearchEnum.tEmployee:
           var res = await EmployeeRepository.instance.findAll();
           for (var i in res['employee']) {
-            originalList.add(MyModalSearchValues(i.id, i.name, 'Clique para selecionar'));
+            originalList.add(
+                MyModalSearchValues(i.id, i.name, 'Clique para selecionar'));
+          }
+          break;
+        case MyModalSearchEnum.tItem:
+          var res = await ItemRepository.instance.findAll();
+          for (Item i in res['items']) {
+            originalList.add(MyModalSearchValues(
+              i.id,
+              i.description,
+              i.type.typeDescription,
+            ));
           }
           break;
       }
 
       emit(MyModalSearchState(values: originalList));
     } catch (e) {
-      print("** my_modal_search_bloc catch ${e.toString()}");
+      print("----> my_modal_search_bloc catch ${e.toString()}");
     }
   }
 
