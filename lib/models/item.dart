@@ -22,14 +22,24 @@ class Item extends GenericModel {
     _active = active ?? false;
     _type = type ?? ItemType.tUndefined;
   }
- 
-  static Item empty() {
+
+  factory Item.empty() {
     return Item(
       company: Company.empty(),
       description: '',
       serviceMinutes: 0,
       active: false,
       type: ItemType.tUndefined,
+    );
+  }
+
+  factory Item.fromJson(Map data) {
+    return Item(
+      active: data['active'],
+      company: Company(id: data['fk_company'], socialName: ''),
+      description: data['description'],
+      serviceMinutes: data['service_minutes'],
+      type: ItemUtils.toEnum(data['type']),
     );
   }
 

@@ -1,4 +1,8 @@
-enum ItemType { tUndefined, tProduct, tService }
+enum ItemType {
+  tUndefined,
+  tProduct,
+  tService,
+}
 
 extension ItemTypeExtension on ItemType {
   String text() {
@@ -10,5 +14,14 @@ extension ItemTypeExtension on ItemType {
       default:
         return 'undefined';
     }
+  }
+}
+
+class ItemUtils {
+  static ItemType toEnum(String value) {
+    for (var data in ItemType.values) {
+      if (data.text() == value) return data;
+    }
+    return ItemType.tUndefined;
   }
 }
