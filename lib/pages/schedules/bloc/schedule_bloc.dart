@@ -1,4 +1,3 @@
-import 'package:agendamentos/enum/form_submission_status.dart';
 import 'package:agendamentos/models/generic_model.dart';
 import 'package:agendamentos/models/schedule_item.dart';
 import 'package:agendamentos/pages/schedules/bloc/schedule_event.dart';
