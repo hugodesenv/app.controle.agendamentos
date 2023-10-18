@@ -1,4 +1,4 @@
-import 'package:agendamentos/utils/schedule_utils.dart';
+import 'package:agendamentos/utils/api/schedule_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 

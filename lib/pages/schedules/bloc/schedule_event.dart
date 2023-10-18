@@ -1,6 +1,6 @@
 import 'package:agendamentos/models/employee.dart';
 import 'package:agendamentos/models/schedule_item.dart';
-import 'package:agendamentos/utils/schedule_utils.dart';
+import 'package:agendamentos/utils/api/schedule_utils.dart';
 import '../../../models/customer.dart';
 
 abstract class ScheduleEvent {}

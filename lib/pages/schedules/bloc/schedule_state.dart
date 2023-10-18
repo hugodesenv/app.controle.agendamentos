@@ -1,6 +1,6 @@
 import 'package:agendamentos/models/employee.dart';
 import 'package:agendamentos/models/schedule.dart';
-import 'package:agendamentos/utils/schedule_utils.dart';
+import 'package:agendamentos/utils/api/schedule_utils.dart';
 import '../../../models/customer.dart';
 import '../../../models/schedule_item.dart';
 

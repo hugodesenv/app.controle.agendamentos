@@ -6,7 +6,7 @@ import 'package:agendamentos/pages/schedules/calendar/bloc/schedules_state.dart'
 import 'package:agendamentos/pages/schedules/calendar/model/schedules_model.dart';
 import 'package:agendamentos/pages/schedules/calendar/schedule_calendar.dart';
 import 'package:agendamentos/pages/schedules/schedule.dart';
-import 'package:agendamentos/utils/schedule_utils.dart';
+import 'package:agendamentos/utils/api/schedule_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:material_dialogs/dialogs.dart';

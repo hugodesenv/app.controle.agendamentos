@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../utils/schedule_utils.dart';
+import '../../../utils/api/schedule_utils.dart';
 import '../../../widgets/my_text_title.dart';
 
 class SituationRadioGroup extends StatefulWidget {
