@@ -50,7 +50,7 @@ class ScheduleItemsState extends State<ScheduleItems> {
                   return ListTile(
                     title: Text(
                       e.item.description,
-                      style: const TextStyle(fontSize: 14.0),
+                      style: const TextStyle(fontSize: 15.0),
                     ),
                     subtitle: Text(
                         'Preco: ${e.price.toString()} / Tempo: ${e.serviceMinutes.toString()}'),
@@ -108,13 +108,14 @@ class ScheduleItemsState extends State<ScheduleItems> {
                 padding: const EdgeInsets.all(20.0),
                 child: Padding(
                   padding: EdgeInsets.only(
-                      bottom: MediaQuery.of(context).viewInsets.bottom),
+                    bottom: MediaQuery.of(context).viewInsets.bottom,
+                  ),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       MyTextTitle(
-                        title: item.action == ActionAPI.tInsert
+                        title: item.item.description.isEmpty
                             ? 'Adicionar'
                             : 'Alterar',
                         align: TextAlign.center,
@@ -125,9 +126,9 @@ class ScheduleItemsState extends State<ScheduleItems> {
                         child: MyModalSearch(
                           initialValue: item.item.description,
                           typeSearch: MyModalSearchEnum.tItem,
-                          onTap: (String id, String lookup) {
-                            item.item.id = id;
-                            item.item.description = lookup;
+                          onTap: (model) {
+                            item.item.id = model.id;
+                            item.item.description = model.description;
                           },
                         ),
                       ),

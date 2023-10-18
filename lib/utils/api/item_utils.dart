@@ -23,7 +23,7 @@ extension ItemTypeExtension on ItemType {
       case ItemType.tService:
         return {
           ItemTypeOptions.tCode: 'service',
-          ItemTypeOptions.tDescription: 'Serviço',
+          ItemTypeOptions.tDescription: 'ServiÃ§o',
         };
       default:
         return {

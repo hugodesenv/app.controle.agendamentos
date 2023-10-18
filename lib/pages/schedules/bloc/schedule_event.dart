@@ -10,17 +10,13 @@ class SendToDB extends ScheduleEvent {}
 class CustomerChange extends ScheduleEvent {
   late Customer customer;
 
-  CustomerChange(String id, String name) {
-    customer = Customer(id: id, name: name);
-  }
+  CustomerChange(this.customer);
 }
 
 class EmployeeChange extends ScheduleEvent {
   late Employee employee;
 
-  EmployeeChange(String id, String name) {
-    employee = Employee(id: id, name: name);
-  }
+  EmployeeChange(this.employee);
 }
 
 class ScheduleDateChange extends ScheduleEvent {

@@ -21,8 +21,8 @@ class SignInStateFailure extends SignInState {
 class SignInStateWaitingEmailReset extends SignInState {}
 
 class SignInStateResetPassword extends SignInState {
-  bool _emailSent;
-  String _message;
+  final bool _emailSent;
+  final String _message;
 
   SignInStateResetPassword({required bool emailSent, required String message})
       : _emailSent = emailSent,

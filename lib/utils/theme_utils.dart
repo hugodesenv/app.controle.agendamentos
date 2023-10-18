@@ -60,7 +60,7 @@ class SkedolTheme {
   ListTileThemeData getWhiteListTileTheme() {
     return const ListTileThemeData(
       iconColor: Colors.black45,
-      titleTextStyle: TextStyle(color: Colors.black54),
+      titleTextStyle: TextStyle(color: Colors.black87),
     );
   }
 
@@ -68,7 +68,7 @@ class SkedolTheme {
     return AppBarTheme(
       elevation: 2,
       titleTextStyle: GoogleFonts.nunito(
-        color: Colors.black45, 
+        color: Colors.black45,
         fontWeight: FontWeight.w600,
         fontSize: 16.0,
       ),

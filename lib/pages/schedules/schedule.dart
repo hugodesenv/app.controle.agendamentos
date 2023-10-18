@@ -8,6 +8,7 @@ import 'package:agendamentos/widgets/my_date_field.dart';
 import 'package:agendamentos/widgets/my_modal_search/my_modal_search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../models/customer.dart';
 import '../../utils/api/schedule_utils.dart';
 import '../../widgets/my_modal_search/enum/my_modal_search_enum.dart';
 
@@ -43,8 +44,8 @@ class Schedule extends StatelessWidget {
                   MyModalSearch(
                     typeSearch: MyModalSearchEnum.tEmployee,
                     initialValue: state.schedule.employee.name,
-                    onTap: (String id, String lookup) {
-                      bloc.add(EmployeeChange(id, lookup));
+                    onTap: (model) {
+                      bloc.add(EmployeeChange(model));
                     },
                   ),
                   Padding(
@@ -52,8 +53,8 @@ class Schedule extends StatelessWidget {
                     child: MyModalSearch(
                       typeSearch: MyModalSearchEnum.tCustomer,
                       initialValue: state.schedule.customer.name,
-                      onTap: (String id, String lookup) {
-                        bloc.add(CustomerChange(id, lookup));
+                      onTap: (model) {
+                        bloc.add(CustomerChange(model));
                       },
                     ),
                   ),

@@ -8,7 +8,6 @@ import 'package:agendamentos/widgets/my_modal_search/bloc/my_modal_search_event.
 import 'package:agendamentos/widgets/my_modal_search/bloc/my_modal_search_state.dart';
 import 'package:agendamentos/widgets/my_modal_search/enum/my_modal_search_enum.dart';
 import 'package:bloc/bloc.dart';
-
 import '../../../models/item.dart';
 import '../model/my_modal_search_values.dart';
 
@@ -32,25 +31,41 @@ class MyModalSearchBloc extends Bloc<MyModalSearchEvent, MyModalSearchState> {
       switch (event.typeSelection) {
         case MyModalSearchEnum.tCustomer:
           var res = await CustomerRepository.instance.findAll();
-          for (var i in res['customers']) {
-            originalList.add(MyModalSearchValues(i.id, i.name, i.cellphone));
+          for (var customer in res['customers']) {
+            originalList.add(
+              MyModalSearchValues(
+                customer.id,
+                customer.name,
+                customer.cellphone,
+                customer,
+              ),
+            );
           }
           break;
         case MyModalSearchEnum.tEmployee:
           var res = await EmployeeRepository.instance.findAll();
-          for (var i in res['employee']) {
+          for (var employee in res['employee']) {
             originalList.add(
-                MyModalSearchValues(i.id, i.name, 'Clique para selecionar'));
+              MyModalSearchValues(
+                employee.id,
+                employee.name,
+                'Clique para selecionar',
+                employee,
+              ),
+            );
           }
           break;
         case MyModalSearchEnum.tItem:
           var res = await ItemRepository.instance.findAll();
-          for (Item i in res['items']) {
-            originalList.add(MyModalSearchValues(
-              i.id,
-              i.description,
-              i.type.typeDescription,
-            ));
+          for (Item item in res['items']) {
+            originalList.add(
+              MyModalSearchValues(
+                item.id,
+                item.description,
+                item.type.typeDescription,
+                item,
+              ),
+            );
           }
           break;
       }

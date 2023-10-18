@@ -28,10 +28,8 @@ class ScheduleBloc extends Bloc<ScheduleEvent, ScheduleState> {
   }
 
   Future<void> _saveToDB(SendToDB event, emit) async {
-    try {
-      ScheduleRepository repository = ScheduleRepository.instance;
-      var res = repository.save(state.schedule);
-    } catch (e) {}
+    ScheduleRepository repository = ScheduleRepository.instance;
+    var res = repository.save(state.schedule);
   }
 
   void _modifyItemList(ItemSave event, emit) {

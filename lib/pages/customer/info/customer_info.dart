@@ -19,7 +19,8 @@ class CustomerInfo extends StatelessWidget {
     await Future.delayed(
       zeroDuration,
       () async {
-        await Navigator.pushNamed(context, routeCustomerNew, arguments: customer);
+        await Navigator.pushNamed(context, routeCustomerNew,
+            arguments: customer);
         Navigator.pop(context);
       },
     );
@@ -53,7 +54,8 @@ class CustomerInfo extends StatelessWidget {
                   IconsButton(
                     onPressed: () {
                       Navigator.pop(context); // to close the dialog
-                      BlocProvider.of<CustomerInfoBloc>(context).add(CustomerInfoEventDelete());
+                      BlocProvider.of<CustomerInfoBloc>(context)
+                          .add(CustomerInfoEventDelete());
                     },
                     text: 'Sim',
                     iconData: Icons.delete,
@@ -89,14 +91,11 @@ class CustomerInfo extends StatelessWidget {
       bloc: infoBloc,
       listener: (context, state) {
         if (state is CustomerInfoState) {
-          switch (state.status) {
-            case FormSubmissionStatus.failure:
-              mySnackbar(context, state.message!, background: Colors.red);
-              return;
-            case FormSubmissionStatus.deleted:
-              mySnackbar(context, state.message!);
-              Navigator.pop(context);
-              return;
+          if (state.status == FormSubmissionStatus.failure) {
+            mySnackbar(context, state.message!, background: Colors.red);
+          } else if (state.status == FormSubmissionStatus.deleted) {
+            mySnackbar(context, state.message!);
+            Navigator.pop(context);
           }
         }
       },
@@ -111,7 +110,8 @@ class CustomerInfo extends StatelessWidget {
                   onPressed: () async => await _onTapSchedule(context),
                   icon: const Icon(Icons.pending_actions),
                 ),
-                PopupMenuButton(itemBuilder: (_) => menuWidgets(context, infoBloc)),
+                PopupMenuButton(
+                    itemBuilder: (_) => menuWidgets(context, infoBloc)),
               ],
             ),
             body: BlocBuilder(
@@ -121,13 +121,15 @@ class CustomerInfo extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     Container(
-                      padding: const EdgeInsets.only(top: 20, bottom: 10, left: 20, right: 20),
+                      padding: const EdgeInsets.only(
+                          top: 20, bottom: 10, left: 20, right: 20),
                       child: const Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
                           _nameInput(),
                           Padding(
-                            padding: EdgeInsets.only(left: 20, right: 20, top: 10, bottom: 10),
+                            padding: EdgeInsets.only(
+                                left: 20, right: 20, top: 10, bottom: 10),
                             child: _cellphoneInput(),
                           ),
                         ],
@@ -138,7 +140,8 @@ class CustomerInfo extends StatelessWidget {
                       padding: EdgeInsets.all(15),
                       child: Text(
                         "Últimos agendamentos",
-                        style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
+                        style: TextStyle(
+                            fontWeight: FontWeight.w600, fontSize: 16),
                       ),
                     ),
                     Flexible(
@@ -148,7 +151,8 @@ class CustomerInfo extends StatelessWidget {
                           return const ListTile(
                             title: Text('Concluído'),
                             subtitle: Text('10/01/23 às 10h35'),
-                            trailing: Icon(Icons.arrow_forward_ios_rounded, size: 10),
+                            trailing:
+                                Icon(Icons.arrow_forward_ios_rounded, size: 10),
                           );
                         },
                         separatorBuilder: (_, int index) => const Divider(),
@@ -157,8 +161,12 @@ class CustomerInfo extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.all(16.0),
                       child: ElevatedButton(
-                        onPressed: () => infoBloc.add(CustomerInfoEventOpenWhatsApp(state.customer.cellphone)),
-                        style: ElevatedButton.styleFrom(backgroundColor: const Color(whatsappColor), padding: const EdgeInsets.all(10)),
+                        onPressed: () => infoBloc.add(
+                            CustomerInfoEventOpenWhatsApp(
+                                state.customer.cellphone)),
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color(whatsappColor),
+                            padding: const EdgeInsets.all(10)),
                         child: const Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -182,13 +190,15 @@ class CustomerInfo extends StatelessWidget {
   }
 }
 
+// ignore: camel_case_types
 class _nameInput extends StatelessWidget {
   const _nameInput({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<CustomerInfoBloc, CustomerInfoState>(
-      buildWhen: (previous, current) => previous.customer.name != current.customer.name,
+      buildWhen: (previous, current) =>
+          previous.customer.name != current.customer.name,
       builder: (context, CustomerInfoState state) {
         return Text(
           state.customer.name,
@@ -203,13 +213,15 @@ class _nameInput extends StatelessWidget {
   }
 }
 
+// ignore: camel_case_types
 class _cellphoneInput extends StatelessWidget {
   const _cellphoneInput({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<CustomerInfoBloc, CustomerInfoState>(
-      buildWhen: (previous, current) => previous.customer.cellphone != current.customer.cellphone,
+      buildWhen: (previous, current) =>
+          previous.customer.cellphone != current.customer.cellphone,
       builder: (context, state) {
         return Row(
           mainAxisAlignment: MainAxisAlignment.center,

@@ -11,13 +11,13 @@ import 'model/my_modal_search_values.dart';
 
 class MyModalSearch extends StatefulWidget {
   late MyModalSearchEnum _typeSearch;
-  late Function(String id, String lookup) _onTap;
+  late Function(dynamic model) _onTap;
   late String _initialValue;
 
   MyModalSearch({
     Key? key,
     required MyModalSearchEnum typeSearch,
-    required Function(String id, String lookup) onTap,
+    required Function(dynamic model) onTap,
     String? initialValue,
   }) : super(key: key) {
     _typeSearch = typeSearch;
@@ -54,7 +54,7 @@ class _MyModalSearchState extends State<MyModalSearch> {
   @override
   void dispose() {
     _scrollController.dispose();
-    super.dispose(); 
+    super.dispose();
   }
 
   @override
@@ -130,18 +130,26 @@ class _MyModalSearchState extends State<MyModalSearch> {
                               itemCount: itemsCount + 1,
                               itemBuilder: (_, index) {
                                 if (index < itemsCount) {
-                                  MyModalSearchValues i = state.values[index];
+                                  MyModalSearchValues item =
+                                      state.values[index];
                                   return ListTile(
                                     title: Text(
-                                      i.title,
+                                      item.title,
                                       style: const TextStyle(
-                                          fontWeight: FontWeight.w700,
-                                          fontSize: 16.0),
+                                        fontWeight: FontWeight.w700,
+                                        fontSize: 16.0,
+                                        color: Colors.black54,
+                                      ),
                                     ),
-                                    subtitle: Text(i.subtitle),
+                                    subtitle: Text(
+                                      item.subtitle,
+                                      style: const TextStyle(
+                                        color: Colors.black54,
+                                      ),
+                                    ),
                                     onTap: () {
-                                      _tecValue.text = i.title;
-                                      widget._onTap(i.id, i.title);
+                                      _tecValue.text = item.title;
+                                      widget._onTap(item.model);
                                       Navigator.pop(context);
                                     },
                                   );

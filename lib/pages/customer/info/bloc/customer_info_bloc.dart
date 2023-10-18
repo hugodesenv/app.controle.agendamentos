@@ -31,7 +31,7 @@ class CustomerInfoBloc extends Bloc<CustomerInfoEvent, CustomerInfoState> {
     emit(state.copyWith(status: FormSubmissionStatus.inProgress));
     try {
       var repository = CustomerRepository.instance;
-      Map res = await repository.delete(state.customer.id ?? '');
+      Map res = await repository.delete(state.customer.id);
 
       if (res['success'] == true) {
         emit(state.copyWith(
