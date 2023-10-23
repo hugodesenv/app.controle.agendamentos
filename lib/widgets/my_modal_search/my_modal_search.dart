@@ -9,6 +9,7 @@ import 'bloc/my_modal_search_bloc.dart';
 import 'enum/my_modal_search_enum.dart';
 import 'model/my_modal_search_values.dart';
 
+// ignore: must_be_immutable
 class MyModalSearch extends StatefulWidget {
   late MyModalSearchEnum _typeSearch;
   late Function(dynamic model) _onTap;
@@ -36,8 +37,12 @@ class _MyModalSearchState extends State<MyModalSearch> {
   @override
   void initState() {
     _tecValue = TextEditingController(text: widget._initialValue);
+    _settupScroll();
+    super.initState();
+  }
 
-    // definindo um controle para o scroll para obtermos o final da listagem.
+  /// function to determinate when the page is in the end
+  _settupScroll() {
     _scrollController = ScrollController();
     _scrollController.addListener(() {
       if (_scrollController.position.pixels ==
@@ -45,8 +50,6 @@ class _MyModalSearchState extends State<MyModalSearch> {
         _addMoreItems();
       }
     });
-
-    super.initState();
   }
 
   _addMoreItems() {}

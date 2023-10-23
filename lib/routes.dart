@@ -105,12 +105,10 @@ appRoutes(RouteSettings settings) {
       builder: (_) => const Report(),
     );
   } else if (settings.name == routeSchedule) {
-    ScheduleParameters? arguments = settings.arguments as ScheduleParameters?;
+    // ScheduleParameters? arguments = settings.arguments as ScheduleParameters?;
     return MaterialPageRoute(
       builder: (_) => BlocProvider(
-        create: (context) => ScheduleBloc(ScheduleState(
-          scheduleDate: arguments?.scheduleDate,
-        )),
+        create: (context) => ScheduleBloc(ScheduleState()),
         child: const Schedule(),
       ),
     );

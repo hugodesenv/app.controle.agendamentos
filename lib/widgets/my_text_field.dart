@@ -1,9 +1,10 @@
 import 'package:agendamentos/widgets/my_text_title.dart';
 import 'package:flutter/material.dart';
 
+// ignore: must_be_immutable
 class MyTextField extends StatefulWidget {
   late String _title;
-  dynamic? _initialValue;
+  dynamic _initialValue;
   TextAlign? _titleAlign;
   Icon? _suffixIcon;
   late Function(dynamic value)? _onChange;
@@ -11,10 +12,10 @@ class MyTextField extends StatefulWidget {
   MyTextField({
     Key? key,
     required String title,
+    required Function(dynamic value)? onChange,
+    dynamic initialValue,
     TextAlign? titleAlign,
     Icon? suffixIcon,
-    dynamic initialValue,
-    required Function(dynamic value)? onChange,
   }) : super(key: key) {
     _title = title;
     _titleAlign = titleAlign;
@@ -28,23 +29,20 @@ class MyTextField extends StatefulWidget {
 }
 
 class _MyTextFieldState extends State<MyTextField> {
-  late TextEditingController tecValue;
+  late TextEditingController _controllerField;
 
   @override
   void initState() {
-    tecValue = TextEditingController(text: widget._initialValue);
-    tecValue.addListener(() {
-      if (widget._onChange != null) {
-        widget._onChange!(tecValue.text);
-      }
-    });
     super.initState();
+    _controllerField = TextEditingController(text: widget._initialValue);
   }
 
   @override
-  void dispose() {
-    tecValue.dispose();
-    super.dispose();
+  void didUpdateWidget(covariant MyTextField oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget._initialValue != oldWidget._initialValue) {
+      _controllerField.text = widget._initialValue;
+    }
   }
 
   @override
@@ -52,9 +50,13 @@ class _MyTextFieldState extends State<MyTextField> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        MyTextTitle(title: widget._title, align: widget._titleAlign),
-        TextField(
-          controller: tecValue,
+        MyTextTitle(
+          title: widget._title,
+          align: widget._titleAlign,
+        ),
+        TextFormField(
+          controller: _controllerField,
+          onChanged: (value) => _onChange(value),
           decoration: InputDecoration(
             suffixIcon: widget._suffixIcon,
             fillColor: Colors.grey[200],
@@ -62,5 +64,11 @@ class _MyTextFieldState extends State<MyTextField> {
         ),
       ],
     );
+  }
+
+  void _onChange(dynamic value) {
+    if (widget._onChange != null) {
+      widget._onChange!(value);
+    }
   }
 }

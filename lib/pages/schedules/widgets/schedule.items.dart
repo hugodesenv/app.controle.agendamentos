@@ -1,4 +1,5 @@
 import 'package:agendamentos/models/generic_model.dart';
+import 'package:agendamentos/models/item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -103,7 +104,7 @@ class ScheduleItemsState extends State<ScheduleItems> {
           child: BlocBuilder(
             bloc: bloc,
             builder: (context, ScheduleState state) {
-              ScheduleItem item = state.itemToModify;
+              ScheduleItem item = state.currentItem;
               return SingleChildScrollView(
                 padding: const EdgeInsets.all(20.0),
                 child: Padding(
@@ -127,8 +128,7 @@ class ScheduleItemsState extends State<ScheduleItems> {
                           initialValue: item.item.description,
                           typeSearch: MyModalSearchEnum.tItem,
                           onTap: (model) {
-                            item.item.id = model.id;
-                            item.item.description = model.description;
+                            context.read<ScheduleBloc>().add(ItemChange(model));
                           },
                         ),
                       ),
@@ -137,29 +137,13 @@ class ScheduleItemsState extends State<ScheduleItems> {
                           Expanded(
                             child: Padding(
                               padding: const EdgeInsets.only(right: 5.0),
-                              child: MyTextField(
-                                title: 'Valor',
-                                initialValue: item.price.toString(),
-                                suffixIcon:
-                                    const Icon(Icons.monetization_on_outlined),
-                                onChange: (value) {
-                                  item.price = double.tryParse(value) ?? 0.0;
-                                },
-                              ),
+                              child: _inputPrice(),
                             ),
                           ),
                           Expanded(
                             child: Padding(
                               padding: const EdgeInsets.only(left: 5.0),
-                              child: MyTextField(
-                                title: 'Tempo',
-                                suffixIcon: const Icon(Icons.timer_sharp),
-                                initialValue: item.serviceMinutes.toString(),
-                                onChange: (value) {
-                                  item.serviceMinutes =
-                                      int.tryParse(value) ?? 0;
-                                },
-                              ),
+                              child: _inputMinutes(),
                             ),
                           ),
                         ],
@@ -168,7 +152,7 @@ class ScheduleItemsState extends State<ScheduleItems> {
                         padding: const EdgeInsets.only(top: 16.0),
                         child: ElevatedButton(
                           onPressed: () async {
-                            bloc.add(ItemSave(scheduleItem: item));
+                            bloc.add(ItemSave());
                             Navigator.pop(context);
                           },
                           child: const Icon(Icons.save_outlined),
@@ -180,6 +164,43 @@ class ScheduleItemsState extends State<ScheduleItems> {
               );
             },
           ),
+        );
+      },
+    );
+  }
+
+  Widget _inputPrice() {
+    return BlocBuilder<ScheduleBloc, ScheduleState>(
+      buildWhen: (previous, current) =>
+          previous.currentItem.price != current.currentItem.price,
+      builder: (context, state) {
+        return MyTextField(
+          title: 'Valor',
+          initialValue: state.currentItem.price.toString(),
+          suffixIcon: const Icon(Icons.monetization_on_outlined),
+          onChange: (value) {
+            var price = double.tryParse(value) ?? 0.0;
+            context.read<ScheduleBloc>().add(ItemPriceChange(price));
+          },
+        );
+      },
+    );
+  }
+
+  Widget _inputMinutes() {
+    return BlocBuilder<ScheduleBloc, ScheduleState>(
+      buildWhen: (previous, current) =>
+          previous.currentItem.serviceMinutes !=
+          current.currentItem.serviceMinutes,
+      builder: (context, state) {
+        return MyTextField(
+          title: 'Tempo',
+          suffixIcon: const Icon(Icons.timer_sharp),
+          initialValue: state.currentItem.serviceMinutes.toString(),
+          onChange: (value) {
+            var minutes = int.tryParse(value) ?? 0;
+            context.read<ScheduleBloc>().add(ItemMinutesChange(minutes));
+          },
         );
       },
     );

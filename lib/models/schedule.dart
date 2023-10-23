@@ -95,9 +95,6 @@ class Schedule extends GenericModel {
       'items': items,
     };
 
-    print("*** schedule.dart toMap");
-    print(res);
-
     return res;
   }
 

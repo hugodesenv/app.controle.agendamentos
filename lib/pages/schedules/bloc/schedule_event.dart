@@ -1,4 +1,5 @@
 import 'package:agendamentos/models/employee.dart';
+import 'package:agendamentos/models/item.dart';
 import 'package:agendamentos/models/schedule_item.dart';
 import 'package:agendamentos/utils/api/schedule_utils.dart';
 import '../../../models/customer.dart';
@@ -29,6 +30,11 @@ class SituationChange extends ScheduleEvent {
   SituationChange(this.situation);
 }
 
+class ItemChange extends ScheduleEvent {
+  Item item;
+  ItemChange(this.item);
+}
+
 /// Quando o usuário clica sob o item na lista e abrimos o detalhamento dele para edição/inserção.
 class ItemShow extends ScheduleEvent {
   ScheduleItem? _scheduleItem;
@@ -40,12 +46,19 @@ class ItemShow extends ScheduleEvent {
   ScheduleItem get scheduleItem => _scheduleItem ?? ScheduleItem.empty();
 }
 
-class ItemSave extends ScheduleEvent {
-  ScheduleItem scheduleItem;
-  ItemSave({required this.scheduleItem});
-}
+class ItemSave extends ScheduleEvent {}
 
 class ItemDelete extends ScheduleEvent {
   ScheduleItem scheduleItem;
   ItemDelete({required this.scheduleItem});
+}
+
+class ItemPriceChange extends ScheduleEvent {
+  double price;
+  ItemPriceChange(this.price);
+}
+
+class ItemMinutesChange extends ScheduleEvent {
+  int minutes;
+  ItemMinutesChange(this.minutes);
 }
