@@ -86,13 +86,13 @@ class ScheduleBloc extends Bloc<ScheduleEvent, ScheduleState> {
 
   void _itemPriceChange(ItemPriceChange event, emit) {
     var item = state.currentItem;
-    item.price = event.price;
+    item.price = double.tryParse(event.price) ?? 0.0;
     emit(state.copyWith(currentItem: item));
   }
 
   void _itemMinutesChange(ItemMinutesChange event, emit) {
     var item = state.currentItem;
-    item.serviceMinutes = event.minutes;
+    item.serviceMinutes = int.tryParse(event.minutes) ?? 0;
     emit(state.copyWith(currentItem: item));
   }
 }

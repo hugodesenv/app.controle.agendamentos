@@ -1,6 +1,5 @@
-import 'package:agendamentos/models/generic_model.dart';
-import 'package:agendamentos/models/item.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../models/schedule_item.dart';
@@ -178,9 +177,9 @@ class ScheduleItemsState extends State<ScheduleItems> {
           title: 'Valor',
           initialValue: state.currentItem.price.toString(),
           suffixIcon: const Icon(Icons.monetization_on_outlined),
+          textInputType: TextInputType.number,
           onChange: (value) {
-            var price = double.tryParse(value) ?? 0.0;
-            context.read<ScheduleBloc>().add(ItemPriceChange(price));
+            context.read<ScheduleBloc>().add(ItemPriceChange(value));
           },
         );
       },
@@ -195,11 +194,14 @@ class ScheduleItemsState extends State<ScheduleItems> {
       builder: (context, state) {
         return MyTextField(
           title: 'Tempo',
-          suffixIcon: const Icon(Icons.timer_sharp),
           initialValue: state.currentItem.serviceMinutes.toString(),
+          suffixIcon: const Icon(Icons.timer_sharp),
+          textInputType: TextInputType.number,
+          inputFormatters: [
+            FilteringTextInputFormatter.digitsOnly,
+          ],
           onChange: (value) {
-            var minutes = int.tryParse(value) ?? 0;
-            context.read<ScheduleBloc>().add(ItemMinutesChange(minutes));
+            context.read<ScheduleBloc>().add(ItemMinutesChange(value));
           },
         );
       },

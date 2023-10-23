@@ -54,11 +54,11 @@ class ItemDelete extends ScheduleEvent {
 }
 
 class ItemPriceChange extends ScheduleEvent {
-  double price;
+  dynamic price;
   ItemPriceChange(this.price);
 }
 
 class ItemMinutesChange extends ScheduleEvent {
-  int minutes;
+  dynamic minutes;
   ItemMinutesChange(this.minutes);
 }
