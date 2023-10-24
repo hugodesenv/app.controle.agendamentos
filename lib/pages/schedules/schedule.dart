@@ -10,7 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../models/customer.dart';
 import '../../utils/api/schedule_utils.dart';
-import '../../widgets/my_field_number.dart';
+import '../../widgets/my_field_text.dart';
 import '../../widgets/my_modal_search/enum/my_modal_search_enum.dart';
 
 class ScheduleParameters {
@@ -42,7 +42,6 @@ class Schedule extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  MyFieldNumber(),
                   MyModalSearch(
                     typeSearch: MyModalSearchEnum.tEmployee,
                     initialValue: state.schedule.employee.name,

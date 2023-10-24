@@ -1,12 +1,11 @@
+import 'package:agendamentos/widgets/my_field_text.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../models/schedule_item.dart';
 import '../../../utils/constants/widgetsConstantes.dart';
 import '../../../widgets/my_modal_search/enum/my_modal_search_enum.dart';
 import '../../../widgets/my_modal_search/my_modal_search.dart';
-import '../../../widgets/my_text_field.dart';
 import '../../../widgets/my_text_title.dart';
 import '../bloc/schedule_bloc.dart';
 import '../bloc/schedule_event.dart';
@@ -173,11 +172,11 @@ class ScheduleItemsState extends State<ScheduleItems> {
       buildWhen: (previous, current) =>
           previous.currentItem.price != current.currentItem.price,
       builder: (context, state) {
-        return MyTextField(
+        return MyFieldText(
           title: 'Valor',
+          decimalSize: 2,
           initialValue: state.currentItem.price.toString(),
-          suffixIcon: const Icon(Icons.monetization_on_outlined),
-          textInputType: TextInputType.number,
+          iconData: Icons.attach_money_rounded,
           onChange: (value) {
             context.read<ScheduleBloc>().add(ItemPriceChange(value));
           },
@@ -192,14 +191,10 @@ class ScheduleItemsState extends State<ScheduleItems> {
           previous.currentItem.serviceMinutes !=
           current.currentItem.serviceMinutes,
       builder: (context, state) {
-        return MyTextField(
+        return MyFieldText(
           title: 'Tempo',
+          iconData: Icons.access_time_sharp,
           initialValue: state.currentItem.serviceMinutes.toString(),
-          suffixIcon: const Icon(Icons.timer_sharp),
-          textInputType: TextInputType.number,
-          inputFormatters: [
-            FilteringTextInputFormatter.digitsOnly,
-          ],
           onChange: (value) {
             context.read<ScheduleBloc>().add(ItemMinutesChange(value));
           },
