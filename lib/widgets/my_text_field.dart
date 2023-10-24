@@ -54,10 +54,7 @@ class _MyTextFieldState extends State<MyTextField> {
   void didUpdateWidget(covariant MyTextField oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (widget._initialValue != oldWidget._initialValue) {
-      print("** valor aqui");
-      var currentPosSelection = _controllerField.selection;
       _controllerField.text = widget._initialValue;
-      _controllerField.selection = currentPosSelection;
     }
   }
 

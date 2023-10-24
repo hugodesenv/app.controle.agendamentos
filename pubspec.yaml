@@ -50,7 +50,7 @@ dependencies:
   cloud_firestore: ^4.7.1
   material_dialogs: ^1.1.4
   flutter_barcode_scanner: ^2.0.0
-  brasil_fields: ^1.13.1
+  brasil_fields: ^1.14.0
   formz: ^0.6.0
   equatable: ^2.0.5
   dio: ^5.3.2
