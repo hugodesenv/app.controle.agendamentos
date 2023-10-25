@@ -6,7 +6,7 @@ import 'package:agendamentos/utils/preferences_util.dart';
 import 'package:bloc/bloc.dart';
 import 'package:formz/formz.dart';
 
-import '../../../../enum/form_submission_status.dart';
+import '../../../../utils/enum/form_submission_status.dart';
 import '../../../../repository/api/customer_repository.dart';
 
 class CustomerNewBloc extends Bloc<CustomerNewEvent, CustomerNewState> {

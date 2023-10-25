@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:agendamentos/enum/database_enum.dart';
+import 'package:agendamentos/utils/enum/database_enum.dart';
 import 'package:agendamentos/models/account.dart';
 import 'package:agendamentos/repository/api/firebase_repository.dart';
 import 'package:agendamentos/repository/api/global_repository.dart';

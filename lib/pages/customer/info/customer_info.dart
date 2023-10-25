@@ -1,4 +1,4 @@
-import 'package:agendamentos/enum/form_submission_status.dart';
+import 'package:agendamentos/utils/enum/form_submission_status.dart';
 import 'package:agendamentos/pages/customer/info/bloc/customer_info_bloc.dart';
 import 'package:agendamentos/pages/customer/info/bloc/customer_info_state.dart';
 import 'package:flutter/material.dart';
