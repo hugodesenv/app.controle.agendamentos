@@ -1,11 +1,12 @@
 import 'package:agendamentos/models/account.dart';
 import 'package:agendamentos/models/employee.dart';
-import 'package:agendamentos/repository/api/firebase_repository.dart';
+import 'package:agendamentos/repository/firebase_repository.dart';
 import 'package:agendamentos/utils/preferences_util.dart';
 
 import 'global_repository.dart';
 
-class EmployeeRepository extends FirebaseRepository implements GlobalRepository {
+class EmployeeRepository extends FirebaseRepository
+    implements GlobalRepository {
   EmployeeRepository._() : super(controller_name: 'employee');
 
   static final instance = EmployeeRepository._();
@@ -22,7 +23,8 @@ class EmployeeRepository extends FirebaseRepository implements GlobalRepository 
 
     Account currentUser = await PreferencesUtil.getPrefsCurrentUser();
     Map filter = {"active": true};
-    var response = await dio.get('$apiURL/${currentUser.company.id}', data: filter);
+    var response =
+        await dio.get('$apiURL/${currentUser.company.id}', data: filter);
 
     for (var data in response.data) {
       Employee employee = Employee.fromJson(data);

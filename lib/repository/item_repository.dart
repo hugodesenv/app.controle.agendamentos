@@ -1,7 +1,7 @@
 import 'package:agendamentos/models/account.dart';
 import 'package:agendamentos/models/item.dart';
-import 'package:agendamentos/repository/api/firebase_repository.dart';
-import 'package:agendamentos/repository/api/global_repository.dart';
+import 'package:agendamentos/repository/firebase_repository.dart';
+import 'package:agendamentos/repository/global_repository.dart';
 import 'package:agendamentos/utils/preferences_util.dart';
 
 class ItemRepository extends FirebaseRepository implements GlobalRepository {

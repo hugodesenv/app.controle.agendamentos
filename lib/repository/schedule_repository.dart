@@ -1,5 +1,5 @@
-import 'package:agendamentos/repository/api/firebase_repository.dart';
-import 'package:agendamentos/repository/api/global_repository.dart';
+import 'package:agendamentos/repository/firebase_repository.dart';
+import 'package:agendamentos/repository/global_repository.dart';
 import 'package:intl/intl.dart';
 
 import '../../models/schedule.dart';

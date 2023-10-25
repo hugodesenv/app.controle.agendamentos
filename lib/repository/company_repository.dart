@@ -1,4 +1,4 @@
-import 'package:agendamentos/repository/api/firebase_repository.dart';
+import 'package:agendamentos/repository/firebase_repository.dart';
 import '../../utils/interface/crud_interface.dart';
 
 class CompanyRepository extends FirebaseRepository implements CrudInterface {

@@ -1,6 +1,6 @@
 import 'package:agendamentos/models/company.dart';
 import 'package:agendamentos/models/customer.dart';
-import 'package:agendamentos/repository/api/customer_repository.dart';
+import 'package:agendamentos/repository/customer_repository.dart';
 import 'package:bloc/bloc.dart';
 import 'package:contacts_service/contacts_service.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -9,7 +9,8 @@ import '../model/checkbox_contact.dart';
 import 'customer_import_event.dart';
 import 'customer_import_state.dart';
 
-class CustomerImportBloc extends Bloc<CustomerImportEvent, CustomerImportState> {
+class CustomerImportBloc
+    extends Bloc<CustomerImportEvent, CustomerImportState> {
   final List<CheckboxContact> _contactList = [];
 
   CustomerImportBloc(super.initialState) {
@@ -46,7 +47,8 @@ class CustomerImportBloc extends Bloc<CustomerImportEvent, CustomerImportState> 
   void _submitted(CustomerImportEventSubmitted event, emit) {
     emit(CustomerImportStateLoading());
     try {
-      List<CheckboxContact> checkedList = _contactList.where((e) => e.isChecked == true).toList();
+      List<CheckboxContact> checkedList =
+          _contactList.where((e) => e.isChecked == true).toList();
       var repository = CustomerRepository.instance;
 
       for (var i in checkedList) {
@@ -59,7 +61,8 @@ class CustomerImportBloc extends Bloc<CustomerImportEvent, CustomerImportState> 
         repository.save(customer);
       }
 
-      emit(CustomerImportStateSuccess('Operação finalizada! ${checkedList.length} registros!'));
+      emit(CustomerImportStateSuccess(
+          'Operação finalizada! ${checkedList.length} registros!'));
     } catch (e) {
       emit(CustomerImportStateFailure('Falha: ${e.toString()}'));
     }

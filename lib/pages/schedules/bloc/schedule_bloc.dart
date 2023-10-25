@@ -2,7 +2,7 @@ import 'package:agendamentos/models/generic_model.dart';
 import 'package:agendamentos/models/schedule_item.dart';
 import 'package:agendamentos/pages/schedules/bloc/schedule_event.dart';
 import 'package:agendamentos/pages/schedules/bloc/schedule_state.dart';
-import 'package:agendamentos/repository/api/schedule_repository.dart';
+import 'package:agendamentos/repository/schedule_repository.dart';
 import 'package:bloc/bloc.dart';
 
 import '../../../models/item.dart';

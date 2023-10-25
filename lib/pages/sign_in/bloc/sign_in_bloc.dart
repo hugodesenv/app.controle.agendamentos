@@ -4,7 +4,7 @@ import 'package:agendamentos/pages/sign_in/bloc/sign_in_state.dart';
 import 'package:agendamentos/utils/preferences_util.dart';
 import 'package:bloc/bloc.dart';
 
-import '../../../repository/api/user_repository.dart';
+import '../../../repository/user_repository.dart';
 
 class SignInBloc extends Bloc<SignInEvent, SignInState> {
   SignInBloc(super.initialState) {

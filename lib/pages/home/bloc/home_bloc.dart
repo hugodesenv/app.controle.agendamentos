@@ -1,7 +1,7 @@
 import 'package:agendamentos/models/account.dart';
 import 'package:agendamentos/pages/home/bloc/home_event.dart';
 import 'package:agendamentos/pages/home/bloc/home_state.dart';
-import 'package:agendamentos/repository/api/user_repository.dart';
+import 'package:agendamentos/repository/user_repository.dart';
 import 'package:agendamentos/utils/preferences_util.dart';
 import 'package:bloc/bloc.dart';
 
