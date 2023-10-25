@@ -1,4 +1,3 @@
-import 'package:agendamentos/utils/api/schedule_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
@@ -18,7 +17,8 @@ class ScheduleDataSource extends CalendarDataSource {
   @override
   DateTime getEndTime(int index) {
     Schedule schedule = _getSchedulesData(index).schedule;
-    var endDate = schedule.scheduleDate.add(Duration(minutes: schedule.totalMinutes));
+    var endDate =
+        schedule.scheduleDate.add(Duration(minutes: schedule.totalMinutes));
     return endDate;
   }
 

@@ -18,7 +18,7 @@ class Employee extends GenericModel {
         super(id: id);
 
   factory Employee.empty() {
-    return Employee(id: "", company: Company.empty());
+    return Employee(id: '', company: Company.empty());
   }
 
   factory Employee.fromJson(Map? data) {

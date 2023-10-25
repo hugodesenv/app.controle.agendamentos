@@ -6,8 +6,11 @@ class Login extends GenericModel {
   String _name;
   Company _company;
 
-  Login({required String id, required String name, required Company company})
-      : _name = name,
+  Login({
+    required String id,
+    required String name,
+    required Company company,
+  })  : _name = name,
         _company = company,
         super(id: id);
 
@@ -21,8 +24,8 @@ class Login extends GenericModel {
 
   factory Login.empty() {
     return Login(
-      name: '',
       id: '',
+      name: '',
       company: Company.empty(),
     );
   }

@@ -1,4 +1,4 @@
-import 'package:agendamentos/widgets/my_field_text.dart';
+import 'package:agendamentos/widgets/my_numeric_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -172,7 +172,7 @@ class ScheduleItemsState extends State<ScheduleItems> {
       buildWhen: (previous, current) =>
           previous.currentItem.price != current.currentItem.price,
       builder: (context, state) {
-        return MyFieldText(
+        return MyNumericField(
           title: 'Valor',
           decimalSize: 2,
           initialValue: state.currentItem.price.toString(),
@@ -191,7 +191,7 @@ class ScheduleItemsState extends State<ScheduleItems> {
           previous.currentItem.serviceMinutes !=
           current.currentItem.serviceMinutes,
       builder: (context, state) {
-        return MyFieldText(
+        return MyNumericField(
           title: 'Tempo',
           iconData: Icons.access_time_sharp,
           initialValue: state.currentItem.serviceMinutes.toString(),

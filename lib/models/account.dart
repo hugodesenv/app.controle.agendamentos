@@ -7,19 +7,18 @@ class Account extends GenericModel {
   String _email;
   Company _company;
 
-  Account({required String? name, required String? username, required String? email, required Company? company})
-      : _name = name ?? '',
+  Account({
+    String? name,
+    String? username,
+    String? email,
+    required Company company,
+  })  : _name = name ?? '',
         _username = username ?? '',
         _email = email ?? '',
-        _company = company ?? Company.empty();
+        _company = company;
 
   factory Account.empty() {
-    return Account(
-      name: "",
-      username: "",
-      email: "",
-      company: Company.empty(),
-    );
+    return Account(company: Company.empty());
   }
 
   factory Account.fromMap(Map data) {

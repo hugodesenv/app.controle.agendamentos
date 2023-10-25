@@ -1,4 +1,3 @@
-import 'package:agendamentos/enum/form_submission_status.dart';
 import 'package:agendamentos/pages/schedules/bloc/schedule_bloc.dart';
 import 'package:agendamentos/pages/schedules/bloc/schedule_event.dart';
 import 'package:agendamentos/pages/schedules/bloc/schedule_state.dart';
@@ -8,9 +7,8 @@ import 'package:agendamentos/widgets/my_date_field.dart';
 import 'package:agendamentos/widgets/my_modal_search/my_modal_search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../models/customer.dart';
-import '../../utils/api/schedule_utils.dart';
-import '../../widgets/my_field_text.dart';
+
+import '../../models/schedule.dart';
 import '../../widgets/my_modal_search/enum/my_modal_search_enum.dart';
 
 class ScheduleParameters {

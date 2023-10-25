@@ -1,7 +1,7 @@
 import 'package:agendamentos/models/customer.dart';
 import 'package:agendamentos/models/generic_model.dart';
 import 'package:agendamentos/models/schedule_item.dart';
-import 'package:agendamentos/utils/api/schedule_utils.dart';
+import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'employee.dart';
 
@@ -36,17 +36,7 @@ class Schedule extends GenericModel {
         super(id: id);
 
   factory Schedule.empty() {
-    return Schedule(
-      id: '',
-      scheduleDate: DateTime.now(),
-      totalMinutes: 0,
-      totalPrice: 0,
-      employee: Employee.empty(),
-      customer: Customer.empty(),
-      situation: ScheduleSituationEnum.UNDEFINED,
-      scheduleItem: [],
-      dateChanged: DateTime.now(),
-    );
+    return Schedule();
   }
 
   factory Schedule.fromJson(Map data) {
@@ -194,5 +184,77 @@ class Schedule extends GenericModel {
 
   set dateChanged(DateTime value) {
     _dateChanged = value;
+  }
+}
+
+enum ScheduleSituationEnum {
+  PENDING,
+  CONFIRMED,
+  PROGRESS,
+  CANCELED,
+  COMPLETED,
+  UNDEFINED,
+}
+
+extension ScheduleSituationEnumExtension on ScheduleSituationEnum {
+  String text() {
+    switch (this) {
+      case ScheduleSituationEnum.CANCELED:
+        return 'canceled';
+      case ScheduleSituationEnum.COMPLETED:
+        return 'completed';
+      case ScheduleSituationEnum.CONFIRMED:
+        return 'confirmed';
+      case ScheduleSituationEnum.PROGRESS:
+        return 'progress';
+      case ScheduleSituationEnum.PENDING:
+        return 'pending';
+      default:
+        return 'undefined';
+    }
+  }
+}
+
+enum ScheduleFromText { tDescription, tColor, tType }
+
+class ScheduleUtils {
+  static Map<ScheduleFromText, dynamic> fromText(String situation) {
+    if (situation == ScheduleSituationEnum.PENDING.text()) {
+      return {
+        ScheduleFromText.tDescription: 'Pendente',
+        ScheduleFromText.tColor: const Color.fromARGB(255, 145, 145, 145),
+        ScheduleFromText.tType: ScheduleSituationEnum.PENDING,
+      };
+    } else if (situation == ScheduleSituationEnum.CANCELED.text()) {
+      return {
+        ScheduleFromText.tDescription: 'Cancelado',
+        ScheduleFromText.tColor: Colors.red,
+        ScheduleFromText.tType: ScheduleSituationEnum.CANCELED,
+      };
+    } else if (situation == ScheduleSituationEnum.CONFIRMED.text()) {
+      return {
+        ScheduleFromText.tDescription: 'Confirmado',
+        ScheduleFromText.tColor: const Color.fromARGB(255, 190, 30, 211),
+        ScheduleFromText.tType: ScheduleSituationEnum.CONFIRMED,
+      };
+    } else if (situation == ScheduleSituationEnum.PROGRESS.text()) {
+      return {
+        ScheduleFromText.tDescription: 'Em andamento',
+        ScheduleFromText.tColor: const Color.fromARGB(255, 106, 186, 240),
+        ScheduleFromText.tType: ScheduleSituationEnum.PROGRESS,
+      };
+    } else if (situation == ScheduleSituationEnum.COMPLETED.text()) {
+      return {
+        ScheduleFromText.tDescription: 'Finalizado',
+        ScheduleFromText.tColor: Colors.green,
+        ScheduleFromText.tType: ScheduleSituationEnum.COMPLETED,
+      };
+    } else {
+      return {
+        ScheduleFromText.tDescription: 'Indefinido',
+        ScheduleFromText.tColor: const Color.fromARGB(255, 0, 0, 0),
+        ScheduleFromText.tType: ScheduleSituationEnum.UNDEFINED,
+      };
+    }
   }
 }

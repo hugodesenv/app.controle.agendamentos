@@ -3,14 +3,15 @@
 import 'package:agendamentos/widgets/my_text_title.dart';
 import 'package:flutter/material.dart';
 
-class MyFieldText extends StatefulWidget {
+// ignore: must_be_immutable
+class MyNumericField extends StatefulWidget {
   late String _title;
   late String _initialValue;
   late int _decimalSize;
   late IconData? _iconData;
   late Function(dynamic value)? _onChange;
 
-  MyFieldText({
+  MyNumericField({
     super.key,
     String? title,
     String? initialValue,
@@ -26,24 +27,30 @@ class MyFieldText extends StatefulWidget {
   }
 
   @override
-  State<MyFieldText> createState() => _MyFieldTextState();
+  State<MyNumericField> createState() => _MyNumericFieldState();
 }
 
-class _MyFieldTextState extends State<MyFieldText> {
+class _MyNumericFieldState extends State<MyNumericField> {
   late TextEditingController controller;
   int oldLength = 0;
 
   @override
   void initState() {
     controller = TextEditingController();
-    setControllerText = double.tryParse(widget._initialValue) ?? 0;
+    setControllerInitialValue();
     super.initState();
   }
 
   set setControllerText(double value) {
     controller.text = value.toStringAsFixed(widget._decimalSize);
     oldLength = controller.text.length;
+    setCursorPointerToTheEnd();
   }
+
+  bool get isDecimalNumber => widget._decimalSize > 0;
+
+  bool get isPointerAtTheEnd =>
+      controller.selection.end == controller.text.length;
 
   void setCursorPointerToTheEnd() {
     controller.selection = TextSelection.fromPosition(
@@ -60,16 +67,18 @@ class _MyFieldTextState extends State<MyFieldText> {
   }
 
   void onChange(value) {
-    widget._decimalSize > 0 ? handleNumberWithDecimal(value) : null;
+    handleNumberWithDecimal(value);
     widget._onChange != null ? widget._onChange!(controller.text) : null;
+  }
+
+  void setControllerInitialValue() {
+    setControllerText = double.tryParse(widget._initialValue) ?? 0;
   }
 
   void handleNumberWithDecimal(value) {
     double conversion = (double.tryParse(value) ?? 0);
-    print('res: ${value.length}');
-    print("*** old: ${oldLength}");
 
-    if (controller.selection.end == controller.text.length) {
+    if ((isDecimalNumber) && (isPointerAtTheEnd)) {
       if (value.length == 1) {
         conversion = conversion / 100.0;
       } else if (value.length < oldLength) {
@@ -80,7 +89,14 @@ class _MyFieldTextState extends State<MyFieldText> {
     }
 
     setControllerText = conversion;
-    setCursorPointerToTheEnd();
+  }
+
+  @override
+  void didUpdateWidget(covariant MyNumericField oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget._initialValue != oldWidget._initialValue) {
+      setControllerInitialValue();
+    }
   }
 
   @override

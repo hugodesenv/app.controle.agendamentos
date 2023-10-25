@@ -3,11 +3,11 @@ import 'dart:async';
 import 'package:agendamentos/repository/api/customer_repository.dart';
 import 'package:agendamentos/repository/api/employee_repository.dart';
 import 'package:agendamentos/repository/api/item_repository.dart';
-import 'package:agendamentos/utils/api/item_utils.dart';
 import 'package:agendamentos/widgets/my_modal_search/bloc/my_modal_search_event.dart';
 import 'package:agendamentos/widgets/my_modal_search/bloc/my_modal_search_state.dart';
 import 'package:agendamentos/widgets/my_modal_search/enum/my_modal_search_enum.dart';
 import 'package:bloc/bloc.dart';
+
 import '../../../models/item.dart';
 import '../model/my_modal_search_values.dart';
 
