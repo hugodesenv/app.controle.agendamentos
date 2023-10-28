@@ -50,16 +50,17 @@ class ScheduleItemsState extends State<ScheduleItems> {
               ),
               ...scheduleModel.scheduleItem.map(
                 (e) {
+                  double leftPadding = 20.0;
                   return ListTile(
                     title: Padding(
-                      padding: const EdgeInsets.only(left: 20.0),
+                      padding: EdgeInsets.only(left: leftPadding),
                       child: Text(
                         e.item.description,
                         style: const TextStyle(fontWeight: FontWeight.w700),
                       ),
                     ),
                     subtitle: Padding(
-                      padding: const EdgeInsets.only(left: 20.0),
+                      padding: EdgeInsets.only(left: leftPadding),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
