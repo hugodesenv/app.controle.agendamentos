@@ -1,3 +1,4 @@
+import 'package:agendamentos/enum/schedule_situation_enum.dart';
 import 'package:agendamentos/pages/home/bloc/home_bloc.dart';
 import 'package:agendamentos/pages/home/bloc/home_state.dart';
 import 'package:agendamentos/pages/schedules/calendar/bloc/schedules_bloc.dart';
@@ -11,8 +12,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:material_dialogs/dialogs.dart';
 import 'package:material_dialogs/widgets/buttons/icon_button.dart';
 import 'package:material_dialogs/widgets/buttons/icon_outline_button.dart';
+import '../../models/schedule.dart' as ScheduleModel;
 import '../../models/schedule.dart';
-import '../../utils/constants/routesConstants.dart';
+import '../../utils/constants.dart';
 import '../../utils/constants/widgetsConstantes.dart';
 import 'bloc/home_event.dart';
 
@@ -88,7 +90,7 @@ class Home extends StatelessWidget {
       bloc: bloc,
       listener: (context, HomeState state) async {
         if (state.isLoggedOut) {
-          Navigator.pushReplacementNamed(context, routeLogin);
+          Navigator.pushReplacementNamed(context, RoutesConstants.routeLogin);
         }
       },
       child: BlocBuilder(
@@ -209,19 +211,19 @@ class Home extends StatelessWidget {
                             ListTile(
                               leading: const Icon(Icons.person_outline),
                               onTap: () => Navigator.pushNamed(
-                                  context, routeCustomerQuery),
+                                  context, RoutesConstants.routeCustomerQuery),
                               title: const Text('Clientes'),
                             ),
                             ListTile(
                               leading: const Icon(Icons.hardware_outlined),
-                              onTap: () =>
-                                  Navigator.pushNamed(context, routeItemQuery),
+                              onTap: () => Navigator.pushNamed(
+                                  context, RoutesConstants.routeItemQuery),
                               title: const Text('Produtos e serviços'),
                             ),
                             ListTile(
                               leading: const Icon(Icons.auto_graph_sharp),
                               onTap: () async => await Navigator.pushNamed(
-                                  context, routeReport),
+                                  context, RoutesConstants.routeReport),
                               title: const Text('Relatórios'),
                             ),
                           ],
@@ -230,8 +232,10 @@ class Home extends StatelessWidget {
                     ),
                     const Divider(),
                     _drawerFixed(
-                      onTap: () async =>
-                          Navigator.pushNamed(context, routeProfile),
+                      onTap: () async => Navigator.pushNamed(
+                        context,
+                        RoutesConstants.routeProfile,
+                      ),
                       textTitle: 'Configurações',
                       iconData: Icons.settings,
                       context: context,
@@ -285,7 +289,7 @@ class Home extends StatelessWidget {
   }) async {
     await Navigator.pushNamed(
       context,
-      routeSchedule,
+      RoutesConstants.routeSchedule,
       arguments: params,
     );
   }
@@ -298,7 +302,7 @@ class Home extends StatelessWidget {
       shape: shapeModalBottomSheet,
       builder: (context) {
         String typeSituation = scheduleModule.schedule.situation.text();
-        var res = ScheduleUtils.fromText(typeSituation);
+        var res = ScheduleModel.Schedule.fromText(typeSituation);
         String displaySituation = res[ScheduleFromText.tDescription];
         Color colorSituation = res[ScheduleFromText.tColor];
         return Column(

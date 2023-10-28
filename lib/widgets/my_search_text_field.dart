@@ -4,7 +4,8 @@ class MySearchTextField extends StatelessWidget {
   final Function(String value) _onChanged;
   final String? _labelText;
 
-  const MySearchTextField({Key? key, required Function(String value) onChanged, String? labelText})
+  const MySearchTextField(
+      {Key? key, required Function(String value) onChanged, String? labelText})
       : _onChanged = onChanged,
         _labelText = labelText,
         super(key: key);
@@ -17,7 +18,9 @@ class MySearchTextField extends StatelessWidget {
         labelText: _labelText ?? 'Filtrar...',
         labelStyle: TextStyle(color: Theme.of(context).primaryColor),
       ),
-      style: TextStyle(color: Theme.of(context).primaryColor),
+      style: TextStyle(
+        color: Theme.of(context).primaryColor,
+      ),
       cursorColor: Theme.of(context).primaryColor,
       onChanged: _onChanged,
     );

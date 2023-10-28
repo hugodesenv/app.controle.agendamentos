@@ -1,12 +1,10 @@
+import 'package:agendamentos/enum/schedule_situation_enum.dart';
 import 'package:agendamentos/repository/firebase_repository.dart';
-import 'package:agendamentos/repository/global_repository.dart';
 import 'package:intl/intl.dart';
-
 import '../../models/schedule.dart';
 import '../../pages/schedules/calendar/model/schedules_model.dart';
 
-class ScheduleRepository extends FirebaseRepository
-    implements GlobalRepository {
+class ScheduleRepository extends FirebaseRepository implements CrudRepository {
   ScheduleRepository._() : super(controller_name: "schedule");
   static final instance = ScheduleRepository._();
 

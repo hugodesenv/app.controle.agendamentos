@@ -34,12 +34,11 @@ class ItemQuery extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               mainAxisSize: MainAxisSize.min,
               children: [
-                Padding(
+                const Padding(
                   padding: const EdgeInsets.only(bottom: 20),
                   child: Text(
                     'O que deseja cadastrar?',
                     textAlign: TextAlign.center,
-                    style: textStyleTitleModalBottomSheet(context),
                   ),
                 ),
                 ListTile(

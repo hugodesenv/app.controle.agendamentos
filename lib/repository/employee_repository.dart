@@ -3,10 +3,7 @@ import 'package:agendamentos/models/employee.dart';
 import 'package:agendamentos/repository/firebase_repository.dart';
 import 'package:agendamentos/utils/preferences_util.dart';
 
-import 'global_repository.dart';
-
-class EmployeeRepository extends FirebaseRepository
-    implements GlobalRepository {
+class EmployeeRepository extends FirebaseRepository implements CrudRepository {
   EmployeeRepository._() : super(controller_name: 'employee');
 
   static final instance = EmployeeRepository._();

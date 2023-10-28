@@ -1,8 +1,8 @@
 import 'package:agendamentos/models/employee.dart';
 import 'package:agendamentos/models/item.dart';
 import 'package:agendamentos/models/schedule_item.dart';
+import '../../../enum/schedule_situation_enum.dart';
 import '../../../models/customer.dart';
-import '../../../models/schedule.dart';
 
 abstract class ScheduleEvent {}
 

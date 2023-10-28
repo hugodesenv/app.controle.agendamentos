@@ -1,7 +1,6 @@
 import 'package:agendamentos/repository/firebase_repository.dart';
-import '../../utils/interface/crud_interface.dart';
 
-class CompanyRepository extends FirebaseRepository implements CrudInterface {
+class CompanyRepository extends FirebaseRepository implements CrudRepository {
   CompanyRepository._() : super(controller_name: 'company');
 
   static final instance = CompanyRepository._();
@@ -13,20 +12,26 @@ class CompanyRepository extends FirebaseRepository implements CrudInterface {
   }
 
   @override
-  Future<bool> delete(String id) {
+  Future<Map> findAll() {
+    // TODO: implement findAll
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Map> update(data) {
+    // TODO: implement update
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Map> delete(String id) {
     // TODO: implement delete
     throw UnimplementedError();
   }
 
   @override
-  Future<String> save(data) {
+  Future<Map> save(data) {
     // TODO: implement save
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<void> fetchAllStream(Function(List p1) onDataProcessed) {
-    // TODO: implement fetchAllStream
     throw UnimplementedError();
   }
 }

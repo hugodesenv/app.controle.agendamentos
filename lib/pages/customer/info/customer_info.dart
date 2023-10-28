@@ -1,4 +1,4 @@
-import 'package:agendamentos/utils/enum/form_submission_status.dart';
+import 'package:agendamentos/enum/form_submission_status.dart';
 import 'package:agendamentos/pages/customer/info/bloc/customer_info_bloc.dart';
 import 'package:agendamentos/pages/customer/info/bloc/customer_info_state.dart';
 import 'package:flutter/material.dart';
@@ -6,20 +6,19 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:material_dialogs/dialogs.dart';
 import 'package:material_dialogs/widgets/buttons/icon_button.dart';
 import 'package:material_dialogs/widgets/buttons/icon_outline_button.dart';
-import '../../../utils/constants/colorConstantes.dart';
-import '../../../utils/constants/routesConstants.dart';
+import '../../../utils/constants.dart';
 import '../../../utils/constants/widgetsConstantes.dart';
 import 'bloc/customer_info_event.dart';
 
 class CustomerInfo extends StatelessWidget {
-  const CustomerInfo({Key? key}) : super(key: key);
+  CustomerInfo({Key? key}) : super(key: key);
 
   Future onTapEdit({required BuildContext context}) async {
     var customer = context.read<CustomerInfoBloc>().state.customer;
     await Future.delayed(
-      zeroDuration,
+      Duration.zero,
       () async {
-        await Navigator.pushNamed(context, routeCustomerNew,
+        await Navigator.pushNamed(context, RoutesConstants.routeCustomerNew,
             arguments: customer);
         Navigator.pop(context);
       },
@@ -44,7 +43,7 @@ class CustomerInfo extends StatelessWidget {
         ),
         onTap: () async {
           await Future.delayed(
-            zeroDuration,
+            Duration.zero,
             () async {
               await Dialogs.materialDialog(
                 context: context,
@@ -80,7 +79,7 @@ class CustomerInfo extends StatelessWidget {
   }
 
   Future _onTapSchedule(BuildContext context) async {
-    await Navigator.pushNamed(context, routeSchedule);
+    await Navigator.pushNamed(context, RoutesConstants.routeSchedule);
   }
 
   @override
@@ -165,7 +164,9 @@ class CustomerInfo extends StatelessWidget {
                             CustomerInfoEventOpenWhatsApp(
                                 state.customer.cellphone)),
                         style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(whatsappColor),
+                            backgroundColor: const Color(
+                              ColorConstants.whatsappColor,
+                            ),
                             padding: const EdgeInsets.all(10)),
                         child: const Row(
                           mainAxisAlignment: MainAxisAlignment.center,

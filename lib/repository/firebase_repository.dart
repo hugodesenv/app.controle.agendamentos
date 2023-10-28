@@ -1,9 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
 
-/**
- * Change this classname to Dio...
- */
+abstract class CrudRepository {
+  Future<Map> delete(String id);
+  Future<Map> save(data);
+  Future<Map> update(data);
+  Future<Map> findAll();
+}
+
 class FirebaseRepository {
   final dio = Dio();
   //final _apiURL = "http://10.0.0.199:3000";

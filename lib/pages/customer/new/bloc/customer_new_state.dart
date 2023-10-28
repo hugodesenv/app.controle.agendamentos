@@ -1,4 +1,4 @@
-import '../../../../utils/enum/form_submission_status.dart';
+import '../../../../enum/form_submission_status.dart';
 import '../formz/model.dart';
 
 class CustomerNewState {

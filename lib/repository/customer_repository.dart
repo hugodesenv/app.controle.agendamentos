@@ -1,16 +1,15 @@
 import 'dart:async';
 
-import 'package:agendamentos/utils/enum/database_enum.dart';
+import 'package:agendamentos/enum/database_enum.dart';
 import 'package:agendamentos/models/account.dart';
 import 'package:agendamentos/repository/firebase_repository.dart';
-import 'package:agendamentos/repository/global_repository.dart';
 import 'package:agendamentos/utils/preferences_util.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
 
 import '../../models/customer.dart';
 
-class CustomerRepository extends FirebaseRepository implements GlobalRepository {
+class CustomerRepository extends FirebaseRepository implements CrudRepository {
   CustomerRepository._() : super(controller_name: 'customer');
 
   static final instance = CustomerRepository._();
@@ -23,7 +22,9 @@ class CustomerRepository extends FirebaseRepository implements GlobalRepository 
       bool deleted = response.data?['rows_affected'] > 0;
       return {
         "success": deleted,
-        "message": deleted ? "Exclusão efetuada com sucesso!" : "Nenhum registro foi afetado, verifique!",
+        "message": deleted
+            ? "Exclusão efetuada com sucesso!"
+            : "Nenhum registro foi afetado, verifique!",
       };
     } on DioException catch (e) {
       return {

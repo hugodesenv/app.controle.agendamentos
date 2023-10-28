@@ -78,9 +78,8 @@ class _MyModalSearchState extends State<MyModalSearch> {
                   controller: _tecValue,
                   onTap: () async => await _showModal(context),
                   readOnly: true,
-                  decoration: InputDecoration(
-                    suffixIcon: const Icon(Icons.search_rounded),
-                    fillColor: Colors.grey[200],
+                  decoration: const InputDecoration(
+                    suffixIcon: Icon(Icons.search_rounded),
                   ),
                 ),
               ],

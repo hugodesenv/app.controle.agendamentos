@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import '../../../enum/schedule_situation_enum.dart';
 import '../../../models/schedule.dart';
 import '../../../widgets/my_text_title.dart';
 
@@ -36,7 +36,7 @@ class _SituationRadioGroupState extends State<SituationRadioGroup> {
   void buildList() {
     components.clear();
     for (var type in ScheduleSituationEnum.values) {
-      var situation = ScheduleUtils.fromText(type.text());
+      var situation = Schedule.fromText(type.text());
       var wrapper = {'type': type, ...situation};
       components.add(wrapper);
     }

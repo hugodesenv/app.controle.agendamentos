@@ -1,30 +1,25 @@
 /// Made by Hugo Souza - 23/11/2023
 
+import 'package:agendamentos/utils/datetime_util.dart';
 import 'package:agendamentos/widgets/my_text_title.dart';
+import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
 
-// ignore: must_be_immutable
 class MyNumericField extends StatefulWidget {
-  late String _title;
-  late String _initialValue;
-  late int _decimalSize;
-  late IconData? _iconData;
-  late Function(dynamic value)? _onChange;
+  final String title;
+  final String initialValue;
+  final int decimalSize;
+  final IconData? iconData;
+  final Function(dynamic value) onChange;
 
-  MyNumericField({
-    super.key,
-    String? title,
-    String? initialValue,
-    int? decimalSize,
-    IconData? iconData,
-    Function(dynamic value)? onChange,
-  }) {
-    _title = title ?? '';
-    _initialValue = initialValue ?? '';
-    _decimalSize = decimalSize ?? 0;
-    _onChange = onChange;
-    _iconData = iconData;
-  }
+  const MyNumericField({
+    Key? key,
+    required this.initialValue,
+    required this.onChange,
+    this.decimalSize = 0,
+    this.iconData,
+    this.title = '',
+  }) : super(key: key);
 
   @override
   State<MyNumericField> createState() => _MyNumericFieldState();
@@ -34,68 +29,61 @@ class _MyNumericFieldState extends State<MyNumericField> {
   late TextEditingController controller;
   int oldLength = 0;
 
-  @override
-  void initState() {
-    controller = TextEditingController();
-    setControllerInitialValue();
-    super.initState();
-  }
-
-  set setControllerText(double value) {
-    controller.text = value.toStringAsFixed(widget._decimalSize);
-    oldLength = controller.text.length;
-    setCursorPointerToTheEnd();
-  }
-
-  bool get isDecimalNumber => widget._decimalSize > 0;
+  bool get isDecimalNumber => widget.decimalSize > 0;
 
   bool get isPointerAtTheEnd =>
       controller.selection.end == controller.text.length;
 
-  void setCursorPointerToTheEnd() {
+  @override
+  void initState() {
+    controller = TextEditingController();
+    textToDouble();
+    super.initState();
+  }
+
+  void textToDouble() {
+    setText = double.tryParse(widget.initialValue) ?? 0;
+  }
+
+  set setText(double value) {
+    controller.text = value.toStringAsFixed(widget.decimalSize);
+
+    oldLength = controller.text.length;
+    handleCursor();
+  }
+
+  void handleCursor() {
     controller.selection = TextSelection.fromPosition(
-      TextPosition(offset: controller.text.length),
-    );
+        TextPosition(offset: controller.text.length));
   }
 
   void onKeyDown(RawKeyEvent value) {
     String keyLabel = value.data.logicalKey.keyLabel;
 
     if (keyLabel == 'Backspace') {
-      setCursorPointerToTheEnd();
+      handleCursor();
     }
   }
 
-  void onChange(value) {
-    handleNumberWithDecimal(value);
-    widget._onChange != null ? widget._onChange!(controller.text) : null;
-  }
-
-  void setControllerInitialValue() {
-    setControllerText = double.tryParse(widget._initialValue) ?? 0;
-  }
-
-  void handleNumberWithDecimal(value) {
+  void settupNumber(value) {
     double conversion = (double.tryParse(value) ?? 0);
 
     if ((isDecimalNumber) && (isPointerAtTheEnd)) {
-      if (value.length == 1) {
-        conversion = conversion / 100.0;
-      } else if (value.length < oldLength) {
+      if (value.length < oldLength) {
         conversion = conversion / 10.0;
       } else {
         conversion = conversion * 10.0;
       }
     }
 
-    setControllerText = conversion;
+    setText = conversion;
   }
 
   @override
   void didUpdateWidget(covariant MyNumericField oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (widget._initialValue != oldWidget._initialValue) {
-      setControllerInitialValue();
+    if (widget.initialValue != oldWidget.initialValue) {
+      textToDouble();
     }
   }
 
@@ -104,7 +92,7 @@ class _MyNumericFieldState extends State<MyNumericField> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        MyTextTitle(title: widget._title),
+        MyTextTitle(title: widget.title),
         _inputValue(),
       ],
     );
@@ -117,10 +105,13 @@ class _MyNumericFieldState extends State<MyNumericField> {
       child: TextField(
         controller: controller,
         keyboardType: TextInputType.number,
-        onChanged: (value) => onChange(value),
+        onChanged: (value) {
+          settupNumber(value);
+          widget.onChange(controller.text);
+        },
         decoration: InputDecoration(
           suffix: Icon(
-            widget._iconData,
+            widget.iconData,
             color: Colors.grey[300],
           ),
         ),

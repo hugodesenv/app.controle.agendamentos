@@ -29,13 +29,13 @@ import 'package:agendamentos/pages/sign_in/bloc/sign_in_bloc.dart';
 import 'package:agendamentos/pages/sign_in/bloc/sign_in_event.dart';
 import 'package:agendamentos/pages/sign_in/bloc/sign_in_state.dart';
 import 'package:agendamentos/pages/sign_in/sign_in.dart';
-import 'package:agendamentos/utils/constants/routesConstants.dart';
+import 'package:agendamentos/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'pages/home/home.dart';
 
 appRoutes(RouteSettings settings) {
-  if (settings.name == routeHome) {
+  if (settings.name == RoutesConstants.routeHome) {
     return MaterialPageRoute(
       builder: (_) {
         return BlocProvider(
@@ -44,7 +44,7 @@ appRoutes(RouteSettings settings) {
         );
       },
     );
-  } else if (settings.name == routeLogin) {
+  } else if (settings.name == RoutesConstants.routeLogin) {
     return MaterialPageRoute(
       builder: (_) {
         return BlocProvider(
@@ -54,7 +54,7 @@ appRoutes(RouteSettings settings) {
         );
       },
     );
-  } else if (settings.name == routeCustomerQuery) {
+  } else if (settings.name == RoutesConstants.routeCustomerQuery) {
     return MaterialPageRoute(
       builder: (_) {
         return BlocProvider(
@@ -64,7 +64,7 @@ appRoutes(RouteSettings settings) {
         );
       },
     );
-  } else if (settings.name == routeCustomerNew) {
+  } else if (settings.name == RoutesConstants.routeCustomerNew) {
     var customer = settings.arguments as Customer;
 
     var customerState = CustomerNewState(
@@ -78,7 +78,7 @@ appRoutes(RouteSettings settings) {
         child: const CustomerNew(),
       );
     });
-  } else if (settings.name == routeCustomerImport) {
+  } else if (settings.name == RoutesConstants.routeCustomerImport) {
     return MaterialPageRoute(
       builder: (_) {
         return BlocProvider(
@@ -88,23 +88,23 @@ appRoutes(RouteSettings settings) {
         );
       },
     );
-  } else if (settings.name == routeCustomerInfo) {
+  } else if (settings.name == RoutesConstants.routeCustomerInfo) {
     var args = settings.arguments as Customer;
     return MaterialPageRoute(
       builder: (_) => BlocProvider(
         create: (_) => CustomerInfoBloc(CustomerInfoState(customer: args)),
-        child: const CustomerInfo(),
+        child: CustomerInfo(),
       ),
     );
-  } else if (settings.name == routeProfile) {
+  } else if (settings.name == RoutesConstants.routeProfile) {
     return MaterialPageRoute(
       builder: (_) => const Profile(),
     );
-  } else if (settings.name == routeReport) {
+  } else if (settings.name == RoutesConstants.routeReport) {
     return MaterialPageRoute(
       builder: (_) => const Report(),
     );
-  } else if (settings.name == routeSchedule) {
+  } else if (settings.name == RoutesConstants.routeSchedule) {
     // ScheduleParameters? arguments = settings.arguments as ScheduleParameters?;
     return MaterialPageRoute(
       builder: (_) => BlocProvider(
@@ -112,7 +112,7 @@ appRoutes(RouteSettings settings) {
         child: const Schedule(),
       ),
     );
-  } else if (settings.name == routeItemQuery) {
+  } else if (settings.name == RoutesConstants.routeItemQuery) {
     return MaterialPageRoute(
       builder: (_) => BlocProvider(
         create: (context) => ItemQueryBloc(ItemQueryStateInitial()),

@@ -1,5 +1,6 @@
 import 'package:agendamentos/models/company.dart';
 import 'package:agendamentos/models/generic_model.dart';
+import '../enum/item_type_enum.dart';
 
 class Item extends GenericModel {
   late Company _company;
@@ -35,8 +36,14 @@ class Item extends GenericModel {
       company: Company(id: data['fk_company'], socialName: ''),
       description: data['description'],
       serviceMinutes: data['service_minutes'],
-      type: ItemUtils.toEnum(data['type']),
+      type: Item.toEnum(data['type']),
     );
+  }
+
+  static ItemType toEnum(String value) {
+    return ItemType.values.firstWhere((element) {
+      return element.typeCode == value;
+    });
   }
 
   ItemType get type => _type;
@@ -67,49 +74,5 @@ class Item extends GenericModel {
 
   set company(Company value) {
     _company = value;
-  }
-}
-
-enum ItemType {
-  tUndefined,
-  tProduct,
-  tService,
-}
-
-enum ItemTypeOptions {
-  tCode,
-  tDescription,
-}
-
-extension ItemTypeExtension on ItemType {
-  String get typeCode => options()[ItemTypeOptions.tCode];
-  String get typeDescription => options()[ItemTypeOptions.tDescription];
-
-  Map<ItemTypeOptions, dynamic> options() {
-    switch (this) {
-      case ItemType.tProduct:
-        return {
-          ItemTypeOptions.tCode: 'product',
-          ItemTypeOptions.tDescription: 'Produto',
-        };
-      case ItemType.tService:
-        return {
-          ItemTypeOptions.tCode: 'service',
-          ItemTypeOptions.tDescription: 'Serviço',
-        };
-      default:
-        return {
-          ItemTypeOptions.tCode: 'undefined',
-          ItemTypeOptions.tDescription: 'Indefinido',
-        };
-    }
-  }
-}
-
-class ItemUtils {
-  static ItemType toEnum(String value) {
-    return ItemType.values.firstWhere((element) {
-      return element.typeCode == value;
-    });
   }
 }

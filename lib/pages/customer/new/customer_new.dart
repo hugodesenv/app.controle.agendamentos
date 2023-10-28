@@ -3,7 +3,7 @@ import 'package:agendamentos/pages/customer/new/bloc/customer_new_state.dart';
 import 'package:agendamentos/pages/customer/new/formz/model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../../utils/enum/form_submission_status.dart';
+import '../../../enum/form_submission_status.dart';
 import '../../../utils/constants/widgetsConstantes.dart';
 import 'bloc/customer_new_bloc.dart';
 

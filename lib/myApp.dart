@@ -28,7 +28,8 @@ class MyApp extends StatelessWidget {
         Locale('pt', 'BR'), // Portuguese
       ],
       home: BlocProvider<SignInBloc>(
-        create: (_) => SignInBloc(SignInStateInitial())..add(SignInEventAuthenticated()),
+        create: (_) =>
+            SignInBloc(SignInStateInitial())..add(SignInEventAuthenticated()),
         child: const SignIn(),
       ),
       debugShowCheckedModeBanner: false,
@@ -37,7 +38,8 @@ class MyApp extends StatelessWidget {
         focusColor: skedolTheme.primaryWhiteColor,
         scaffoldBackgroundColor: skedolTheme.getWhiteScaffoldBackgroundColor(),
         dividerTheme: skedolTheme.getWhiteDividerThemeData(),
-        floatingActionButtonTheme: skedolTheme.getWhiteFloatingActionButtonThemeData(),
+        floatingActionButtonTheme:
+            skedolTheme.getWhiteFloatingActionButtonThemeData(),
         inputDecorationTheme: skedolTheme.getWhiteInputDecorationTheme(),
         listTileTheme: skedolTheme.getWhiteListTileTheme(),
         tabBarTheme: skedolTheme.getWhiteTabBarTheme(),
@@ -47,7 +49,6 @@ class MyApp extends StatelessWidget {
         fontFamily: GoogleFonts.poppins().fontFamily,
         progressIndicatorTheme: skedolTheme.getWhiteProgressIndicatorTheme(),
         textButtonTheme: skedolTheme.getWhiteTextButtonThemeData(),
-        highlightColor: Colors.white,
         dialogTheme: skedolTheme.getWhiteDialogTheme(),
         elevatedButtonTheme: skedolTheme.getWhiteElevatedButtonTheme(),
         iconTheme: skedolTheme.getWhiteIconTheme(),

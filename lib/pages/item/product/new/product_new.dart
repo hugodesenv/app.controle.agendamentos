@@ -3,7 +3,6 @@ import 'package:agendamentos/pages/item/product/new/bloc/product_new_event.dart'
 import 'package:agendamentos/pages/item/product/new/bloc/product_new_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../../../utils/constants/widgetsConstantes.dart';
 
 class ProductNew extends StatelessWidget {
   const ProductNew({Key? key}) : super(key: key);
@@ -20,10 +19,9 @@ class ProductNew extends StatelessWidget {
               var bloc = BlocProvider.of<ProductNewBloc>(context);
               return Scaffold(
                 appBar: AppBar(
-                  title: ListTile(
+                  title: const ListTile(
                     title: Text(
                       'Novo produto',
-                      style: textStyleTitleModalBottomSheet(context),
                       textAlign: TextAlign.left,
                     ),
                   ),
@@ -36,20 +34,23 @@ class ProductNew extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.only(bottom: 15),
                         child: TextFormField(
-                          decoration: const InputDecoration(labelText: 'Descrição'),
+                          decoration:
+                              const InputDecoration(labelText: 'Descrição'),
                         ),
                       ),
                       Row(
                         children: [
                           Expanded(
                             child: TextFormField(
-                              decoration: const InputDecoration(labelText: 'Código de barras'),
+                              decoration: const InputDecoration(
+                                  labelText: 'Código de barras'),
                             ),
                           ),
                           Padding(
                             padding: const EdgeInsets.only(left: 10),
                             child: IconButton(
-                              onPressed: () => bloc.add(OpenCameraBarcodeEvent()),
+                              onPressed: () =>
+                                  bloc.add(OpenCameraBarcodeEvent()),
                               icon: const Icon(Icons.qr_code_rounded),
                             ),
                           ),

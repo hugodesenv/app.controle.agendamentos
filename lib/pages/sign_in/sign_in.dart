@@ -4,8 +4,7 @@ import 'package:agendamentos/pages/sign_in/bloc/sign_in_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:material_dialogs/dialogs.dart';
-
-import '../../utils/constants/routesConstants.dart';
+import '../../utils/constants.dart';
 import '../../utils/constants/widgetsConstantes.dart';
 
 class SignIn extends StatelessWidget {
@@ -53,7 +52,10 @@ class SignIn extends StatelessWidget {
             bloc: bloc,
             listener: (_, state) async {
               if (state is SignInStateSuccess) {
-                Navigator.pushReplacementNamed(context, routeHome);
+                Navigator.pushReplacementNamed(
+                  context,
+                  RoutesConstants.routeHome,
+                );
               } else if (state is SignInStateFailure) {
                 await _simpleDialog(context, state.message);
               } else if (state is SignInStateResetPassword) {
@@ -203,7 +205,8 @@ class SignIn extends StatelessWidget {
         bloc: bloc,
         listener: (_, state) async {
           if (state is SignInStateGoToHome) {
-            await Navigator.pushReplacementNamed(context, routeHome);
+            await Navigator.pushReplacementNamed(
+                context, RoutesConstants.routeHome);
           }
         },
         child: BlocBuilder(

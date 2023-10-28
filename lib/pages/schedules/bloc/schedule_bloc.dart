@@ -66,7 +66,7 @@ class ScheduleBloc extends Bloc<ScheduleEvent, ScheduleState> {
 
   void _itemSave(ItemSave event, emit) {
     var schedule = state.schedule;
-    schedule.modifyItem(state.currentItem);
+    schedule.saveItem(state.currentItem);
 
     var itemsActives = state.schedule.filterItems(ActionAPI.tDeleted, false);
     schedule.scheduleItem = itemsActives;

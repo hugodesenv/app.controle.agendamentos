@@ -1,7 +1,10 @@
+import 'package:agendamentos/pages/schedules/schedule.dart';
+import 'package:agendamentos/utils/constants.dart';
+import 'package:agendamentos/utils/datetime_util.dart';
 import 'package:agendamentos/widgets/my_numeric_field.dart';
+import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import '../../../models/schedule_item.dart';
 import '../../../utils/constants/widgetsConstantes.dart';
 import '../../../widgets/my_modal_search/enum/my_modal_search_enum.dart';
@@ -27,6 +30,7 @@ class ScheduleItemsState extends State<ScheduleItems> {
       child: BlocBuilder(
         bloc: bloc,
         builder: (context, ScheduleState state) {
+          var scheduleModel = state.schedule;
           return Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
@@ -44,15 +48,28 @@ class ScheduleItemsState extends State<ScheduleItems> {
                   ),
                 ],
               ),
-              ...state.schedule.scheduleItem.map(
+              ...scheduleModel.scheduleItem.map(
                 (e) {
                   return ListTile(
-                    title: Text(
-                      e.item.description,
-                      style: const TextStyle(fontSize: 15.0),
+                    title: Padding(
+                      padding: const EdgeInsets.only(left: 20.0),
+                      child: Text(
+                        e.item.description,
+                        style: const TextStyle(fontWeight: FontWeight.w700),
+                      ),
                     ),
-                    subtitle: Text(
-                        'Preco: ${e.price.toString()} / Tempo: ${e.serviceMinutes.toString()}'),
+                    subtitle: Padding(
+                      padding: const EdgeInsets.only(left: 20.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          Text(UtilBrasilFields.obterReal(e.price)),
+                          Text(
+                            "${DateTimeUtil.formatTimeHHMM(Duration(minutes: e.serviceMinutes))}h",
+                          ),
+                        ],
+                      ),
+                    ),
                     contentPadding: EdgeInsets.zero,
                     onTap: () async {
                       bloc.add(ItemShow(scheduleItem: e));
@@ -64,22 +81,19 @@ class ScheduleItemsState extends State<ScheduleItems> {
                       },
                       icon: const Icon(
                         Icons.delete_outlined,
-                        color: Colors.black38,
+                        color: Colors.grey,
                       ),
                     ),
                   );
                 },
               ),
               const Divider(),
-              const Padding(
-                padding: EdgeInsets.only(top: 5.0, bottom: 5.0),
+              Padding(
+                padding: const EdgeInsets.only(top: 5.0, bottom: 5.0),
                 child: Text(
-                  'Tempo total: 1h30 / Valor total: R\$129,90',
+                  scheduleModel.getTotalDescription(),
                   textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 12.0,
-                    color: Colors.grey,
-                  ),
+                  style: const TextStyle(fontSize: 12.0, color: Colors.grey),
                 ),
               ),
               const Divider(),

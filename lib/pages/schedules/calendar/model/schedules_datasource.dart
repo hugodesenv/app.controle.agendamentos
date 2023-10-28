@@ -1,3 +1,4 @@
+import 'package:agendamentos/enum/schedule_situation_enum.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
@@ -30,7 +31,7 @@ class ScheduleDataSource extends CalendarDataSource {
   @override
   Color getColor(int index) {
     String situation = _getSchedulesData(index).schedule.situation.text();
-    var map = ScheduleUtils.fromText(situation);
+    var map = Schedule.fromText(situation);
     return map[ScheduleFromText.tColor];
   }
 

@@ -1,11 +1,8 @@
 import 'dart:convert';
-
 import 'package:agendamentos/models/account.dart';
 import 'package:agendamentos/repository/firebase_repository.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-import '../../utils/preferences_util.dart';
 
 class UserRepository extends FirebaseRepository {
   UserRepository._() : super(controller_name: 'account');
@@ -29,8 +26,7 @@ class UserRepository extends FirebaseRepository {
 
   Future<void> _saveSession(Account account) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    await preferences.setString(
-        SHARED_PREFERENCES_USER_SESSION, jsonEncode(account.toMap()));
+    await preferences.setString('session', jsonEncode(account.toMap()));
   }
 
   Future resetEmailPassword(String pemail) async {
