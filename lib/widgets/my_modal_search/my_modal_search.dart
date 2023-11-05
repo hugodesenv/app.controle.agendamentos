@@ -14,9 +14,11 @@ class MyModalSearch extends StatefulWidget {
   late MyModalSearchEnum _typeSearch;
   late Function(dynamic model) _onTap;
   late String _initialValue;
+  String? Function(String? message)? validator;
 
   MyModalSearch({
     Key? key,
+    this.validator,
     required MyModalSearchEnum typeSearch,
     required Function(dynamic model) onTap,
     String? initialValue,
@@ -74,10 +76,11 @@ class _MyModalSearchState extends State<MyModalSearch> {
                 MyTextTitle(
                   title: widget._typeSearch.displayTitle(),
                 ),
-                TextField(
+                TextFormField(
                   controller: _tecValue,
                   onTap: () async => await _showModal(context),
                   readOnly: true,
+                  validator: widget.validator,
                   decoration: const InputDecoration(
                     suffixIcon: Icon(Icons.search_rounded),
                   ),

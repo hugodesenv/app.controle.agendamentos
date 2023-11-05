@@ -29,7 +29,7 @@ import 'package:agendamentos/pages/sign_in/bloc/sign_in_bloc.dart';
 import 'package:agendamentos/pages/sign_in/bloc/sign_in_event.dart';
 import 'package:agendamentos/pages/sign_in/bloc/sign_in_state.dart';
 import 'package:agendamentos/pages/sign_in/sign_in.dart';
-import 'package:agendamentos/utils/constants.dart';
+import 'package:agendamentos/utils/constants/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'pages/home/home.dart';
@@ -109,7 +109,7 @@ appRoutes(RouteSettings settings) {
     return MaterialPageRoute(
       builder: (_) => BlocProvider(
         create: (context) => ScheduleBloc(ScheduleState()),
-        child: const Schedule(),
+        child: Schedule(),
       ),
     );
   } else if (settings.name == RoutesConstants.routeItemQuery) {

@@ -14,7 +14,7 @@ import 'package:material_dialogs/widgets/buttons/icon_button.dart';
 import 'package:material_dialogs/widgets/buttons/icon_outline_button.dart';
 import '../../models/schedule.dart' as ScheduleModel;
 import '../../models/schedule.dart';
-import '../../utils/constants.dart';
+import '../../utils/constants/constants.dart';
 import '../../utils/constants/widgetsConstantes.dart';
 import 'bloc/home_event.dart';
 

@@ -2,7 +2,7 @@ import 'package:agendamentos/models/customer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skeletons/skeletons.dart';
-import '../../../utils/constants.dart';
+import '../../../utils/constants/constants.dart';
 import '../../../widgets/my_search_text_field.dart';
 import 'bloc/customer_query_bloc.dart';
 import 'bloc/customer_query_event.dart';

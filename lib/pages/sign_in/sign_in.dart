@@ -4,7 +4,7 @@ import 'package:agendamentos/pages/sign_in/bloc/sign_in_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:material_dialogs/dialogs.dart';
-import '../../utils/constants.dart';
+import '../../utils/constants/constants.dart';
 import '../../utils/constants/widgetsConstantes.dart';
 
 class SignIn extends StatelessWidget {

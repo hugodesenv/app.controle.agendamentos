@@ -6,7 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:material_dialogs/dialogs.dart';
 import 'package:material_dialogs/widgets/buttons/icon_button.dart';
 import 'package:material_dialogs/widgets/buttons/icon_outline_button.dart';
-import '../../../utils/constants.dart';
+import '../../../utils/constants/constants.dart';
 import '../../../utils/constants/widgetsConstantes.dart';
 import 'bloc/customer_info_event.dart';
 

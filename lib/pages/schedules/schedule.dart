@@ -1,3 +1,6 @@
+import 'dart:js';
+
+import 'package:agendamentos/mixin/form_validation/formv_schedule_mixin.dart';
 import 'package:agendamentos/pages/schedules/bloc/schedule_bloc.dart';
 import 'package:agendamentos/pages/schedules/bloc/schedule_event.dart';
 import 'package:agendamentos/pages/schedules/bloc/schedule_state.dart';
@@ -15,15 +18,18 @@ class ScheduleParameters {
   ScheduleParameters({required this.scheduleDate});
 }
 
-class Schedule extends StatelessWidget {
-  const Schedule({Key? key}) : super(key: key);
+class Schedule extends StatelessWidget with FormvScheduleMixin {
+  Schedule({Key? key}) : super(key: key);
+
+  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder(
-      bloc: BlocProvider.of<ScheduleBloc>(context),
+      //bloc: BlocProvider.of<ScheduleBloc>(context),
       builder: (_, ScheduleState state) {
         var bloc = BlocProvider.of<ScheduleBloc>(context);
+
         return Scaffold(
           appBar: AppBar(
             title: const Text('Compromisso'),
@@ -36,59 +42,69 @@ class Schedule extends StatelessWidget {
                 bottom: 8.0,
                 top: 20.0,
               ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  MyModalSearch(
-                    typeSearch: MyModalSearchEnum.tEmployee,
-                    initialValue: state.schedule.employee.name,
-                    onTap: (model) {
-                      bloc.add(EmployeeChange(model));
-                    },
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 16.0),
-                    child: MyModalSearch(
-                      typeSearch: MyModalSearchEnum.tCustomer,
-                      initialValue: state.schedule.customer.name,
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    MyModalSearch(
+                      typeSearch: MyModalSearchEnum.tEmployee,
+                      initialValue: state.schedule.employee.name,
+                      validator: (message) => combine([
+                        () => employeeIsEmpty(message ?? ''),
+                      ]),
                       onTap: (model) {
-                        bloc.add(CustomerChange(model));
+                        bloc.add(EmployeeChange(model));
                       },
                     ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 16.0),
-                    child: MyDateField(
-                      title: 'Data / Hora',
-                      initialValue: state.schedule.scheduleDate,
-                      onChanged: (DateTime? selectedDate) =>
-                          bloc.add(ScheduleDateChange(selectedDate)),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 16.0),
+                      child: MyModalSearch(
+                        typeSearch: MyModalSearchEnum.tCustomer,
+                        validator: (message) => combine([
+                          () => customerIsEmpty(message ?? ''),
+                        ]),
+                        initialValue: state.schedule.customer.name,
+                        onTap: (model) {
+                          bloc.add(CustomerChange(model));
+                        },
+                      ),
                     ),
-                  ),
-                  const Padding(
-                    padding: EdgeInsets.only(top: 16.0, bottom: 16.0),
-                    child: ScheduleItems(),
-                  ),
-                  SituationRadioGroup(
-                    onResult: (
-                        {ScheduleSituationEnum? enumuerator, String? text}) {
-                      bloc.add(SituationChange(enumuerator));
-                    },
-                  ),
-                ],
+                    Padding(
+                      padding: const EdgeInsets.only(top: 16.0),
+                      child: MyDateField(
+                        title: 'Data / Hora',
+                        initialValue: state.schedule.scheduleDate,
+                        onChanged: (DateTime? selectedDate) =>
+                            bloc.add(ScheduleDateChange(selectedDate)),
+                      ),
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.only(top: 16.0, bottom: 16.0),
+                      child: ScheduleItems(),
+                    ),
+                    SituationRadioGroup(
+                      onResult: (
+                          {ScheduleSituationEnum? enumuerator, String? text}) {
+                        bloc.add(SituationChange(enumuerator));
+                      },
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
           floatingActionButton: FloatingActionButton(
             child: const Icon(Icons.save_outlined),
-            onPressed: () {
-              //if (state.formStatus != FormSubmissionStatus.inProgress) {
-              bloc.add(SendToDB());
-              //}
-            },
+            onPressed: () => _formSave(),
           ),
         );
       },
     );
+  }
+
+  void _formSave() {
+    if (_formKey.currentState!.validate() == false) return;
+    
   }
 }

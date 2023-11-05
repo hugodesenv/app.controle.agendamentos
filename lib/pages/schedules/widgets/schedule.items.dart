@@ -1,5 +1,5 @@
 import 'package:agendamentos/pages/schedules/schedule.dart';
-import 'package:agendamentos/utils/constants.dart';
+import 'package:agendamentos/utils/constants/constants.dart';
 import 'package:agendamentos/utils/datetime_util.dart';
 import 'package:agendamentos/widgets/my_numeric_field.dart';
 import 'package:brasil_fields/brasil_fields.dart';
