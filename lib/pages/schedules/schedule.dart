@@ -1,6 +1,3 @@
-import 'dart:js';
-
-import 'package:agendamentos/mixin/form_validation/formv_schedule_mixin.dart';
 import 'package:agendamentos/pages/schedules/bloc/schedule_bloc.dart';
 import 'package:agendamentos/pages/schedules/bloc/schedule_event.dart';
 import 'package:agendamentos/pages/schedules/bloc/schedule_state.dart';
@@ -26,7 +23,7 @@ class Schedule extends StatelessWidget with FormvScheduleMixin {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder(
-      //bloc: BlocProvider.of<ScheduleBloc>(context),
+      bloc: BlocProvider.of<ScheduleBloc>(context),
       builder: (_, ScheduleState state) {
         var bloc = BlocProvider.of<ScheduleBloc>(context);
 
@@ -105,6 +102,30 @@ class Schedule extends StatelessWidget with FormvScheduleMixin {
 
   void _formSave() {
     if (_formKey.currentState!.validate() == false) return;
-    
+  }
+}
+
+mixin FormvScheduleMixin {
+  String? employeeIsEmpty(String value) {
+    if (value.isEmpty) {
+      return 'Profissional é obrigatório!';
+    }
+    return null;
+  }
+
+  String? customerIsEmpty(String value) {
+    if (value.isEmpty) {
+      return 'Cliente é obrigatório!';
+    }
+    return null;
+  }
+
+  String? combine(List<String? Function()> validators) {
+    for (var func in validators) {
+      final validation = func();
+      if (validation != null) return validation;
+    }
+
+    return null;
   }
 }

@@ -1,285 +1,227 @@
 import 'package:agendamentos/enum/schedule_situation_enum.dart';
-import 'package:agendamentos/pages/home/bloc/home_bloc.dart';
-import 'package:agendamentos/pages/home/bloc/home_state.dart';
-import 'package:agendamentos/pages/schedules/calendar/bloc/schedules_bloc.dart';
-import 'package:agendamentos/pages/schedules/calendar/bloc/schedules_event.dart';
-import 'package:agendamentos/pages/schedules/calendar/bloc/schedules_state.dart';
 import 'package:agendamentos/pages/schedules/calendar/model/schedules_model.dart';
-import 'package:agendamentos/pages/schedules/calendar/schedule_calendar.dart';
 import 'package:agendamentos/pages/schedules/schedule.dart';
+import 'package:agendamentos/provider/home_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:material_dialogs/dialogs.dart';
 import 'package:material_dialogs/widgets/buttons/icon_button.dart';
 import 'package:material_dialogs/widgets/buttons/icon_outline_button.dart';
+import 'package:provider/provider.dart';
+
 import '../../models/schedule.dart' as ScheduleModel;
 import '../../models/schedule.dart';
 import '../../utils/constants/constants.dart';
 import '../../utils/constants/widgetsConstantes.dart';
-import 'bloc/home_event.dart';
+import '../schedules/calendar/schedule_calendar.dart';
 
-class Home extends StatelessWidget {
-  final TextEditingController _userNameController;
-  final TextEditingController _companyNameController;
-  final SchedulesBloc scheduleCalendarBloc = SchedulesBloc(SchedulesState())
-    ..add(SchedulesEventLoad());
+class Home extends StatefulWidget {
+  const Home({Key? key}) : super(key: key);
 
-  Home({Key? key})
-      : _userNameController = TextEditingController(text: 'Usuário indefinido'),
-        _companyNameController =
-            TextEditingController(text: 'Empresa indefinida'),
-        super(key: key);
+  @override
+  State<Home> createState() => _HomeState();
+}
+
+class _HomeState extends State<Home> {
+  late TextEditingController _userNameController;
+  late TextEditingController _companyNameController;
+  late HomeProvider homeProvider;
+
+  @override
+  void initState() {
+    super.initState();
+    _userNameController = TextEditingController();
+    _companyNameController = TextEditingController();
+
+    Future.delayed(Duration.zero).then((value) {
+      homeProvider.checkUserLogin();
+      homeProvider.findAll();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    var bloc = BlocProvider.of<HomeBloc>(context);
-    Future exitApp() async {
-      Dialogs.materialDialog(
-        context: context,
-        title: 'Deseja sair do app?',
-        titleStyle: const TextStyle(
-          color: Colors.black54,
-          fontWeight: FontWeight.w700,
-        ),
-        msgStyle: const TextStyle(color: Colors.black54),
-        msg: 'Espero vê-lo novamente! :)',
-        actions: [
-          IconsButton(
-            onPressed: () => bloc.add(HomeEventSignOut()),
-            text: 'Sim',
-            iconData: Icons.exit_to_app_outlined,
-            color: Theme.of(context).primaryColor,
-            textStyle: const TextStyle(color: Colors.white),
-            iconColor: Colors.white,
-          ),
-          IconsOutlineButton(
-            onPressed: () => Navigator.pop(context),
-            text: 'Não',
-            iconData: Icons.cancel_outlined,
-            textStyle: const TextStyle(color: Colors.grey),
-            iconColor: Colors.grey,
-          ),
+    homeProvider = Provider.of<HomeProvider>(context);
+    return Scaffold(
+      appBar: appBar(context),
+      body: body(),
+      drawer: leftDrawer(),
+    );
+  }
+
+  Widget body() {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          cardsInfos(),
+          widgetSchedule(),
         ],
-      );
-    }
+      ),
+    );
+  }
 
-    Widget cardInfo(String title, double? value) {
-      return SizedBox(
-        width: 150.0,
-        child: Center(
-          child: ListTile(
-            title: Text(
-              title,
-              style: const TextStyle(fontWeight: FontWeight.w600),
-              textAlign: TextAlign.center,
-            ),
-            subtitle: Padding(
-              padding: const EdgeInsets.only(top: 6),
-              child: Text(
-                (value ?? 0).toString(),
-                textAlign: TextAlign.center,
-                style: const TextStyle(fontSize: 12),
-              ),
-            ),
-          ),
+  Widget cardsInfos() {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 4),
+      child: SizedBox(
+        height: 80,
+        child: ListView(
+          scrollDirection: Axis.horizontal,
+          children: [
+            /*cardInfo('Pendentes',
+                        state.totals[ScheduleSituationEnum.PENDING.text()]),
+                    cardInfo('Confirmados',
+                        state.totals[ScheduleSituationEnum.CONFIRMED.text()]),
+                    cardInfo('Cancelados',
+                        state.totals[ScheduleSituationEnum.CANCELED.text()]),
+                    cardInfo('Finalizados',
+                        state.totals[ScheduleSituationEnum.COMPLETED.text()]),*/
+          ],
         ),
-      );
-    }
+      ),
+    );
+  }
 
-    return BlocListener(
-      bloc: bloc,
-      listener: (context, HomeState state) async {
-        if (state.isLoggedOut) {
-          Navigator.pushReplacementNamed(context, RoutesConstants.routeLogin);
-        }
-      },
-      child: BlocBuilder(
-        bloc: bloc,
-        builder: (_, HomeState state) {
-          return Scaffold(
-            appBar: AppBar(
-              title: const Text("Home"),
-              actions: _getActionsBar(context),
-            ),
-            body: Padding(
-              padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 4),
-                    child: SizedBox(
-                      height: 80,
-                      child: ListView(
-                        scrollDirection: Axis.horizontal,
-                        children: [
-                          cardInfo(
-                              'Pendentes',
-                              state.totals[
-                                  ScheduleSituationEnum.PENDING.text()]),
-                          cardInfo(
-                              'Confirmados',
-                              state.totals[
-                                  ScheduleSituationEnum.CONFIRMED.text()]),
-                          cardInfo(
-                              'Cancelados',
-                              state.totals[
-                                  ScheduleSituationEnum.CANCELED.text()]),
-                          cardInfo(
-                              'Finalizados',
-                              state.totals[
-                                  ScheduleSituationEnum.COMPLETED.text()]),
-                        ],
+  // componente que mostra todos os agendamentos na pagina inicial
+  Widget widgetSchedule() {
+    return Expanded(
+      child: ScheduleCalendar(
+        onTotals: (date, values) {},
+        onScheduleClick: (scheduleModule) async {
+          await _showScheduleDetail(context, scheduleModule);
+        },
+        onEmptyClick: (date) async {
+          var arguments = ScheduleParameters(scheduleDate: date);
+          await _showAddSchedule(context, params: arguments);
+        },
+        schedules: homeProvider.schedules,
+      ),
+    );
+  }
+
+  Widget leftDrawer() {
+    return Drawer(
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.horizontal(
+          right: Radius.circular(20),
+        ),
+      ),
+      child: SafeArea(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Consumer<HomeProvider>(
+              builder: (context, provider, _) {
+                final session = provider.accountConnected;
+                _userNameController.text = 'Olá, ${session.name}';
+                _companyNameController.text = session.company.socialName;
+                return Container(
+                  padding: const EdgeInsets.only(bottom: 10, top: 20, left: 20),
+                  child: ListTile(
+                    title: Text(
+                      _userNameController.text,
+                      textAlign: TextAlign.left,
+                      style: TextStyle(
+                        color: Theme.of(context).primaryColor,
+                        fontWeight: FontWeight.w700,
                       ),
                     ),
-                  ),
-                  Expanded(
-                    child: BlocProvider(
-                      create: (_) => SchedulesBloc(SchedulesState())
-                        ..add(SchedulesEventLoad()),
-                      child: ScheduleCalendar(
-                        bloc: scheduleCalendarBloc,
-                        onTotals: (date, values) =>
-                            bloc.add(HomeEventsScheduleListener(date, values)),
-                        onScheduleClick: (scheduleModule) async {
-                          await _showScheduleDetail(context, scheduleModule);
-                        },
-                        onEmptyClick: (date) async {
-                          var arguments =
-                              ScheduleParameters(scheduleDate: date);
-                          await _showAddSchedule(context, params: arguments);
-                        },
+                    subtitle: Text(
+                      _companyNameController.text,
+                      style: TextStyle(
+                        color: Theme.of(context).primaryColor,
                       ),
                     ),
+                    leading: IconButton(
+                      icon: Icon(
+                        Icons.exit_to_app_rounded,
+                        color: Theme.of(context).primaryColor,
+                      ),
+                      onPressed: () async => await exitApp(),
+                    ),
                   ),
-                ],
-              ),
+                );
+              },
             ),
-            drawer: Drawer(
-              shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.horizontal(
-                  right: Radius.circular(20),
-                ),
-              ),
-              child: SafeArea(
+            Expanded(
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.only(left: 10, right: 5),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    BlocBuilder(
-                      bloc: bloc,
-                      builder: (_, HomeState state) {
-                        final session = state.accountConnected;
-                        _userNameController.text = 'Olá, ${session.name}';
-                        _companyNameController.text =
-                            session.company.socialName;
-                        return Container(
-                          padding: const EdgeInsets.only(
-                              bottom: 10, top: 20, left: 20),
-                          child: ListTile(
-                            title: Text(
-                              _userNameController.text,
-                              textAlign: TextAlign.left,
-                              style: TextStyle(
-                                color: Theme.of(context).primaryColor,
-                                fontWeight: FontWeight.w700,
-                              ),
-                            ),
-                            subtitle: Text(
-                              _companyNameController.text,
-                              style: TextStyle(
-                                color: Theme.of(context).primaryColor,
-                              ),
-                            ),
-                            leading: IconButton(
-                              icon: Icon(
-                                Icons.exit_to_app_rounded,
-                                color: Theme.of(context).primaryColor,
-                              ),
-                              onPressed: () async => await exitApp(),
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-                    Expanded(
-                      child: SingleChildScrollView(
-                        padding: const EdgeInsets.only(left: 10, right: 5),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            const Divider(),
-                            ListTile(
-                              leading: const Icon(Icons.person_outline),
-                              onTap: () => Navigator.pushNamed(
-                                  context, RoutesConstants.routeCustomerQuery),
-                              title: const Text('Clientes'),
-                            ),
-                            ListTile(
-                              leading: const Icon(Icons.hardware_outlined),
-                              onTap: () => Navigator.pushNamed(
-                                  context, RoutesConstants.routeItemQuery),
-                              title: const Text('Produtos e serviços'),
-                            ),
-                            ListTile(
-                              leading: const Icon(Icons.auto_graph_sharp),
-                              onTap: () async => await Navigator.pushNamed(
-                                  context, RoutesConstants.routeReport),
-                              title: const Text('Relatórios'),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
                     const Divider(),
-                    _drawerFixed(
-                      onTap: () async => Navigator.pushNamed(
-                        context,
-                        RoutesConstants.routeProfile,
-                      ),
-                      textTitle: 'Configurações',
-                      iconData: Icons.settings,
-                      context: context,
+                    ListTile(
+                      leading: const Icon(Icons.person_outline),
+                      onTap: () => Navigator.pushNamed(
+                          context, RoutesConstants.routeCustomerQuery),
+                      title: const Text('Clientes'),
+                    ),
+                    ListTile(
+                      leading: const Icon(Icons.hardware_outlined),
+                      onTap: () => Navigator.pushNamed(
+                          context, RoutesConstants.routeItemQuery),
+                      title: const Text('Produtos e serviços'),
+                    ),
+                    ListTile(
+                      leading: const Icon(Icons.auto_graph_sharp),
+                      onTap: () async => await Navigator.pushNamed(
+                          context, RoutesConstants.routeReport),
+                      title: const Text('Relatórios'),
                     ),
                   ],
                 ),
               ),
             ),
-          );
-        },
+            const Divider(),
+            _drawerFixed(
+              onTap: () async => Navigator.pushNamed(
+                context,
+                RoutesConstants.routeProfile,
+              ),
+              textTitle: 'Configurações',
+              iconData: Icons.settings,
+              context: context,
+            ),
+          ],
+        ),
       ),
     );
   }
 
-  // action bar
-  List<Widget> _getActionsBar(BuildContext pContext) {
-    return [
-      PopupMenuButton(
-        itemBuilder: (context) {
-          return [
-            PopupMenuItem(
-              child: const ListTile(
-                leading: Icon(Icons.refresh),
-                title: Text('Atualizar'),
+  AppBar appBar(BuildContext context) {
+    return AppBar(
+      title: const Text("Home"),
+      actions: [
+        PopupMenuButton(
+          itemBuilder: (_) {
+            return [
+              PopupMenuItem(
+                child: const ListTile(
+                  leading: Icon(Icons.refresh),
+                  title: Text('Atualizar'),
+                ),
+                onTap: () =>
+                    {}, //scheduleCalendarBloc.add(SchedulesEventLoad()),
               ),
-              onTap: () => scheduleCalendarBloc.add(SchedulesEventLoad()),
-            ),
-            PopupMenuItem(
-              child: const ListTile(
-                leading: Icon(Icons.pending_actions),
-                title: Text('Incluir'),
+              PopupMenuItem(
+                child: const ListTile(
+                  leading: Icon(Icons.pending_actions),
+                  title: Text('Incluir'),
+                ),
+                onTap: () async {
+                  //When a pop up menu is clicked, it will call pop() on the navigator to dismiss itself.
+                  //So pushing an extra route would cause it to pop that route immediately, instead of dismissing itself.
+                  await Future.delayed(Duration.zero).then((_) async {
+                    await _showAddSchedule(context);
+                  });
+                },
               ),
-              onTap: () async {
-                //When a pop up menu is clicked, it will call pop() on the navigator to dismiss itself.
-                //So pushing an extra route would cause it to pop that route immediately, instead of dismissing itself.
-                await Future.delayed(Duration.zero).then((_) async {
-                  await _showAddSchedule(pContext);
-                });
-              },
-            ),
-          ];
-        },
-      ),
-    ];
+            ];
+          },
+        ),
+      ],
+    );
   }
 
   // calling the screem, passing the parameters
@@ -405,6 +347,64 @@ class Home extends StatelessWidget {
         style: TextStyle(
           color: Theme.of(context).primaryColor,
           fontWeight: FontWeight.w700,
+        ),
+      ),
+    );
+  }
+
+  Future exitApp() async {
+    Dialogs.materialDialog(
+      context: context,
+      title: 'Deseja sair do app?',
+      titleStyle: const TextStyle(
+        color: Colors.black54,
+        fontWeight: FontWeight.w700,
+      ),
+      msgStyle: const TextStyle(color: Colors.black54),
+      msg: 'Espero vê-lo novamente! :)',
+      actions: [
+        IconsButton(
+          onPressed: () async {
+            bool res = await homeProvider.logOut();
+            if (res) {
+              Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
+            }
+          },
+          text: 'Sim',
+          iconData: Icons.exit_to_app_outlined,
+          color: Theme.of(context).primaryColor,
+          textStyle: const TextStyle(color: Colors.white),
+          iconColor: Colors.white,
+        ),
+        IconsOutlineButton(
+          onPressed: () => Navigator.pop(context),
+          text: 'Não',
+          iconData: Icons.cancel_outlined,
+          textStyle: const TextStyle(color: Colors.grey),
+          iconColor: Colors.grey,
+        ),
+      ],
+    );
+  }
+
+  Widget cardInfo(String title, double? value) {
+    return SizedBox(
+      width: 150.0,
+      child: Center(
+        child: ListTile(
+          title: Text(
+            title,
+            style: const TextStyle(fontWeight: FontWeight.w600),
+            textAlign: TextAlign.center,
+          ),
+          subtitle: Padding(
+            padding: const EdgeInsets.only(top: 6),
+            child: Text(
+              (value ?? 0).toString(),
+              textAlign: TextAlign.center,
+              style: const TextStyle(fontSize: 12),
+            ),
+          ),
         ),
       ),
     );

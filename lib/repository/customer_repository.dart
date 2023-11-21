@@ -7,7 +7,7 @@ import 'package:agendamentos/utils/preferences_util.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
 
-import '../../models/customer.dart';
+import '../models/customer.dart';
 
 class CustomerRepository extends FirebaseRepository implements CrudRepository {
   CustomerRepository._() : super(controller_name: 'customer');

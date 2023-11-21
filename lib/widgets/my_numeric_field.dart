@@ -1,8 +1,6 @@
 /// Made by Hugo Souza - 23/11/2023
 
-import 'package:agendamentos/utils/datetime_util.dart';
 import 'package:agendamentos/widgets/my_text_title.dart';
-import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
 
 class MyNumericField extends StatefulWidget {

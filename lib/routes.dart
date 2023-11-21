@@ -14,9 +14,6 @@ import 'package:agendamentos/pages/customer/query/bloc/customer_query_bloc.dart'
 import 'package:agendamentos/pages/customer/query/bloc/customer_query_event.dart';
 import 'package:agendamentos/pages/customer/query/bloc/customer_query_state.dart';
 import 'package:agendamentos/pages/customer/query/customer_query.dart';
-import 'package:agendamentos/pages/home/bloc/home_bloc.dart';
-import 'package:agendamentos/pages/home/bloc/home_event.dart';
-import 'package:agendamentos/pages/home/bloc/home_state.dart';
 import 'package:agendamentos/pages/item/bloc/item_query_bloc.dart';
 import 'package:agendamentos/pages/item/bloc/item_query_state.dart';
 import 'package:agendamentos/pages/item/item_query.dart';
@@ -25,35 +22,15 @@ import 'package:agendamentos/pages/report/report.dart';
 import 'package:agendamentos/pages/schedules/bloc/schedule_bloc.dart';
 import 'package:agendamentos/pages/schedules/bloc/schedule_state.dart';
 import 'package:agendamentos/pages/schedules/schedule.dart';
-import 'package:agendamentos/pages/sign_in/bloc/sign_in_bloc.dart';
-import 'package:agendamentos/pages/sign_in/bloc/sign_in_event.dart';
-import 'package:agendamentos/pages/sign_in/bloc/sign_in_state.dart';
-import 'package:agendamentos/pages/sign_in/sign_in.dart';
 import 'package:agendamentos/utils/constants/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'pages/home/home.dart';
 
 appRoutes(RouteSettings settings) {
   if (settings.name == RoutesConstants.routeHome) {
-    return MaterialPageRoute(
-      builder: (_) {
-        return BlocProvider(
-          create: (_) => HomeBloc(HomeStateInitial())..add(HomeEventInitial()),
-          child: Home(),
-        );
-      },
-    );
-  } else if (settings.name == RoutesConstants.routeLogin) {
-    return MaterialPageRoute(
-      builder: (_) {
-        return BlocProvider(
-          create: (_) =>
-              SignInBloc(SignInStateInitial())..add(SignInEventAuthenticated()),
-          child: const SignIn(),
-        );
-      },
-    );
+    return MaterialPageRoute(builder: (_) => Home());
   } else if (settings.name == RoutesConstants.routeCustomerQuery) {
     return MaterialPageRoute(
       builder: (_) {

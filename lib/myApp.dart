@@ -1,21 +1,30 @@
-import 'package:agendamentos/pages/sign_in/bloc/sign_in_bloc.dart';
-import 'package:agendamentos/pages/sign_in/bloc/sign_in_event.dart';
-import 'package:agendamentos/pages/sign_in/bloc/sign_in_state.dart';
+import 'package:agendamentos/pages/home/home.dart';
 import 'package:agendamentos/pages/sign_in/sign_in.dart';
+import 'package:agendamentos/provider/auth_provider.dart';
 import 'package:agendamentos/routes.dart';
 import 'package:agendamentos/utils/theme_utils.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  @override
+  void initState() {
+    super.initState();
+    //Provider.of<AuthProvider>(context, listen: false).checkUser();
+  }
 
   @override
   Widget build(BuildContext context) {
     SkedolTheme skedolTheme = SkedolTheme();
-
     return MaterialApp(
       title: 'Skedol',
       localizationsDelegates: const [
@@ -27,10 +36,14 @@ class MyApp extends StatelessWidget {
         Locale('en'), // English
         Locale('pt', 'BR'), // Portuguese
       ],
-      home: BlocProvider<SignInBloc>(
-        create: (_) =>
-            SignInBloc(SignInStateInitial())..add(SignInEventAuthenticated()),
-        child: const SignIn(),
+      home: Consumer<AuthProvider>(
+        builder: (context, authProvider, _) {
+          if (authProvider.directToHome) {
+            return Home();
+          } else {
+            return SignIn();
+          }
+        },
       ),
       debugShowCheckedModeBanner: false,
       theme: ThemeData(

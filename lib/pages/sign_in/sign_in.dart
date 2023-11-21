@@ -1,14 +1,22 @@
-import 'package:agendamentos/pages/sign_in/bloc/sign_in_bloc.dart';
-import 'package:agendamentos/pages/sign_in/bloc/sign_in_event.dart';
-import 'package:agendamentos/pages/sign_in/bloc/sign_in_state.dart';
+import 'package:agendamentos/provider/login_provider.dart';
+import 'package:agendamentos/utils/constants/constants.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:material_dialogs/dialogs.dart';
-import '../../utils/constants/constants.dart';
+import 'package:provider/provider.dart';
 import '../../utils/constants/widgetsConstantes.dart';
 
-class SignIn extends StatelessWidget {
+class SignIn extends StatefulWidget {
   const SignIn({Key? key}) : super(key: key);
+
+  @override
+  State<SignIn> createState() => _SignInState();
+}
+
+class _SignInState extends State<SignIn> {
+  late LoginProvider loginProvider;
+  late TextEditingController userController;
+  late TextEditingController passwordController;
+  late TextEditingController emailResetController;
 
   Widget _textTitle(String title, BuildContext context) {
     return Text(
@@ -22,8 +30,26 @@ class SignIn extends StatelessWidget {
     );
   }
 
-  Future<void> _simpleDialog(BuildContext context, String message,
-      {bool? isError}) async {
+  // clique do botão "entrar", na qual faz a tentativa de login no aplicativo
+  Future<void> tryLogin(BuildContext context) async {
+    String res = await loginProvider.doLogin(
+        userController.text, passwordController.text);
+
+    if (res.isNotEmpty) {
+      // ignore: use_build_context_synchronously
+      await showStateDialog(context, res, isError: true);
+      return;
+    }
+
+    // ignore: use_build_context_synchronously
+    Navigator.of(context).pushReplacementNamed(RoutesConstants.routeHome);
+  }
+
+  Future<void> showStateDialog(
+    BuildContext context,
+    String message, {
+    bool? isError,
+  }) async {
     await Dialogs.materialDialog(
       context: context,
       title: message,
@@ -35,12 +61,78 @@ class SignIn extends StatelessWidget {
     );
   }
 
+  Future<void> resetPassword() async {
+    Map res = await loginProvider.resetPassword(emailResetController.text);
+    // ignore: use_build_context_synchronously
+    await showStateDialog(
+      context,
+      res['message'],
+      isError: res['error'],
+    );
+  }
+
+  Future<Widget> showModalResetPassword() async {
+    return await showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      shape: shapeModalBottomSheet,
+      builder: (_) {
+        return Consumer<LoginProvider>(
+          builder: (context, provider, child) {
+            return Padding(
+              padding: EdgeInsets.only(
+                bottom: MediaQuery.of(context).viewInsets.bottom + 20,
+                left: 20,
+                top: 20,
+                right: 20,
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 20),
+                    child: _textTitle('Redefinir senha', context),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 20),
+                    child: Text(
+                      'Digite o seu e-mail e clique no botão p/ enviar a redefinição de senha:',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(color: Theme.of(context).primaryColor),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 20),
+                    child: MyLoginTextField(
+                      labelText: 'E-mail',
+                      controller: emailResetController,
+                      autoFocus: true,
+                      keyboardType: TextInputType.emailAddress,
+                    ),
+                  ),
+                  MyLoadingButton(
+                    title: const Text('Enviar'),
+                    loading: loginProvider.resettingPassword,
+                    onPressed: () async {
+                      await resetPassword();
+                    },
+                  ),
+                ],
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    var bloc = BlocProvider.of<SignInBloc>(context);
-    TextEditingController userController = TextEditingController();
-    TextEditingController passwordController = TextEditingController();
-    TextEditingController emailResetController = TextEditingController();
+    loginProvider = Provider.of<LoginProvider>(context);
+    userController = TextEditingController();
+    passwordController = TextEditingController();
+    emailResetController = TextEditingController();
 
     Future showSignIn() async {
       await showModalBottomSheet(
@@ -48,152 +140,63 @@ class SignIn extends StatelessWidget {
         shape: shapeModalBottomSheet,
         isScrollControlled: true,
         builder: (_) {
-          return BlocListener(
-            bloc: bloc,
-            listener: (_, state) async {
-              if (state is SignInStateSuccess) {
-                Navigator.pushReplacementNamed(
-                  context,
-                  RoutesConstants.routeHome,
-                );
-              } else if (state is SignInStateFailure) {
-                await _simpleDialog(context, state.message);
-              } else if (state is SignInStateResetPassword) {
-                await _simpleDialog(context, state.message,
-                    isError: state.emailSent == false);
-              }
+          return Consumer<LoginProvider>(
+            builder: (context, value, child) {
+              return Container(
+                padding: EdgeInsets.only(
+                    left: 30,
+                    right: 30,
+                    top: 30,
+                    bottom: MediaQuery.of(context).viewInsets.bottom),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 20),
+                      child: _textTitle('Área de acesso', context),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 20),
+                      child: MyLoginTextField(
+                        labelText: 'Usuário',
+                        controller: userController,
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 20),
+                      child: MyLoginTextField(
+                        labelText: 'Senha',
+                        controller: passwordController,
+                        isPassword: true,
+                      ),
+                    ),
+                    MyLoadingButton(
+                      loading: loginProvider.loading,
+                      onPressed: () async => await tryLogin(context),
+                      title: const Text(
+                        'Entrar',
+                        style: TextStyle(
+                          fontWeight: FontWeight.w700,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                    TextButton(
+                      onPressed: () {},
+                      style: const ButtonStyle(alignment: Alignment.topCenter),
+                      child: TextButton(
+                        onPressed: () async => await showModalResetPassword(),
+                        child: const Text(
+                          'Esqueceu sua senha?',
+                          style: TextStyle(color: Colors.black26),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              );
             },
-            child: BlocBuilder(
-              bloc: bloc,
-              builder: (_, state) {
-                bool isLoading = state is SignInStateLoading;
-                return Container(
-                  padding: EdgeInsets.only(
-                      left: 30,
-                      right: 30,
-                      top: 30,
-                      bottom: MediaQuery.of(context).viewInsets.bottom),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 20),
-                        child: _textTitle('Área de acesso', context),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 20),
-                        child: MyLoginTextField(
-                          labelText: 'Usuário',
-                          controller: userController,
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 20),
-                        child: MyLoginTextField(
-                          labelText: 'Senha',
-                          controller: passwordController,
-                          isPassword: true,
-                        ),
-                      ),
-                      MyLoadingButton(
-                        loading: isLoading,
-                        onPressed: () {
-                          bloc.add(SignInEventSubmitted(
-                              username: userController.text,
-                              password: passwordController.text));
-                        },
-                        title: const Text(
-                          'Entrar',
-                          style: TextStyle(
-                            fontWeight: FontWeight.w700,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
-                      TextButton(
-                        onPressed: () {},
-                        style:
-                            const ButtonStyle(alignment: Alignment.topCenter),
-                        child: TextButton(
-                          onPressed: () async {
-                            await showModalBottomSheet(
-                              context: context,
-                              isScrollControlled: true,
-                              shape: shapeModalBottomSheet,
-                              builder: (_) {
-                                return BlocBuilder(
-                                  bloc: bloc,
-                                  builder: (_, state) {
-                                    bool isLoadingReset =
-                                        state is SignInStateWaitingEmailReset;
-                                    return Padding(
-                                      padding: EdgeInsets.only(
-                                          bottom: MediaQuery.of(context)
-                                                  .viewInsets
-                                                  .bottom +
-                                              20,
-                                          left: 20,
-                                          top: 20,
-                                          right: 20),
-                                      child: Column(
-                                        mainAxisSize: MainAxisSize.min,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.stretch,
-                                        children: [
-                                          Padding(
-                                            padding: const EdgeInsets.only(
-                                                bottom: 20),
-                                            child: _textTitle(
-                                                'Redefinir senha', context),
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.only(
-                                                bottom: 20),
-                                            child: Text(
-                                              'Digite o seu e-mail e clique no botão p/ enviar a redefinição de senha:',
-                                              textAlign: TextAlign.center,
-                                              style: TextStyle(
-                                                  color: Theme.of(context)
-                                                      .primaryColor),
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.only(
-                                                bottom: 20),
-                                            child: MyLoginTextField(
-                                              labelText: 'E-mail',
-                                              controller: emailResetController,
-                                              autoFocus: true,
-                                              keyboardType:
-                                                  TextInputType.emailAddress,
-                                            ),
-                                          ),
-                                          MyLoadingButton(
-                                            onPressed: () => bloc.add(
-                                              SignInEventSubmittedForgetPassword(
-                                                  emailResetController.text),
-                                            ),
-                                            title: const Text('Enviar'),
-                                            loading: isLoadingReset,
-                                          ),
-                                        ],
-                                      ),
-                                    );
-                                  },
-                                );
-                              },
-                            );
-                          },
-                          child: const Text('Esqueceu sua senha?',
-                              style: TextStyle(color: Colors.black26)),
-                        ),
-                      ),
-                    ],
-                  ),
-                );
-              },
-            ),
           );
         },
       );
@@ -201,68 +204,54 @@ class SignIn extends StatelessWidget {
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      body: BlocListener(
-        bloc: bloc,
-        listener: (_, state) async {
-          if (state is SignInStateGoToHome) {
-            await Navigator.pushReplacementNamed(
-                context, RoutesConstants.routeHome);
-          }
-        },
-        child: BlocBuilder(
-          bloc: bloc,
-          builder: (_, state) {
-            return Container(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [
-                    Theme.of(context).primaryColor,
-                    const Color.fromARGB(255, 104, 185, 252),
-                  ],
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              Theme.of(context).primaryColor,
+              const Color.fromARGB(255, 104, 185, 252),
+            ],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+          ),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            const Text(
+              'Skedol',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 42,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
+            ),
+            const Padding(
+              padding: EdgeInsets.only(left: 30, right: 30),
+              child: Text(
+                "Seja bem-vindo(a)! \n\nOrganize e fique por dentro dos seus agendamentos! :)",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 16,
                 ),
               ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  const Text(
-                    'Skedol',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 42,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
-                  ),
-                  const Padding(
-                    padding: EdgeInsets.only(left: 30, right: 30),
-                    child: Text(
-                      "Seja bem-vindo(a)! \n\nOrganize e fique por dentro dos seus agendamentos! :)",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 16,
-                      ),
-                    ),
-                  ),
-                  Container(
-                    padding: const EdgeInsets.only(left: 40, right: 40),
-                    child: MyLoadingButton(
-                      onPressed: () async => await showSignIn(),
-                      colorBackground: Colors.transparent,
-                      title: const Text(
-                        'Acessar o app',
-                        style: TextStyle(
-                            fontWeight: FontWeight.w700, color: Colors.white),
-                      ),
-                    ),
-                  ),
-                ],
+            ),
+            Container(
+              padding: const EdgeInsets.only(left: 40, right: 40),
+              child: MyLoadingButton(
+                onPressed: () async => await showSignIn(),
+                colorBackground: Colors.transparent,
+                title: const Text(
+                  'Acessar o app',
+                  style: TextStyle(
+                      fontWeight: FontWeight.w700, color: Colors.white),
+                ),
               ),
-            );
-          },
+            ),
+          ],
         ),
       ),
     );
