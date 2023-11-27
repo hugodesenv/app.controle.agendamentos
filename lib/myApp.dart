@@ -17,12 +17,6 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   @override
-  void initState() {
-    super.initState();
-    //Provider.of<AuthProvider>(context, listen: false).checkUser();
-  }
-
-  @override
   Widget build(BuildContext context) {
     SkedolTheme skedolTheme = SkedolTheme();
     return MaterialApp(
@@ -39,9 +33,9 @@ class _MyAppState extends State<MyApp> {
       home: Consumer<AuthProvider>(
         builder: (context, authProvider, _) {
           if (authProvider.directToHome) {
-            return Home();
+            return const Home();
           } else {
-            return SignIn();
+            return const SignIn();
           }
         },
       ),

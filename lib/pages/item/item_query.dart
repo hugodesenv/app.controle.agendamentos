@@ -35,7 +35,7 @@ class ItemQuery extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 const Padding(
-                  padding: const EdgeInsets.only(bottom: 20),
+                  padding: EdgeInsets.only(bottom: 20),
                   child: Text(
                     'O que deseja cadastrar?',
                     textAlign: TextAlign.center,
@@ -71,7 +71,6 @@ class ItemQuery extends StatelessWidget {
     return BlocBuilder(
       bloc: BlocProvider.of<ItemQueryBloc>(context),
       builder: (_, state) {
-        var bloc = BlocProvider.of<ItemQueryBloc>(context);
         return DefaultTabController(
           initialIndex: 0,
           length: 2,

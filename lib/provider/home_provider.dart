@@ -7,7 +7,7 @@ import '../utils/preferences_util.dart';
 
 class HomeProvider with ChangeNotifier {
   Account _accountConnected = Account.empty();
-  List<ScheduleModule> _schedules = [];
+  final List<ScheduleModule> _schedules = [];
 
   Account get accountConnected => _accountConnected;
 
@@ -30,6 +30,7 @@ class HomeProvider with ChangeNotifier {
     return res;
   }
 
+  // busca todos os agendamentos na api
   void findAll() async {
     ScheduleRepository repository = ScheduleRepository.instance;
     Map res = await repository.findAll();

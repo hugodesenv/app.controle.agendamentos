@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
+
 import '../../../enum/schedule_situation_enum.dart';
 import '../../../models/schedule.dart';
 import '../../../widgets/my_text_title.dart';
 
 class SituationRadioGroup extends StatefulWidget {
-  late Function({String? text, ScheduleSituationEnum? enumuerator}) _onResult;
+  late Function({String? text, ScheduleSituationEnum? situation}) _onResult;
 
   SituationRadioGroup({
     Key? key,
-    required Function({String? text, ScheduleSituationEnum? enumuerator})
+    required Function({String? text, ScheduleSituationEnum? situation})
         onResult,
   }) : super(key: key) {
     _onResult = onResult;
@@ -28,7 +29,7 @@ class _SituationRadioGroupState extends State<SituationRadioGroup> {
     buildList();
 
     widget._onResult(
-      enumuerator: ScheduleSituationEnum.PENDING,
+      situation: ScheduleSituationEnum.PENDING,
       text: ScheduleSituationEnum.PENDING.text(),
     );
   }
@@ -79,7 +80,7 @@ class _SituationRadioGroupState extends State<SituationRadioGroup> {
 
                       widget._onResult(
                         text: _situationGroup?.text(),
-                        enumuerator: _situationGroup,
+                        situation: _situationGroup,
                       );
                     },
                   );

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../models/account.dart';
 import '../repository/user_repository.dart';
 
-class LoginProvider extends ChangeNotifier {
+class LoginProvider with ChangeNotifier {
   bool _loading = false;
   bool _resettingPassword = false;
 

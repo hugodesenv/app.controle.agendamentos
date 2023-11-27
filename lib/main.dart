@@ -2,6 +2,7 @@ import 'package:agendamentos/myApp.dart';
 import 'package:agendamentos/provider/auth_provider.dart';
 import 'package:agendamentos/provider/home_provider.dart';
 import 'package:agendamentos/provider/login_provider.dart';
+import 'package:agendamentos/provider/schedule_provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -29,6 +30,9 @@ void main() async {
         ),
         ChangeNotifierProvider<LoginProvider>(
           create: (_) => LoginProvider(),
+        ),
+        ChangeNotifierProvider<ScheduleProvider>(
+          create: (_) => ScheduleProvider(),
         ),
       ],
       child: const MyApp(),

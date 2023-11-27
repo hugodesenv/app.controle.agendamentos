@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
-import 'bloc/schedules_bloc.dart';
+
 import 'model/schedules_datasource.dart';
 import 'model/schedules_model.dart';
 
@@ -62,6 +62,21 @@ class ScheduleCalendar extends StatelessWidget {
             _onEmptyClick(details.date ?? DateTime.timestamp());
           }
         }
+        break;
+      case CalendarElement.header:
+        // TODO: Handle this case.
+        break;
+      case CalendarElement.viewHeader:
+        // TODO: Handle this case.
+        break;
+      case CalendarElement.allDayPanel:
+        // TODO: Handle this case.
+        break;
+      case CalendarElement.moreAppointmentRegion:
+        // TODO: Handle this case.
+        break;
+      case CalendarElement.resourceHeader:
+        // TODO: Handle this case.
         break;
     }
   }

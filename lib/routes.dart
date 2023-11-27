@@ -19,8 +19,6 @@ import 'package:agendamentos/pages/item/bloc/item_query_state.dart';
 import 'package:agendamentos/pages/item/item_query.dart';
 import 'package:agendamentos/pages/profile/profile.dart';
 import 'package:agendamentos/pages/report/report.dart';
-import 'package:agendamentos/pages/schedules/bloc/schedule_bloc.dart';
-import 'package:agendamentos/pages/schedules/bloc/schedule_state.dart';
 import 'package:agendamentos/pages/schedules/schedule.dart';
 import 'package:agendamentos/utils/constants/constants.dart';
 import 'package:flutter/material.dart';
@@ -84,10 +82,7 @@ appRoutes(RouteSettings settings) {
   } else if (settings.name == RoutesConstants.routeSchedule) {
     // ScheduleParameters? arguments = settings.arguments as ScheduleParameters?;
     return MaterialPageRoute(
-      builder: (_) => BlocProvider(
-        create: (context) => ScheduleBloc(ScheduleState()),
-        child: Schedule(),
-      ),
+      builder: (_) => const Schedule(),
     );
   } else if (settings.name == RoutesConstants.routeItemQuery) {
     return MaterialPageRoute(

@@ -38,9 +38,9 @@ class _MyModalSearchState extends State<MyModalSearch> {
 
   @override
   void initState() {
+    super.initState();
     _tecValue = TextEditingController(text: widget._initialValue);
     _settupScroll();
-    super.initState();
   }
 
   /// function to determinate when the page is in the end
@@ -153,8 +153,12 @@ class _MyModalSearchState extends State<MyModalSearch> {
                                       ),
                                     ),
                                     onTap: () {
+                                      print(
+                                          "** my modal search dart on tap before");
                                       _tecValue.text = item.title;
                                       widget._onTap(item.model);
+                                      print(
+                                          "** my modal search after callback");
                                       Navigator.pop(context);
                                     },
                                   );
