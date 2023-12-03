@@ -5,34 +5,33 @@ import '../repository/user_repository.dart';
 
 class LoginProvider with ChangeNotifier {
   bool _loading = false;
-  bool _resettingPassword = false;
+  final bool _resetPassword = false;
 
   bool get loading => _loading;
-  bool get resettingPassword => _resettingPassword;
+  bool get resetPassword => _resetPassword;
 
   set loading(bool value) {
     _loading = value;
     notifyListeners();
   }
 
-  set resettingPassword(bool value) {
-    _resettingPassword = value;
+  set resetPassword(bool value) {
+    resetPassword = value;
     notifyListeners();
   }
 
-  /// realiza o login no aplicativo
-  Future<String> doLogin(String user, String password) async {
-    if (user.trim().isEmpty) {
+  Future<String> tryLogin(String pUser, String pPassword) async {
+    if (pUser.trim().isEmpty) {
       return 'Usuário inválido';
     }
 
-    if (password.trim().isEmpty) {
+    if (pPassword.trim().isEmpty) {
       return 'Senha inválida!';
     }
 
     loading = true;
     try {
-      Account res = await UserRepository.instance.signIn(user, password);
+      Account res = await UserRepository.instance.signIn(pUser, pPassword);
       if (res.username.isEmpty) {
         return 'Usuário ou senha incorretos!';
       }
@@ -44,8 +43,8 @@ class LoginProvider with ChangeNotifier {
   }
 
   ///encaminha o e-mail para redefinição de senha
-  Future<Map> resetPassword(String email) async {
-    resettingPassword = true;
+  Future<Map> sendResetUserEmail(String email) async {
+    resetPassword = true;
     try {
       UserRepository repository = UserRepository.instance;
       try {
@@ -61,7 +60,7 @@ class LoginProvider with ChangeNotifier {
         };
       }
     } finally {
-      resettingPassword = false;
+      resetPassword = false;
     }
   }
 }

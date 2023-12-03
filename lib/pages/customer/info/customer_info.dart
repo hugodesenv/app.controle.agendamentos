@@ -1,4 +1,4 @@
-import 'package:agendamentos/enum/form_submission_status.dart';
+import 'package:agendamentos/enum/formulario_estado_enum.dart';
 import 'package:agendamentos/pages/customer/info/bloc/customer_info_bloc.dart';
 import 'package:agendamentos/pages/customer/info/bloc/customer_info_state.dart';
 import 'package:flutter/material.dart';
@@ -90,9 +90,9 @@ class CustomerInfo extends StatelessWidget {
       bloc: infoBloc,
       listener: (context, state) {
         if (state is CustomerInfoState) {
-          if (state.status == FormSubmissionStatus.failure) {
+          if (state.status == FormularioEstado.FALHA) {
             mySnackbar(context, state.message!, background: Colors.red);
-          } else if (state.status == FormSubmissionStatus.deleted) {
+          } else if (state.status == FormularioEstado.EXCLUIDO) {
             mySnackbar(context, state.message!);
             Navigator.pop(context);
           }

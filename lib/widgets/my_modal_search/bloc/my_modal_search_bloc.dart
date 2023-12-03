@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'package:agendamentos/enum/item_type_enum.dart';
+import 'package:agendamentos/enum/item_tipo_enum.dart';
 import 'package:agendamentos/repository/customer_repository.dart';
 import 'package:agendamentos/repository/employee_repository.dart';
 import 'package:agendamentos/repository/item_repository.dart';
@@ -61,7 +61,7 @@ class MyModalSearchBloc extends Bloc<MyModalSearchEvent, MyModalSearchState> {
               MyModalSearchValues(
                 item.id,
                 item.description,
-                item.type.typeDescription,
+                item.tipo.typeDescription,
                 item,
               ),
             );

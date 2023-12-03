@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:agendamentos/enum/database_enum.dart';
+import 'package:agendamentos/enum/banco_dados_enum.dart';
 import 'package:agendamentos/models/account.dart';
 import 'package:agendamentos/repository/firebase_repository.dart';
 import 'package:agendamentos/utils/preferences_util.dart';
@@ -37,7 +37,7 @@ class CustomerRepository extends FirebaseRepository implements CrudRepository {
   @override
   Future<Map> findAll() async {
     List<Customer> customers = [];
-    Account currentUser = await PreferencesUtil.getPrefsCurrentUser();
+    Account currentUser = await PreferencesUtil.currentUser();
 
     var response = await dio.get('$apiURL/${currentUser.company.id}');
     for (var data in response.data) {
@@ -54,7 +54,10 @@ class CustomerRepository extends FirebaseRepository implements CrudRepository {
   Future<Map> update(data) async {
     Customer customer = data as Customer;
     try {
-      var data = {...customer.toMap(), 'action': DatabaseAction.UPDATE.text()};
+      var data = {
+        ...customer.toMap(),
+        'action': BancoDadosAcoes.ALTERACAO.text()
+      };
       var res = await dio.patch('$apiURL/${customer.id}', data: data);
       return res.data;
     } catch (e) {
@@ -69,7 +72,10 @@ class CustomerRepository extends FirebaseRepository implements CrudRepository {
   Future<Map> save(data) async {
     Customer customer = data as Customer;
     try {
-      Map data = {...customer.toMap(), 'action': DatabaseAction.INSERT.text()};
+      Map data = {
+        ...customer.toMap(),
+        'action': BancoDadosAcoes.INCLUSAO.text()
+      };
       await dio.post(apiURL, data: data);
       return {
         "success": true,

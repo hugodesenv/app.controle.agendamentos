@@ -8,7 +8,7 @@ class AuthProvider with ChangeNotifier {
   bool get directToHome => _directToHome;
 
   Future<void> checkUser() async {
-    Account account = await PreferencesUtil.getPrefsCurrentUser();
+    Account account = await PreferencesUtil.currentUser();
     _directToHome = account.username.isNotEmpty;
     notifyListeners();
   }

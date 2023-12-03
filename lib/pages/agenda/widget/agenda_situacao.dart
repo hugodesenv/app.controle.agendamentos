@@ -1,26 +1,26 @@
 import 'package:flutter/material.dart';
 
-import '../../../enum/schedule_situation_enum.dart';
+import '../../../enum/agendamento_situacao_enum.dart';
 import '../../../models/schedule.dart';
 import '../../../widgets/my_text_title.dart';
 
-class SituationRadioGroup extends StatefulWidget {
-  late Function({String? text, ScheduleSituationEnum? situation}) _onResult;
+// ignore: must_be_immutable
+class AgendaSituacao extends StatefulWidget {
+  late Function({String? text, AgendamentoSituacao? situation}) _onResult;
 
-  SituationRadioGroup({
+  AgendaSituacao({
     Key? key,
-    required Function({String? text, ScheduleSituationEnum? situation})
-        onResult,
+    required Function({String? text, AgendamentoSituacao? situation}) onResult,
   }) : super(key: key) {
     _onResult = onResult;
   }
 
   @override
-  State<SituationRadioGroup> createState() => _SituationRadioGroupState();
+  State<AgendaSituacao> createState() => _AgendaSituacaoState();
 }
 
-class _SituationRadioGroupState extends State<SituationRadioGroup> {
-  ScheduleSituationEnum? _situationGroup = ScheduleSituationEnum.PENDING;
+class _AgendaSituacaoState extends State<AgendaSituacao> {
+  AgendamentoSituacao? _situationGroup = AgendamentoSituacao.PENDENTE;
   List components = [];
 
   @override
@@ -29,14 +29,14 @@ class _SituationRadioGroupState extends State<SituationRadioGroup> {
     buildList();
 
     widget._onResult(
-      situation: ScheduleSituationEnum.PENDING,
-      text: ScheduleSituationEnum.PENDING.text(),
+      situation: AgendamentoSituacao.PENDENTE,
+      text: AgendamentoSituacao.PENDENTE.text(),
     );
   }
 
   void buildList() {
     components.clear();
-    for (var type in ScheduleSituationEnum.values) {
+    for (var type in AgendamentoSituacao.values) {
       var situation = Schedule.fromText(type.text());
       var wrapper = {'type': type, ...situation};
       components.add(wrapper);
@@ -44,7 +44,7 @@ class _SituationRadioGroupState extends State<SituationRadioGroup> {
   }
 
   TextStyle titleStyle(
-      ScheduleSituationEnum commingSituation, Color commingColor) {
+      AgendamentoSituacao commingSituation, Color commingColor) {
     bool isOK = commingSituation == _situationGroup;
     return TextStyle(
       fontSize: 15.0,
@@ -61,7 +61,7 @@ class _SituationRadioGroupState extends State<SituationRadioGroup> {
         MyTextTitle(title: 'Situação'),
         ...components.map(
           (e) {
-            ScheduleSituationEnum situationType = e['type'];
+            AgendamentoSituacao situationType = e['type'];
             Color situationColor = e[ScheduleFromText.tColor];
 
             return ListTile(
@@ -69,7 +69,7 @@ class _SituationRadioGroupState extends State<SituationRadioGroup> {
                 e[ScheduleFromText.tDescription],
                 style: titleStyle(situationType, situationColor),
               ),
-              leading: Radio<ScheduleSituationEnum>(
+              leading: Radio<AgendamentoSituacao>(
                 value: situationType,
                 groupValue: _situationGroup,
                 activeColor: situationColor,

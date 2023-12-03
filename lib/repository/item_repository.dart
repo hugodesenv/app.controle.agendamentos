@@ -16,7 +16,7 @@ class ItemRepository extends FirebaseRepository implements CrudRepository {
 
   @override
   Future<Map> findAll() async {
-    Account currentUser = await PreferencesUtil.getPrefsCurrentUser();
+    Account currentUser = await PreferencesUtil.currentUser();
     List<Item> items = [];
 
     var res = await dio.get(

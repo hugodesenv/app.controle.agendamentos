@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../models/item.dart';
 
-class ScheduleItemsProvider with ChangeNotifier {
+class AgendaItemProvider with ChangeNotifier {
   ScheduleItem _scheduleItem = ScheduleItem.empty();
 
   set scheduleItem(ScheduleItem? value) {

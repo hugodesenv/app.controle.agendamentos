@@ -3,7 +3,7 @@ import 'package:agendamentos/utils/constants/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:material_dialogs/dialogs.dart';
 import 'package:provider/provider.dart';
-import '../../utils/constants/widgetsConstantes.dart';
+import '../utils/constants/widgetsConstantes.dart';
 
 class SignIn extends StatefulWidget {
   const SignIn({Key? key}) : super(key: key);
@@ -31,8 +31,8 @@ class _SignInState extends State<SignIn> {
   }
 
   // clique do botão "entrar", na qual faz a tentativa de login no aplicativo
-  Future<void> tryLogin(BuildContext context) async {
-    String res = await loginProvider.doLogin(
+  Future<void> tentarFazerLogin(BuildContext context) async {
+    String res = await loginProvider.tryLogin(
         userController.text, passwordController.text);
 
     if (res.isNotEmpty) {
@@ -61,8 +61,8 @@ class _SignInState extends State<SignIn> {
     );
   }
 
-  Future<void> resetPassword() async {
-    Map res = await loginProvider.resetPassword(emailResetController.text);
+  Future<void> tryResetAccess() async {
+    Map res = await loginProvider.sendResetUserEmail(emailResetController.text);
     // ignore: use_build_context_synchronously
     await showStateDialog(
       context,
@@ -113,9 +113,9 @@ class _SignInState extends State<SignIn> {
                   ),
                   MyLoadingButton(
                     title: const Text('Enviar'),
-                    loading: loginProvider.resettingPassword,
+                    loading: loginProvider.resetPassword,
                     onPressed: () async {
-                      await resetPassword();
+                      await tryResetAccess();
                     },
                   ),
                 ],
@@ -134,7 +134,7 @@ class _SignInState extends State<SignIn> {
     passwordController = TextEditingController();
     emailResetController = TextEditingController();
 
-    Future showSignIn() async {
+    Future abrirModalAreaAcesso() async {
       await showModalBottomSheet(
         context: context,
         shape: shapeModalBottomSheet,
@@ -173,7 +173,7 @@ class _SignInState extends State<SignIn> {
                     ),
                     MyLoadingButton(
                       loading: loginProvider.loading,
-                      onPressed: () async => await tryLogin(context),
+                      onPressed: () async => await tentarFazerLogin(context),
                       title: const Text(
                         'Entrar',
                         style: TextStyle(
@@ -242,7 +242,7 @@ class _SignInState extends State<SignIn> {
             Container(
               padding: const EdgeInsets.only(left: 40, right: 40),
               child: MyLoadingButton(
-                onPressed: () async => await showSignIn(),
+                onPressed: () async => await abrirModalAreaAcesso(),
                 colorBackground: Colors.transparent,
                 title: const Text(
                   'Acessar o app',

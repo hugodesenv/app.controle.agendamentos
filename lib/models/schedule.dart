@@ -5,7 +5,7 @@ import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-import '../enum/schedule_situation_enum.dart';
+import '../enum/agendamento_situacao_enum.dart';
 import '../utils/datetime_util.dart';
 import 'employee.dart';
 
@@ -21,7 +21,7 @@ class Schedule extends GenericModel {
   double _totalPrice;
   Customer _customer;
   Employee _employee;
-  ScheduleSituationEnum _situation;
+  AgendamentoSituacao _situation;
   DateTime? _dateChanged;
   List<ScheduleItem>? _scheduleItem;
 
@@ -32,7 +32,7 @@ class Schedule extends GenericModel {
     double? totalPrice,
     Employee? employee,
     Customer? customer,
-    ScheduleSituationEnum? situation,
+    AgendamentoSituacao? situation,
     List<ScheduleItem>? scheduleItem,
     DateTime? dateChanged,
   })  : _scheduleDate = scheduleDate ?? DateTime.now(),
@@ -40,7 +40,7 @@ class Schedule extends GenericModel {
         _totalPrice = totalPrice ?? 0.0,
         _employee = employee ?? Employee.empty(),
         _customer = customer ?? Customer.empty(),
-        _situation = situation ?? ScheduleSituationEnum.UNDEFINED,
+        _situation = situation ?? AgendamentoSituacao.INDEFINIDO,
         _scheduleItem = scheduleItem ?? [],
         _dateChanged = dateChanged ?? DateTime(1899),
         super(id: id);
@@ -104,10 +104,11 @@ class Schedule extends GenericModel {
     double? totalPrice,
     Employee? employee,
     Customer? customer,
-    ScheduleSituationEnum? situation,
+    AgendamentoSituacao? situation,
     List<ScheduleItem>? scheduleItem,
     DateTime? dateChanged,
   }) {
+    print('schedule... ${scheduleDate}');
     return Schedule(
       customer: customer ?? this.customer,
       scheduleDate: scheduleDate ?? this.scheduleDate,
@@ -122,6 +123,10 @@ class Schedule extends GenericModel {
   }
 
   void removeItem(ScheduleItem item) {
+    // quando incluimos um item na listagem, o mesmo permanece com o estado tInsert.
+    // com isso, se o usuário está excluindo algum item que ainda não foi transmitido,
+    // a gente não precisa mudar o mesmo para tDeleted (para a api fazer as regras de
+    // exclusão no banco de dados), com isso, eu apenas removo da lista e atualizo o total.
     if (item.action == ActionAPI.tInsert) {
       scheduleItem.remove(item);
       calculateTotal();
@@ -132,8 +137,10 @@ class Schedule extends GenericModel {
     scheduleItem[index].action = ActionAPI.tDeleted;
   }
 
-  List<ScheduleItem> filterItems(ActionAPI action, bool isEquals) {
-    if (isEquals) {
+  /// como base no primeiro parametro passado, podemos obter a listagem dos itens
+  /// filtrada nesse tipo, sendo igual ou diferente ao mesmo.
+  List<ScheduleItem> filtrarItens(ActionAPI action, bool igualA) {
+    if (igualA) {
       return scheduleItem.where((element) => element.action == action).toList();
     } else {
       return scheduleItem.where((element) => element.action != action).toList();
@@ -165,41 +172,41 @@ class Schedule extends GenericModel {
   }
 
   static Map<ScheduleFromText, dynamic> fromText(String situation) {
-    if (situation == ScheduleSituationEnum.PENDING.text()) {
+    if (situation == AgendamentoSituacao.PENDENTE.text()) {
       return {
         ScheduleFromText.tDescription: 'Pendente',
         ScheduleFromText.tColor: const Color.fromARGB(255, 145, 145, 145),
-        ScheduleFromText.tType: ScheduleSituationEnum.PENDING,
+        ScheduleFromText.tType: AgendamentoSituacao.PENDENTE,
       };
-    } else if (situation == ScheduleSituationEnum.CANCELED.text()) {
+    } else if (situation == AgendamentoSituacao.CANCELADO.text()) {
       return {
         ScheduleFromText.tDescription: 'Cancelado',
         ScheduleFromText.tColor: Colors.red,
-        ScheduleFromText.tType: ScheduleSituationEnum.CANCELED,
+        ScheduleFromText.tType: AgendamentoSituacao.CANCELADO,
       };
-    } else if (situation == ScheduleSituationEnum.CONFIRMED.text()) {
+    } else if (situation == AgendamentoSituacao.CONFIRMADO.text()) {
       return {
         ScheduleFromText.tDescription: 'Confirmado',
         ScheduleFromText.tColor: const Color.fromARGB(255, 190, 30, 211),
-        ScheduleFromText.tType: ScheduleSituationEnum.CONFIRMED,
+        ScheduleFromText.tType: AgendamentoSituacao.CONFIRMADO,
       };
-    } else if (situation == ScheduleSituationEnum.PROGRESS.text()) {
+    } else if (situation == AgendamentoSituacao.EM_PROGRESSO.text()) {
       return {
         ScheduleFromText.tDescription: 'Em andamento',
         ScheduleFromText.tColor: const Color.fromARGB(255, 106, 186, 240),
-        ScheduleFromText.tType: ScheduleSituationEnum.PROGRESS,
+        ScheduleFromText.tType: AgendamentoSituacao.EM_PROGRESSO,
       };
-    } else if (situation == ScheduleSituationEnum.COMPLETED.text()) {
+    } else if (situation == AgendamentoSituacao.FINALIZADO.text()) {
       return {
         ScheduleFromText.tDescription: 'Finalizado',
         ScheduleFromText.tColor: Colors.green,
-        ScheduleFromText.tType: ScheduleSituationEnum.COMPLETED,
+        ScheduleFromText.tType: AgendamentoSituacao.FINALIZADO,
       };
     } else {
       return {
         ScheduleFromText.tDescription: 'Indefinido',
         ScheduleFromText.tColor: const Color.fromARGB(255, 0, 0, 0),
-        ScheduleFromText.tType: ScheduleSituationEnum.UNDEFINED,
+        ScheduleFromText.tType: AgendamentoSituacao.INDEFINIDO,
       };
     }
   }
@@ -241,9 +248,9 @@ class Schedule extends GenericModel {
     _employee = value;
   }
 
-  ScheduleSituationEnum get situation => _situation;
+  AgendamentoSituacao get situation => _situation;
 
-  set situation(ScheduleSituationEnum value) {
+  set situation(AgendamentoSituacao value) {
     _situation = value;
   }
 

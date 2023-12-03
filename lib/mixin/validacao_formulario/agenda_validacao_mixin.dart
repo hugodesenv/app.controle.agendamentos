@@ -1,12 +1,12 @@
-mixin ScheduleFormValidationMixin {
-  String? employeeIsEmpty(String value) {
+mixin AgendaValidacaoMixin {
+  String? profissionalVazio(String value) {
     if (value.isEmpty) {
       return 'Profissional é obrigatório!';
     }
     return null;
   }
 
-  String? customerIsEmpty(String value) {
+  String? clienteVazio(String value) {
     if (value.isEmpty) {
       return 'Cliente é obrigatório!';
     }

@@ -6,7 +6,7 @@ import 'package:agendamentos/utils/preferences_util.dart';
 import 'package:bloc/bloc.dart';
 import 'package:formz/formz.dart';
 
-import '../../../../enum/form_submission_status.dart';
+import '../../../../enum/formulario_estado_enum.dart';
 import '../../../../repository/customer_repository.dart';
 
 class CustomerNewBloc extends Bloc<CustomerNewEvent, CustomerNewState> {
@@ -38,7 +38,7 @@ class CustomerNewBloc extends Bloc<CustomerNewEvent, CustomerNewState> {
   Future _submitted(CustomerNewEventSubmitted event, emit) async {
     // validating if the fields is correct
     emit(state.copyWith(
-      status: FormSubmissionStatus.initial,
+      status: FormularioEstado.INICIAL,
       isValid: Formz.validate([
         state.name,
         state.cellphone,
@@ -46,32 +46,31 @@ class CustomerNewBloc extends Bloc<CustomerNewEvent, CustomerNewState> {
     ));
 
     if (state.isValid) {
-      emit(state.copyWith(status: FormSubmissionStatus.inProgress));
+      emit(state.copyWith(status: FormularioEstado.EM_PROGRESSO));
       try {
         var res = {};
         CustomerRepository repository = CustomerRepository.instance;
 
         if (_customer.id.isEmpty) {
-          _customer.company =
-              (await PreferencesUtil.getPrefsCurrentUser()).company;
+          _customer.company = (await PreferencesUtil.currentUser()).company;
           res = await repository.save(_customer);
         } else {
           res = await repository.update(_customer);
         }
 
         var formStatus = res['success'] == true
-            ? FormSubmissionStatus.success
-            : FormSubmissionStatus.failure;
+            ? FormularioEstado.SUCESSO
+            : FormularioEstado.FALHA;
         emit(state.copyWith(status: formStatus, message: res['message']));
       } catch (e) {
         emit(state.copyWith(
-          status: FormSubmissionStatus.failure,
+          status: FormularioEstado.FALHA,
           message: 'Falha: ${e.toString()}',
         ));
       }
     } else {
       emit(state.copyWith(
-        status: FormSubmissionStatus.failure,
+        status: FormularioEstado.FALHA,
         message: 'Não é possível gravar, confira os campos obrigatórios',
       ));
     }

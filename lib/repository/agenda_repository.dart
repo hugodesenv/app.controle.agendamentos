@@ -1,13 +1,13 @@
-import 'package:agendamentos/enum/schedule_situation_enum.dart';
+import 'package:agendamentos/enum/agendamento_situacao_enum.dart';
 import 'package:agendamentos/repository/firebase_repository.dart';
 import 'package:intl/intl.dart';
 
 import '../models/schedule.dart';
-import '../pages/schedules/calendar/model/schedules_model.dart';
+import '../pages/agenda/widget/calendario/model/schedules_model.dart';
 
-class ScheduleRepository extends FirebaseRepository implements CrudRepository {
-  ScheduleRepository._() : super(controller_name: "schedule");
-  static final instance = ScheduleRepository._();
+class AgendaRepository extends FirebaseRepository implements CrudRepository {
+  AgendaRepository._() : super(controller_name: "schedule");
+  static final instance = AgendaRepository._();
 
   @override
   Future<Map> delete(String id) {
@@ -58,14 +58,9 @@ class ScheduleRepository extends FirebaseRepository implements CrudRepository {
     Schedule schedule = data as Schedule;
     Map toMap = schedule.toMap();
 
-    print("** schedule_repository - save result");
-    print(toMap);
-
-    return {};
     var response = await dio.post(apiURL, data: toMap);
 
-    //terminar o processo...
-    return {};
+    return response.data;
   }
 
   @override

@@ -1,21 +1,20 @@
-import '../../../../enum/form_submission_status.dart';
+import '../../../../enum/formulario_estado_enum.dart';
 import '../../../../models/customer.dart';
-
 
 class CustomerInfoState {
   final Customer customer;
-  final FormSubmissionStatus status;
+  final FormularioEstado status;
   final String? message;
 
   CustomerInfoState({
     required Customer? customer,
-    this.status = FormSubmissionStatus.initial,
+    this.status = FormularioEstado.INICIAL,
     this.message = '',
   }) : customer = customer ?? Customer.empty();
 
   CustomerInfoState copyWith({
     Customer? customer,
-    FormSubmissionStatus? status,
+    FormularioEstado? status,
     String? message,
   }) {
     return CustomerInfoState(

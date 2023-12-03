@@ -1,7 +1,7 @@
-import 'package:agendamentos/pages/home/home.dart';
-import 'package:agendamentos/pages/sign_in/sign_in.dart';
+import 'package:agendamentos/pages/home.dart';
+import 'package:agendamentos/pages/sign_in.dart';
 import 'package:agendamentos/provider/auth_provider.dart';
-import 'package:agendamentos/routes.dart';
+import 'package:agendamentos/rotas.dart';
 import 'package:agendamentos/utils/theme_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -153,7 +153,7 @@ class _MyAppState extends State<MyApp> {
           headerBackgroundColor: primaryDarkColor,
         ),
       ),*/
-      onGenerateRoute: (settings) => appRoutes(settings),
+      onGenerateRoute: (configs) => appRotas(configs),
     );
   }
 }

@@ -1,34 +1,36 @@
-import 'package:agendamentos/pages/schedules/schedule_modal_add_items.dart';
-import 'package:agendamentos/provider/schedule_provider.dart';
+import 'package:agendamentos/pages/agenda/agenda.dart';
+import 'package:agendamentos/provider/agenda_provider.dart';
 import 'package:agendamentos/utils/datetime_util.dart';
+import 'package:agendamentos/utils/dialogs_util.dart';
 import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../../models/schedule_item.dart';
-import '../../provider/schedule_items_provider.dart';
-import '../../utils/constants/widgetsConstantes.dart';
-import '../../widgets/my_text_title.dart';
 
-class ScheduleItems extends StatefulWidget {
-  const ScheduleItems({Key? key}) : super(key: key);
+import '../../../models/schedule_item.dart';
+import '../../../provider/agenda_item_provider.dart';
+import '../../../utils/constants/widgetsConstantes.dart';
+import '../../../widgets/my_text_title.dart';
+
+class AgendaItem extends StatefulWidget {
+  const AgendaItem({Key? key}) : super(key: key);
 
   @override
-  State<ScheduleItems> createState() => ScheduleItemsState();
+  State<AgendaItem> createState() => AgendaItemState();
 }
 
-class ScheduleItemsState extends State<ScheduleItems> {
+class AgendaItemState extends State<AgendaItem> {
   @override
   Widget build(BuildContext context) {
-    return Consumer<ScheduleProvider>(
+    return Consumer<AgendaProvider>(
       builder: (context, provider, child) {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             const Divider(),
-            titleBox(),
-            ...itemList(context),
+            campoTituloDoItem(),
+            ...listagemDeItens(context),
             const Divider(),
-            labelTotal(context),
+            campoTotal(context),
             const Divider(),
           ],
         );
@@ -36,8 +38,8 @@ class ScheduleItemsState extends State<ScheduleItems> {
     );
   }
 
-  Iterable<ListTile> itemList(BuildContext context) {
-    var model = context.read<ScheduleProvider>().schedule.scheduleItem;
+  Iterable<ListTile> listagemDeItens(BuildContext context) {
+    var model = context.read<AgendaProvider>().agenda.scheduleItem;
     return model.map(
       (item) {
         double leftPadding = 20.0;
@@ -62,10 +64,18 @@ class ScheduleItemsState extends State<ScheduleItems> {
             ),
           ),
           contentPadding: EdgeInsets.zero,
-          onTap: () async => await modalItem(context, scheduleItem: item),
+          onTap: () async =>
+              await abrirDetalhamentoDoItem(context, scheduleItem: item),
           trailing: IconButton(
-            onPressed: () {
-              //bloc.add(ItemDelete(scheduleItem: e));
+            onPressed: () async {
+              await DialogsUtil.confirmation(
+                context,
+                'Deseja mesmo remover o item?',
+                item.item.description,
+                () => context.read<AgendaProvider>().removerItem(item),
+              );
+
+              print("** dps");
             },
             icon: const Icon(
               Icons.delete_outlined,
@@ -77,7 +87,7 @@ class ScheduleItemsState extends State<ScheduleItems> {
     );
   }
 
-  Widget titleBox() {
+  Widget campoTituloDoItem() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -85,18 +95,18 @@ class ScheduleItemsState extends State<ScheduleItems> {
         IconButton(
           icon: const Icon(Icons.post_add_sharp),
           onPressed: () async {
-            await modalItem(context);
+            await abrirDetalhamentoDoItem(context);
           },
         ),
       ],
     );
   }
 
-  Widget labelTotal(BuildContext context) {
+  Widget campoTotal(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(top: 5.0, bottom: 5.0),
       child: Text(
-        context.read<ScheduleProvider>().schedule.getTotalDescription(),
+        context.read<AgendaProvider>().agenda.getTotalDescription(),
         textAlign: TextAlign.center,
         style: const TextStyle(
           fontSize: 12.0,
@@ -106,7 +116,7 @@ class ScheduleItemsState extends State<ScheduleItems> {
     );
   }
 
-  Future<void> modalItem(
+  Future<void> abrirDetalhamentoDoItem(
     BuildContext context, {
     ScheduleItem? scheduleItem,
   }) async {
@@ -116,11 +126,11 @@ class ScheduleItemsState extends State<ScheduleItems> {
       isScrollControlled: true,
       builder: (_) {
         return ChangeNotifierProvider(
-          create: (_) => ScheduleItemsProvider(),
+          create: (_) => AgendaItemProvider(),
           builder: (context, _) => ScheduleModalAddItems(
             scheduleItem: scheduleItem,
             onResultItem: (currentItem) {
-              context.read<ScheduleProvider>().addItem(currentItem);
+              context.read<AgendaProvider>().adicionarItem(currentItem);
             },
           ),
         );

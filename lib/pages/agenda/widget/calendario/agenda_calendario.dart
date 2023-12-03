@@ -2,16 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
-import 'model/schedules_datasource.dart';
+import 'model/agenda_datasource.dart';
 import 'model/schedules_model.dart';
 
-class ScheduleCalendar extends StatelessWidget {
+// ignore: must_be_immutable
+class AgendaCalendario extends StatelessWidget {
   late Function(DateTime? date, Map values) _onTotals;
   late Function(ScheduleModule scheduleModule) _onScheduleClick;
   late Function(DateTime date) _onEmptyClick;
   late List<ScheduleModule> _schedules;
 
-  ScheduleCalendar({
+  AgendaCalendario({
     Key? key,
     required Function(DateTime? date, Map values) onTotals,
     required Function(ScheduleModule scheduleModule) onScheduleClick,
@@ -27,15 +28,15 @@ class ScheduleCalendar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SfCalendar(
-      dataSource: ScheduleDataSource(_schedules),
+      dataSource: AgendaDataSource(_schedules),
       todayHighlightColor: Theme.of(context).primaryColor,
       showDatePickerButton: true,
       onTap: (calendarTapDetails) async =>
-          await _openDetails(context, calendarTapDetails),
+          await abrirDetalhe(context, calendarTapDetails),
       onSelectionChanged: (calendarSelectionDetails) =>
-          _onResultValues(calendarSelectionDetails.date, {}),
+          resultarValores(calendarSelectionDetails.date, {}),
       onViewChanged: (viewChangedDetails) =>
-          _onResultValues(viewChangedDetails.visibleDates[0], {}),
+          resultarValores(viewChangedDetails.visibleDates[0], {}),
       allowedViews: const [
         CalendarView.day,
         CalendarView.month,
@@ -46,7 +47,7 @@ class ScheduleCalendar extends StatelessWidget {
     );
   }
 
-  _openDetails(BuildContext context, CalendarTapDetails details) async {
+  abrirDetalhe(BuildContext context, CalendarTapDetails details) async {
     switch (details.targetElement) {
       case CalendarElement.appointment:
       case CalendarElement.agenda:
@@ -63,25 +64,10 @@ class ScheduleCalendar extends StatelessWidget {
           }
         }
         break;
-      case CalendarElement.header:
-        // TODO: Handle this case.
-        break;
-      case CalendarElement.viewHeader:
-        // TODO: Handle this case.
-        break;
-      case CalendarElement.allDayPanel:
-        // TODO: Handle this case.
-        break;
-      case CalendarElement.moreAppointmentRegion:
-        // TODO: Handle this case.
-        break;
-      case CalendarElement.resourceHeader:
-        // TODO: Handle this case.
-        break;
     }
   }
 
-  _onResultValues(DateTime? date, Map totals) {
+  resultarValores(DateTime? date, Map totals) {
     String key = DateFormat.yMMMMd().format(date!);
     totals[key] != null ? _onTotals(date, totals[key]) : _onTotals(date, {});
   }

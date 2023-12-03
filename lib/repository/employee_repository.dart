@@ -18,7 +18,7 @@ class EmployeeRepository extends FirebaseRepository implements CrudRepository {
   Future<Map> findAll() async {
     List<Employee> employees = [];
 
-    Account currentUser = await PreferencesUtil.getPrefsCurrentUser();
+    Account currentUser = await PreferencesUtil.currentUser();
     Map filter = {"active": true};
     var response =
         await dio.get('$apiURL/${currentUser.company.id}', data: filter);

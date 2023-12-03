@@ -1,7 +1,8 @@
-import 'package:agendamentos/repository/schedule_repository.dart';
+import 'package:agendamentos/repository/agenda_repository.dart';
 import 'package:flutter/material.dart';
+
 import '../models/account.dart';
-import '../pages/schedules/calendar/model/schedules_model.dart';
+import '../pages/agenda/widget/calendario/model/schedules_model.dart';
 import '../repository/user_repository.dart';
 import '../utils/preferences_util.dart';
 
@@ -20,7 +21,7 @@ class HomeProvider with ChangeNotifier {
 
   // mantém armazenado no objeto quem está logado
   Future<void> checkUserLogin() async {
-    accountConnected = await PreferencesUtil.getPrefsCurrentUser();
+    accountConnected = await PreferencesUtil.currentUser();
   }
 
   // procedimento para sair do aplicativo
@@ -30,9 +31,8 @@ class HomeProvider with ChangeNotifier {
     return res;
   }
 
-  // busca todos os agendamentos na api
-  void findAll() async {
-    ScheduleRepository repository = ScheduleRepository.instance;
+  void buscarTodos() async {
+    var repository = AgendaRepository.instance;
     Map res = await repository.findAll();
 
     schedules.clear();

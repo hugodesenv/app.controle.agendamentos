@@ -3,7 +3,7 @@ import 'package:agendamentos/pages/customer/new/bloc/customer_new_state.dart';
 import 'package:agendamentos/pages/customer/new/formz/model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../../enum/form_submission_status.dart';
+import '../../../enum/formulario_estado_enum.dart';
 import '../../../utils/constants/widgetsConstantes.dart';
 import 'bloc/customer_new_bloc.dart';
 
@@ -14,15 +14,17 @@ class CustomerNew extends StatelessWidget {
     return const SizedBox(height: 14);
   }
 
-  _save(FormSubmissionStatus status, CustomerNewBloc bloc) {
-    if (status != FormSubmissionStatus.inProgress) {
+  _save(FormularioEstado status, CustomerNewBloc bloc) {
+    if (status != FormularioEstado.EM_PROGRESSO) {
       bloc.add(CustomerNewEventSubmitted());
     }
   }
 
-  Widget _getIconSave(FormSubmissionStatus status, BuildContext context) {
+  Widget _getIconSave(FormularioEstado status, BuildContext context) {
     var color = Theme.of(context).primaryColor;
-    return status == FormSubmissionStatus.inProgress ? Icon(Icons.access_time_rounded, color: color) : const Icon(Icons.save_outlined);
+    return status == FormularioEstado.EM_PROGRESSO
+        ? Icon(Icons.access_time_rounded, color: color)
+        : const Icon(Icons.save_outlined);
   }
 
   @override
@@ -32,10 +34,10 @@ class CustomerNew extends StatelessWidget {
       bloc: bloc,
       listener: (context, state) {
         if (state is CustomerNewState) {
-          if (state.status == FormSubmissionStatus.success) {
+          if (state.status == FormularioEstado.SUCESSO) {
             mySnackbar(context, state.message);
             Navigator.pop(context);
-          } else if (state.status == FormSubmissionStatus.failure) {
+          } else if (state.status == FormularioEstado.FALHA) {
             mySnackbar(context, state.message, background: Colors.red);
           }
         }
@@ -81,9 +83,13 @@ class _NameInput extends StatelessWidget {
           initialValue: state.name.value,
           decoration: InputDecoration(
             labelText: 'Nome *',
-            errorText: (state.name.displayError != null) ? state.name.displayError?.text() : null,
+            errorText: (state.name.displayError != null)
+                ? state.name.displayError?.text()
+                : null,
           ),
-          onChanged: (value) => context.read<CustomerNewBloc>().add(CustomerNewEventNameChanged(value)),
+          onChanged: (value) => context
+              .read<CustomerNewBloc>()
+              .add(CustomerNewEventNameChanged(value)),
         );
       },
     );
@@ -102,9 +108,13 @@ class _CellphoneInput extends StatelessWidget {
           initialValue: state.cellphone.value,
           decoration: InputDecoration(
             labelText: 'Celular',
-            errorText: (state.cellphone.displayError != null) ? state.cellphone.displayError?.text() : null,
+            errorText: (state.cellphone.displayError != null)
+                ? state.cellphone.displayError?.text()
+                : null,
           ),
-          onChanged: (value) => context.read<CustomerNewBloc>().add(CustomerNewEventCellphoneChanged(value)),
+          onChanged: (value) => context
+              .read<CustomerNewBloc>()
+              .add(CustomerNewEventCellphoneChanged(value)),
         );
       },
     );

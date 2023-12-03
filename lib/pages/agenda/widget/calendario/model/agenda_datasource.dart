@@ -1,12 +1,12 @@
-import 'package:agendamentos/enum/schedule_situation_enum.dart';
+import 'package:agendamentos/enum/agendamento_situacao_enum.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
-import '../../../../models/schedule.dart';
+import '../../../../../models/schedule.dart';
 import 'schedules_model.dart';
 
-class ScheduleDataSource extends CalendarDataSource {
-  ScheduleDataSource(List<ScheduleModule> source) {
+class AgendaDataSource extends CalendarDataSource {
+  AgendaDataSource(List<ScheduleModule> source) {
     appointments = source;
   }
 

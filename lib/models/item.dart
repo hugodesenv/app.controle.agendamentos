@@ -1,13 +1,13 @@
 import 'package:agendamentos/models/company.dart';
 import 'package:agendamentos/models/generic_model.dart';
-import '../enum/item_type_enum.dart';
+import '../enum/item_tipo_enum.dart';
 
 class Item extends GenericModel {
   late Company _company;
   late String _description;
   late int _serviceMinutes;
   late bool _active;
-  late ItemType _type;
+  late ItemTipo _tipo;
 
   Item({
     String? itemId,
@@ -15,14 +15,14 @@ class Item extends GenericModel {
     String? description,
     int? serviceMinutes,
     bool? active,
-    ItemType? type,
+    ItemTipo? tipo,
   }) {
     id = itemId ?? '';
     _company = company ?? Company.empty();
     _description = description ?? '';
     _serviceMinutes = serviceMinutes ?? 0;
     _active = active ?? false;
-    _type = type ?? ItemType.tUndefined;
+    _tipo = tipo ?? ItemTipo.INDEFINIDO;
   }
 
   factory Item.empty() {
@@ -36,20 +36,20 @@ class Item extends GenericModel {
       company: Company(id: data['fk_company'], socialName: ''),
       description: data['description'],
       serviceMinutes: data['service_minutes'],
-      type: Item.toEnum(data['type']),
+      tipo: Item.toEnum(data['type']),
     );
   }
 
-  static ItemType toEnum(String value) {
-    return ItemType.values.firstWhere((element) {
+  static ItemTipo toEnum(String value) {
+    return ItemTipo.values.firstWhere((element) {
       return element.typeCode == value;
     });
   }
 
-  ItemType get type => _type;
+  ItemTipo get tipo => _tipo;
 
-  set type(ItemType value) {
-    _type = value;
+  set tipo(ItemTipo tipo) {
+    _tipo = tipo;
   }
 
   bool get active => _active;

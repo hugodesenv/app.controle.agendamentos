@@ -1,18 +1,16 @@
-import 'package:agendamentos/enum/schedule_situation_enum.dart';
-import 'package:agendamentos/pages/schedules/calendar/model/schedules_model.dart';
-import 'package:agendamentos/pages/schedules/schedule.dart';
+import 'package:agendamentos/enum/agendamento_situacao_enum.dart';
+import 'package:agendamentos/pages/agenda/agenda.dart';
+import 'package:agendamentos/pages/agenda/widget/calendario/model/schedules_model.dart';
 import 'package:agendamentos/provider/home_provider.dart';
+import 'package:agendamentos/utils/dialogs_util.dart';
 import 'package:flutter/material.dart';
-import 'package:material_dialogs/dialogs.dart';
-import 'package:material_dialogs/widgets/buttons/icon_button.dart';
-import 'package:material_dialogs/widgets/buttons/icon_outline_button.dart';
 import 'package:provider/provider.dart';
 
-import '../../models/schedule.dart' as ScheduleModel;
-import '../../models/schedule.dart';
-import '../../utils/constants/constants.dart';
-import '../../utils/constants/widgetsConstantes.dart';
-import '../schedules/calendar/schedule_calendar.dart';
+import '../models/schedule.dart' as ScheduleModel;
+import '../models/schedule.dart';
+import '../utils/constants/constants.dart';
+import '../utils/constants/widgetsConstantes.dart';
+import 'agenda/widget/calendario/agenda_calendario.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -34,7 +32,7 @@ class _HomeState extends State<Home> {
 
     Future.delayed(Duration.zero).then((value) {
       homeProvider.checkUserLogin();
-      homeProvider.findAll();
+      homeProvider.buscarTodos();
     });
   }
 
@@ -55,7 +53,7 @@ class _HomeState extends State<Home> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           cardsInfos(),
-          widgetSchedule(),
+          widgetCalendario(),
         ],
       ),
     );
@@ -84,16 +82,16 @@ class _HomeState extends State<Home> {
   }
 
   // componente que mostra todos os agendamentos na pagina inicial
-  Widget widgetSchedule() {
+  Widget widgetCalendario() {
     return Expanded(
-      child: ScheduleCalendar(
+      child: AgendaCalendario(
         onTotals: (date, values) {},
         onScheduleClick: (scheduleModule) async {
-          await _showScheduleDetail(context, scheduleModule);
+          await abrirDetalhes(context, scheduleModule);
         },
         onEmptyClick: (date) async {
-          var arguments = ScheduleParameters(scheduleDate: date);
-          await _showAddSchedule(context, params: arguments);
+          var arguments = Parametros(scheduleDate: date);
+          await abrirAdicionarAgendamento(context, params: arguments);
         },
         schedules: homeProvider.schedules,
       ),
@@ -201,8 +199,7 @@ class _HomeState extends State<Home> {
                   leading: Icon(Icons.refresh),
                   title: Text('Atualizar'),
                 ),
-                onTap: () =>
-                    {}, //scheduleCalendarBloc.add(SchedulesEventLoad()),
+                onTap: () => homeProvider.buscarTodos(),
               ),
               PopupMenuItem(
                 child: const ListTile(
@@ -213,7 +210,7 @@ class _HomeState extends State<Home> {
                   //When a pop up menu is clicked, it will call pop() on the navigator to dismiss itself.
                   //So pushing an extra route would cause it to pop that route immediately, instead of dismissing itself.
                   await Future.delayed(Duration.zero).then((_) async {
-                    await _showAddSchedule(context);
+                    await abrirAdicionarAgendamento(context);
                   });
                 },
               ),
@@ -225,9 +222,9 @@ class _HomeState extends State<Home> {
   }
 
   // calling the screem, passing the parameters
-  Future<void> _showAddSchedule(
+  Future<void> abrirAdicionarAgendamento(
     BuildContext context, {
-    ScheduleParameters? params,
+    Parametros? params,
   }) async {
     await Navigator.pushNamed(
       context,
@@ -237,8 +234,7 @@ class _HomeState extends State<Home> {
   }
 
   // click on detail
-  _showScheduleDetail(
-      BuildContext context, ScheduleModule scheduleModule) async {
+  abrirDetalhes(BuildContext context, ScheduleModule scheduleModule) async {
     await showModalBottomSheet(
       context: context,
       shape: shapeModalBottomSheet,
@@ -353,37 +349,15 @@ class _HomeState extends State<Home> {
   }
 
   Future exitApp() async {
-    Dialogs.materialDialog(
-      context: context,
-      title: 'Deseja sair do app?',
-      titleStyle: const TextStyle(
-        color: Colors.black54,
-        fontWeight: FontWeight.w700,
-      ),
-      msgStyle: const TextStyle(color: Colors.black54),
-      msg: 'Espero vê-lo novamente! :)',
-      actions: [
-        IconsButton(
-          onPressed: () async {
-            bool res = await homeProvider.logOut();
-            if (res) {
-              Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
-            }
-          },
-          text: 'Sim',
-          iconData: Icons.exit_to_app_outlined,
-          color: Theme.of(context).primaryColor,
-          textStyle: const TextStyle(color: Colors.white),
-          iconColor: Colors.white,
-        ),
-        IconsOutlineButton(
-          onPressed: () => Navigator.pop(context),
-          text: 'Não',
-          iconData: Icons.cancel_outlined,
-          textStyle: const TextStyle(color: Colors.grey),
-          iconColor: Colors.grey,
-        ),
-      ],
+    await DialogsUtil.confirmation(
+      context,
+      'Deseja sair?',
+      'Espero te ver novamente! :)',
+      () async {
+        bool res = await homeProvider.logOut();
+        if (!res) return;
+        await Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
+      },
     );
   }
 
