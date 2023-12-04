@@ -52,7 +52,7 @@ class CustomerNewBloc extends Bloc<CustomerNewEvent, CustomerNewState> {
         CustomerRepository repository = CustomerRepository.instance;
 
         if (_customer.id.isEmpty) {
-          _customer.company = (await PreferencesUtil.currentUser()).company;
+          _customer.empresa = (await PreferencesUtil.usuarioAtual()).empresa;
           res = await repository.save(_customer);
         } else {
           res = await repository.update(_customer);

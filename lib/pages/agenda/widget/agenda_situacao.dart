@@ -20,7 +20,7 @@ class AgendaSituacao extends StatefulWidget {
 }
 
 class _AgendaSituacaoState extends State<AgendaSituacao> {
-  AgendamentoSituacao? _situationGroup = AgendamentoSituacao.PENDENTE;
+  AgendamentoSituacao? _situationGroup = AgendamentoSituacao.pendente;
   List components = [];
 
   @override
@@ -29,8 +29,8 @@ class _AgendaSituacaoState extends State<AgendaSituacao> {
     buildList();
 
     widget._onResult(
-      situation: AgendamentoSituacao.PENDENTE,
-      text: AgendamentoSituacao.PENDENTE.text(),
+      situation: AgendamentoSituacao.pendente,
+      text: AgendamentoSituacao.pendente.text(),
     );
   }
 

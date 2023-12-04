@@ -11,13 +11,15 @@ class ScheduleModule {
         _eventDate = eventDate ?? DateTime(1899);
 
   factory ScheduleModule.empty() {
-    return ScheduleModule(eventDate: DateTime.timestamp(), schedule: Schedule.empty());
+    return ScheduleModule(
+      eventDate: DateTime.timestamp(),
+      schedule: Schedule.empty(),
+    );
   }
 
   Schedule get schedule => _schedule;
 
   String get eventName => schedule.customer.name;
 
-  //incluir setter
   DateTime get eventDate => _eventDate;
 }

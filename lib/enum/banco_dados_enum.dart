@@ -1,13 +1,13 @@
-enum BancoDadosAcoes { INCLUSAO, ALTERACAO, EXCLUSAO }
+enum BancoDadosAcoes { inclusao, alteracao, exclusao }
 
 extension DabaseActionExtension on BancoDadosAcoes {
   String text() {
     switch (this) {
-      case BancoDadosAcoes.INCLUSAO:
+      case BancoDadosAcoes.inclusao:
         return 'insert';
-      case BancoDadosAcoes.ALTERACAO:
+      case BancoDadosAcoes.alteracao:
         return 'update';
-      case BancoDadosAcoes.EXCLUSAO:
+      case BancoDadosAcoes.exclusao:
         return 'delete';
       default:
         return 'undefined';

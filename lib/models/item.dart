@@ -1,9 +1,9 @@
-import 'package:agendamentos/models/company.dart';
+import 'package:agendamentos/models/empresa.dart';
 import 'package:agendamentos/models/generic_model.dart';
 import '../enum/item_tipo_enum.dart';
 
 class Item extends GenericModel {
-  late Company _company;
+  late Empresa _empresa;
   late String _description;
   late int _serviceMinutes;
   late bool _active;
@@ -11,14 +11,14 @@ class Item extends GenericModel {
 
   Item({
     String? itemId,
-    Company? company,
+    Empresa? company,
     String? description,
     int? serviceMinutes,
     bool? active,
     ItemTipo? tipo,
   }) {
     id = itemId ?? '';
-    _company = company ?? Company.empty();
+    _empresa = company ?? Empresa.empty();
     _description = description ?? '';
     _serviceMinutes = serviceMinutes ?? 0;
     _active = active ?? false;
@@ -33,7 +33,7 @@ class Item extends GenericModel {
     return Item(
       itemId: data['id'],
       active: data['active'],
-      company: Company(id: data['fk_company'], socialName: ''),
+      company: Empresa(id: data['fk_company'], razaoSocial: ''),
       description: data['description'],
       serviceMinutes: data['service_minutes'],
       tipo: Item.toEnum(data['type']),
@@ -70,9 +70,9 @@ class Item extends GenericModel {
     _description = value;
   }
 
-  Company get company => _company;
+  Empresa get empresa => _empresa;
 
-  set company(Company value) {
-    _company = value;
+  set empresa(Empresa value) {
+    _empresa = value;
   }
 }

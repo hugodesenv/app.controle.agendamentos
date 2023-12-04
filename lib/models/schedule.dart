@@ -40,7 +40,7 @@ class Schedule extends GenericModel {
         _totalPrice = totalPrice ?? 0.0,
         _employee = employee ?? Employee.empty(),
         _customer = customer ?? Customer.empty(),
-        _situation = situation ?? AgendamentoSituacao.INDEFINIDO,
+        _situation = situation ?? AgendamentoSituacao.indefinido,
         _scheduleItem = scheduleItem ?? [],
         _dateChanged = dateChanged ?? DateTime(1899),
         super(id: id);
@@ -108,7 +108,6 @@ class Schedule extends GenericModel {
     List<ScheduleItem>? scheduleItem,
     DateTime? dateChanged,
   }) {
-    print('schedule... ${scheduleDate}');
     return Schedule(
       customer: customer ?? this.customer,
       scheduleDate: scheduleDate ?? this.scheduleDate,
@@ -172,41 +171,41 @@ class Schedule extends GenericModel {
   }
 
   static Map<ScheduleFromText, dynamic> fromText(String situation) {
-    if (situation == AgendamentoSituacao.PENDENTE.text()) {
+    if (situation == AgendamentoSituacao.pendente.text()) {
       return {
         ScheduleFromText.tDescription: 'Pendente',
         ScheduleFromText.tColor: const Color.fromARGB(255, 145, 145, 145),
-        ScheduleFromText.tType: AgendamentoSituacao.PENDENTE,
+        ScheduleFromText.tType: AgendamentoSituacao.pendente,
       };
-    } else if (situation == AgendamentoSituacao.CANCELADO.text()) {
+    } else if (situation == AgendamentoSituacao.cancelado.text()) {
       return {
         ScheduleFromText.tDescription: 'Cancelado',
         ScheduleFromText.tColor: Colors.red,
-        ScheduleFromText.tType: AgendamentoSituacao.CANCELADO,
+        ScheduleFromText.tType: AgendamentoSituacao.cancelado,
       };
-    } else if (situation == AgendamentoSituacao.CONFIRMADO.text()) {
+    } else if (situation == AgendamentoSituacao.confirmado.text()) {
       return {
         ScheduleFromText.tDescription: 'Confirmado',
         ScheduleFromText.tColor: const Color.fromARGB(255, 190, 30, 211),
-        ScheduleFromText.tType: AgendamentoSituacao.CONFIRMADO,
+        ScheduleFromText.tType: AgendamentoSituacao.confirmado,
       };
-    } else if (situation == AgendamentoSituacao.EM_PROGRESSO.text()) {
+    } else if (situation == AgendamentoSituacao.emProgresso.text()) {
       return {
         ScheduleFromText.tDescription: 'Em andamento',
         ScheduleFromText.tColor: const Color.fromARGB(255, 106, 186, 240),
-        ScheduleFromText.tType: AgendamentoSituacao.EM_PROGRESSO,
+        ScheduleFromText.tType: AgendamentoSituacao.emProgresso,
       };
-    } else if (situation == AgendamentoSituacao.FINALIZADO.text()) {
+    } else if (situation == AgendamentoSituacao.finalizado.text()) {
       return {
         ScheduleFromText.tDescription: 'Finalizado',
         ScheduleFromText.tColor: Colors.green,
-        ScheduleFromText.tType: AgendamentoSituacao.FINALIZADO,
+        ScheduleFromText.tType: AgendamentoSituacao.finalizado,
       };
     } else {
       return {
         ScheduleFromText.tDescription: 'Indefinido',
         ScheduleFromText.tColor: const Color.fromARGB(255, 0, 0, 0),
-        ScheduleFromText.tType: AgendamentoSituacao.INDEFINIDO,
+        ScheduleFromText.tType: AgendamentoSituacao.indefinido,
       };
     }
   }

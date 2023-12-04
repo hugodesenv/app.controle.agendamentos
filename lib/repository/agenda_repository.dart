@@ -1,7 +1,6 @@
 import 'package:agendamentos/enum/agendamento_situacao_enum.dart';
 import 'package:agendamentos/repository/firebase_repository.dart';
 import 'package:intl/intl.dart';
-
 import '../models/schedule.dart';
 import '../pages/agenda/widget/calendario/model/schedules_model.dart';
 
@@ -41,11 +40,16 @@ class AgendaRepository extends FirebaseRepository implements CrudRepository {
     } catch (e) {
       throw Exception('Falha na busca pelos agendamentos: ${e.toString()}');
     }
-    return {"schedules": schedules, "totals": totals};
+    return {
+      "agendamentos": schedules,
+      "totais": totals,
+    };
   }
 
-  _handleTotal(Map total, DateTime date, String situation, double totalPrice) {
-    String key = DateFormat.yMMMMd().format(date);
+  static keyTotalizador(DateTime data) => DateFormat.yMMMMd().format(data);
+
+  _handleTotal(Map total, DateTime data, String situation, double totalPrice) {
+    String key = keyTotalizador(data);
 
     if (total[key] == null) total[key] = {};
     if (total[key][situation] == null) total[key][situation] = 0;

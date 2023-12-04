@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../models/account.dart';
+
 import '../utils/preferences_util.dart';
 
 class AuthProvider with ChangeNotifier {
@@ -8,8 +8,8 @@ class AuthProvider with ChangeNotifier {
   bool get directToHome => _directToHome;
 
   Future<void> checkUser() async {
-    Account account = await PreferencesUtil.currentUser();
-    _directToHome = account.username.isNotEmpty;
+    var usuario = await PreferencesUtil.usuarioAtual();
+    _directToHome = usuario.usuario.isNotEmpty;
     notifyListeners();
   }
 }

@@ -6,7 +6,7 @@ import 'package:agendamentos/utils/dialogs_util.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../models/schedule.dart' as ScheduleModel;
+import '../models/schedule.dart' as scheduleModel;
 import '../models/schedule.dart';
 import '../utils/constants/constants.dart';
 import '../utils/constants/widgetsConstantes.dart';
@@ -20,18 +20,16 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  late TextEditingController _userNameController;
-  late TextEditingController _companyNameController;
+  final _usuarioController = TextEditingController();
+  final _nomeEmpresaController = TextEditingController();
   late HomeProvider homeProvider;
 
   @override
   void initState() {
     super.initState();
-    _userNameController = TextEditingController();
-    _companyNameController = TextEditingController();
 
     Future.delayed(Duration.zero).then((value) {
-      homeProvider.checkUserLogin();
+      homeProvider.buscaUsuarioLogado();
       homeProvider.buscarTodos();
     });
   }
@@ -52,14 +50,14 @@ class _HomeState extends State<Home> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          cardsInfos(),
+          totalizadores(),
           widgetCalendario(),
         ],
       ),
     );
   }
 
-  Widget cardsInfos() {
+  Widget totalizadores() {
     return Padding(
       padding: const EdgeInsets.only(bottom: 4),
       child: SizedBox(
@@ -67,14 +65,26 @@ class _HomeState extends State<Home> {
         child: ListView(
           scrollDirection: Axis.horizontal,
           children: [
-            /*cardInfo('Pendentes',
-                        state.totals[ScheduleSituationEnum.PENDING.text()]),
-                    cardInfo('Confirmados',
-                        state.totals[ScheduleSituationEnum.CONFIRMED.text()]),
-                    cardInfo('Cancelados',
-                        state.totals[ScheduleSituationEnum.CANCELED.text()]),
-                    cardInfo('Finalizados',
-                        state.totals[ScheduleSituationEnum.COMPLETED.text()]),*/
+            cardInfo(
+              'Pendentes',
+              homeProvider.totalizadorDoDiaSelecionado[
+                  AgendamentoSituacao.pendente.text()],
+            ),
+            cardInfo(
+              'Confirmados',
+              homeProvider.totalizadorDoDiaSelecionado[
+                  AgendamentoSituacao.confirmado.text()],
+            ),
+            cardInfo(
+              'Cancelados',
+              homeProvider.totalizadorDoDiaSelecionado[
+                  AgendamentoSituacao.cancelado.text()],
+            ),
+            cardInfo(
+              'Finalizados',
+              homeProvider.totalizadorDoDiaSelecionado[
+                  AgendamentoSituacao.finalizado.text()],
+            ),
           ],
         ),
       ),
@@ -85,15 +95,17 @@ class _HomeState extends State<Home> {
   Widget widgetCalendario() {
     return Expanded(
       child: AgendaCalendario(
-        onTotals: (date, values) {},
-        onScheduleClick: (scheduleModule) async {
+        onCliqueAgendamento: (scheduleModule) async {
           await abrirDetalhes(context, scheduleModule);
         },
-        onEmptyClick: (date) async {
-          var arguments = Parametros(scheduleDate: date);
+        onCliqueAgendamentoLivre: (dataHora) async {
+          var arguments = Parametros(scheduleDate: dataHora);
           await abrirAdicionarAgendamento(context, params: arguments);
         },
-        schedules: homeProvider.schedules,
+        agendamentos: homeProvider.agendamentos,
+        onDataSelecionada: (DateTime? data) {
+          if (data != null) homeProvider.alternouData(data);
+        },
       ),
     );
   }
@@ -111,14 +123,15 @@ class _HomeState extends State<Home> {
           children: [
             Consumer<HomeProvider>(
               builder: (context, provider, _) {
-                final session = provider.accountConnected;
-                _userNameController.text = 'Olá, ${session.name}';
-                _companyNameController.text = session.company.socialName;
+                final usuarioConectado = provider.usuarioContectado;
+                _usuarioController.text = 'Olá, ${usuarioConectado.nome}';
+                _nomeEmpresaController.text =
+                    usuarioConectado.empresa.razaoSocial;
                 return Container(
                   padding: const EdgeInsets.only(bottom: 10, top: 20, left: 20),
                   child: ListTile(
                     title: Text(
-                      _userNameController.text,
+                      _usuarioController.text,
                       textAlign: TextAlign.left,
                       style: TextStyle(
                         color: Theme.of(context).primaryColor,
@@ -126,7 +139,7 @@ class _HomeState extends State<Home> {
                       ),
                     ),
                     subtitle: Text(
-                      _companyNameController.text,
+                      _nomeEmpresaController.text,
                       style: TextStyle(
                         color: Theme.of(context).primaryColor,
                       ),
@@ -136,7 +149,7 @@ class _HomeState extends State<Home> {
                         Icons.exit_to_app_rounded,
                         color: Theme.of(context).primaryColor,
                       ),
-                      onPressed: () async => await exitApp(),
+                      onPressed: () async => await sair(),
                     ),
                   ),
                 );
@@ -240,7 +253,7 @@ class _HomeState extends State<Home> {
       shape: shapeModalBottomSheet,
       builder: (context) {
         String typeSituation = scheduleModule.schedule.situation.text();
-        var res = ScheduleModel.Schedule.fromText(typeSituation);
+        var res = scheduleModel.Schedule.fromText(typeSituation);
         String displaySituation = res[ScheduleFromText.tDescription];
         Color colorSituation = res[ScheduleFromText.tColor];
         return Column(
@@ -348,13 +361,13 @@ class _HomeState extends State<Home> {
     );
   }
 
-  Future exitApp() async {
+  Future sair() async {
     await DialogsUtil.confirmation(
       context,
       'Deseja sair?',
       'Espero te ver novamente! :)',
       () async {
-        bool res = await homeProvider.logOut();
+        bool res = await homeProvider.deslogar();
         if (!res) return;
         await Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
       },

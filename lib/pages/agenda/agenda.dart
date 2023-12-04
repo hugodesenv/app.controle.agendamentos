@@ -51,7 +51,7 @@ class _AgendaState extends State<Agenda> with AgendaValidacaoMixin {
           children: [
             MyModalSearch(
               typeSearch: MyModalSearchEnum.tEmployee,
-              initialValue: provider.agenda.employee.name,
+              initialValue: provider.agenda.employee.nome,
               validator: (mensagem) => combine([
                 () => clienteVazio(mensagem ?? ''),
               ]),

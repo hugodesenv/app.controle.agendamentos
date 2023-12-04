@@ -1,51 +1,53 @@
+import 'package:agendamentos/models/empresa.dart';
 import 'package:agendamentos/models/generic_model.dart';
 
-import '../models/company.dart';
-
 class Employee extends GenericModel {
-  String _name;
-  bool _active;
-  Company _company;
+  String _nome;
+  bool _ativo;
+  Empresa _empresa;
 
   Employee({
     required String? id,
-    String? name,
-    bool? active,
-    Company? company,
-  })  : _name = name ?? '',
-        _active = active ?? false,
-        _company = company ?? Company.empty(),
+    String? nome,
+    bool? ativo,
+    Empresa? empresa,
+  })  : _nome = nome ?? '',
+        _ativo = ativo ?? false,
+        _empresa = empresa ?? Empresa.empty(),
         super(id: id);
 
   factory Employee.empty() {
-    return Employee(id: '', company: Company.empty());
-  }
-
-  factory Employee.fromJson(Map? data) {
-    Company company = Company.fromJson(data?['company']);
     return Employee(
-      id: data?['id'],
-      company: company,
-      active: data?['active'],
-      name: data?['name'],
+      id: '',
+      empresa: Empresa.empty(),
     );
   }
 
-  Company get company => _company;
-
-  set company(Company value) {
-    _company = value;
+  factory Employee.fromJson(Map? data) {
+    var empresa = Empresa.fromJson(data?['company']);
+    return Employee(
+      id: data?['id'],
+      empresa: empresa,
+      ativo: data?['active'],
+      nome: data?['name'],
+    );
   }
 
-  bool get active => _active;
+  Empresa get empresa => _empresa;
 
-  set active(bool value) {
-    _active = value;
+  set empresa(Empresa value) {
+    _empresa = value;
   }
 
-  String get name => _name;
+  bool get ativo => _ativo;
 
-  set name(String value) {
-    _name = value;
+  set ativo(bool value) {
+    _ativo = value;
+  }
+
+  String get nome => _nome;
+
+  set nome(String value) {
+    _nome = value;
   }
 }

@@ -1,4 +1,4 @@
-import 'package:agendamentos/models/account.dart';
+import 'package:agendamentos/models/usuario.dart';
 import 'package:agendamentos/models/item.dart';
 import 'package:agendamentos/repository/firebase_repository.dart';
 import 'package:agendamentos/utils/preferences_util.dart';
@@ -16,13 +16,13 @@ class ItemRepository extends FirebaseRepository implements CrudRepository {
 
   @override
   Future<Map> findAll() async {
-    Account currentUser = await PreferencesUtil.currentUser();
+    Usuario currentUser = await PreferencesUtil.usuarioAtual();
     List<Item> items = [];
 
     var res = await dio.get(
       apiURL,
       data: {
-        'company_id': currentUser.company.id,
+        'company_id': currentUser.empresa.id,
         'active': true,
       },
     );

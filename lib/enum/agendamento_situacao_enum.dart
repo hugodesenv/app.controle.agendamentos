@@ -1,24 +1,24 @@
 enum AgendamentoSituacao {
-  PENDENTE,
-  CONFIRMADO,
-  EM_PROGRESSO,
-  CANCELADO,
-  FINALIZADO,
-  INDEFINIDO,
+  pendente,
+  confirmado,
+  emProgresso,
+  cancelado,
+  finalizado,
+  indefinido,
 }
 
 extension AgendamentoSituacaoEnumExtensao on AgendamentoSituacao {
   String text() {
     switch (this) {
-      case AgendamentoSituacao.CANCELADO:
+      case AgendamentoSituacao.cancelado:
         return 'canceled';
-      case AgendamentoSituacao.FINALIZADO:
+      case AgendamentoSituacao.finalizado:
         return 'completed';
-      case AgendamentoSituacao.CONFIRMADO:
+      case AgendamentoSituacao.confirmado:
         return 'confirmed';
-      case AgendamentoSituacao.EM_PROGRESSO:
+      case AgendamentoSituacao.emProgresso:
         return 'progress';
-      case AgendamentoSituacao.PENDENTE:
+      case AgendamentoSituacao.pendente:
         return 'pending';
       default:
         return 'undefined';

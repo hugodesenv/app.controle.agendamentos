@@ -1,33 +1,32 @@
 import 'package:agendamentos/models/generic_model.dart';
-
-import 'company.dart';
+import 'empresa.dart';
 
 class Customer extends GenericModel {
   String _name;
   String _cellphone;
   String _email;
-  Company _company;
+  Empresa _empresa;
 
   Customer({
     required String? id,
     String? name,
     String? cellphone,
     String? email,
-    Company? company,
+    Empresa? empresa,
   })  : _name = name ?? '',
         _cellphone = cellphone ?? '',
         _email = email ?? '',
-        _company = company ?? Company.empty(),
+        _empresa = empresa ?? Empresa.empty(),
         super(id: id);
 
   factory Customer.fromJson(Map json) {
-    Company company = Company.fromJson(json['company']);
+    Empresa empresa = Empresa.fromJson(json['company']);
     return Customer(
       id: json['id'],
       name: json['name'],
       cellphone: json['cellphone'],
       email: json['email'],
-      company: company,
+      empresa: empresa,
     );
   }
 
@@ -35,7 +34,7 @@ class Customer extends GenericModel {
     String? id,
     String? name,
     String? cellphone,
-    Company? company,
+    Empresa? empresa,
     String? email,
   }) {
     return Customer(
@@ -43,14 +42,14 @@ class Customer extends GenericModel {
       name: name ?? this.name,
       cellphone: cellphone ?? this.cellphone,
       email: email ?? this.email,
-      company: company ?? this.company,
+      empresa: empresa ?? this._empresa,
     );
   }
 
   factory Customer.empty() {
     return Customer(
       id: "",
-      company: Company.empty(),
+      empresa: Empresa.empty(),
     );
   }
 
@@ -58,7 +57,7 @@ class Customer extends GenericModel {
     return {
       "name": name,
       "cellphone": cellphone,
-      "fk_company": company.id,
+      "fk_company": empresa.id,
       "email": email,
     };
   }
@@ -81,9 +80,9 @@ class Customer extends GenericModel {
     _email = value;
   }
 
-  Company get company => _company;
+  Empresa get empresa => _empresa;
 
-  set company(Company value) {
-    _company = value;
+  set empresa(Empresa value) {
+    _empresa = value;
   }
 }

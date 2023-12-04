@@ -51,6 +51,4 @@ class AgendaProvider with ChangeNotifier {
     var res = await repository.save(agenda);
     print("¨¨¨ agenda_provider: $res");
   }
-
-  carregar() {}
 }

@@ -1,4 +1,4 @@
-import 'package:agendamentos/models/account.dart';
+import 'package:agendamentos/models/usuario.dart';
 import 'package:agendamentos/models/employee.dart';
 import 'package:agendamentos/repository/firebase_repository.dart';
 import 'package:agendamentos/utils/preferences_util.dart';
@@ -18,10 +18,10 @@ class EmployeeRepository extends FirebaseRepository implements CrudRepository {
   Future<Map> findAll() async {
     List<Employee> employees = [];
 
-    Account currentUser = await PreferencesUtil.currentUser();
+    var usuarioAtual = await PreferencesUtil.usuarioAtual();
     Map filter = {"active": true};
     var response =
-        await dio.get('$apiURL/${currentUser.company.id}', data: filter);
+        await dio.get('$apiURL/${usuarioAtual.empresa.id}', data: filter);
 
     for (var data in response.data) {
       Employee employee = Employee.fromJson(data);

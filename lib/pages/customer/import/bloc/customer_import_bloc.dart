@@ -1,5 +1,5 @@
-import 'package:agendamentos/models/company.dart';
 import 'package:agendamentos/models/customer.dart';
+import 'package:agendamentos/models/empresa.dart';
 import 'package:agendamentos/repository/customer_repository.dart';
 import 'package:bloc/bloc.dart';
 import 'package:contacts_service/contacts_service.dart';
@@ -54,7 +54,7 @@ class CustomerImportBloc
       for (var i in checkedList) {
         var customer = Customer(
           id: "",
-          company: Company.empty(),
+          empresa: Empresa.empty(),
           cellphone: i.contact.phones?[0].value,
           name: i.contact.displayName!,
         );

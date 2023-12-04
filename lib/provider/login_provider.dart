@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import '../models/account.dart';
-import '../repository/user_repository.dart';
+import '../models/usuario.dart';
+import '../repository/usuario_repository.dart';
 
 class LoginProvider with ChangeNotifier {
   bool _loading = false;
@@ -31,8 +31,8 @@ class LoginProvider with ChangeNotifier {
 
     loading = true;
     try {
-      Account res = await UserRepository.instance.signIn(pUser, pPassword);
-      if (res.username.isEmpty) {
+      Usuario res = await UserRepository.instance.signIn(pUser, pPassword);
+      if (res.usuario.isEmpty) {
         return 'Usuário ou senha incorretos!';
       }
     } finally {

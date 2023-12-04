@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:agendamentos/enum/banco_dados_enum.dart';
-import 'package:agendamentos/models/account.dart';
+import 'package:agendamentos/models/usuario.dart';
 import 'package:agendamentos/repository/firebase_repository.dart';
 import 'package:agendamentos/utils/preferences_util.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -37,9 +37,9 @@ class CustomerRepository extends FirebaseRepository implements CrudRepository {
   @override
   Future<Map> findAll() async {
     List<Customer> customers = [];
-    Account currentUser = await PreferencesUtil.currentUser();
+    var usuarioAtual = await PreferencesUtil.usuarioAtual();
 
-    var response = await dio.get('$apiURL/${currentUser.company.id}');
+    var response = await dio.get('$apiURL/${usuarioAtual.empresa.id}');
     for (var data in response.data) {
       Customer customer = Customer.fromJson(data);
       customers.add(customer);
@@ -56,7 +56,7 @@ class CustomerRepository extends FirebaseRepository implements CrudRepository {
     try {
       var data = {
         ...customer.toMap(),
-        'action': BancoDadosAcoes.ALTERACAO.text()
+        'action': BancoDadosAcoes.alteracao.text()
       };
       var res = await dio.patch('$apiURL/${customer.id}', data: data);
       return res.data;
@@ -74,7 +74,7 @@ class CustomerRepository extends FirebaseRepository implements CrudRepository {
     try {
       Map data = {
         ...customer.toMap(),
-        'action': BancoDadosAcoes.INCLUSAO.text()
+        'action': BancoDadosAcoes.inclusao.text()
       };
       await dio.post(apiURL, data: data);
       return {
