@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import '../models/usuario.dart';
-import '../repository/usuario_repository.dart';
+import '../../../models/usuario.dart';
+import '../../../repository/usuario_repository.dart';
 
 class LoginProvider with ChangeNotifier {
   bool _loading = false;

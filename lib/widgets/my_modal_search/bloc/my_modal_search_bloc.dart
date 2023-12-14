@@ -47,7 +47,7 @@ class MyModalSearchBloc extends Bloc<MyModalSearchEvent, MyModalSearchState> {
             originalList.add(
               MyModalSearchValues(
                 employee.id,
-                employee.name,
+                employee.nome,
                 'Clique para selecionar',
                 employee,
               ),

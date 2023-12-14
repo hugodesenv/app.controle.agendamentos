@@ -1,5 +1,5 @@
-import 'package:agendamentos/pages/agenda/agenda.dart';
-import 'package:agendamentos/provider/agenda_provider.dart';
+import 'package:agendamentos/pages/agenda/agenda_page.dart';
+import 'package:agendamentos/pages/agenda/provider/agenda_provider.dart';
 import 'package:agendamentos/utils/datetime_util.dart';
 import 'package:agendamentos/utils/dialogs_util.dart';
 import 'package:brasil_fields/brasil_fields.dart';
@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../models/schedule_item.dart';
-import '../../../provider/agenda_item_provider.dart';
+import '../provider/agenda_item_provider.dart';
 import '../../../utils/constants/widgetsConstantes.dart';
 import '../../../widgets/my_text_title.dart';
 

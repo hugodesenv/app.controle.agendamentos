@@ -1,31 +1,31 @@
 import 'package:agendamentos/enum/agendamento_situacao_enum.dart';
-import 'package:agendamentos/pages/agenda/agenda.dart';
-import 'package:agendamentos/pages/agenda/widget/calendario/model/schedules_model.dart';
-import 'package:agendamentos/provider/home_provider.dart';
+import 'package:agendamentos/pages/agenda/agenda_page.dart';
 import 'package:agendamentos/utils/dialogs_util.dart';
+import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../../models/schedule.dart' as scheduleModel;
+import '../../models/schedule.dart';
+import '../../utils/constants/constants.dart';
+import '../../utils/constants/widgetsConstantes.dart';
+import '../agenda/components/calendario/agenda_calendario.dart';
+import 'home_provider.dart';
 
-import '../models/schedule.dart' as scheduleModel;
-import '../models/schedule.dart';
-import '../utils/constants/constants.dart';
-import '../utils/constants/widgetsConstantes.dart';
-import 'agenda/widget/calendario/agenda_calendario.dart';
-
-class Home extends StatefulWidget {
-  const Home({Key? key}) : super(key: key);
+class HomePage extends StatefulWidget {
+  const HomePage({Key? key}) : super(key: key);
 
   @override
-  State<Home> createState() => _HomeState();
+  State<HomePage> createState() => _HomePageState();
 }
 
-class _HomeState extends State<Home> {
+class _HomePageState extends State<HomePage> {
   final _usuarioController = TextEditingController();
   final _nomeEmpresaController = TextEditingController();
   late HomeProvider homeProvider;
 
   @override
   void initState() {
+    homeProvider = context.read<HomeProvider>();
     super.initState();
 
     Future.delayed(Duration.zero).then((value) {
@@ -36,11 +36,11 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    homeProvider = Provider.of<HomeProvider>(context);
+    print("** home_page: rebuild");
     return Scaffold(
       appBar: appBar(context),
       body: body(),
-      drawer: leftDrawer(),
+      drawer: menuLateral(),
     );
   }
 
@@ -50,14 +50,15 @@ class _HomeState extends State<Home> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          totalizadores(),
-          widgetCalendario(),
+          totalPorSituacao(),
+          compromissos(),
         ],
       ),
     );
   }
 
-  Widget totalizadores() {
+  Widget totalPorSituacao() {
+    print("** rebuild total por situacao");
     return Padding(
       padding: const EdgeInsets.only(bottom: 4),
       child: SizedBox(
@@ -65,25 +66,21 @@ class _HomeState extends State<Home> {
         child: ListView(
           scrollDirection: Axis.horizontal,
           children: [
-            cardInfo(
+            cardsTotalPorSituacao(
               'Pendentes',
-              homeProvider.totalizadorDoDiaSelecionado[
-                  AgendamentoSituacao.pendente.text()],
+              AgendamentoSituacao.pendente,
             ),
-            cardInfo(
+            cardsTotalPorSituacao(
               'Confirmados',
-              homeProvider.totalizadorDoDiaSelecionado[
-                  AgendamentoSituacao.confirmado.text()],
+              AgendamentoSituacao.confirmado,
             ),
-            cardInfo(
+            cardsTotalPorSituacao(
               'Cancelados',
-              homeProvider.totalizadorDoDiaSelecionado[
-                  AgendamentoSituacao.cancelado.text()],
+              AgendamentoSituacao.cancelado,
             ),
-            cardInfo(
+            cardsTotalPorSituacao(
               'Finalizados',
-              homeProvider.totalizadorDoDiaSelecionado[
-                  AgendamentoSituacao.finalizado.text()],
+              AgendamentoSituacao.finalizado,
             ),
           ],
         ),
@@ -91,26 +88,23 @@ class _HomeState extends State<Home> {
     );
   }
 
-  // componente que mostra todos os agendamentos na pagina inicial
-  Widget widgetCalendario() {
+  Widget compromissos() {
     return Expanded(
       child: AgendaCalendario(
-        onCliqueAgendamento: (scheduleModule) async {
-          await abrirDetalhes(context, scheduleModule);
+        onCliqueAgendamento: (model) async {
+          await abrirDetalhes(context, model);
         },
         onCliqueAgendamentoLivre: (dataHora) async {
           var arguments = Parametros(scheduleDate: dataHora);
           await abrirAdicionarAgendamento(context, params: arguments);
         },
         agendamentos: homeProvider.agendamentos,
-        onDataSelecionada: (DateTime? data) {
-          if (data != null) homeProvider.alternouData(data);
-        },
+        onDataSelecionada: (data) => homeProvider.calcularTotalizadores(data),
       ),
     );
   }
 
-  Widget leftDrawer() {
+  Widget menuLateral() {
     return Drawer(
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.horizontal(
@@ -246,16 +240,16 @@ class _HomeState extends State<Home> {
     );
   }
 
-  // click on detail
-  abrirDetalhes(BuildContext context, ScheduleModule scheduleModule) async {
+  /// Tela que abre quando clica sob o agendamento no calendário.
+  abrirDetalhes(BuildContext context, Schedule pAgendamento) async {
     await showModalBottomSheet(
       context: context,
       shape: shapeModalBottomSheet,
       builder: (context) {
-        String typeSituation = scheduleModule.schedule.situation.text();
-        var res = scheduleModel.Schedule.fromText(typeSituation);
-        String displaySituation = res[ScheduleFromText.tDescription];
-        Color colorSituation = res[ScheduleFromText.tColor];
+        final typeSituation = pAgendamento.situation.text();
+        final res = scheduleModel.Schedule.fromText(typeSituation);
+        final displaySituation = res[ScheduleFromText.tDescription];
+        final colorSituation = res[ScheduleFromText.tColor];
         return Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           mainAxisSize: MainAxisSize.min,
@@ -283,8 +277,9 @@ class _HomeState extends State<Home> {
                   itemBuilder: (context) {
                     return [
                       const PopupMenuItem(child: Text("Alterar")),
-                      const PopupMenuItem(
-                        child: Text(
+                      PopupMenuItem(
+                        onTap: () => homeProvider.excluir(pAgendamento),
+                        child: const Text(
                           "Excluir",
                           style: TextStyle(
                             color: Colors.red,
@@ -311,25 +306,22 @@ class _HomeState extends State<Home> {
                     ListTile(
                       leading: const Icon(Icons.person_2_outlined),
                       title: const Text("Nome"),
-                      subtitle: Text(scheduleModule.schedule.customer.name),
+                      subtitle: Text(pAgendamento.customer.name),
                     ),
                     ListTile(
                       leading: const Icon(Icons.local_phone_outlined),
                       title: const Text("Celular"),
-                      subtitle:
-                          Text(scheduleModule.schedule.customer.cellphone),
+                      subtitle: Text(pAgendamento.customer.cellphone),
                     ),
                     ListTile(
                       leading: const Icon(Icons.timer_sharp),
                       title: const Text("Tempo total (Minutos)"),
-                      subtitle:
-                          Text(scheduleModule.schedule.totalMinutes.toString()),
+                      subtitle: Text(pAgendamento.totalMinutes.toString()),
                     ),
                     ListTile(
                       leading: const Icon(Icons.attach_money_rounded),
                       title: const Text("Preço R\$"),
-                      subtitle:
-                          Text(scheduleModule.schedule.totalPrice.toString()),
+                      subtitle: Text(pAgendamento.totalPrice.toString()),
                     ),
                   ],
                 ),
@@ -374,20 +366,21 @@ class _HomeState extends State<Home> {
     );
   }
 
-  Widget cardInfo(String title, double? value) {
+  Widget cardsTotalPorSituacao(String pTitulo, AgendamentoSituacao pSituacao) {
     return SizedBox(
       width: 150.0,
       child: Center(
         child: ListTile(
           title: Text(
-            title,
+            pTitulo,
             style: const TextStyle(fontWeight: FontWeight.w600),
             textAlign: TextAlign.center,
           ),
           subtitle: Padding(
             padding: const EdgeInsets.only(top: 6),
             child: Text(
-              (value ?? 0).toString(),
+              UtilBrasilFields.obterReal(
+                  homeProvider.totalizadores[pSituacao] ?? 0.0),
               textAlign: TextAlign.center,
               style: const TextStyle(fontSize: 12),
             ),

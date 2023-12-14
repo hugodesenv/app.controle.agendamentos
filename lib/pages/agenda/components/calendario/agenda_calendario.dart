@@ -1,20 +1,20 @@
+import 'package:agendamentos/models/schedule.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 import 'model/agenda_datasource.dart';
-import 'model/schedules_model.dart';
 
 class AgendaCalendario extends StatelessWidget {
   late Function(DateTime data) _onDataSelecionada;
-  late Function(ScheduleModule scheduleModule) _onCliqueAgendamento;
+  late Function(Schedule scheduleModule) _onCliqueAgendamento;
   late Function(DateTime data) _onCliqueAgendamentoLivre;
-  late List<ScheduleModule> _agendamentos;
+  late List<Schedule> _agendamentos;
 
   AgendaCalendario({
     Key? key,
-    required Function(ScheduleModule scheduleModule) onCliqueAgendamento,
+    required Function(Schedule scheduleModule) onCliqueAgendamento,
     required Function(DateTime date) onCliqueAgendamentoLivre,
-    required List<ScheduleModule> agendamentos,
+    required List<Schedule> agendamentos,
     required Function(DateTime? data) onDataSelecionada,
   }) : super(key: key) {
     _agendamentos = agendamentos;
@@ -60,8 +60,8 @@ class AgendaCalendario extends StatelessWidget {
       case CalendarElement.appointment:
       case CalendarElement.agenda:
         {
-          ScheduleModule scheduleModule = det.appointments![0];
-          _onCliqueAgendamento(scheduleModule);
+          Schedule apontamento = det.appointments![0];
+          _onCliqueAgendamento(apontamento);
         }
         break;
       case CalendarElement.calendarCell:

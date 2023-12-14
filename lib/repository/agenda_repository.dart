@@ -2,7 +2,6 @@ import 'package:agendamentos/enum/agendamento_situacao_enum.dart';
 import 'package:agendamentos/repository/firebase_repository.dart';
 import 'package:intl/intl.dart';
 import '../models/schedule.dart';
-import '../pages/agenda/widget/calendario/model/schedules_model.dart';
 
 class AgendaRepository extends FirebaseRepository implements CrudRepository {
   AgendaRepository._() : super(controller_name: "schedule");
@@ -15,47 +14,44 @@ class AgendaRepository extends FirebaseRepository implements CrudRepository {
   }
 
   @override
-  Future<Map> findAll() async {
-    List<ScheduleModule> schedules = [];
-    Map<String, dynamic> totals = {};
+  Future<dynamic> findAll() async {
+    List<Schedule> schedules = [];
+    //Map<String, dynamic> totals = {};
     try {
       var response = await dio.get(apiURL);
       for (var data in response.data) {
         Schedule schedule = Schedule.fromJson(data);
 
-        _handleTotal(
+        /*_handleTotal(
           totals,
           schedule.scheduleDate,
           schedule.situation.text(),
           schedule.totalPrice,
-        );
+        );*/
 
-        ScheduleModule calendarWidgetSchedule = ScheduleModule(
-          schedule: schedule,
-          eventDate: schedule.scheduleDate,
-        );
+        //ScheduleModule calendarWidgetSchedule = ScheduleModule(
+        //  schedule: schedule,
+        //  eventDate: schedule.scheduleDate,
+        //);
 
-        schedules.add(calendarWidgetSchedule);
+        schedules.add(schedule);
       }
     } catch (e) {
       throw Exception('Falha na busca pelos agendamentos: ${e.toString()}');
     }
-    return {
-      "agendamentos": schedules,
-      "totais": totals,
-    };
+    return schedules;
   }
 
   static keyTotalizador(DateTime data) => DateFormat.yMMMMd().format(data);
 
-  _handleTotal(Map total, DateTime data, String situation, double totalPrice) {
+  /*_handleTotal(Map total, DateTime data, String situation, double totalPrice) {
     String key = keyTotalizador(data);
 
     if (total[key] == null) total[key] = {};
     if (total[key][situation] == null) total[key][situation] = 0;
 
     total[key][situation] += totalPrice;
-  }
+  }*/
 
   @override
   Future<Map> save(data) async {

@@ -1,7 +1,7 @@
 import 'package:agendamentos/mixin/validacao_formulario/agenda_validacao_mixin.dart';
-import 'package:agendamentos/pages/agenda/widget/agenda_situacao.dart';
-import 'package:agendamentos/provider/agenda_item_provider.dart';
-import 'package:agendamentos/provider/agenda_provider.dart';
+import 'package:agendamentos/pages/agenda/components/agenda_situacao.dart';
+import 'package:agendamentos/pages/agenda/provider/agenda_item_provider.dart';
+import 'package:agendamentos/pages/agenda/provider/agenda_provider.dart';
 import 'package:agendamentos/widgets/my_date_field.dart';
 import 'package:agendamentos/widgets/my_modal_search/my_modal_search.dart';
 import 'package:brasil_fields/brasil_fields.dart';

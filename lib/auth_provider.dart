@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../utils/preferences_util.dart';
+import 'utils/preferences_util.dart';
 
 class AuthProvider with ChangeNotifier {
   bool _directToHome = false;

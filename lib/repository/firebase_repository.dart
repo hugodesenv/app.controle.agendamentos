@@ -3,9 +3,9 @@ import 'package:dio/dio.dart';
 
 abstract class CrudRepository {
   Future<Map> delete(String id);
-  Future<Map> save(data);
+  Future<dynamic> save(data);
   Future<Map> update(data);
-  Future<Map> findAll();
+  Future findAll();
 }
 
 class FirebaseRepository {

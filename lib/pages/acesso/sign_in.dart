@@ -1,9 +1,9 @@
-import 'package:agendamentos/provider/login_provider.dart';
+import 'package:agendamentos/pages/acesso/provider/login_provider.dart';
 import 'package:agendamentos/utils/constants/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:material_dialogs/dialogs.dart';
 import 'package:provider/provider.dart';
-import '../utils/constants/widgetsConstantes.dart';
+import '../../utils/constants/widgetsConstantes.dart';
 
 class SignIn extends StatefulWidget {
   const SignIn({Key? key}) : super(key: key);

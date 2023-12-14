@@ -3,9 +3,9 @@ import 'package:agendamentos/models/customer.dart';
 import 'package:agendamentos/models/employee.dart';
 import 'package:flutter/foundation.dart';
 
-import '../models/schedule.dart';
-import '../models/schedule_item.dart';
-import '../repository/agenda_repository.dart';
+import '../../../models/schedule.dart';
+import '../../../models/schedule_item.dart';
+import '../../../repository/agenda_repository.dart';
 
 class AgendaProvider with ChangeNotifier {
   late Schedule _agenda;

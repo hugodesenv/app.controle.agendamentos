@@ -1,7 +1,7 @@
 import 'package:agendamentos/models/schedule_item.dart';
 import 'package:flutter/material.dart';
 
-import '../models/item.dart';
+import '../../../models/item.dart';
 
 class AgendaItemProvider with ChangeNotifier {
   ScheduleItem _scheduleItem = ScheduleItem.empty();

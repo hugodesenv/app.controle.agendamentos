@@ -1,4 +1,5 @@
 import 'package:agendamentos/models/customer.dart';
+import 'package:agendamentos/pages/agenda/agenda_page.dart';
 import 'package:agendamentos/pages/customer/import/bloc/customer_import_bloc.dart';
 import 'package:agendamentos/pages/customer/import/bloc/customer_import_event.dart';
 import 'package:agendamentos/pages/customer/import/bloc/customer_import_state.dart';
@@ -13,21 +14,21 @@ import 'package:agendamentos/pages/customer/new/formz/model.dart';
 import 'package:agendamentos/pages/customer/query/bloc/customer_query_bloc.dart';
 import 'package:agendamentos/pages/customer/query/bloc/customer_query_event.dart';
 import 'package:agendamentos/pages/customer/query/bloc/customer_query_state.dart';
-import 'package:agendamentos/pages/customer/query/customer_query.dart';
-import 'package:agendamentos/pages/home.dart';
 import 'package:agendamentos/pages/item/bloc/item_query_bloc.dart';
 import 'package:agendamentos/pages/item/bloc/item_query_state.dart';
 import 'package:agendamentos/pages/item/item_query.dart';
 import 'package:agendamentos/pages/profile.dart';
 import 'package:agendamentos/pages/relatorio.dart';
-import 'package:agendamentos/pages/agenda/agenda.dart';
 import 'package:agendamentos/utils/constants/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'pages/customer/query/customer_query.dart';
+import 'pages/home/home_page.dart';
+
 appRotas(RouteSettings settings) {
   if (settings.name == RoutesConstants.routeHome) {
-    return MaterialPageRoute(builder: (_) => Home());
+    return MaterialPageRoute(builder: (_) => HomePage());
   } else if (settings.name == RoutesConstants.routeCustomerQuery) {
     return MaterialPageRoute(
       builder: (_) {
