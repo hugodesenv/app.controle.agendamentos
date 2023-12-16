@@ -22,5 +22,5 @@ class RoutesConstants {
   static const routeCustomerImport = '/customer_import';
   static const routeCustomerInfo = '/customer_info';
 
-  static const routeItemQuery = '/product_query';
+  static const routeItemPage = '/item-page';
 }

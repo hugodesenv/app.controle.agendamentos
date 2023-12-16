@@ -1,4 +1,4 @@
-import 'package:agendamentos/pages/acesso/sign_in.dart';
+import 'package:agendamentos/features/acesso/sign_in.dart';
 import 'package:agendamentos/auth_provider.dart';
 import 'package:agendamentos/rotas.dart';
 import 'package:agendamentos/utils/theme_utils.dart';
@@ -7,7 +7,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
-import 'pages/home/home_page.dart';
+import 'features/home/home_page.dart';
 
 class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);

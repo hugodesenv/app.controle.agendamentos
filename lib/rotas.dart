@@ -1,30 +1,28 @@
 import 'package:agendamentos/models/customer.dart';
-import 'package:agendamentos/pages/agenda/agenda_page.dart';
-import 'package:agendamentos/pages/customer/import/bloc/customer_import_bloc.dart';
-import 'package:agendamentos/pages/customer/import/bloc/customer_import_event.dart';
-import 'package:agendamentos/pages/customer/import/bloc/customer_import_state.dart';
-import 'package:agendamentos/pages/customer/import/customer_import.dart';
-import 'package:agendamentos/pages/customer/info/bloc/customer_info_bloc.dart';
-import 'package:agendamentos/pages/customer/info/bloc/customer_info_state.dart';
-import 'package:agendamentos/pages/customer/info/customer_info.dart';
-import 'package:agendamentos/pages/customer/new/bloc/customer_new_bloc.dart';
-import 'package:agendamentos/pages/customer/new/bloc/customer_new_state.dart';
-import 'package:agendamentos/pages/customer/new/customer_new.dart';
-import 'package:agendamentos/pages/customer/new/formz/model.dart';
-import 'package:agendamentos/pages/customer/query/bloc/customer_query_bloc.dart';
-import 'package:agendamentos/pages/customer/query/bloc/customer_query_event.dart';
-import 'package:agendamentos/pages/customer/query/bloc/customer_query_state.dart';
-import 'package:agendamentos/pages/item/bloc/item_query_bloc.dart';
-import 'package:agendamentos/pages/item/bloc/item_query_state.dart';
-import 'package:agendamentos/pages/item/item_query.dart';
-import 'package:agendamentos/pages/profile.dart';
-import 'package:agendamentos/pages/relatorio.dart';
+import 'package:agendamentos/features/agenda/agenda_page.dart';
+import 'package:agendamentos/features/customer/import/bloc/customer_import_bloc.dart';
+import 'package:agendamentos/features/customer/import/bloc/customer_import_event.dart';
+import 'package:agendamentos/features/customer/import/bloc/customer_import_state.dart';
+import 'package:agendamentos/features/customer/import/customer_import.dart';
+import 'package:agendamentos/features/customer/info/bloc/customer_info_bloc.dart';
+import 'package:agendamentos/features/customer/info/bloc/customer_info_state.dart';
+import 'package:agendamentos/features/customer/info/customer_info.dart';
+import 'package:agendamentos/features/customer/new/bloc/customer_new_bloc.dart';
+import 'package:agendamentos/features/customer/new/bloc/customer_new_state.dart';
+import 'package:agendamentos/features/customer/new/customer_new.dart';
+import 'package:agendamentos/features/customer/new/formz/model.dart';
+import 'package:agendamentos/features/customer/query/bloc/customer_query_bloc.dart';
+import 'package:agendamentos/features/customer/query/bloc/customer_query_event.dart';
+import 'package:agendamentos/features/customer/query/bloc/customer_query_state.dart';
+import 'package:agendamentos/features/item/item_page.dart';
+import 'package:agendamentos/features/profile.dart';
+import 'package:agendamentos/features/relatorio.dart';
 import 'package:agendamentos/utils/constants/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'pages/customer/query/customer_query.dart';
-import 'pages/home/home_page.dart';
+import 'features/customer/query/customer_query.dart';
+import 'features/home/home_page.dart';
 
 appRotas(RouteSettings settings) {
   if (settings.name == RoutesConstants.routeHome) {
@@ -84,12 +82,9 @@ appRotas(RouteSettings settings) {
     return MaterialPageRoute(
       builder: (_) => const Agenda(),
     );
-  } else if (settings.name == RoutesConstants.routeItemQuery) {
+  } else if (settings.name == RoutesConstants.routeItemPage) {
     return MaterialPageRoute(
-      builder: (_) => BlocProvider(
-        create: (context) => ItemQueryBloc(ItemQueryStateInitial()),
-        child: const ItemQuery(),
-      ),
+      builder: (_) => const ItemPage(),
     );
   }
 }

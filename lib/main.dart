@@ -1,8 +1,8 @@
 import 'package:agendamentos/myApp.dart';
-import 'package:agendamentos/pages/agenda/provider/agenda_provider.dart';
+import 'package:agendamentos/features/agenda/provider/agenda_provider.dart';
 import 'package:agendamentos/auth_provider.dart';
-import 'package:agendamentos/pages/home/home_provider.dart';
-import 'package:agendamentos/pages/acesso/provider/login_provider.dart';
+import 'package:agendamentos/features/home/home_provider.dart';
+import 'package:agendamentos/features/acesso/provider/login_provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
