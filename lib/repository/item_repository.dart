@@ -5,7 +5,6 @@ import 'package:agendamentos/utils/preferences_util.dart';
 
 class ItemRepository extends FirebaseRepository implements CrudRepository {
   ItemRepository._() : super(controller_name: 'item');
-
   static final instance = ItemRepository._();
 
   @override
@@ -16,17 +15,13 @@ class ItemRepository extends FirebaseRepository implements CrudRepository {
 
   @override
   Future<Map> findAll() async {
-    Usuario currentUser = await PreferencesUtil.usuarioAtual();
-    List<Item> items = [];
-
-    var res = await dio.get(
+    final currentUser = await PreferencesUtil.usuarioAtual();
+    final res = await dio.get(
       apiURL,
-      data: {
-        'company_id': currentUser.empresa.id,
-        'active': true,
-      },
+      data: {'company_id': currentUser.empresa.id, 'active': true},
     );
 
+    List<Item> items = [];
     for (var data in res.data) {
       Item item = Item.fromJson(data);
       items.add(item);
@@ -34,7 +29,7 @@ class ItemRepository extends FirebaseRepository implements CrudRepository {
 
     items.sort((a, b) => a.description.compareTo(b.description));
 
-    return {'items': items};
+    return {'itens': items};
   }
 
   @override

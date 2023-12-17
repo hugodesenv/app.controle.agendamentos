@@ -36,14 +36,25 @@ class Item extends GenericModel {
       company: Empresa(id: data['fk_company'], razaoSocial: ''),
       description: data['description'],
       serviceMinutes: data['service_minutes'],
-      tipo: Item.toEnum(data['type']),
+      tipo: Item.toEnumTipo(data['type']),
     );
   }
 
-  static ItemTipo toEnum(String value) {
+  static ItemTipo toEnumTipo(String value) {
     return ItemTipo.values.firstWhere((element) {
       return element.typeCode == value;
     });
+  }
+
+  static String obterDescricaoEnumTipo(ItemTipo pTipo) {
+    switch (pTipo) {
+      case ItemTipo.INDEFINIDO:
+        return 'Indefinido';
+      case ItemTipo.PRODUTO:
+        return 'Produto';
+      case ItemTipo.SERVICO:
+        return 'Serviço';
+    }
   }
 
   ItemTipo get tipo => _tipo;

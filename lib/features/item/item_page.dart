@@ -1,11 +1,23 @@
 import 'package:agendamentos/features/item/produto/consulta/produto_consulta_page.dart';
+import 'package:agendamentos/features/item/produto/consulta/produto_consulta_provider.dart';
 import 'package:agendamentos/features/item/produto/new/product_new.dart';
 import 'package:agendamentos/features/item/service/query/service_query.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../utils/constants/widgetsConstantes.dart';
 
-class ItemPage extends StatelessWidget {
+class ItemPage extends StatefulWidget {
   const ItemPage({Key? key}) : super(key: key);
+
+  @override
+  State<ItemPage> createState() => _ItemPageState();
+}
+
+class _ItemPageState extends State<ItemPage> {
+  @override
+  void initState() {
+    super.initState();
+  }
 
   Future _showProductNew(BuildContext context) async {
     await showModalBottomSheet(
@@ -42,10 +54,7 @@ class ItemPage extends StatelessWidget {
                   leading: const Icon(Icons.handyman_outlined),
                   title: Text('Produto'),
                   onTap: () async {
-                    Navigator.pop(context); 
-
-                    agora, programar a consulta dos produtos.
-
+                    Navigator.pop(context);
                     await _showProductNew(context);
                   },
                 ),
