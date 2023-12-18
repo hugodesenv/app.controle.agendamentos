@@ -1,3 +1,4 @@
+import 'package:agendamentos/features/item/produto/produto_novo_page.dart';
 import 'package:agendamentos/models/customer.dart';
 import 'package:agendamentos/features/agenda/agenda_page.dart';
 import 'package:agendamentos/features/customer/import/bloc/customer_import_bloc.dart';
@@ -85,6 +86,10 @@ appRotas(RouteSettings settings) {
   } else if (settings.name == RoutesConstants.routeItemPage) {
     return MaterialPageRoute(
       builder: (_) => const ItemPage(),
+    );
+  } else if (settings.name == RoutesConstants.routeProdutoNovo) {
+    return MaterialPageRoute(
+      builder: (context) => const ProdutoNovoPage(),
     );
   }
 }

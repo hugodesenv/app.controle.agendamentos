@@ -1,12 +1,20 @@
 import 'package:agendamentos/enum/item_tipo_enum.dart';
 import 'package:agendamentos/repository/item_repository.dart';
 import 'package:flutter/material.dart';
-import '../../../../models/item.dart';
+import '../../models/item.dart';
 
-class ProdutoConsultaProvider with ChangeNotifier {
+class ItemProvider with ChangeNotifier {
+  String _tituloAppBar = 'Meus produtos';
   List<Item> itens = [];
 
-  Future<void> findItems() async {
+  String get tituloAppBar => _tituloAppBar;
+
+  set tituloAppBar(String novoTitulo) {
+    _tituloAppBar = novoTitulo;
+    notifyListeners();
+  }
+
+  Future<void> buscarItens() async {
     try {
       final mapItens = await ItemRepository.instance.findAll();
       itens = mapItens['itens'];
@@ -14,6 +22,6 @@ class ProdutoConsultaProvider with ChangeNotifier {
     } catch (e) {}
   }
 
-  List<Item> filterList(ItemTipo pType) =>
+  List<Item> filtrarItens(ItemTipo pType) =>
       itens.where((e) => e.tipo == pType).toList();
 }

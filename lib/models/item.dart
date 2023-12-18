@@ -1,5 +1,7 @@
+/// mudar aqui de ingles para portugues.
 import 'package:agendamentos/models/empresa.dart';
 import 'package:agendamentos/models/generic_model.dart';
+import 'package:agendamentos/utils/preferences_util.dart';
 import '../enum/item_tipo_enum.dart';
 
 class Item extends GenericModel {
@@ -21,12 +23,37 @@ class Item extends GenericModel {
     _empresa = company ?? Empresa.empty();
     _description = description ?? '';
     _serviceMinutes = serviceMinutes ?? 0;
-    _active = active ?? false;
+    _active = active ?? true;
     _tipo = tipo ?? ItemTipo.INDEFINIDO;
+  }
+
+  Item copyWith({
+    String? descricao,
+    ItemTipo? tipo,
+    Empresa? empresa,
+    bool? ativo,
+  }) {
+    return Item(
+      description: descricao ?? description,
+      tipo: tipo ?? this.tipo,
+      company: empresa ?? this.empresa,
+      active: ativo ?? active,
+    );
   }
 
   factory Item.empty() {
     return Item();
+  }
+
+  Map toJson() {
+    return {
+      'action': action.text(),
+      'fk_company': empresa.id,
+      'description': description,
+      'service_minutes': serviceMinutes,
+      'active': active,
+      'type': tipo.options()[ItemTipoOpcoes.CODIGO],
+    };
   }
 
   factory Item.fromJson(Map data) {
@@ -46,16 +73,7 @@ class Item extends GenericModel {
     });
   }
 
-  static String obterDescricaoEnumTipo(ItemTipo pTipo) {
-    switch (pTipo) {
-      case ItemTipo.INDEFINIDO:
-        return 'Indefinido';
-      case ItemTipo.PRODUTO:
-        return 'Produto';
-      case ItemTipo.SERVICO:
-        return 'Serviço';
-    }
-  }
+  String obterDescricaoAtivo() => active ? 'Ativo' : 'Inativo';
 
   ItemTipo get tipo => _tipo;
 

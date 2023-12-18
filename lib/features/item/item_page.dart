@@ -1,9 +1,10 @@
-import 'package:agendamentos/features/item/produto/consulta/produto_consulta_page.dart';
-import 'package:agendamentos/features/item/produto/consulta/produto_consulta_provider.dart';
-import 'package:agendamentos/features/item/produto/new/product_new.dart';
-import 'package:agendamentos/features/item/service/query/service_query.dart';
+import 'package:agendamentos/features/item/item_provider.dart';
+import 'package:agendamentos/features/item/produto/produto_consulta_page.dart';
+import 'package:agendamentos/features/item/servico/servico_consulta_page.dart';
+import 'package:agendamentos/utils/constants/constants.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:provider/provider.dart';
+
 import '../../utils/constants/widgetsConstantes.dart';
 
 class ItemPage extends StatefulWidget {
@@ -14,23 +15,20 @@ class ItemPage extends StatefulWidget {
 }
 
 class _ItemPageState extends State<ItemPage> {
+  late final ItemProvider provider;
+
   @override
   void initState() {
     super.initState();
+    provider = context.read<ItemProvider>();
+    WidgetsBinding.instance.addPostFrameCallback(callbackPostFrame);
   }
 
-  Future _showProductNew(BuildContext context) async {
-    await showModalBottomSheet(
-      context: context,
-      useSafeArea: true,
-      isScrollControlled: true,
-      builder: (context) {
-        return const ProductNew();
-      },
-    );
+  callbackPostFrame(Duration pDuration) async {
+    await provider.buscarItens();
   }
 
-  Future _showOptionInput(BuildContext context) async {
+  Future _abrirOpcoesInclusao(BuildContext context) async {
     await Future.delayed(
       Duration.zero,
       () async => await showModalBottomSheet(
@@ -44,24 +42,26 @@ class _ItemPageState extends State<ItemPage> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 const Padding(
-                  padding: EdgeInsets.only(bottom: 20),
+                  padding: EdgeInsets.only(bottom: 20.0),
                   child: Text(
                     'O que deseja cadastrar?',
                     textAlign: TextAlign.center,
+                    style: TextStyle(fontWeight: FontWeight.w700),
                   ),
                 ),
                 ListTile(
                   leading: const Icon(Icons.handyman_outlined),
-                  title: Text('Produto'),
+                  title: const Text('Produto'),
                   onTap: () async {
                     Navigator.pop(context);
-                    await _showProductNew(context);
+                    await Navigator.pushNamed(
+                        context, RoutesConstants.routeProdutoNovo);
                   },
                 ),
                 const Divider(),
                 ListTile(
                   leading: const Icon(Icons.home_repair_service),
-                  title: Text('Serviço'),
+                  title: const Text('Serviço'),
                   onTap: () {
                     Navigator.pop(context);
                     // call services screen here
@@ -82,32 +82,40 @@ class _ItemPageState extends State<ItemPage> {
       length: 2,
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Meus itens'),
+          title: Consumer<ItemProvider>(
+            builder: (_, value, __) => Text(value.tituloAppBar),
+          ),
+          actions: [
+            IconButton(
+              onPressed: () async => await provider.buscarItens(),
+              icon: const Icon(Icons.refresh_outlined),
+            ),
+          ],
           bottom: const TabBar(
             tabs: [
               Icon(Icons.handyman_outlined),
               Icon(Icons.home_repair_service),
             ],
           ),
-          actions: [
-            PopupMenuButton(
-              itemBuilder: (_) => [
-                PopupMenuItem(
-                  onTap: () async => await _showOptionInput(context),
-                  child: const Text('Novo'),
-                ),
-              ],
-            ),
-          ],
         ),
         body: const Padding(
           padding: EdgeInsets.all(16.0),
-          child: TabBarView(
+          child: Column(
             children: [
-              ProdutoConsultaPage(),
-              ServiceQuery(),
+              Expanded(
+                child: TabBarView(
+                  children: [
+                    ProdutoConsultaPage(),
+                    ServicoConsultaPage(),
+                  ],
+                ),
+              ),
             ],
           ),
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () async => await _abrirOpcoesInclusao(context),
+          child: const Icon(Icons.add),
         ),
       ),
     );

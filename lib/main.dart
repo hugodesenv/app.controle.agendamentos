@@ -1,4 +1,5 @@
-import 'package:agendamentos/features/item/produto/consulta/produto_consulta_provider.dart';
+import 'package:agendamentos/features/item/item_provider.dart';
+import 'package:agendamentos/features/item/produto/produto_novo_provider.dart';
 import 'package:agendamentos/myApp.dart';
 import 'package:agendamentos/features/agenda/provider/agenda_provider.dart';
 import 'package:agendamentos/auth_provider.dart';
@@ -35,9 +36,12 @@ void main() async {
         ChangeNotifierProvider<AgendaProvider>(
           create: (_) => AgendaProvider(),
         ),
-        ChangeNotifierProvider<ProdutoConsultaProvider>(
-          create: (_) => ProdutoConsultaProvider(),
-        )
+        ChangeNotifierProvider<ItemProvider>(
+          create: (_) => ItemProvider(),
+        ),
+        ChangeNotifierProvider<ProdutoNovoProvider>(
+          create: (_) => ProdutoNovoProvider(),
+        ),
       ],
       child: const MyApp(),
     ),

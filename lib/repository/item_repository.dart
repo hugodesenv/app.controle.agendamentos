@@ -1,4 +1,3 @@
-import 'package:agendamentos/models/usuario.dart';
 import 'package:agendamentos/models/item.dart';
 import 'package:agendamentos/repository/firebase_repository.dart';
 import 'package:agendamentos/utils/preferences_util.dart';
@@ -18,7 +17,7 @@ class ItemRepository extends FirebaseRepository implements CrudRepository {
     final currentUser = await PreferencesUtil.usuarioAtual();
     final res = await dio.get(
       apiURL,
-      data: {'company_id': currentUser.empresa.id, 'active': true},
+      data: {'company_id': currentUser.empresa.id},
     );
 
     List<Item> items = [];
@@ -33,9 +32,10 @@ class ItemRepository extends FirebaseRepository implements CrudRepository {
   }
 
   @override
-  Future<Map> save(data) {
-    // TODO: implement save
-    throw UnimplementedError();
+  Future<Map> save(data) async {
+    Item item = data as Item;
+    final res = await dio.post(apiURL, data: item.toJson());
+    return {'dados': res.data};
   }
 
   @override

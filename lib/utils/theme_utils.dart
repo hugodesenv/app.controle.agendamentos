@@ -28,22 +28,6 @@ class SkedolTheme {
     );
   }
 
-  InputDecorationTheme? getWhiteInputDecorationTheme() {
-    return InputDecorationTheme(
-      filled: true,
-      fillColor: const Color(0xFFF6F3F3),
-      border: UnderlineInputBorder(
-        borderSide: BorderSide.none,
-        borderRadius: BorderRadius.circular(12),
-      ),
-      focusedBorder: UnderlineInputBorder(
-        borderSide: const BorderSide(width: 4, color: _primaryWhiteColor),
-        borderRadius: BorderRadius.circular(12),
-      ),
-      suffixIconColor: Colors.black12,
-    );
-  }
-
   TabBarTheme getWhiteTabBarTheme() {
     return const TabBarTheme(
       labelColor: _primaryWhiteColor,
@@ -67,7 +51,7 @@ class SkedolTheme {
   AppBarTheme getWhiteAppBarTheme() {
     return AppBarTheme(
       elevation: 2,
-      titleTextStyle: GoogleFonts.nunito(
+      titleTextStyle: GoogleFonts.inter(
         color: Colors.black45,
         fontWeight: FontWeight.w600,
         fontSize: 16.0,

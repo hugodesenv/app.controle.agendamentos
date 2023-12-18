@@ -23,4 +23,5 @@ class RoutesConstants {
   static const routeCustomerInfo = '/customer_info';
 
   static const routeItemPage = '/item-page';
+  static const routeProdutoNovo = '/item-novo';
 }
